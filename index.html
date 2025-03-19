@@ -35,15 +35,35 @@
             position: relative; /* Para posicionar o título do mestre */
         }
 
-        h1, h2 {
+        h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif;
-            color: #a0522d;
+            color: #1C2526; /* Preto mais escuro */
+            font-size: 3rem; /* Tamanho maior, mas não exagerado */
             margin-bottom: 20px;
             text-align: center;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            animation: raios 2s infinite linear; /* Animação de raios */
         }
-        h2{
+
+        @keyframes raios {
+            0% {
+                text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500;
+            }
+            50% {
+                text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500;
+            }
+            100% {
+                text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500;
+            }
+        }
+
+        h2 {
+            font-family: 'MedievalSharp', serif;
+            color: #a0522d;
             font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         label {
@@ -72,7 +92,8 @@
 
         textarea {
             resize: vertical;
-            height: 80px;
+            height: 100px; /* Altura padrão */
+            transition: height 0.3s ease; /* Transição suave para a expansão */
         }
 
         .atributos-container {
@@ -423,14 +444,16 @@
                 <label>Armamento Mão Direita:</label>
                 <div class="flex items-center mb-2">
                     <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>(</span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                    <span>Ataque (</span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"><span>)</span>
+                    <span>Ataque Mágico (</span><input type="number" id="arma-direita-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
                 </div>
             </div>
             <div class="armamento-coluna">
                 <label>Armamento Mão Esquerda:</label>
                 <div class="flex items-center">
                     <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>(</span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                    <span>Ataque (</span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"><span>)</span>
+                    <span>Ataque Mágico (</span><input type="number" id="arma-esquerda-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
                 </div>
             </div>
         </div>
@@ -544,8 +567,10 @@
         const vigorSpan = document.getElementById('vigor');
         const armaDireitaNomeInput = document.getElementById('arma-direita-nome');
         const armaDireitaAtaqueInput = document.getElementById('arma-direita-ataque');
+        const armaDireitaAtaqueMagicoInput = document.getElementById('arma-direita-ataque-magico');
         const armaEsquerdaNomeInput = document.getElementById('arma-esquerda-nome');
         const armaEsquerdaAtaqueInput = document.getElementById('arma-esquerda-ataque');
+        const armaEsquerdaAtaqueMagicoInput = document.getElementById('arma-esquerda-ataque-magico');
         const resetPontosButton = document.getElementById('reset-pontos');
         const recomecarButton = document.getElementById('recomecar');
         const experienciaInput = document.getElementById('experiencia');
@@ -625,7 +650,7 @@
                 nomePersonagemTitulo.style.color = '#FFD700';
                 tituloMestre.style.display = 'block';
             } else {
-                nomePersonagemTitulo.style.color = '#a0522d';
+                nomePersonagemTitulo.style.color = '#1C2526'; // Mantém a cor preta ao redefinir
                 tituloMestre.style.display = 'none';
             }
         }
@@ -689,7 +714,7 @@
             let magiaBase = 20 + constituicao * 3;
             let vigorBase = 10 + constituicao * 0.4;
 
-            // Novo cálculo de vida com base na constituição
+            // Cálculo de vida com base na constituição
             vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + (nivel * 10);
 
             if (inteligencia >= 10) {
@@ -698,8 +723,11 @@
 
             let ataqueArmaDireita = parseInt(armaDireitaAtaqueInput.value) || 0;
             let ataqueArmaEsquerda = parseInt(armaEsquerdaAtaqueInput.value) || 0;
+            let ataqueMagicoArmaDireita = parseInt(armaDireitaAtaqueMagicoInput.value) || 0;
+            let ataqueMagicoArmaEsquerda = parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0;
 
             ataque += ataqueArmaDireita + ataqueArmaEsquerda;
+            ataqueMagico += ataqueMagicoArmaDireita + ataqueMagicoArmaEsquerda;
 
             ataqueSpan.textContent = ataque;
             ataqueMagicoSpan.textContent = ataqueMagico;
@@ -710,6 +738,24 @@
             vidaSpan.textContent = Math.ceil(vidaBase);
             magiaSpan.textContent = Math.ceil(magiaBase);
             vigorSpan.textContent = vigorBase.toFixed(1);
+        }
+
+        function validarDesvantagens() {
+            const desvantagensText = desvantagensInput.value.trim();
+            if (desvantagensText === '') {
+                alert('Você deve ter pelo menos 1 desvantagem!');
+                return false;
+            }
+            const desvantagens = desvantagensText.split('\n').filter(d => d.trim() !== '');
+            if (desvantagens.length < 1) {
+                alert('Você deve ter pelo menos 1 desvantagem!');
+                return false;
+            }
+            if (desvantagens.length > 3) {
+                alert('Você pode ter no máximo 3 desvantagens!');
+                return false;
+            }
+            return true;
         }
 
         function resetarPontos() {
@@ -735,11 +781,39 @@
             nivelSpan.textContent = nivel;
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagemSpan.textContent = pontosVantagem;
-            nomePersonagemTitulo.style.color = '#a0522d';
+            nomePersonagemTitulo.style.color = '#1C2526'; // Mantém a cor preta ao redefinir
             tituloMestre.style.display = 'none';
             vidaBase = 50;
+            vantagensInput.value = '';
+            magiasHabilidadesInput.value = '';
+            desvantagensInput.value = '';
+            inventarioInput.value = '';
             calcularAtributos();
         }
+
+        // Funções para expandir e minimizar as caixas de texto
+        function expandirTextarea(textarea) {
+            textarea.style.height = '200px';
+        }
+
+        function minimizarTextarea(textarea) {
+            textarea.style.height = '100px';
+        }
+
+        vantagensInput.addEventListener('focus', () => expandirTextarea(vantagensInput));
+        vantagensInput.addEventListener('blur', () => minimizarTextarea(vantagensInput));
+
+        magiasHabilidadesInput.addEventListener('focus', () => expandirTextarea(magiasHabilidadesInput));
+        magiasHabilidadesInput.addEventListener('blur', () => minimizarTextarea(magiasHabilidadesInput));
+
+        desvantagensInput.addEventListener('focus', () => expandirTextarea(desvantagensInput));
+        desvantagensInput.addEventListener('blur', () => {
+            minimizarTextarea(desvantagensInput);
+            validarDesvantagens();
+        });
+
+        inventarioInput.addEventListener('focus', () => expandirTextarea(inventarioInput));
+        inventarioInput.addEventListener('blur', () => minimizarTextarea(inventarioInput));
 
         atributosInputs.forEach(input => {
             input.addEventListener('input', calcularAtributos);
@@ -747,6 +821,8 @@
 
         armaDireitaAtaqueInput.addEventListener('input', calcularAtributos);
         armaEsquerdaAtaqueInput.addEventListener('input', calcularAtributos);
+        armaDireitaAtaqueMagicoInput.addEventListener('input', calcularAtributos);
+        armaEsquerdaAtaqueMagicoInput.addEventListener('input', calcularAtributos);
         resetPontosButton.addEventListener('click', resetarPontos);
         recomecarButton.addEventListener('click', recomecarFicha);
         experienciaInput.addEventListener('input', () => {
