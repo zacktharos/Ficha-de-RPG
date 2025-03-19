@@ -560,11 +560,11 @@
         const desvantagensInput = document.getElementById('desvantagens');
         const inventarioInput = document.getElementById('inventario');
 
-
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
         let nivel = 0;
-        let pontosHabilidade = 25;
+        let pontosHabilidadeTotal = 25; // Total de pontos disponíveis (atualizado por nível)
+        let pontosHabilidadeUsados = 0; // Pontos já distribuídos nos atributos
         let pontosVantagem = 5;
         let experiencia = 0;
         let vidaBase = 50;
@@ -616,12 +616,12 @@
         function atualizarNivel() {
             nivel = calcularNivel(experiencia);
             nivelSpan.textContent = nivel;
-            pontosHabilidade = nivelData[nivel].pd;
+            pontosHabilidadeTotal = nivelData[nivel].pd; // Atualiza o total de PD com base no nível
             pontosVantagem = nivelData[nivel].ph;
-            pontosHabilidadeSpan.textContent = pontosHabilidade;
             pontosVantagemSpan.textContent = pontosVantagem;
-            vidaBase = 50 + nivel * 10;
-             if (nivel >= 28) {
+            // Recalcula os pontos usados e atualiza PD restantes
+            calcularAtributos();
+            if (nivel >= 28) {
                 nomePersonagemTitulo.style.color = '#FFD700';
                 tituloMestre.style.display = 'block';
             } else {
@@ -637,6 +637,48 @@
             let inteligencia = parseInt(inteligenciaInput.value) || 0;
             let constituicao = parseInt(constituicaoInput.value) || 0;
 
+            // Calcula o total de pontos usados nos atributos principais
+            let pontosUsados = forca + destreza + agilidade + inteligencia + constituicao;
+
+            // Verifica se os pontos usados excedem os disponíveis
+            if (pontosUsados > pontosHabilidadeTotal) {
+                alert('Você não tem pontos de habilidade suficientes! Reduzindo os atributos para o limite disponível.');
+                // Reduz os atributos proporcionalmente para caber no limite
+                let excedente = pontosUsados - pontosHabilidadeTotal;
+                while (excedente > 0) {
+                    if (inteligencia > 0) {
+                        inteligencia--;
+                        excedente--;
+                        inteligenciaInput.value = inteligencia;
+                    }
+                    if (excedente > 0 && constituicao > 0) {
+                        constituicao--;
+                        excedente--;
+                        constituicaoInput.value = constituicao;
+                    }
+                    if (excedente > 0 && agilidade > 0) {
+                        agilidade--;
+                        excedente--;
+                        agilidadeInput.value = agilidade;
+                    }
+                    if (excedente > 0 && destreza > 0) {
+                        destreza--;
+                        excedente--;
+                        destrezaInput.value = destreza;
+                    }
+                    if (excedente > 0 && forca > 0) {
+                        forca--;
+                        excedente--;
+                        forcaInput.value = forca;
+                    }
+                }
+                pontosUsados = pontosHabilidadeTotal; // Ajusta os pontos usados ao limite
+            }
+
+            // Atualiza os pontos de habilidade restantes
+            pontosHabilidadeUsados = pontosUsados;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
+
             let ataque = forca + Math.floor(destreza / 5);
             let acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10);
             let esquiva = Math.floor(agilidade / 3);
@@ -647,13 +689,13 @@
             let magiaBase = 20 + constituicao * 3;
             let vigorBase = 10 + constituicao * 0.4;
 
-             if (forca >= 10) {
-                 vidaBase += constituicao * Math.floor(forca / 10);
-             }
+            // Novo cálculo de vida com base na constituição
+            vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + (nivel * 10);
 
-             if (inteligencia >= 10) {
-                 magiaBase += constituicao * Math.floor(inteligencia / 10);
-             }
+            if (inteligencia >= 10) {
+                magiaBase += constituicao * Math.floor(inteligencia / 10);
+            }
+
             let ataqueArmaDireita = parseInt(armaDireitaAtaqueInput.value) || 0;
             let ataqueArmaEsquerda = parseInt(armaEsquerdaAtaqueInput.value) || 0;
 
@@ -674,9 +716,9 @@
             atributosInputs.forEach(input => {
                 input.value = 0;
             });
-            pontosHabilidade = nivelData[nivel].pd;
+            pontosHabilidadeUsados = 0;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagem = nivelData[nivel].ph;
-            pontosHabilidadeSpan.textContent = pontosHabilidade;
             pontosVantagemSpan.textContent = pontosVantagem;
             calcularAtributos();
         }
@@ -687,15 +729,15 @@
             descricaoPersonagemInput.value = '';
             experienciaInput.value = 0;
             nivel = 0;
-            pontosHabilidade = nivelData[nivel].pd;
+            pontosHabilidadeTotal = nivelData[nivel].pd;
+            pontosHabilidadeUsados = 0;
             pontosVantagem = nivelData[nivel].ph;
             nivelSpan.textContent = nivel;
-            pontosHabilidadeSpan.textContent = pontosHabilidade;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagemSpan.textContent = pontosVantagem;
             nomePersonagemTitulo.style.color = '#a0522d';
             tituloMestre.style.display = 'none';
             vidaBase = 50;
-
             calcularAtributos();
         }
 
