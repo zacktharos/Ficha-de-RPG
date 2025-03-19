@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem RPG</title>
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        /* Estilos personalizados para a ficha */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: url('medieval_background.jpg'); /* Substitua pelo caminho da sua imagem */
+            background-size: cover;
+            background-position: center;
+        }
+
+        #ficha-container {
+            background-color: rgba(240, 230, 210, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 95%;
+            max-width: 1200px;
+            margin-bottom: 20px;
+            border: 2px solid #b8860b; /* Adiciona uma borda */
+            position: relative; /* Para posicionar o título do mestre */
+        }
+
+        h1, h2 {
+            font-family: 'MedievalSharp', serif;
+            color: #a0522d;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        h2{
+            font-size: 1.5rem;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            width: calc(100% - 20px);
+            margin-bottom: 15px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease; /* Transição suave para a cor da borda */
+            background-color: #f8f8f8; /* Cor de fundo levemente mais clara para os campos */
+        }
+
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+            border-color: #a0522d;
+            outline: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra sutil ao focar */
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .atributos-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .atributos-coluna {
+            width: 48%;
+        }
+
+        .atributo {
+            margin-bottom: 15px;
+        }
+
+        .atributo-nome {
+            font-weight: 600;
+            color: #663300;
+        }
+
+        .atributo-valor {
+            font-weight: 400;
+            color: #444;
+        }
+
+        .armamento-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .armamento-coluna {
+            width: 48%;
+        }
+
+        .inventario-container {
+            margin-bottom: 20px;
+        }
+
+        .inventario-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .inventario-item label {
+            margin-right: 10px;
+            margin-bottom: 0;
+            width: 80px;
+            text-align: right;
+        }
+
+        .inventario-item input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .vantagens-desvantagens-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .vantagens-coluna, .desvantagens-coluna {
+            width: 48%;
+        }
+
+        .vantagens-coluna h3, .desvantagens-coluna h3 {
+            font-size: 1.2rem;
+            font-family: 'MedievalSharp', serif;
+            color: #a0522d;
+            margin-bottom: 15px;
+            text-align: left; /* Alinha os títulos à esquerda */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .vantagens-coluna ul, .desvantagens-coluna ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .vantagens-coluna li, .desvantagens-coluna li {
+            margin-bottom: 10px;
+        }
+
+        .botoes-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .botao {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-family: 'MedievalSharp', serif;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .botao-reset {
+            background-color: #b8860b;
+        }
+
+        .botao-reset:hover {
+            background-color: #a0522d;
+            transform: translateY(-2px);
+        }
+
+        .botao-recomecar {
+          background-color: #a52a2a;
+        }
+
+        .botao-recomecar:hover {
+            background-color: #8b0000;
+            transform: translateY(-2px);
+        }
+
+        #tabela-experiencia {
+            margin-top: 30px;
+            border-collapse: collapse;
+            width: 100%;
+            background-color: rgba(240, 230, 210, 0.9);
+            border: 1px solid #b8860b;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: none; /* A tabela fica oculta por padrão */
+        }
+
+        #tabela-experiencia th, #tabela-experiencia td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #b8860b;
+            font-family: 'Inter', sans-serif;
+            color: #555;
+        }
+
+        #tabela-experiencia th {
+            background-color: #b8860b;
+            color: white;
+            font-family: 'MedievalSharp', serif;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        #tabela-experiencia tr:last-child td {
+            border-bottom: none;
+        }
+
+        #tabela-experiencia tr:hover {
+            background-color: rgba(240, 230, 210, 0.8);
+        }
+        .vida-magia-vigor {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha em telas menores */
+        }
+
+        .vida-magia-vigor div {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 30%;
+            min-width: 200px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .vida-magia-vigor div label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .vida-magia-vigor div span {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #a0522d;
+        }
+        @media (max-width: 768px) {
+            .atributos-container {
+                flex-direction: column;
+            }
+            .atributos-coluna {
+                width: 100%;
+            }
+            .armamento-container {
+                flex-direction: column;
+            }
+            .armamento-coluna{
+                width: 100%;
+            }
+            .vantagens-desvantagens-container {
+                flex-direction: column;
+            }
+            .vantagens-coluna, .desvantagens-coluna {
+                width: 100%;
+            }
+            .botoes-container {
+                flex-direction: column;
+            }
+            .botao {
+                margin: 10px 0;
+                width: 100%;
+                text-align: center;
+            }
+            .vida-magia-vigor div {
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        #titulo-mestre {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-family: 'MedievalSharp', serif;
+            color: #00BFFF;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 1.5rem;
+            animation: brilhar 2s infinite alternate;
+        }
+
+        @keyframes brilhar {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+        #status-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 20px;
+            width: 300px;
+        }
+
+        #status-container div {
+            margin-bottom: 10px;
+        }
+
+        #vantagens-container, #magias-habilidades-container, #desvantagens-container {
+            width: calc(100% - 340px);
+            margin-left: 340px;
+        }
+
+        #vantagens-container textarea, #magias-habilidades-container textarea, #desvantagens-container textarea {
+            width: calc(100% - 20px);
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+        .inventario-container textarea{
+            width: calc(100% - 20px);
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="ficha-container">
+        <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
+         <div id="titulo-mestre" style="display: none;">Mestre Máximo do Jogo</div>
+        <div class="text-center mb-4">
+            <label for="nome-personagem" class="block text-gray-700 text-sm font-bold mb-2">Nome do Personagem:</label>
+            <input type="text" id="nome-personagem" placeholder="Digite o nome do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+
+        <div class="text-center mb-6">
+            <label for="descricao-personagem" class="block text-gray-700 text-sm font-bold mb-2">Descrição do Personagem:</label>
+            <textarea id="descricao-personagem" placeholder="Digite a descrição do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        </div>
+
+        <div class="vida-magia-vigor">
+            <div>
+                <label for="vida">Pontos de Vida:</label>
+                <span id="vida">50</span>
+            </div>
+            <div>
+                <label for="magia">Pontos de Magia:</label>
+                <span id="magia">20</span>
+            </div>
+            <div>
+                <label for="vigor">Pontos de Vigor:</label>
+                <span id="vigor">10</span>
+            </div>
+        </div>
+
+        <div class="atributos-container">
+            <div class="atributos-coluna">
+                <div class="atributo">
+                    <label for="forca" class="atributo-nome">Força:</label>
+                    <input type="number" id="forca" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="atributo">
+                    <label for="destreza" class="atributo-nome">Destreza:</label>
+                    <input type="number" id="destreza" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="atributo">
+                    <label for="agilidade" class="atributo-nome">Agilidade:</label>
+                    <input type="number" id="agilidade" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="atributo">
+                    <label for="constituicao" class="atributo-nome">Constituição:</label>
+                    <input type="number" id="constituicao" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="atributo">
+                    <label for="inteligencia" class="atributo-nome">Inteligência:</label>
+                    <input type="number" id="inteligencia" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+            </div>
+            <div class="atributos-coluna">
+                <div class="atributo">
+                    <label for="ataque" class="atributo-nome">Ataque:</label>
+                    <span id="ataque" class="atributo-valor">0</span>
+                </div>
+                <div class="atributo">
+                    <label for="ataque-magico" class="atributo-nome">Ataque Mágico:</label>
+                    <span id="ataque-magico" class="atributo-valor">0</span>
+                </div>
+                <div class="atributo">
+                    <label for="acerto" class="atributo-nome">Acerto:</label>
+                    <span id="acerto" class="atributo-valor">0</span>
+                </div>
+                <div class="atributo">
+                    <label for="esquiva" class="atributo-nome">Esquiva:</label>
+                    <span id="esquiva" class="atributo-valor">0</span>
+                </div>
+                <div class="atributo">
+                    <label for="rdf" class="atributo-nome">RDF:</label>
+                    <span id="rdf" class="atributo-valor">0</span>
+                </div>
+                <div class="atributo">
+                    <label for="rdm" class="atributo-nome">RDM:</label>
+                    <span id="rdm" class="atributo-valor">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="armamento-container">
+            <div class="armamento-coluna">
+                <label>Armamento Mão Direita:</label>
+                <div class="flex items-center mb-2">
+                    <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                    <span>(</span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                </div>
+            </div>
+            <div class="armamento-coluna">
+                <label>Armamento Mão Esquerda:</label>
+                <div class="flex items-center">
+                    <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                    <span>(</span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div id="status-container">
+                <div class="mb-4">
+                    <label for="experiencia" class="block text-gray-700 text-sm font-bold mb-2">Experiência:</label>
+                    <input type="number" id="experiencia" value="0" min="0" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div>
+                    <label for="nivel" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Nível:</label>
+                    <span id="nivel" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">0</span>
+                </div>
+                <div>
+                    <label for="pontos-habilidade" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Habilidade (PD):</label>
+                    <span id="pontos-habilidade" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">25</span>
+                </div>
+                <div>
+                    <label for="pontos-vantagem" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Vantagem (PH):</label>
+                    <span id="pontos-vantagem" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">5</span>
+                </div>
+            </div>
+
+            <div id="vantagens-container" class="mb-4">
+                <label for="vantagens" class="block text-gray-700 text-sm font-bold mb-2">Vantagens:</label>
+                <textarea id="vantagens" placeholder="Digite as vantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div id="magias-habilidades-container" class="mb-4" style="margin-left: 340px;">
+                <label for="magias-habilidades" class="block text-gray-700 text-sm font-bold mb-2">Magias e Habilidades:</label>
+                <textarea id="magias-habilidades" placeholder="Digite as magias e habilidades do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div id="desvantagens-container" class="mb-4" style="margin-left: 340px;">
+                <label for="desvantagens" class="block text-gray-700 text-sm font-bold mb-2">Desvantagens:</label>
+                <textarea id="desvantagens" placeholder="Digite as desvantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+        </div>
+
+        <div class="inventario-container">
+            <h2>Inventário</h2>
+             <textarea id="inventario" placeholder="Digite os itens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+        </div>
+
+        <div class="botoes-container">
+            <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
+            <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
+        </div>
+
+        <table id="tabela-experiencia">
+            <thead>
+                <tr>
+                    <th>Nível</th>
+                    <th>XP Acumulativo Necessário</th>
+                    <th>Pontos de Habilidade (PD)</th>
+                    <th>Pontos de Vantagens (PH)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>0</td><td>0</td><td>25</td><td>5</td></tr>
+                <tr><td>1</td><td>10</td><td>31</td><td>6</td></tr>
+                <tr><td>2</td><td>30</td><td>37</td><td>7</td></tr>
+                <tr><td>3</td><td>60</td><td>43</td><td>8</td></tr>
+                <tr><td>4</td><td>100</td><td>49</td><td>9</td></tr>
+                <tr><td>5</td><td>150</td><td>55</td><td>10</td></tr>
+                <tr><td>6</td><td>210</td><td>61</td><td>11</td></tr>
+                <tr><td>7</td><td>280</td><td>67</td><td>12</td></tr>
+                <tr><td>8</td><td>360</td><td>73</td><td>13</td></tr>
+                <tr><td>9</td><td>450</td><td>79</td><td>14</td></tr>
+                <tr><td>10</td><td>550</td><td>85</td><td>15</td></tr>
+                <tr><td>11</td><td>670</td><td>91</td><td>16</td></tr>
+                <tr><td>12</td><td>810</td><td>97</td><td>17</td></tr>
+                <tr><td>13</td><td>970</td><td>103</td><td>18</td></tr>
+                <tr><td>14</td><td>1150</td><td>109</td><td>19</td></tr>
+                <tr><td>15</td><td>1350</td><td>115</td><td>20</td></tr>
+                <tr><td>16</td><td>1570</td><td>121</td><td>21</td></tr>
+                <tr><td>17</td><td>1810</td><td>127</td><td>22</td></tr>
+                <tr><td>18</td><td>2070</td><td>133</td><td>23</td></tr>
+                <tr><td>19</td><td>2350</td><td>139</td><td>24</td></tr>
+                <tr><td>20</td><td>2650</td><td>145</td><td>25</td></tr>
+                 <tr><td>21</td><td>2980</td><td>148</td><td>26</td></tr>
+                <tr><td>22</td><td>3340</td><td>151</td><td>27</td></tr>
+                <tr><td>23</td><td>3730</td><td>154</td><td>28</td></tr>
+                <tr><td>24</td><td>4150</td><td>157</td><td>29</td></tr>
+                <tr><td>25</td><td>4600</td><td>160</td><td>30</td></tr>
+                <tr><td>26</td><td>5080</td><td>163</td><td>31</td></tr>
+                <tr><td>27</td><td>5590</td><td>166</td><td>32</td></tr>
+                <tr><td>28</td><td>6130</td><td>169</td><td>33</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const nomePersonagemInput = document.getElementById('nome-personagem');
+        const descricaoPersonagemInput = document.getElementById('descricao-personagem');
+        const forcaInput = document.getElementById('forca');
+        const destrezaInput = document.getElementById('destreza');
+        const agilidadeInput = document.getElementById('agilidade');
+        const inteligenciaInput = document.getElementById('inteligencia');
+        const constituicaoInput = document.getElementById('constituicao');
+        const ataqueSpan = document.getElementById('ataque');
+        const ataqueMagicoSpan = document.getElementById('ataque-magico');
+        const acertoSpan = document.getElementById('acerto');
+        const esquivaSpan = document.getElementById('esquiva');
+        const rdfSpan = document.getElementById('rdf');
+        const rdmSpan = document.getElementById('rdm');
+        const vidaSpan = document.getElementById('vida');
+        const magiaSpan = document.getElementById('magia');
+        const vigorSpan = document.getElementById('vigor');
+        const armaDireitaNomeInput = document.getElementById('arma-direita-nome');
+        const armaDireitaAtaqueInput = document.getElementById('arma-direita-ataque');
+        const armaEsquerdaNomeInput = document.getElementById('arma-esquerda-nome');
+        const armaEsquerdaAtaqueInput = document.getElementById('arma-esquerda-ataque');
+        const resetPontosButton = document.getElementById('reset-pontos');
+        const recomecarButton = document.getElementById('recomecar');
+        const experienciaInput = document.getElementById('experiencia');
+        const nivelSpan = document.getElementById('nivel');
+        const pontosHabilidadeSpan = document.getElementById('pontos-habilidade');
+        const pontosVantagemSpan = document.getElementById('pontos-vantagem');
+        const tabelaExperiencia = document.getElementById('tabela-experiencia');
+        const nomePersonagemTitulo = document.getElementById('nome-personagem-titulo');
+        const tituloMestre = document.getElementById('titulo-mestre');
+        const vantagensInput = document.getElementById('vantagens');
+        const magiasHabilidadesInput = document.getElementById('magias-habilidades');
+        const desvantagensInput = document.getElementById('desvantagens');
+        const inventarioInput = document.getElementById('inventario');
+
+
+        const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
+
+        let nivel = 0;
+        let pontosHabilidade = 25;
+        let pontosVantagem = 5;
+        let experiencia = 0;
+        let vidaBase = 50;
+
+        const nivelData = [
+            { nivel: 0, xp: 0, pd: 25, ph: 5 },
+            { nivel: 1, xp: 10, pd: 31, ph: 6 },
+            { nivel: 2, xp: 30, pd: 37, ph: 7 },
+            { nivel: 3, xp: 60, pd: 43, ph: 8 },
+            { nivel: 4, xp: 100, pd: 49, ph: 9 },
+            { nivel: 5, xp: 150, pd: 55, ph: 10 },
+            { nivel: 6, xp: 210, pd: 61, ph: 11 },
+            { nivel: 7, xp: 280, pd: 67, ph: 12 },
+            { nivel: 8, xp: 360, pd: 73, ph: 13 },
+            { nivel: 9, xp: 450, pd: 79, ph: 14 },
+            { nivel: 10, xp: 550, pd: 85, ph: 15 },
+            { nivel: 11, xp: 670, pd: 91, ph: 16 },
+            { nivel: 12, xp: 810, pd: 97, ph: 17 },
+            { nivel: 13, xp: 970, pd: 103, ph: 18 },
+            { nivel: 14, xp: 1150, pd: 109, ph: 19 },
+            { nivel: 15, xp: 1350, pd: 115, ph: 20 },
+            { nivel: 16, xp: 1570, pd: 121, ph: 21 },
+            { nivel: 17, xp: 1810, pd: 127, ph: 22 },
+            { nivel: 18, xp: 2070, pd: 133, ph: 23 },
+            { nivel: 19, xp: 2350, pd: 139, ph: 24 },
+            { nivel: 20, xp: 2650, pd: 145, ph: 25 },
+            { nivel: 21, xp: 2980, pd: 148, ph: 26 },
+            { nivel: 22, xp: 3340, pd: 151, ph: 27 },
+            { nivel: 23, xp: 3730, pd: 154, ph: 28 },
+            { nivel: 24, xp: 4150, pd: 157, ph: 29 },
+            { nivel: 25, xp: 4600, pd: 160, ph: 30 },
+            { nivel: 26, xp: 5080, pd: 163, ph: 31 },
+            { nivel: 27, xp: 5590, pd: 166, ph: 32 },
+            { nivel: 28, xp: 6130, pd: 169, ph: 33 },
+        ];
+
+        function calcularNivel(xp) {
+            let novoNivel = 0;
+            for (let i = 0; i < nivelData.length; i++) {
+                if (xp >= nivelData[i].xp) {
+                    novoNivel = nivelData[i].nivel;
+                } else {
+                    break;
+                }
+            }
+            return novoNivel;
+        }
+
+        function atualizarNivel() {
+            nivel = calcularNivel(experiencia);
+            nivelSpan.textContent = nivel;
+            pontosHabilidade = nivelData[nivel].pd;
+            pontosVantagem = nivelData[nivel].ph;
+            pontosHabilidadeSpan.textContent = pontosHabilidade;
+            pontosVantagemSpan.textContent = pontosVantagem;
+            vidaBase = 50 + nivel * 10;
+             if (nivel >= 28) {
+                nomePersonagemTitulo.style.color = '#FFD700';
+                tituloMestre.style.display = 'block';
+            } else {
+                nomePersonagemTitulo.style.color = '#a0522d';
+                tituloMestre.style.display = 'none';
+            }
+        }
+
+        function calcularAtributos() {
+            let forca = parseInt(forcaInput.value) || 0;
+            let destreza = parseInt(destrezaInput.value) || 0;
+            let agilidade = parseInt(agilidadeInput.value) || 0;
+            let inteligencia = parseInt(inteligenciaInput.value) || 0;
+            let constituicao = parseInt(constituicaoInput.value) || 0;
+
+            let ataque = forca + Math.floor(destreza / 5);
+            let acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10);
+            let esquiva = Math.floor(agilidade / 3);
+            let rdf = Math.floor(forca / 5);
+            let rdm = Math.floor(inteligencia / 5);
+            let ataqueMagico = inteligencia;
+
+            let magiaBase = 20 + constituicao * 3;
+            let vigorBase = 10 + constituicao * 0.4;
+
+             if (forca >= 10) {
+                 vidaBase += constituicao * Math.floor(forca / 10);
+             }
+
+             if (inteligencia >= 10) {
+                 magiaBase += constituicao * Math.floor(inteligencia / 10);
+             }
+            let ataqueArmaDireita = parseInt(armaDireitaAtaqueInput.value) || 0;
+            let ataqueArmaEsquerda = parseInt(armaEsquerdaAtaqueInput.value) || 0;
+
+            ataque += ataqueArmaDireita + ataqueArmaEsquerda;
+
+            ataqueSpan.textContent = ataque;
+            ataqueMagicoSpan.textContent = ataqueMagico;
+            acertoSpan.textContent = acerto;
+            esquivaSpan.textContent = esquiva;
+            rdfSpan.textContent = rdf;
+            rdmSpan.textContent = rdm;
+            vidaSpan.textContent = Math.ceil(vidaBase);
+            magiaSpan.textContent = Math.ceil(magiaBase);
+            vigorSpan.textContent = vigorBase.toFixed(1);
+        }
+
+        function resetarPontos() {
+            atributosInputs.forEach(input => {
+                input.value = 0;
+            });
+            pontosHabilidade = nivelData[nivel].pd;
+            pontosVantagem = nivelData[nivel].ph;
+            pontosHabilidadeSpan.textContent = pontosHabilidade;
+            pontosVantagemSpan.textContent = pontosVantagem;
+            calcularAtributos();
+        }
+
+        function recomecarFicha() {
+            resetarPontos();
+            nomePersonagemInput.value = '';
+            descricaoPersonagemInput.value = '';
+            experienciaInput.value = 0;
+            nivel = 0;
+            pontosHabilidade = nivelData[nivel].pd;
+            pontosVantagem = nivelData[nivel].ph;
+            nivelSpan.textContent = nivel;
+            pontosHabilidadeSpan.textContent = pontosHabilidade;
+            pontosVantagemSpan.textContent = pontosVantagem;
+            nomePersonagemTitulo.style.color = '#a0522d';
+            tituloMestre.style.display = 'none';
+            vidaBase = 50;
+
+            calcularAtributos();
+        }
+
+        atributosInputs.forEach(input => {
+            input.addEventListener('input', calcularAtributos);
+        });
+
+        armaDireitaAtaqueInput.addEventListener('input', calcularAtributos);
+        armaEsquerdaAtaqueInput.addEventListener('input', calcularAtributos);
+        resetPontosButton.addEventListener('click', resetarPontos);
+        recomecarButton.addEventListener('click', recomecarFicha);
+        experienciaInput.addEventListener('input', () => {
+            experiencia = parseInt(experienciaInput.value) || 0;
+            atualizarNivel();
+            calcularAtributos();
+        });
+
+        calcularAtributos();
+        atualizarNivel();
+    </script>
+</body>
+</html>
