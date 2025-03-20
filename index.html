@@ -6,6 +6,9 @@
     <title>Ficha de Personagem RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- Adicionando o Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
         /* Estilos personalizados para a ficha */
         body {
@@ -32,7 +35,7 @@
             max-width: 1200px;
             margin-bottom: 20px;
             border: 2px solid #b8860b; /* Adiciona uma borda */
-            position: relative; /* Para posicionar o título do mestre e a imagem */
+            position: relative; /* Para posicionar o título do mestre */
         }
 
         h1#nome-personagem-titulo {
@@ -210,11 +213,20 @@
         }
 
         .botao-recomecar {
-          background-color: #a52a2a;
+            background-color: #a52a2a;
         }
 
         .botao-recomecar:hover {
             background-color: #8b0000;
+            transform: translateY(-2px);
+        }
+
+        .botao-bloquear {
+            background-color: #4a4a4a;
+        }
+
+        .botao-bloquear:hover {
+            background-color: #2a2a2a;
             transform: translateY(-2px);
         }
 
@@ -252,6 +264,7 @@
         #tabela-experiencia tr:hover {
             background-color: rgba(240, 230, 210, 0.8);
         }
+
         .vida-magia-vigor {
             display: flex;
             justify-content: space-around;
@@ -283,6 +296,7 @@
             font-weight: bold;
             color: #000000; /* Preto */
         }
+
         @media (max-width: 768px) {
             .atributos-container {
                 flex-direction: column;
@@ -293,7 +307,7 @@
             .armamento-container {
                 flex-direction: column;
             }
-            .armamento-coluna{
+            .armamento-coluna {
                 width: 100%;
             }
             .vantagens-desvantagens-container {
@@ -316,6 +330,7 @@
                 margin-right: auto;
             }
         }
+
         #titulo-mestre {
             position: absolute;
             top: 10px;
@@ -331,6 +346,7 @@
             from { opacity: 0.8; }
             to { opacity: 1; }
         }
+
         #status-container {
             display: flex;
             flex-direction: column;
@@ -353,7 +369,8 @@
             min-height: 100px;
             margin-bottom: 15px;
         }
-        .inventario-container textarea{
+
+        .inventario-container textarea {
             width: calc(100% - 20px);
             min-height: 100px;
             margin-bottom: 15px;
@@ -377,14 +394,117 @@
             }
         }
 
-        /* Imagem no canto inferior direito */
-        #dragon-image {
+        /* Estilos para as abas de fichas */
+        #fichas-tabs {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 100px; /* Ajuste o tamanho conforme necessário */
-            height: auto;
-            opacity: 0.8; /* Leve transparência para não sobrepor o conteúdo */
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ficha-tab {
+            padding: 8px 16px;
+            background-color: #b8860b;
+            color: white;
+            border-radius: 6px 6px 0 0;
+            margin-right: 5px;
+            cursor: pointer;
+            font-family: 'MedievalSharp', serif;
+            transition: background-color 0.3s ease;
+        }
+
+        .ficha-tab:hover {
+            background-color: #a0522d;
+        }
+
+        .ficha-tab.active {
+            background-color: #a0522d;
+            font-weight: bold;
+        }
+
+        #add-ficha-btn {
+            padding: 8px 16px;
+            background-color: #4a4a4a;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'MedievalSharp', serif;
+            transition: background-color 0.3s ease;
+        }
+
+        #add-ficha-btn:hover {
+            background-color: #2a2a2a;
+        }
+
+        /* Estilos para os modais */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #f0e6d2;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            font-family: 'MedievalSharp', serif;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .modal-content input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            color: white;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .modal-content .confirm-btn {
+            background-color: #b8860b;
+        }
+
+        .modal-content .confirm-btn:hover {
+            background-color: #a0522d;
+        }
+
+        .modal-content .cancel-btn {
+            background-color: #a52a2a;
+        }
+
+        .modal-content .cancel-btn:hover {
+            background-color: #8b0000;
+        }
+
+        /* Modal de senha com bordas vermelhas */
+        #password-modal .modal-content {
+            border: 2px solid #a52a2a;
         }
     </style>
 </head>
@@ -392,197 +512,345 @@
     <div id="ficha-container">
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
         <div id="titulo-mestre" style="display: none;">Você virou o Game Master</div>
-        <div class="text-center mb-4">
-            <label for="nome-personagem" class="block text-gray-700 text-sm font-bold mb-2">Nome do Personagem:</label>
-            <input type="text" id="nome-personagem" placeholder="Digite o nome do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+
+        <!-- Abas de fichas -->
+        <div id="fichas-tabs">
+            <!-- As abas serão adicionadas dinamicamente aqui -->
+            <div id="add-ficha-btn">+ Fichas</div>
         </div>
 
-        <div class="text-center mb-6">
-            <label for="descricao-personagem" class="block text-gray-700 text-sm font-bold mb-2">Descrição do Personagem:</label>
-            <textarea id="descricao-personagem" placeholder="Digite a descrição do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-        </div>
+        <!-- Conteúdo da ficha (será replicado para cada aba) -->
+        <div id="ficha-content">
+            <div class="text-center mb-4">
+                <label for="nome-personagem" class="block text-gray-700 text-sm font-bold mb-2">Nome do Personagem:</label>
+                <input type="text" id="nome-personagem" placeholder="Digite o nome do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            </div>
 
-        <div class="vida-magia-vigor">
-            <div>
-                <label for="vida">Pontos de Vida:</label>
-                <span id="vida">50</span>
+            <div class="text-center mb-6">
+                <label for="descricao-personagem" class="block text-gray-700 text-sm font-bold mb-2">Descrição do Personagem:</label>
+                <textarea id="descricao-personagem" placeholder="Digite a descrição do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
             </div>
-            <div>
-                <label for="magia">Pontos de Magia:</label>
-                <span id="magia">20</span>
-            </div>
-            <div>
-                <label for="vigor">Pontos de Vigor:</label>
-                <span id="vigor">10</span>
-            </div>
-        </div>
 
-        <div class="atributos-container">
-            <div class="atributos-coluna">
-                <div class="atributo">
-                    <label for="forca" class="atributo-nome">Força:</label>
-                    <input type="number" id="forca" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="atributo">
-                    <label for="destreza" class="atributo-nome">Destreza:</label>
-                    <input type="number" id="destreza" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="atributo">
-                    <label for="agilidade" class="atributo-nome">Agilidade:</label>
-                    <input type="number" id="agilidade" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="atributo">
-                    <label for="constituicao" class="atributo-nome">Constituição:</label>
-                    <input type="number" id="constituicao" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-                <div class="atributo">
-                    <label for="inteligencia" class="atributo-nome">Inteligência:</label>
-                    <input type="number" id="inteligencia" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-            </div>
-            <div class="atributos-coluna">
-                <div class="atributo">
-                    <label for="ataque" class="atributo-nome">Ataque:</label>
-                    <span id="ataque" class="atributo-valor">0</span>
-                </div>
-                <div class="atributo">
-                    <label for="ataque-magico" class="atributo-nome">Ataque Mágico:</label>
-                    <span id="ataque-magico" class="atributo-valor">0</span>
-                </div>
-                <div class="atributo">
-                    <label for="acerto" class="atributo-nome">Acerto:</label>
-                    <span id="acerto" class="atributo-valor">0</span>
-                </div>
-                <div class="atributo">
-                    <label for="esquiva" class="atributo-nome">Esquiva:</label>
-                    <span id="esquiva" class="atributo-valor">0</span>
-                </div>
-                <div class="atributo">
-                    <label for="rdf" class="atributo-nome">RDF:</label>
-                    <span id="rdf" class="atributo-valor">0</span>
-                </div>
-                <div class="atributo">
-                    <label for="rdm" class="atributo-nome">RDM:</label>
-                    <span id="rdm" class="atributo-valor">0</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="armamento-container">
-            <div class="armamento-coluna">
-                <label>Armamento Mão Direita:</label>
-                <div class="flex items-center mb-2">
-                    <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque </span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque Mágico </span><input type="number" id="arma-direita-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-            </div>
-            <div class="armamento-coluna">
-                <label>Armamento Mão Esquerda:</label>
-                <div class="flex items-center">
-                    <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque </span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque Mágico </span><input type="number" id="arma-esquerda-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                </div>
-            </div>
-        </div>
-        <div style="display: flex;">
-            <div id="status-container">
-                <div class="mb-4">
-                    <label for="experiencia" class="block text-gray-700 text-sm font-bold mb-2">Experiência:</label>
-                    <input type="number" id="experiencia" value="0" min="0" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <div class="vida-magia-vigor">
+                <div>
+                    <label for="vida">Pontos de Vida:</label>
+                    <span id="vida">50</span>
                 </div>
                 <div>
-                    <label for="nivel" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Nível:</label>
-                    <span id="nivel" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">0</span>
+                    <label for="magia">Pontos de Magia:</label>
+                    <span id="magia">20</span>
                 </div>
                 <div>
-                    <label for="pontos-habilidade" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Habilidade (PD):</label>
-                    <span id="pontos-habilidade" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">25</span>
-                </div>
-                <div>
-                    <label for="pontos-vantagem" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Vantagem (PH):</label>
-                    <span id="pontos-vantagem" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">5</span>
+                    <label for="vigor">Pontos de Vigor:</label>
+                    <span id="vigor">10</span>
                 </div>
             </div>
 
-            <div id="vantagens-container" class="mb-4">
-                <label for="vantagens" class="block text-gray-700 text-sm font-bold mb-2">Vantagens:</label>
-                <textarea id="vantagens" placeholder="Digite as vantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            <div class="atributos-container">
+                <div class="atributos-coluna">
+                    <div class="atributo">
+                        <label for="forca" class="atributo-nome">Força:</label>
+                        <input type="number" id="forca" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="atributo">
+                        <label for="destreza" class="atributo-nome">Destreza:</label>
+                        <input type="number" id="destreza" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="atributo">
+                        <label for="agilidade" class="atributo-nome">Agilidade:</label>
+                        <input type="number" id="agilidade" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="atributo">
+                        <label for="constituicao" class="atributo-nome">Constituição:</label>
+                        <input type="number" id="constituicao" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="atributo">
+                        <label for="inteligencia" class="atributo-nome">Inteligência:</label>
+                        <input type="number" id="inteligencia" value="0" min="0" class="atributo-valor shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                </div>
+                <div class="atributos-coluna">
+                    <div class="atributo">
+                        <label for="ataque" class="atributo-nome">Ataque:</label>
+                        <span id="ataque" class="atributo-valor">0</span>
+                    </div>
+                    <div class="atributo">
+                        <label for="ataque-magico" class="atributo-nome">Ataque Mágico:</label>
+                        <span id="ataque-magico" class="atributo-valor">0</span>
+                    </div>
+                    <div class="atributo">
+                        <label for="acerto" class="atributo-nome">Acerto:</label>
+                        <span id="acerto" class="atributo-valor">0</span>
+                    </div>
+                    <div class="atributo">
+                        <label for="esquiva" class="atributo-nome">Esquiva:</label>
+                        <span id="esquiva" class="atributo-valor">0</span>
+                    </div>
+                    <div class="atributo">
+                        <label for="rdf" class="atributo-nome">RDF:</label>
+                        <span id="rdf" class="atributo-valor">0</span>
+                    </div>
+                    <div class="atributo">
+                        <label for="rdm" class="atributo-nome">RDM:</label>
+                        <span id="rdm" class="atributo-valor">0</span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div style="display: flex;">
-            <div id="magias-habilidades-container" class="mb-4" style="margin-left: 340px;">
-                <label for="magias-habilidades" class="block text-gray-700 text-sm font-bold mb-2">Magias e Habilidades:</label>
-                <textarea id="magias-habilidades" placeholder="Digite as magias e habilidades do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+
+            <div class="armamento-container">
+                <div class="armamento-coluna">
+                    <label>Armamento Mão Direita:</label>
+                    <div class="flex items-center mb-2">
+                        <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                        <span>Ataque </span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                        <span>Ataque Mágico </span><input type="number" id="arma-direita-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                </div>
+                <div class="armamento-coluna">
+                    <label>Armamento Mão Esquerda:</label>
+                    <div class="flex items-center">
+                        <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                        <span>Ataque </span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                        <span>Ataque Mágico </span><input type="number" id="arma-esquerda-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                </div>
             </div>
-        </div>
-        <div style="display: flex;">
-            <div id="desvantagens-container" class="mb-4" style="margin-left: 340px;">
-                <label for="desvantagens" class="block text-gray-700 text-sm font-bold mb-2">Desvantagens:</label>
-                <textarea id="desvantagens" placeholder="Digite as desvantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            <div style="display: flex;">
+                <div id="status-container">
+                    <div class="mb-4">
+                        <label for="experiencia" class="block text-gray-700 text-sm font-bold mb-2">Experiência:</label>
+                        <input type="number" id="experiencia" value="0" min="0" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="nivel" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Nível:</label>
+                        <span id="nivel" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">0</span>
+                    </div>
+                    <div>
+                        <label for="pontos-habilidade" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Habilidade (PD):</label>
+                        <span id="pontos-habilidade" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">25</span>
+                    </div>
+                    <div>
+                        <label for="pontos-vantagem" class="block text-gray-700 text-sm font-bold mt-2 mb-2">Pontos de Vantagem (PH):</label>
+                        <span id="pontos-vantagem" class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight">5</span>
+                    </div>
+                </div>
+
+                <div id="vantagens-container" class="mb-4">
+                    <label for="vantagens" class="block text-gray-700 text-sm font-bold mb-2">Vantagens:</label>
+                    <textarea id="vantagens" placeholder="Digite as vantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
             </div>
+            <div style="display: flex;">
+                <div id="magias-habilidades-container" class="mb-4" style="margin-left: 340px;">
+                    <label for="magias-habilidades" class="block text-gray-700 text-sm font-bold mb-2">Magias e Habilidades:</label>
+                    <textarea id="magias-habilidades" placeholder="Digite as magias e habilidades do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
+            </div>
+            <div style="display: flex;">
+                <div id="desvantagens-container" class="mb-4" style="margin-left: 340px;">
+                    <label for="desvantagens" class="block text-gray-700 text-sm font-bold mb-2">Desvantagens:</label>
+                    <textarea id="desvantagens" placeholder="Digite as desvantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
+            </div>
+
+            <div class="inventario-container">
+                <h2>Inventário</h2>
+                <textarea id="inventario" placeholder="Digite os itens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+
+            <div class="botoes-container">
+                <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
+                <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
+                <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
+            </div>
+
+            <table id="tabela-experiencia">
+                <thead>
+                    <tr>
+                        <th>Nível</th>
+                        <th>XP Acumulativo Necessário</th>
+                        <th>Pontos de Habilidade (PD)</th>
+                        <th>Pontos de Vantagens (PH)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>0</td><td>25</td><td>5</td></tr>
+                    <tr><td>1</td><td>10</td><td>31</td><td>6</td></tr>
+                    <tr><td>2</td><td>30</td><td>37</td><td>7</td></tr>
+                    <tr><td>3</td><td>60</td><td>43</td><td>8</td></tr>
+                    <tr><td>4</td><td>100</td><td>49</td><td>9</td></tr>
+                    <tr><td>5</td><td>150</td><td>55</td><td>10</td></tr>
+                    <tr><td>6</td><td>210</td><td>61</td><td>11</td></tr>
+                    <tr><td>7</td><td>280</td><td>67</td><td>12</td></tr>
+                    <tr><td>8</td><td>360</td><td>73</td><td>13</td></tr>
+                    <tr><td>9</td><td>450</td><td>79</td><td>14</td></tr>
+                    <tr><td>10</td><td>550</td><td>85</td><td>15</td></tr>
+                    <tr><td>11</td><td>670</td><td>91</td><td>16</td></tr>
+                    <tr><td>12</td><td>810</td><td>97</td><td>17</td></tr>
+                    <tr><td>13</td><td>970</td><td>103</td><td>18</td></tr>
+                    <tr><td>14</td><td>1150</td><td>109</td><td>19</td></tr>
+                    <tr><td>15</td><td>1350</td><td>115</td><td>20</td></tr>
+                    <tr><td>16</td><td>1570</td><td>121</td><td>21</td></tr>
+                    <tr><td>17</td><td>1810</td><td>127</td><td>22</td></tr>
+                    <tr><td>18</td><td>2070</td><td>133</td><td>23</td></tr>
+                    <tr><td>19</td><td>2350</td><td>139</td><td>24</td></tr>
+                    <tr><td>20</td><td>2650</td><td>145</td><td>25</td></tr>
+                    <tr><td>21</td><td>2980</td><td>148</td><td>26</td></tr>
+                    <tr><td>22</td><td>3340</td><td>151</td><td>27</td></tr>
+                    <tr><td>23</td><td>3730</td><td>154</td><td>28</td></tr>
+                    <tr><td>24</td><td>4150</td><td>157</td><td>29</td></tr>
+                    <tr><td>25</td><td>4600</td><td>160</td><td>30</td></tr>
+                    <tr><td>26</td><td>5080</td><td>163</td><td>31</td></tr>
+                    <tr><td>27</td><td>5590</td><td>166</td><td>32</td></tr>
+                    <tr><td>28</td><td>6130</td><td>169</td><td>33</td></tr>
+                    <tr><td>29</td><td>8000</td><td>219</td><td>34</td></tr>
+                    <tr><td>30</td><td>10000</td><td>319</td><td>35</td></tr>
+                </tbody>
+            </table>
         </div>
+    </div>
 
-        <div class="inventario-container">
-            <h2>Inventário</h2>
-             <textarea id="inventario" placeholder="Digite os itens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+    <!-- Modal para nomear a nova ficha -->
+    <div id="nome-ficha-modal" class="modal">
+        <div class="modal-content">
+            <h3>Dê um Nome à Ficha</h3>
+            <input type="text" id="nome-ficha-input" placeholder="Nome da ficha" maxlength="20">
+            <button class="confirm-btn" onclick="criarNovaFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('nome-ficha-modal')">Cancelar</button>
         </div>
+    </div>
 
-        <div class="botoes-container">
-            <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
-            <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
+    <!-- Modal para definir a senha de bloqueio -->
+    <div id="bloquear-ficha-modal" class="modal">
+        <div class="modal-content">
+            <h3>Ponha sua Senha de 4 Dígitos</h3>
+            <input type="password" id="senha-bloqueio-input" placeholder="Senha (4 dígitos)" maxlength="4">
+            <button class="confirm-btn" onclick="bloquearFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('bloquear-ficha-modal')">Cancelar</button>
         </div>
+    </div>
 
-        <table id="tabela-experiencia">
-            <thead>
-                <tr>
-                    <th>Nível</th>
-                    <th>XP Acumulativo Necessário</th>
-                    <th>Pontos de Habilidade (PD)</th>
-                    <th>Pontos de Vantagens (PH)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>0</td><td>0</td><td>25</td><td>5</td></tr>
-                <tr><td>1</td><td>10</td><td>31</td><td>6</td></tr>
-                <tr><td>2</td><td>30</td><td>37</td><td>7</td></tr>
-                <tr><td>3</td><td>60</td><td>43</td><td>8</td></tr>
-                <tr><td>4</td><td>100</td><td>49</td><td>9</td></tr>
-                <tr><td>5</td><td>150</td><td>55</td><td>10</td></tr>
-                <tr><td>6</td><td>210</td><td>61</td><td>11</td></tr>
-                <tr><td>7</td><td>280</td><td>67</td><td>12</td></tr>
-                <tr><td>8</td><td>360</td><td>73</td><td>13</td></tr>
-                <tr><td>9</td><td>450</td><td>79</td><td>14</td></tr>
-                <tr><td>10</td><td>550</td><td>85</td><td>15</td></tr>
-                <tr><td>11</td><td>670</td><td>91</td><td>16</td></tr>
-                <tr><td>12</td><td>810</td><td>97</td><td>17</td></tr>
-                <tr><td>13</td><td>970</td><td>103</td><td>18</td></tr>
-                <tr><td>14</td><td>1150</td><td>109</td><td>19</td></tr>
-                <tr><td>15</td><td>1350</td><td>115</td><td>20</td></tr>
-                <tr><td>16</td><td>1570</td><td>121</td><td>21</td></tr>
-                <tr><td>17</td><td>1810</td><td>127</td><td>22</td></tr>
-                <tr><td>18</td><td>2070</td><td>133</td><td>23</td></tr>
-                <tr><td>19</td><td>2350</td><td>139</td><td>24</td></tr>
-                <tr><td>20</td><td>2650</td><td>145</td><td>25</td></tr>
-                <tr><td>21</td><td>2980</td><td>148</td><td>26</td></tr>
-                <tr><td>22</td><td>3340</td><td>151</td><td>27</td></tr>
-                <tr><td>23</td><td>3730</td><td>154</td><td>28</td></tr>
-                <tr><td>24</td><td>4150</td><td>157</td><td>29</td></tr>
-                <tr><td>25</td><td>4600</td><td>160</td><td>30</td></tr>
-                <tr><td>26</td><td>5080</td><td>163</td><td>31</td></tr>
-                <tr><td>27</td><td>5590</td><td>166</td><td>32</td></tr>
-                <tr><td>28</td><td>6130</td><td>169</td><td>33</td></tr>
-                <tr><td>29</td><td>8000</td><td>219</td><td>34</td></tr>
-                <tr><td>30</td><td>10000</td><td>319</td><td>35</td></tr>
-            </tbody>
-        </table>
-
-        <!-- Imagem do dragão no canto inferior direito -->
-        <img id="dragon-image" src="URL_DA_IMAGEM_AQUI" alt="Dragão Estilizado">
+    <!-- Modal para desbloquear a ficha -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <h3>Digite sua Senha</h3>
+            <input type="password" id="senha-desbloqueio-input" placeholder="Senha (4 dígitos)" maxlength="4">
+            <button class="confirm-btn" onclick="desbloquearFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('password-modal')">Cancelar</button>
+        </div>
     </div>
 
     <script>
+        // Configuração do Firebase (atualizado com as suas credenciais)
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
+            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
+            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
+            projectId: "ficha-de-rpg-b9685",
+            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
+            messagingSenderId: "528610398062",
+            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
+        };
+
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Referências globais
+        let fichas = {};
+        let currentFichaId = null;
+        let isFichaLocked = false;
+        let fichaPassword = null;
+        let isFichaUnlocked = false;
+        const senhaMatriz = "777";
+
+        // Função para carregar todas as fichas do Firebase
+        function carregarFichas() {
+            database.ref('fichas').on('value', (snapshot) => {
+                fichas = snapshot.val() || {};
+                atualizarAbasFichas();
+                if (!currentFichaId && Object.keys(fichas).length > 0) {
+                    currentFichaId = Object.keys(fichas)[0];
+                    carregarFicha(currentFichaId);
+                }
+            });
+        }
+
+        // Função para atualizar as abas de fichas
+        function atualizarAbasFichas() {
+            const fichasTabs = document.getElementById('fichas-tabs');
+            const addFichaBtn = document.getElementById('add-ficha-btn');
+            fichasTabs.innerHTML = '';
+            for (let fichaId in fichas) {
+                const tab = document.createElement('div');
+                tab.className = 'ficha-tab';
+                tab.textContent = fichas[fichaId].nomeFicha || 'Sem Nome';
+                tab.dataset.fichaId = fichaId;
+                if (fichaId === currentFichaId) {
+                    tab.classList.add('active');
+                }
+                tab.onclick = () => {
+                    currentFichaId = fichaId;
+                    carregarFicha(fichaId);
+                    atualizarAbasFichas();
+                };
+                fichasTabs.insertBefore(tab, addFichaBtn);
+            }
+        }
+
+        // Função para abrir o modal de nomeação de ficha
+        document.getElementById('add-ficha-btn').onclick = () => {
+            document.getElementById('nome-ficha-modal').style.display = 'flex';
+            document.getElementById('nome-ficha-input').value = '';
+            document.getElementById('nome-ficha-input').focus();
+        };
+
+        // Função para criar uma nova ficha
+        function criarNovaFicha() {
+            const nomeFicha = document.getElementById('nome-ficha-input').value.trim();
+            if (!nomeFicha) {
+                alert('Por favor, dê um nome à ficha!');
+                return;
+            }
+
+            const fichaId = database.ref('fichas').push().key;
+            const novaFicha = {
+                nomeFicha: nomeFicha,
+                nomePersonagem: '',
+                descricaoPersonagem: '',
+                forca: '0',
+                destreza: '0',
+                agilidade: '0',
+                inteligencia: '0',
+                constituicao: '0',
+                experiencia: '0',
+                armaDireitaNome: '',
+                armaDireitaAtaque: '0',
+                armaDireitaAtaqueMagico: '0',
+                armaEsquerdaNome: '',
+                armaEsquerdaAtaque: '0',
+                armaEsquerdaAtaqueMagico: '0',
+                vantagens: '',
+                magiasHabilidades: '',
+                desvantagens: '',
+                inventario: '',
+                isLocked: false,
+                password: null
+            };
+
+            database.ref(`fichas/${fichaId}`).set(novaFicha).then(() => {
+                currentFichaId = fichaId;
+                carregarFicha(fichaId);
+                fecharModal('nome-ficha-modal');
+            });
+        }
+
+        // Função para fechar modais
+        function fecharModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Referências aos elementos da ficha
         const nomePersonagemInput = document.getElementById('nome-personagem');
         const descricaoPersonagemInput = document.getElementById('descricao-personagem');
         const forcaInput = document.getElementById('forca');
@@ -607,6 +875,7 @@
         const armaEsquerdaAtaqueMagicoInput = document.getElementById('arma-esquerda-ataque-magico');
         const resetPontosButton = document.getElementById('reset-pontos');
         const recomecarButton = document.getElementById('recomecar');
+        const bloquearFichaButton = document.getElementById('bloquear-ficha');
         const experienciaInput = document.getElementById('experiencia');
         const nivelSpan = document.getElementById('nivel');
         const pontosHabilidadeSpan = document.getElementById('pontos-habilidade');
@@ -663,53 +932,68 @@
             { nivel: 30, xp: 10000, pd: 319, ph: 35 } // 219 + 100 PD
         ];
 
-        // Função para carregar os dados do localStorage
-        function carregarDados() {
-            nomePersonagemInput.value = localStorage.getItem('nomePersonagem') || '';
-            descricaoPersonagemInput.value = localStorage.getItem('descricaoPersonagem') || '';
-            forcaInput.value = localStorage.getItem('forca') || '0';
-            destrezaInput.value = localStorage.getItem('destreza') || '0';
-            agilidadeInput.value = localStorage.getItem('agilidade') || '0';
-            inteligenciaInput.value = localStorage.getItem('inteligencia') || '0';
-            constituicaoInput.value = localStorage.getItem('constituicao') || '0';
-            experienciaInput.value = localStorage.getItem('experiencia') || '0';
-            armaDireitaNomeInput.value = localStorage.getItem('armaDireitaNome') || '';
-            armaDireitaAtaqueInput.value = localStorage.getItem('armaDireitaAtaque') || '0';
-            armaDireitaAtaqueMagicoInput.value = localStorage.getItem('armaDireitaAtaqueMagico') || '0';
-            armaEsquerdaNomeInput.value = localStorage.getItem('armaEsquerdaNome') || '';
-            armaEsquerdaAtaqueInput.value = localStorage.getItem('armaEsquerdaAtaque') || '0';
-            armaEsquerdaAtaqueMagicoInput.value = localStorage.getItem('armaEsquerdaAtaqueMagico') || '0';
-            vantagensInput.value = localStorage.getItem('vantagens') || '';
-            magiasHabilidadesInput.value = localStorage.getItem('magiasHabilidades') || '';
-            desvantagensInput.value = localStorage.getItem('desvantagens') || '';
-            inventarioInput.value = localStorage.getItem('inventario') || '';
+        // Função para carregar os dados de uma ficha específica
+        function carregarFicha(fichaId) {
+            if (!fichas[fichaId]) return;
 
-            // Atualiza as variáveis globais com os valores carregados
+            const ficha = fichas[fichaId];
+            nomePersonagemInput.value = ficha.nomePersonagem || '';
+            descricaoPersonagemInput.value = ficha.descricaoPersonagem || '';
+            forcaInput.value = ficha.forca || '0';
+            destrezaInput.value = ficha.destreza || '0';
+            agilidadeInput.value = ficha.agilidade || '0';
+            inteligenciaInput.value = ficha.inteligencia || '0';
+            constituicaoInput.value = ficha.constituicao || '0';
+            experienciaInput.value = ficha.experiencia || '0';
+            armaDireitaNomeInput.value = ficha.armaDireitaNome || '';
+            armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || '0';
+            armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || '0';
+            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || '';
+            armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || '0';
+            armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || '0';
+            vantagensInput.value = ficha.vantagens || '';
+            magiasHabilidadesInput.value = ficha.magiasHabilidades || '';
+            desvantagensInput.value = ficha.desvantagens || '';
+            inventarioInput.value = ficha.inventario || '';
+            isFichaLocked = ficha.isLocked || false;
+            fichaPassword = ficha.password || null;
+            isFichaUnlocked = false;
+
             experiencia = parseInt(experienciaInput.value) || 0;
             atualizarNivel();
             calcularAtributos();
         }
 
-        // Função para salvar os dados no localStorage
+        // Função para salvar os dados no Firebase
         function salvarDados() {
-            localStorage.setItem('nomePersonagem', nomePersonagemInput.value);
-            localStorage.setItem('descricaoPersonagem', descricaoPersonagemInput.value);
-            localStorage.setItem('forca', forcaInput.value);
-            localStorage.setItem('destreza', destrezaInput.value);
-            localStorage.setItem('agilidade', agilidadeInput.value);
-            localStorage.setItem('inteligencia', inteligenciaInput.value);
-            localStorage.setItem('constituicao', constituicaoInput.value);
-            localStorage.setItem('experiencia', experienciaInput.value);
-            localStorage.setItem('armaDireitaNome', armaDireitaNomeInput.value);
-            localStorage.setItem('armaDireitaAtaque', armaDireitaAtaqueInput.value);
-            localStorage.setItem('armaDireitaAtaqueMagico', armaDireitaAtaqueMagicoInput.value);
-            localStorage.setItem('armaEsquerdaNome', armaEsquerdaNomeInput.value);
-            localStorage.setItem('armaEsquerdaAtaque', armaEsquerdaAtaqueInput.value);
-            localStorage.setItem('armaEsquerdaAtaqueMagico', armaEsquerdaAtaqueMagicoInput.value);
-            localStorage.setItem('vantagens', vantagensInput.value);
-            localStorage.setItem('magiasHabilidades', magiasHabilidadesInput.value);
-            localStorage.setItem('desvantagens', desvantagensInput.value);
-            localStorage.setItem('inventario', inventarioInput.value);
+            if (!currentFichaId) return;
+            if (isFichaLocked && !isFichaUnlocked) {
+                abrirModalSenha();
+                return;
+            }
+
+            const updates = {
+                nomePersonagem: nomePersonagemInput.value,
+                descricaoPersonagem: descricaoPersonagemInput.value,
+                forca: forcaInput.value,
+                destreza: destrezaInput.value,
+                agilidade: agilidadeInput.value,
+                inteligencia: inteligenciaInput.value,
+                constituicao: constituicaoInput.value,
+                experiencia: experienciaInput.value,
+                armaDireitaNome: armaDireitaNomeInput.value,
+                armaDireitaAtaque: armaDireitaAtaqueInput.value,
+                armaDireitaAtaqueMagico: armaDireitaAtaqueMagicoInput.value,
+                armaEsquerdaNome: armaEsquerdaNomeInput.value,
+                armaEsquerdaAtaque: armaEsquerdaAtaqueInput.value,
+                armaEsquerdaAtaqueMagico: armaEsquerdaAtaqueMagicoInput.value,
+                vantagens: vantagensInput.value,
+                magiasHabilidades: magiasHabilidadesInput.value,
+                desvantagens: desvantagensInput.value,
+                inventario: inventarioInput.value
+            };
+
+            database.ref(`fichas/${currentFichaId}`).update(updates);
         }
 
         function calcularNivel(xp) {
@@ -740,7 +1024,7 @@
 
             // Recalcula os pontos usados e atualiza PD restantes
             calcularAtributos();
-            if (nivel >= 30) { // Alterado de 28 para 30
+            if (nivel >= 30) {
                 nomePersonagemTitulo.style.color = '#FFD700';
                 tituloMestre.style.display = 'block';
             } else {
@@ -853,6 +1137,11 @@
         }
 
         function resetarPontos() {
+            if (isFichaLocked && !isFichaUnlocked) {
+                abrirModalSenha();
+                return;
+            }
+
             atributosInputs.forEach(input => {
                 input.value = 0;
             });
@@ -861,10 +1150,15 @@
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
             calcularAtributos();
-            salvarDados(); // Salva os atributos redefinidos
+            salvarDados();
         }
 
         function recomecarFicha() {
+            if (isFichaLocked && !isFichaUnlocked) {
+                abrirModalSenha();
+                return;
+            }
+
             resetarPontos();
             nomePersonagemInput.value = '';
             descricaoPersonagemInput.value = '';
@@ -890,7 +1184,7 @@
             desvantagensInput.value = '';
             inventarioInput.value = '';
             calcularAtributos();
-            localStorage.clear(); // Limpa o localStorage ao recomeçar
+            salvarDados();
         }
 
         // Funções para expandir e minimizar as caixas de texto
@@ -902,8 +1196,56 @@
             textarea.style.height = '100px';
         }
 
-        // Carrega os dados ao iniciar a página
-        carregarDados();
+        // Função para abrir o modal de bloqueio
+        bloquearFichaButton.onclick = () => {
+            if (isFichaLocked) {
+                alert('A ficha já está bloqueada!');
+                return;
+            }
+            document.getElementById('bloquear-ficha-modal').style.display = 'flex';
+            document.getElementById('senha-bloqueio-input').value = '';
+            document.getElementById('senha-bloqueio-input').focus();
+        };
+
+        // Função para bloquear a ficha
+        function bloquearFicha() {
+            const senha = document.getElementById('senha-bloqueio-input').value;
+            if (senha.length !== 4 || !/^\d{4}$/.test(senha)) {
+                alert('A senha deve ter exatamente 4 dígitos numéricos!');
+                return;
+            }
+
+            isFichaLocked = true;
+            fichaPassword = senha;
+            database.ref(`fichas/${currentFichaId}`).update({
+                isLocked: true,
+                password: senha
+            }).then(() => {
+                fecharModal('bloquear-ficha-modal');
+                alert('Ficha bloqueada com sucesso!');
+            });
+        }
+
+        // Função para abrir o modal de desbloqueio
+        function abrirModalSenha() {
+            document.getElementById('password-modal').style.display = 'flex';
+            document.getElementById('senha-desbloqueio-input').value = '';
+            document.getElementById('senha-desbloqueio-input').focus();
+        }
+
+        // Função para desbloquear a ficha
+        function desbloquearFicha() {
+            const senha = document.getElementById('senha-desbloqueio-input').value;
+            if (senha === fichaPassword || senha === senhaMatriz) {
+                isFichaUnlocked = true;
+                fecharModal('password-modal');
+                alert('Ficha desbloqueada com sucesso!');
+                // Reexecuta a última ação que foi bloqueada
+                salvarDados();
+            } else {
+                alert('Senha incorreta!');
+            }
+        }
 
         // Adiciona eventos para salvar os dados ao alterar os campos
         nomePersonagemInput.addEventListener('input', salvarDados);
@@ -948,6 +1290,9 @@
 
         resetPontosButton.addEventListener('click', resetarPontos);
         recomecarButton.addEventListener('click', recomecarFicha);
+
+        // Carrega as fichas ao iniciar a página
+        carregarFichas();
     </script>
 </body>
 </html>
