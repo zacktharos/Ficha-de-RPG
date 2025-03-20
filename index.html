@@ -429,9 +429,69 @@
             box-shadow: 0 0 10px #ffd700;
         }
 
-        /* Mantendo estilos existentes não alterados */
-        .modal { /* ... */ }
-        .modal-content { /* ... */ }
+        /* Estilos para os modais */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #f0e6d2;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal-content h3 {
+            font-family: 'MedievalSharp', serif;
+            color: #000000;
+            margin-bottom: 15px;
+        }
+
+        .modal-content input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            color: white;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .modal-content .confirm-btn {
+            background-color: #b8860b;
+        }
+
+        .modal-content .confirm-btn:hover {
+            background-color: #a0522d;
+        }
+
+        .modal-content .cancel-btn {
+            background-color: #a52a2a;
+        }
+
+        .modal-content .cancel-btn:hover {
+            background-color: #8b0000;
+        }
     </style>
 </head>
 <body>
@@ -559,9 +619,33 @@
         </div>
     </div>
 
-    <div id="nome-ficha-modal" class="modal">...</div>
-    <div id="bloquear-ficha-modal" class="modal">...</div>
-    <div id="password-modal" class="modal">...</div>
+    <!-- Modais corrigidos -->
+    <div id="nome-ficha-modal" class="modal">
+        <div class="modal-content">
+            <h3>Dê um Nome à Ficha</h3>
+            <input type="text" id="nome-ficha-input" placeholder="Nome da ficha" maxlength="20">
+            <button class="confirm-btn" onclick="criarNovaFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('nome-ficha-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="bloquear-ficha-modal" class="modal">
+        <div class="modal-content">
+            <h3>Ponha sua Senha de 4 Dígitos</h3>
+            <input type="password" id="senha-bloqueio-input" placeholder="Senha (4 dígitos)" maxlength="4">
+            <button class="confirm-btn" onclick="bloquearFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('bloquear-ficha-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <h3>Digite sua Senha</h3>
+            <input type="password" id="senha-desbloqueio-input" placeholder="Senha (4 dígitos)" maxlength="4">
+            <button class="confirm-btn" onclick="desbloquearFicha()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('password-modal')">Cancelar</button>
+        </div>
+    </div>
 
     <script>
         const firebaseConfig = {
@@ -661,6 +745,7 @@
                     fichasSidebar.appendChild(tab);
                 }
             }
+            fichasSidebar.insertBefore(addFichaBtn, fichasSidebar.firstChild);
         }
 
         document.getElementById('add-ficha-btn').onclick = () => {
@@ -706,6 +791,10 @@
                 currentFichaId = fichaId;
                 carregarFicha(fichaId);
                 fecharModal('nome-ficha-modal');
+                atualizarAbasFichas(); // Adicionado para atualizar as abas após criar a nova ficha
+            }).catch((error) => {
+                console.error('Erro ao criar nova ficha:', error);
+                alert('Ocorreu um erro ao criar a ficha. Tente novamente.');
             });
         }
 
