@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
@@ -610,6 +611,8 @@
         }
 
         #salvar-vantagens-btn, #fechar-pagina-btn {
+            position: absolute;
+            bottom: 20px;
             padding: 12px 25px;
             background-color: #000000;
             color: #ffffff;
@@ -619,13 +622,12 @@
             font-size: 1.2rem;
             cursor: pointer;
             transition: transform 0.2s ease;
-            position: absolute;
-            bottom: 20px;
         }
 
         #salvar-vantagens-btn {
             right: 160px;
             animation: aura-verde-btn 2s infinite;
+            display: none; /* Inicialmente oculto */
         }
 
         #fechar-pagina-btn {
@@ -643,9 +645,50 @@
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
 
-        .armamento-coluna {
-            width: 48%;
-            margin-bottom: 20px;
+        #historico-dados-btn {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #f0e6d2;
+            border: 2px solid #b8860b;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem;
+            color: #000000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+
+        #historico-dados-btn:hover {
+            background-color: #a0522d;
+            color: #ffffff;
+        }
+
+        #historico-dados-panel {
+            display: none;
+            position: absolute;
+            bottom: -430px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            max-height: 400px;
+            background-color: rgba(240, 230, 210, 0.95);
+            padding: 10px;
+            border: 2px solid #b8860b;
+            border-radius: 6px;
+            overflow-y: auto;
+            z-index: 999;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem;
+            color: #000000;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #historico-dados-panel p {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -702,7 +745,7 @@
                 </div>
             </div>
 
-            <div class="armamento-container" style="display: flex; justify-content: space-between;">
+            <div class="armamento-container">
                 <div class="armamento-coluna">
                     <label>Armamento Mão Direita:</label>
                     <div class="flex items-center mb-2">
@@ -774,6 +817,7 @@
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
             <button id="vantagens-desvantagens-btn">Vantagens e Desvantagens</button>
+            <button id="historico-dados-btn">Histórico de Dados</button>
 
             <div id="notification"></div>
         </div>
@@ -787,6 +831,9 @@
         <button id="salvar-vantagens-btn">SALVAR</button>
         <button id="fechar-pagina-btn">Fechar Página</button>
     </div>
+
+    <!-- Painel de Histórico de Dados -->
+    <div id="historico-dados-panel"></div>
 
     <!-- Modais -->
     <div id="nome-ficha-modal" class="modal">
@@ -859,13 +906,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "Sua-API-Key",
-            authDomain: "Seu-Domínio",
-            databaseURL: "Sua-URL-do-Banco",
-            projectId: "Seu-Projeto-ID",
-            storageBucket: "Seu-Bucket",
-            messagingSenderId: "Seu-Sender-ID",
-            appId: "Seu-App-ID"
+            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
+            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
+            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
+            projectId: "ficha-de-rpg-b9685",
+            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
+            messagingSenderId: "528610398062",
+            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -879,6 +926,7 @@
         const senhaMatriz = "777";
         let vantagensSelecionadas = [];
         let desvantagensSelecionadas = [];
+        let historicoDados = []; // Array para armazenar o histórico de rolagens
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
@@ -891,44 +939,44 @@
             { nome: "Boa Fama (2)", custo: 2, descricao: "Aumenta em +4 chance de descontos em armamentos, pousadas, alimentos, etc." },
             { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." },
             { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." },
-            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas." },
+            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. É um talento excelente para identificar impostores, possessões por espirito, etc." },
             { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." },
-            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor ou organização que oferece ajuda." },
-            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É respeitado ou temido pela sociedade. +2 em lábia, paquera e persuasão." },
+            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." },
+            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É membro de uma raça, classe, sexo ou grupo muito respeitado, temido ou venerado pela sociedade. Adiciona +2 pontos o teste em lábia, paquera e persuasão." },
             { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." },
-            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% de dano e reduz 15% do custo de magia." },
-            { nome: "Combo Físico (4)", custo: 4, descricao: "Dobra locomoção, altura e distância de pulo (só no início).", restricao: "inicio" },
+            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% a mais de dano e gasta 15% a menos de magia para toda vez que usa a magia que você tem aptidão." },
+            { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem só pode ser comprada no início do jogo. Ao comprar essa vantagem, sua locomoção, altura do pulo e distância dobram.", restricao: "inicio" },
             { nome: "Nadar (1)", custo: 1, descricao: "" },
             { nome: "Escalar (2)", custo: 2, descricao: "" },
             { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." },
-            { nome: "Paquerador (2)", custo: 2, descricao: "+4 em testes de paquera e persuasão envolvendo flerte." },
-            { nome: "Senso de perigo (5)", custo: 5, descricao: "Aviso do mestre em situações graves." },
-            { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." },
-            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." },
-            { nome: "Tecnologia (2)", custo: 2, descricao: "Habilidade para inventar e criar objetos improvisados." },
-            { nome: "Poder Oculto (7)", custo: 7, descricao: "Ativa +50% nos atributos com vida em 10%." },
-            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para sobreviver em florestas." }
+            { nome: "Paquerador (2)", custo: 2, descricao: "Adiciona +4 em teste para paquera e persuasão envolvendo flerte." },
+            { nome: "Senso de perigo (5)", custo: 5, descricao: "Sempre que houver algo grave para ocorrer o mestre do RPG pedirá pra você jogar um dado para reagir." },
+            { nome: "Acrobata (3)", custo: 3, descricao: "Adiciona + fama ao lutar em público." },
+            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "Adiciona +8 em testes de equilíbrio." },
+            { nome: "Tecnologia (2)", custo: 2, descricao: "Você é engenhoso, pode inventar coisas, criar objetos improvisados." },
+            { nome: "Poder Oculto (7)", custo: 7, descricao: "Quando sua vida estiver em 10%, você ativa o poder oculto aumentando todos seus atributos em 50%. Mas a partir do momento em que sua vida sai dos 10%, os atributos voltam ao normal." },
+            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Tem facilidade para achar cavernas, criar assentamentos, barracas, achar comida e gravar caminhos no meio da floresta. Facilidade para achar água, etc." }
         ];
 
         const desvantagensData = [
-            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico." },
-            { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade." },
-            { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool." },
-            { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica pelos outros." },
-            { nome: "Avareza (+2)", ganho: 2, descricao: "Obsessão por conservar riquezas." },
-            { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar e agredir." },
-            { nome: "Circunspeção (+2)", ganho: 2, descricao: "Entende tudo literalmente." },
-            { nome: "Compulsões (+3)", ganho: 3, descricao: "Vício que consome recursos." },
-            { nome: "Covardia (+2)", ganho: 2, descricao: "Evita riscos ao bem-estar." },
-            { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você." },
-            { nome: "Fúria (+2)", ganho: 2, descricao: "Perde o controle facilmente." },
-            { nome: "Honestidade (+3)", ganho: 3, descricao: "Sempre fala a verdade." },
-            { nome: "Impulsividade (+2)", ganho: 2, descricao: "Age sem pensar." },
+            { nome: "Fobia (+2)", ganho: 2, descricao: "Você tem um medo irracional de algo específico." },
+            { nome: "Má Fama (+2)", ganho: 2, descricao: "Você é mal visto pela sociedade, dificultando interações sociais." },
+            { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Você tem uma dependência de álcool que afeta suas decisões." },
+            { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas e pouco se importa com fama ou riqueza." },
+            { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." },
+            { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos tanto em amigos quanto inimigos." },
+            { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo de forma literal e acredita que todos estão sempre falando sério." },
+            { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." },
+            { nome: "Covardia (+2)", ganho: 2, descricao: "Tem extremo cuidado com seu bem-estar físico e dificuldade em assumir riscos." },
+            { nome: "Dependentes (+4)", ganho: 4, descricao: "Possui alguém que depende de você a todo momento (filhos, parentes, entes queridos, etc.)." },
+            { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e partir para um ataque frenético, ativado por dano, insulto ou aleatoriamente." },
+            { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." },
+            { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." },
             { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." },
-            { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Atrai eventos estranhos." },
-            { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremos." },
-            { nome: "Teimosia (+1)", ganho: 1, descricao: "Sempre faz do seu jeito." },
-            { nome: "Amnésia (+2)", ganho: 2, descricao: "Esquece coisas importantes." }
+            { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em um nível alarmante." },
+            { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal (ex.: enfrentar um boss sozinho)." },
+            { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo e não segue planos que não sejam seus." },
+            { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
         ];
 
         function criarFichaMatriz() {
@@ -1115,6 +1163,8 @@
         const desvantagensList = document.getElementById('desvantagens-list');
         const salvarVantagensBtn = document.getElementById('salvar-vantagens-btn');
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
+        const historicoDadosBtn = document.getElementById('historico-dados-btn');
+        const historicoDadosPanel = document.getElementById('historico-dados-panel');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1273,7 +1323,9 @@
 
             if (nivel > nivelAnterior) {
                 nivelSpan.classList.add('aura-azul');
-                setTimeout(() => nivelSpan.classList.remove('aura-azul'), 20000);
+                setTimeout(() => {
+                    nivelSpan.classList.remove('aura-azul');
+                }, 20000);
             }
 
             calcularAtributos();
@@ -1296,7 +1348,7 @@
             let pontosUsados = forca + destreza + agilidade + inteligencia + constituicao;
 
             if (pontosUsados > pontosHabilidadeTotal) {
-                alert('Pontos de habilidade insuficientes! Reduzindo atributos.');
+                alert('Você não tem pontos de habilidade suficientes! Reduzindo os atributos para o limite disponível.');
                 let excedente = pontosUsados - pontosHabilidadeTotal;
                 while (excedente > 0) {
                     if (inteligencia > 0) { inteligencia--; excedente--; inteligenciaInput.value = inteligencia; }
@@ -1451,24 +1503,15 @@
             const senha = document.getElementById('senha-bloqueio-input').value;
             if (senha.length !== 4 || !/^\d{4}$/.test(senha)) {
                 alert('A senha deve ter exatamente 4 dígitos numéricos!');
-                return;
+                                return;
             }
-
-            if (!validarDesvantagens()) return;
 
             isFichaLocked = true;
             fichaPassword = senha;
-            database.ref(`fichas/${currentFichaId}`).update({
-                isLocked: true,
-                password: senha
-            }).then(() => {
-                fecharModal('bloquear-ficha-modal');
-                alert('Ficha bloqueada com sucesso!');
-                atualizarBotaoBloquear();
-            }).catch((error) => {
-                console.error('Erro ao bloquear ficha:', error);
-                alert('Ocorreu um erro ao bloquear a ficha. Tente novamente.');
-            });
+            database.ref(`fichas/${currentFichaId}`).update({ isLocked: true, password: senha });
+            atualizarBotaoBloquear();
+            fecharModal('bloquear-ficha-modal');
+            salvarDados();
         }
 
         function abrirModalSenha() {
@@ -1478,72 +1521,56 @@
         }
 
         function desbloquearFicha() {
-            const senha = document.getElementById('senha-desbloqueio-input').value;
-            if (senha === senhaMatriz || senha === fichaPassword) {
+            const senhaDigitada = document.getElementById('senha-desbloqueio-input').value;
+            if (senhaDigitada === fichaPassword || senhaDigitada === senhaMatriz) {
                 isFichaUnlocked = true;
-                if (currentFichaId !== 'ficha-matriz' && senha !== senhaMatriz) {
-                    isFichaLocked = false;
-                    fichaPassword = null;
-                    database.ref(`fichas/${currentFichaId}`).update({
-                        isLocked: false,
-                        password: null
-                    }).then(() => {
-                        fecharModal('password-modal');
-                        alert('Ficha desbloqueada com sucesso!');
-                        atualizarBotaoBloquear();
-                        salvarDados();
-                    }).catch((error) => {
-                        console.error('Erro ao desbloquear ficha:', error);
-                        alert('Ocorreu um erro ao desbloquear a ficha. Tente novamente.');
-                    });
-                } else {
-                    fecharModal('password-modal');
-                    alert('Ficha desbloqueada com a senha matriz!');
-                    atualizarBotaoBloquear();
-                    salvarDados();
-                }
+                isFichaLocked = false;
+                database.ref(`fichas/${currentFichaId}`).update({ isLocked: false, password: null });
+                atualizarBotaoBloquear();
+                fecharModal('password-modal');
+                alert('Ficha desbloqueada com sucesso!');
             } else {
                 alert('Senha incorreta!');
             }
         }
 
-        nomePersonagemInput.oninput = () => {
-            nomePersonagemTitulo.textContent = nomePersonagemInput.value || 'Ficha de Personagem';
-            salvarDados();
-        };
+        atributosInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                if (!isFichaLocked || isFichaUnlocked) {
+                    calcularAtributos();
+                    salvarDados();
+                } else {
+                    input.value = fichas[currentFichaId][input.id];
+                }
+            });
+        });
 
-        experienciaInput.oninput = () => {
+        [nomePersonagemInput, descricaoPersonagemInput, experienciaInput, armaDireitaNomeInput, armaDireitaAtaqueInput, armaDireitaAtaqueMagicoInput, armaEsquerdaNomeInput, armaEsquerdaAtaqueInput, armaEsquerdaAtaqueMagicoInput, vantagensInput, magiasHabilidadesInput, desvantagensInput, inventarioInput].forEach(input => {
+            input.addEventListener('input', () => {
+                if (!isFichaLocked || isFichaUnlocked) {
+                    if (input === desvantagensInput && !validarDesvantagens()) {
+                        input.value = fichas[currentFichaId].desvantagens || '';
+                        return;
+                    }
+                    if (input === experienciaInput) {
+                        experiencia = parseInt(experienciaInput.value) || 0;
+                        atualizarNivel();
+                    }
+                    salvarDados();
+                } else {
+                    input.value = fichas[currentFichaId][input.id] || '';
+                }
+            });
+        });
+
+        resetPontosButton.addEventListener('click', resetarPontos);
+        recomecarButton.addEventListener('click', recomecarFicha);
+
+        experienciaInput.addEventListener('input', () => {
             experiencia = parseInt(experienciaInput.value) || 0;
             atualizarNivel();
             salvarDados();
-        };
-
-        atributosInputs.forEach(input => {
-            input.oninput = () => {
-                calcularAtributos();
-                salvarDados();
-            };
         });
-
-        [armaDireitaNomeInput, armaEsquerdaNomeInput, descricaoPersonagemInput, vantagensInput, magiasHabilidadesInput, desvantagensInput, inventarioInput].forEach(input => {
-            input.oninput = () => salvarDados();
-        });
-
-        resetPontosButton.onclick = resetarPontos;
-        recomecarButton.onclick = recomecarFicha;
-
-        characterImageInput.onchange = (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    characterImage.src = e.target.result;
-                    characterImage.style.display = 'block';
-                    salvarDados();
-                };
-                reader.readAsDataURL(file);
-            }
-        };
 
         let isDragging = false;
         let currentX;
@@ -1551,14 +1578,14 @@
         let initialX;
         let initialY;
 
-        diceContainer.onmousedown = (e) => {
+        diceContainer.addEventListener('mousedown', (e) => {
             isDragging = true;
             initialX = e.clientX - currentX;
             initialY = e.clientY - currentY;
             diceContainer.style.cursor = 'grabbing';
-        };
+        });
 
-        document.onmousemove = (e) => {
+        document.addEventListener('mousemove', (e) => {
             if (isDragging) {
                 e.preventDefault();
                 currentX = e.clientX - initialX;
@@ -1566,56 +1593,195 @@
                 diceContainer.style.left = `${currentX}px`;
                 diceContainer.style.top = `${currentY}px`;
             }
-        };
+        });
 
-        document.onmouseup = () => {
+        document.addEventListener('mouseup', () => {
             isDragging = false;
             diceContainer.style.cursor = 'move';
-        };
+        });
 
-        diceContainer.style.position = 'absolute';
-        currentX = diceContainer.offsetLeft;
-        currentY = diceContainer.offsetTop;
+        diceRoll.addEventListener('click', () => {
+            if (!currentFichaId) return;
 
-        diceRoll.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-
-            const resultado = Math.floor(Math.random() * 20) + 1;
-            diceRoll.textContent = resultado;
-            diceResult.textContent = `Resultado: ${resultado}`;
+            const roll = Math.floor(Math.random() * 20) + 1;
+            diceRoll.textContent = roll;
             diceResult.style.display = 'block';
-
+            diceResult.textContent = `Resultado: ${roll}`;
             diceRoll.classList.remove('critical-failure', 'critical-success');
             notification.classList.remove('critical-failure', 'critical-success', 'normal-result');
-            notification.style.display = 'none';
 
-            const nomeFichaAtual = fichas[currentFichaId].nomeFicha || 'Sem Nome';
-            if (resultado === 1) {
-                                diceRoll.classList.add('critical-failure');
-                notification.textContent = `${nomeFichaAtual} rolou: FALHA CRÍTICA (${resultado})`;
+            const nomeFicha = fichas[currentFichaId].nomeFicha || 'Sem Nome';
+            let notificationText = `${nomeFicha} Rolou: ${roll}`;
+
+            if (roll === 1) {
+                diceRoll.classList.add('critical-failure');
                 notification.classList.add('critical-failure');
-            } else if (resultado === 20) {
+                notificationText += ' (Falha Crítica)';
+            } else if (roll === 20) {
                 diceRoll.classList.add('critical-success');
-                notification.textContent = `${nomeFichaAtual} rolou: SUCESSO CRÍTICO (${resultado})`;
                 notification.classList.add('critical-success');
+                notificationText += ' (Sucesso Crítico)';
             } else {
-                notification.textContent = `${nomeFichaAtual} rolou: ${resultado}`;
                 notification.classList.add('normal-result');
             }
 
+            notification.textContent = notificationText;
             notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-                diceResult.style.display = 'none';
-                diceRoll.textContent = '-';
-                diceRoll.classList.remove('critical-failure', 'critical-success');
-            }, 3000);
-        };
 
-        document.getElementById('excluir-ficha').onclick = () => {
+            // Adicionar ao histórico de dados
+            historicoDados.push(notificationText);
+            if (historicoDados.length > 30) {
+                historicoDados.shift(); // Remove o mais antigo se ultrapassar 30
+            }
+            atualizarHistoricoDados();
+
+            setTimeout(() => {
+                diceResult.style.display = 'none';
+                notification.style.display = 'none';
+            }, 3000);
+        });
+
+        characterImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    characterImage.src = event.target.result;
+                    characterImage.style.display = 'block';
+                    salvarDados();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        vantagensDesvantagensBtn.addEventListener('click', () => {
+            vantagensDesvantagensPanel.style.display = 'block';
+            atualizarVantagensDesvantagensPanel();
+        });
+
+        fecharPaginaBtn.addEventListener('click', () => {
+            vantagensDesvantagensPanel.style.display = 'none';
+        });
+
+        salvarVantagensBtn.addEventListener('click', () => {
+            document.getElementById('salvar-vantagens-modal').style.display = 'flex';
+        });
+
+        document.getElementById('confirmar-salvar-vantagens-btn').addEventListener('click', () => {
+            vantagensInput.value = vantagensSelecionadas.join('\n');
+            desvantagensInput.value = desvantagensSelecionadas.join('\n');
+            pontosVantagemSpan.textContent = pontosVantagem;
+            salvarDados();
+            fecharModal('salvar-vantagens-modal');
+            vantagensDesvantagensPanel.style.display = 'none';
+        });
+
+        function atualizarVantagensDesvantagensPanel() {
+            vantagensList.innerHTML = '<h3>Vantagens</h3>';
+            desvantagensList.innerHTML = '<h3>Desvantagens</h3>';
+
+            vantagensData.forEach(vantagem => {
+                const div = document.createElement('div');
+                div.className = 'vantagem-item';
+                div.textContent = `${vantagem.nome} - ${vantagem.descricao}`;
+                if (vantagensSelecionadas.includes(vantagem.nome)) {
+                    div.classList.add('comprada');
+                } else {
+                    div.addEventListener('click', () => comprarVantagem(vantagem));
+                }
+                vantagensList.appendChild(div);
+            });
+
+            desvantagensData.forEach(desvantagem => {
+                const div = document.createElement('div');
+                div.className = 'desvantagem-item';
+                div.textContent = `${desvantagem.nome} - ${desvantagem.descricao}`;
+                if (desvantagensSelecionadas.includes(desvantagem.nome)) {
+                    div.classList.add('comprada');
+                } else {
+                    div.addEventListener('click', () => comprarDesvantagem(desvantagem));
+                }
+                desvantagensList.appendChild(div);
+            });
+
+            // Mostrar o botão "Salvar" apenas se houver uma vantagem ou desvantagem selecionada
+            const temSelecao = vantagensSelecionadas.length > 0 || desvantagensSelecionadas.length > 0;
+            salvarVantagensBtn.style.display = temSelecao ? 'block' : 'none';
+        }
+
+        function comprarVantagem(vantagem) {
+            if (isFichaLocked && !isFichaUnlocked) {
+                alert('Ficha bloqueada! Desbloqueie para alterar vantagens.');
+                return;
+            }
+
+            if (vantagem.restricao === 'inicio' && nivel > 0) {
+                alert('Essa vantagem só pode ser comprada no início do jogo!');
+                return;
+            }
+
+            if (pontosVantagem >= vantagem.custo && !vantagensSelecionadas.includes(vantagem.nome)) {
+                document.getElementById('confirmar-compra-modal').style.display = 'flex';
+                document.getElementById('confirmar-compra-btn').onclick = () => {
+                    pontosVantagem -= vantagem.custo;
+                    vantagensSelecionadas.push(vantagem.nome);
+                    pontosVantagemSpan.textContent = pontosVantagem;
+                    atualizarVantagensDesvantagensPanel();
+                    calcularAtributos();
+                    fecharModal('confirmar-compra-modal');
+                };
+            } else if (vantagensSelecionadas.includes(vantagem.nome)) {
+                alert('Você já possui essa vantagem!');
+            } else {
+                alert('Pontos de vantagem insuficientes!');
+            }
+        }
+
+        function comprarDesvantagem(desvantagem) {
+            if (isFichaLocked && !isFichaUnlocked) {
+                alert('Ficha bloqueada! Desbloqueie para alterar desvantagens.');
+                return;
+            }
+
+            if (desvantagensSelecionadas.length >= 3) {
+                alert('Você já possui o número máximo de desvantagens (3)!');
+                return;
+            }
+
+            if (!desvantagensSelecionadas.includes(desvantagem.nome)) {
+                document.getElementById('confirmar-compra-modal').style.display = 'flex';
+                document.getElementById('confirmar-compra-btn').onclick = () => {
+                    pontosVantagem += desvantagem.ganho;
+                    desvantagensSelecionadas.push(desvantagem.nome);
+                    pontosVantagemSpan.textContent = pontosVantagem;
+                    atualizarVantagensDesvantagensPanel();
+                    fecharModal('confirmar-compra-modal');
+                };
+            } else {
+                alert('Você já possui essa desvantagem!');
+            }
+        }
+
+        historicoDadosBtn.addEventListener('click', () => {
+            historicoDadosPanel.style.display = 'block';
+            atualizarHistoricoDados();
+            historicoDadosPanel.focus();
+        });
+
+        historicoDadosPanel.addEventListener('blur', () => {
+            historicoDadosPanel.style.display = 'none';
+        });
+
+        function atualizarHistoricoDados() {
+            historicoDadosPanel.innerHTML = '';
+            historicoDados.forEach(roll => {
+                const p = document.createElement('p');
+                p.textContent = roll;
+                historicoDadosPanel.appendChild(p);
+            });
+        }
+
+        document.getElementById('excluir-ficha').addEventListener('click', () => {
             if (currentFichaId === 'ficha-matriz') {
                 alert('A ficha matriz não pode ser excluída!');
                 return;
@@ -1631,160 +1797,38 @@
                     currentFichaId = 'ficha-matriz';
                     carregarFicha(currentFichaId);
                     atualizarAbasFichas();
-                }).catch((error) => {
-                    console.error('Erro ao excluir ficha:', error);
-                    alert('Ocorreu um erro ao excluir a ficha. Tente novamente.');
                 });
             }
-        };
+        });
 
-        vantagensDesvantagensBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-            vantagensDesvantagensPanel.style.display = 'block';
-            atualizarVantagensDesvantagensPanel();
-        };
-
-        fecharPaginaBtn.onclick = () => {
-            vantagensDesvantagensPanel.style.display = 'none';
-        };
-
-        salvarVantagensBtn.onclick = () => {
-            document.getElementById('salvar-vantagens-modal').style.display = 'flex';
-        };
-
-        document.getElementById('confirmar-salvar-vantagens-btn').onclick = () => {
-            vantagensInput.value = vantagensSelecionadas.join('\n');
-            desvantagensInput.value = desvantagensSelecionadas.join('\n');
-            pontosVantagemSpan.textContent = pontosVantagem;
-            salvarDados();
-            fecharModal('salvar-vantagens-modal');
-            vantagensDesvantagensPanel.style.display = 'none';
-            calcularAtributos();
-        };
-
-        function atualizarVantagensDesvantagensPanel() {
-            vantagensList.innerHTML = '<h3>Vantagens</h3>';
-            desvantagensList.innerHTML = '<h3>Desvantagens</h3>';
-
-            vantagensData.forEach(vantagem => {
-                const div = document.createElement('div');
-                div.className = 'vantagem-item';
-                div.textContent = `${vantagem.nome} - ${vantagem.descricao} (Custo: ${vantagem.custo})`;
-                if (vantagensSelecionadas.includes(vantagem.nome)) {
-                    div.classList.add('comprada');
-                }
-                if (!vantagem.restricao || nivel === 0) {
-                    div.onclick = () => comprarVantagem(vantagem);
-                }
-                vantagensList.appendChild(div);
-            });
-
-            desvantagensData.forEach(desvantagem => {
-                const div = document.createElement('div');
-                div.className = 'desvantagem-item';
-                div.textContent = `${desvantagem.nome} - ${desvantagem.descricao} (Ganho: ${desvantagem.ganho})`;
-                if (desvantagensSelecionadas.includes(desvantagem.nome)) {
-                    div.classList.add('comprada');
-                }
-                div.onclick = () => comprarDesvantagem(desvantagem);
-                desvantagensList.appendChild(div);
-            });
-        }
-
-        function comprarVantagem(vantagem) {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-
-            if (vantagensSelecionadas.includes(vantagem.nome)) {
-                abrirModalExcluirVantagem(vantagem);
-                return;
-            }
-
-            if (pontosVantagem >= vantagem.custo) {
-                document.getElementById('confirmar-compra-modal').style.display = 'flex';
-                document.getElementById('confirmar-compra-btn').onclick = () => {
-                    pontosVantagem -= vantagem.custo;
-                    vantagensSelecionadas.push(vantagem.nome);
-                    pontosVantagemSpan.textContent = pontosVantagem;
-                    atualizarVantagensDesvantagensPanel();
-                    fecharModal('confirmar-compra-modal');
-                };
-            } else {
-                alert('Pontos de vantagem insuficientes!');
-            }
-        }
-
-        function comprarDesvantagem(desvantagem) {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-
-            if (desvantagensSelecionadas.includes(desvantagem.nome)) {
-                abrirModalExcluirDesvantagem(desvantagem);
-                return;
-            }
-
-            if (desvantagensSelecionadas.length >= 3) {
-                alert('Você já tem o máximo de 3 desvantagens!');
-                return;
-            }
-
-            document.getElementById('confirmar-compra-modal').style.display = 'flex';
-            document.getElementById('confirmar-compra-btn').onclick = () => {
-                pontosVantagem += desvantagem.ganho;
-                desvantagensSelecionadas.push(desvantagem.nome);
-                pontosVantagemSpan.textContent = pontosVantagem;
-                atualizarVantagensDesvantagensPanel();
-                fecharModal('confirmar-compra-modal');
-            };
-        }
-
-        function abrirModalExcluirVantagem(vantagem) {
-            document.getElementById('excluir-vantagem-modal').style.display = 'flex';
-            document.getElementById('confirmar-excluir-vantagem-btn').onclick = () => {
-                pontosVantagem += vantagem.custo;
-                vantagensSelecionadas = vantagensSelecionadas.filter(v => v !== vantagem.nome);
-                pontosVantagemSpan.textContent = pontosVantagem;
-                atualizarVantagensDesvantagensPanel();
-                fecharModal('excluir-vantagem-modal');
-            };
-        }
-
-        function abrirModalExcluirDesvantagem(desvantagem) {
-            document.getElementById('excluir-desvantagem-modal').style.display = 'flex';
-            document.getElementById('confirmar-excluir-desvantagem-btn').onclick = () => {
-                pontosVantagem -= desvantagem.ganho;
-                desvantagensSelecionadas = desvantagensSelecionadas.filter(d => d !== desvantagem.nome);
-                pontosVantagemSpan.textContent = pontosVantagem;
-                atualizarVantagensDesvantagensPanel();
-                fecharModal('excluir-desvantagem-modal');
-            };
-        }
-
-        document.getElementById('senha-gm-input').addEventListener('keypress', (e) => {
+        document.getElementById('senha-gm-input').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 verificarSenhaGM();
             }
         });
 
-        document.getElementById('confirmar-senha-gm-btn').onclick = verificarSenhaGM;
+        document.getElementById('confirmar-senha-gm-btn').addEventListener('click', verificarSenhaGM);
 
         function verificarSenhaGM() {
             const senhaGM = document.getElementById('senha-gm-input').value;
             if (senhaGM === senhaMatriz) {
-                isFichaUnlocked = true;
+                experienciaInput.value = 10000;
+                experiencia = 10000;
+                atualizarNivel();
+                salvarDados();
                 fecharModal('senha-gm-modal');
-                alert('Acesso de Game Master concedido!');
+                alert('Parabéns, você agora é o Game Master!');
             } else {
                 alert('Senha GM incorreta!');
             }
         }
+
+        nomePersonagemInput.addEventListener('input', () => {
+            nomePersonagemTitulo.textContent = nomePersonagemInput.value || 'Ficha de Personagem';
+        });
+
+        currentX = diceContainer.offsetLeft;
+        currentY = diceContainer.offsetTop;
 
         criarFichaMatriz();
     </script>
