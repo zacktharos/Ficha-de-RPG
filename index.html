@@ -181,7 +181,7 @@
         }
 
         .atributos-coluna-destaque {
-            width: 38%; /* Reduzido de 48% para 38%, cerca de 20% menor */
+            width: 38%;
             background-color: #ffffff;
             padding: 8px;
             border-radius: 6px;
@@ -289,7 +289,7 @@
             left: 50%;
             transform: translate(-50%, 50%);
             font-family: 'MedievalSharp', serif;
-            font-size: 2rem; /* Aumentado para maior visibilidade */
+            font-size: 2rem;
             color: #000000;
             text-align: center;
         }
@@ -299,12 +299,12 @@
             background-color: #f0e6d2;
             border: 3px solid #000000;
             border-radius: 50%;
-            width: 80px; /* Aumentado de 60px para 80px */
-            height: 80px; /* Aumentado de 60px para 80px */
+            width: 80px;
+            height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem; /* Aumentado de 1.8rem para 2.5rem */
+            font-size: 2.5rem;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             margin: 0 auto;
         }
@@ -315,7 +315,7 @@
 
         @keyframes pulsar-aura {
             0% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-            50% { box-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 50px #00BFFF; } /* Brilho maior */
+            50% { box-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 50px #00BFFF; }
             100% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
         }
 
@@ -537,6 +537,97 @@
         .modal-content .cancel-btn:hover {
             background-color: #8b0000;
         }
+
+        #vantagens-desvantagens-btn {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #f0e6d2;
+            border: 2px solid #b8860b;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem;
+            color: #000000;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 10;
+        }
+
+        #vantagens-desvantagens-btn:hover {
+            background-color: #a0522d;
+            color: #ffffff;
+        }
+
+        #vantagens-desvantagens-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(240, 230, 210, 0.95);
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 999;
+            border: 2px solid #b8860b;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #vantagens-desvantagens-panel h2 {
+            font-family: 'MedievalSharp', serif;
+            font-size: 2rem;
+            text-align: center;
+            color: #a0522d;
+            margin-bottom: 20px;
+        }
+
+        .vantagem-item {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .vantagem-item:hover {
+            background-color: #f0e6d2;
+        }
+
+        .vantagem-item.comprada {
+            background-color: #ffcccc;
+            color: #ff0000;
+            cursor: default;
+        }
+
+        #salvar-vantagens-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            animation: aura-verde-btn 2s infinite;
+            transition: transform 0.2s ease;
+        }
+
+        #salvar-vantagens-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @keyframes aura-verde-btn {
+            0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+            50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
+            100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+        }
     </style>
 </head>
 <body>
@@ -626,6 +717,10 @@
                         <span id="pontos-vantagem">5</span>
                     </div>
                     <div class="mb-4">
+                        <label>Locomoção (m):</label>
+                        <span id="locomocao">10</span>
+                    </div>
+                    <div class="mb-4">
                         <label>Inventário:</label>
                         <textarea id="inventario" class="expandable-textarea" placeholder="Slots 1-10"></textarea>
                     </div>
@@ -659,9 +754,17 @@
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
+            <button id="vantagens-desvantagens-btn">Vantagens e Desvantagens</button>
 
             <div id="notification"></div>
         </div>
+    </div>
+
+    <!-- Painel de Vantagens e Desvantagens -->
+    <div id="vantagens-desvantagens-panel">
+        <h2>Vantagens e Desvantagens</h2>
+        <div id="vantagens-list"></div>
+        <button id="salvar-vantagens-btn">SALVAR</button>
     </div>
 
     <!-- Modais -->
@@ -692,6 +795,22 @@
         </div>
     </div>
 
+    <div id="confirmar-compra-modal" class="modal">
+        <div class="modal-content">
+            <h3>Tem certeza que quer comprar essa vantagem?</h3>
+            <button class="confirm-btn" id="confirmar-compra-btn">Sim</button>
+            <button class="cancel-btn" onclick="fecharModal('confirmar-compra-modal')">Não</button>
+        </div>
+    </div>
+
+    <div id="salvar-vantagens-modal" class="modal">
+        <div class="modal-content">
+            <h3>Se salvar, as alterações não poderão ser desfeitas.</h3>
+            <button class="confirm-btn" id="confirmar-salvar-vantagens-btn">OK</button>
+            <button class="cancel-btn" onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
+        </div>
+    </div>
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
@@ -712,6 +831,37 @@
         let fichaPassword = null;
         let isFichaUnlocked = false;
         const senhaMatriz = "777";
+        let vantagensSelecionadas = [];
+
+        const vantagensData = [
+            { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
+            { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "Adiciona +2 em ataque com armas pesadas." },
+            { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "Adiciona +2 em acerto com armas de longo alcance." },
+            { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." },
+            { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." },
+            { nome: "Velejar (1)", custo: 1, descricao: "" },
+            { nome: "Beleza (1)", custo: 1, descricao: "Aumenta em +3 o teste em lábia, paquera e persuasão." },
+            { nome: "Boa Fama (2)", custo: 2, descricao: "Aumenta em +4 chance de descontos em armamentos, pousadas, alimentos, etc." },
+            { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." },
+            { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." },
+            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. É um talento excelente para identificar impostores, possessões por espirito, etc." },
+            { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." },
+            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." },
+            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É membro de uma raça, classe, sexo ou grupo muito respeitado, temido ou venerado pela sociedade. Adiciona +2 pontos o teste em lábia, paquera e persuasão." },
+            { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." },
+            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% a mais de dano e gasta 15% a menos de magia para toda vez que usa a magia que você tem aptidão." },
+            { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem só pode ser comprada no início do jogo. Ao comprar essa vantagem, sua locomoção, altura do pulo e distância dobram.", restricao: "inicio" },
+            { nome: "Nadar (1)", custo: 1, descricao: "" },
+            { nome: "Escalar (2)", custo: 2, descricao: "" },
+            { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." },
+            { nome: "Paquerador (2)", custo: 2, descricao: "Adiciona +4 em teste para paquera e persuasão envolvendo flerte." },
+            { nome: "Senso de perigo (5)", custo: 5, descricao: "Sempre que houver algo grave para ocorrer o mestre do RPG pedirá pra você jogar um dado para reagir." },
+            { nome: "Acrobata (3)", custo: 3, descricao: "Adiciona + fama ao lutar em público." },
+            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "Adiciona +8 em testes de equilíbrio." },
+            { nome: "Tecnologia (2)", custo: 2, descricao: "Você é engenhoso, pode inventar coisas, criar objetos improvisados." },
+            { nome: "Poder Oculto (7)", custo: 7, descricao: "Quando sua vida estiver em 10%, você ativa o poder oculto aumentando todos seus atributos em 50%. Mas a partir do momento em que sua vida sai dos 10%, os atributos voltam ao normal." },
+            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Tem facilidade para achar cavernas, criar assentamentos, barracas, achar comida e gravar caminhos no meio da floresta. Facilidade para achar água, etc." }
+        ];
 
         function criarFichaMatriz() {
             const fichaMatrizId = 'ficha-matriz';
@@ -735,6 +885,7 @@
                 magiasHabilidades: '',
                 desvantagens: '',
                 inventario: 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n',
+                locomocao: '10',
                 isLocked: true,
                 password: senhaMatriz,
                 imagem: null
@@ -827,6 +978,7 @@
                 magiasHabilidades: '',
                 desvantagens: '',
                 inventario: 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n',
+                locomocao: '10',
                 isLocked: false,
                 password: null,
                 imagem: null
@@ -876,6 +1028,7 @@
         const nivelSpan = document.getElementById('nivel');
         const pontosHabilidadeSpan = document.getElementById('pontos-habilidade');
         const pontosVantagemSpan = document.getElementById('pontos-vantagem');
+        const locomocaoSpan = document.getElementById('locomocao');
         const nomePersonagemTitulo = document.getElementById('nome-personagem-titulo');
         const tituloMestre = document.getElementById('titulo-mestre');
         const vantagensInput = document.getElementById('vantagens');
@@ -887,6 +1040,10 @@
         const notification = document.getElementById('notification');
         const characterImageInput = document.getElementById('character-image-input');
         const characterImage = document.getElementById('character-image');
+        const vantagensDesvantagensBtn = document.getElementById('vantagens-desvantagens-btn');
+        const vantagensDesvantagensPanel = document.getElementById('vantagens-desvantagens-panel');
+        const vantagensList = document.getElementById('vantagens-list');
+        const salvarVantagensBtn = document.getElementById('salvar-vantagens-btn');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -895,6 +1052,7 @@
         let pontosHabilidadeTotal = 25;
         let pontosHabilidadeUsados = 0;
         let pontosVantagem = 5;
+        let locomocaoBase = 10;
         let experiencia = 0;
         let vidaBase = 50;
 
@@ -954,6 +1112,7 @@
             magiasHabilidadesInput.value = ficha.magiasHabilidades || '';
             desvantagensInput.value = ficha.desvantagens || '';
             inventarioInput.value = ficha.inventario || 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n';
+            locomocaoSpan.textContent = ficha.locomocao || '10';
             isFichaLocked = ficha.isLocked || false;
             fichaPassword = ficha.password || null;
             isFichaUnlocked = false;
@@ -966,6 +1125,7 @@
             }
 
             atualizarBotaoBloquear();
+            atualizarVantagensPanel();
 
             experiencia = parseInt(experienciaInput.value) || 0;
             atualizarNivel();
@@ -1010,6 +1170,7 @@
                 magiasHabilidades: magiasHabilidadesInput.value,
                 desvantagens: desvantagensInput.value,
                 inventario: inventarioInput.value,
+                locomocao: locomocaoSpan.textContent,
                 imagem: characterImage.src || null
             };
 
@@ -1157,6 +1318,7 @@
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
+            locomocaoSpan.textContent = locomocaoBase;
             calcularAtributos();
             salvarDados();
         }
@@ -1178,6 +1340,7 @@
             nivelSpan.textContent = nivel;
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagemSpan.textContent = pontosVantagem;
+            locomocaoSpan.textContent = locomocaoBase;
             nomePersonagemTitulo.style.color = '#1C2526';
             tituloMestre.style.display = 'none';
             vidaBase = 50;
@@ -1393,6 +1556,80 @@
                 };
                 reader.readAsDataURL(file);
             }
+        });
+
+        vantagensDesvantagensBtn.addEventListener('click', () => {
+            if (isFichaLocked && !isFichaUnlocked) {
+                abrirModalSenha();
+                return;
+            }
+            vantagensDesvantagensPanel.style.display = 'block';
+            atualizarVantagensPanel();
+        });
+
+        vantagensDesvantagensPanel.addEventListener('click', (e) => {
+            if (e.target === vantagensDesvantagensPanel) {
+                vantagensDesvantagensPanel.style.display = 'none';
+                vantagensSelecionadas = [];
+                atualizarVantagensPanel();
+            }
+        });
+
+        function atualizarVantagensPanel() {
+            vantagensList.innerHTML = '';
+            const vantagensAtuais = vantagensInput.value.split('\n').filter(v => v.trim() !== '');
+            vantagensData.forEach(vantagem => {
+                const item = document.createElement('div');
+                item.className = 'vantagem-item';
+                item.textContent = `${vantagem.nome} - ${vantagem.descricao}`;
+                if (vantagensAtuais.includes(vantagem.nome)) {
+                    item.classList.add('comprada');
+                } else if (!vantagem.restricao || (vantagem.restricao === 'inicio' && nivel === 0)) {
+                    item.addEventListener('click', () => comprarVantagem(vantagem));
+                }
+                vantagensList.appendChild(item);
+            });
+        }
+
+        function comprarVantagem(vantagem) {
+            if (parseInt(pontosVantagemSpan.textContent) < vantagem.custo) {
+                alert('Pontos insuficientes!');
+                return;
+            }
+
+            document.getElementById('confirmar-compra-modal').style.display = 'flex';
+            document.getElementById('confirmar-compra-btn').onclick = () => {
+                pontosVantagem -= vantagem.custo;
+                pontosVantagemSpan.textContent = pontosVantagem;
+                vantagensSelecionadas.push(vantagem.nome);
+                if (vantagem.nome === "Combo Físico (4)") {
+                    locomocaoSpan.textContent = (parseInt(locomocaoSpan.textContent) * 2).toString();
+                }
+                fecharModal('confirmar-compra-modal');
+                atualizarVantagensPanel();
+            };
+        }
+
+        salvarVantagensBtn.addEventListener('click', () => {
+            if (vantagensSelecionadas.length === 0) {
+                alert('Nenhuma vantagem selecionada para salvar!');
+                return;
+            }
+            document.getElementById('salvar-vantagens-modal').style.display = 'flex';
+            document.getElementById('confirmar-salvar-vantagens-btn').onclick = () => {
+                const vantagensAtuais = vantagensInput.value.split('\n').filter(v => v.trim() !== '');
+                vantagensSelecionadas.forEach(vantagem => {
+                    if (!vantagensAtuais.includes(vantagem)) {
+                        vantagensAtuais.push(vantagem);
+                    }
+                });
+                vantagensInput.value = vantagensAtuais.join('\n');
+                salvarDados();
+                fecharModal('salvar-vantagens-modal');
+                vantagensDesvantagensPanel.style.display = 'none';
+                vantagensSelecionadas = [];
+                atualizarVantagensPanel();
+            };
         });
 
         nomePersonagemInput.addEventListener('input', salvarDados);
