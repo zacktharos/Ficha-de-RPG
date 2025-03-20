@@ -11,7 +11,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
-            color: #333;
+            color: #000000; /* Todas as fontes pretas */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -32,7 +32,7 @@
             max-width: 1200px;
             margin-bottom: 20px;
             border: 2px solid #b8860b; /* Adiciona uma borda */
-            position: relative; /* Para posicionar o título do mestre */
+            position: relative; /* Para posicionar o título do mestre e a imagem */
         }
 
         h1#nome-personagem-titulo {
@@ -59,7 +59,7 @@
 
         h2 {
             font-family: 'MedievalSharp', serif;
-            color: #a0522d;
+            color: #000000; /* Preto */
             font-size: 1.5rem;
             margin-bottom: 20px;
             text-align: center;
@@ -68,7 +68,7 @@
 
         label {
             font-weight: 600;
-            color: #555;
+            color: #000000; /* Preto */
             margin-bottom: 8px;
             display: block;
         }
@@ -82,6 +82,7 @@
             font-size: 1rem;
             transition: border-color 0.3s ease; /* Transição suave para a cor da borda */
             background-color: #f8f8f8; /* Cor de fundo levemente mais clara para os campos */
+            color: #000000; /* Preto */
         }
 
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
@@ -112,12 +113,12 @@
 
         .atributo-nome {
             font-weight: 600;
-            color: #663300;
+            color: #000000; /* Preto */
         }
 
         .atributo-valor {
             font-weight: 400;
-            color: #444;
+            color: #000000; /* Preto */
         }
 
         .armamento-container {
@@ -164,7 +165,7 @@
         .vantagens-coluna h3, .desvantagens-coluna h3 {
             font-size: 1.2rem;
             font-family: 'MedievalSharp', serif;
-            color: #a0522d;
+            color: #000000; /* Preto */
             margin-bottom: 15px;
             text-align: left; /* Alinha os títulos à esquerda */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -234,7 +235,7 @@
             text-align: center;
             border-bottom: 1px solid #b8860b;
             font-family: 'Inter', sans-serif;
-            color: #555;
+            color: #000000; /* Preto */
         }
 
         #tabela-experiencia th {
@@ -274,13 +275,13 @@
             display: block;
             font-weight: 600;
             margin-bottom: 5px;
-            color: #555;
+            color: #000000; /* Preto */
         }
 
         .vida-magia-vigor div span {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #a0522d;
+            color: #000000; /* Preto */
         }
         @media (max-width: 768px) {
             .atributos-container {
@@ -320,8 +321,8 @@
             top: 10px;
             left: 10px;
             font-family: 'MedievalSharp', serif;
-            color: #00BFFF;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #000000; /* Preto */
+            text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF; /* Aura azul */
             font-size: 1.5rem;
             animation: brilhar 2s infinite alternate;
         }
@@ -357,12 +358,40 @@
             min-height: 100px;
             margin-bottom: 15px;
         }
+
+        /* Efeito de aura azul no nível */
+        #nivel.aura-azul {
+            animation: pulsar-aura 2s infinite;
+            animation-duration: 120s; /* 2 minutos */
+        }
+
+        @keyframes pulsar-aura {
+            0% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+            }
+            50% {
+                box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
+            }
+            100% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+            }
+        }
+
+        /* Imagem no canto inferior direito */
+        #dragon-image {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 100px; /* Ajuste o tamanho conforme necessário */
+            height: auto;
+            opacity: 0.8; /* Leve transparência para não sobrepor o conteúdo */
+        }
     </style>
 </head>
 <body>
     <div id="ficha-container">
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
-         <div id="titulo-mestre" style="display: none;">Mestre Máximo do Jogo</div>
+        <div id="titulo-mestre" style="display: none;">Você virou o Game Master</div>
         <div class="text-center mb-4">
             <label for="nome-personagem" class="block text-gray-700 text-sm font-bold mb-2">Nome do Personagem:</label>
             <input type="text" id="nome-personagem" placeholder="Digite o nome do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
@@ -444,16 +473,16 @@
                 <label>Armamento Mão Direita:</label>
                 <div class="flex items-center mb-2">
                     <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque (</span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"><span>)</span>
-                    <span>Ataque Mágico (</span><input type="number" id="arma-direita-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                    <span>Ataque </span><input type="number" id="arma-direita-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                    <span>Ataque Mágico </span><input type="number" id="arma-direita-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
             </div>
             <div class="armamento-coluna">
                 <label>Armamento Mão Esquerda:</label>
                 <div class="flex items-center">
                     <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
-                    <span>Ataque (</span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2"><span>)</span>
-                    <span>Ataque Mágico (</span><input type="number" id="arma-esquerda-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><span>)</span>
+                    <span>Ataque </span><input type="number" id="arma-esquerda-ataque" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mr-2">
+                    <span>Ataque Mágico </span><input type="number" id="arma-esquerda-ataque-magico" value="0" class="shadow appearance-none border rounded w-20 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
             </div>
         </div>
@@ -536,7 +565,7 @@
                 <tr><td>18</td><td>2070</td><td>133</td><td>23</td></tr>
                 <tr><td>19</td><td>2350</td><td>139</td><td>24</td></tr>
                 <tr><td>20</td><td>2650</td><td>145</td><td>25</td></tr>
-                 <tr><td>21</td><td>2980</td><td>148</td><td>26</td></tr>
+                <tr><td>21</td><td>2980</td><td>148</td><td>26</td></tr>
                 <tr><td>22</td><td>3340</td><td>151</td><td>27</td></tr>
                 <tr><td>23</td><td>3730</td><td>154</td><td>28</td></tr>
                 <tr><td>24</td><td>4150</td><td>157</td><td>29</td></tr>
@@ -544,8 +573,13 @@
                 <tr><td>26</td><td>5080</td><td>163</td><td>31</td></tr>
                 <tr><td>27</td><td>5590</td><td>166</td><td>32</td></tr>
                 <tr><td>28</td><td>6130</td><td>169</td><td>33</td></tr>
+                <tr><td>29</td><td>8000</td><td>219</td><td>34</td></tr>
+                <tr><td>30</td><td>10000</td><td>319</td><td>35</td></tr>
             </tbody>
         </table>
+
+        <!-- Imagem do dragão no canto inferior direito -->
+        <img id="dragon-image" src="URL_DA_IMAGEM_AQUI" alt="Dragão Estilizado">
     </div>
 
     <script>
@@ -588,6 +622,7 @@
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
         let nivel = 0;
+        let nivelAnterior = 0; // Para verificar se o nível aumentou
         let pontosHabilidadeTotal = 25; // Total de pontos disponíveis (atualizado por nível)
         let pontosHabilidadeUsados = 0; // Pontos já distribuídos nos atributos
         let pontosVantagem = 5;
@@ -624,6 +659,8 @@
             { nivel: 26, xp: 5080, pd: 163, ph: 31 },
             { nivel: 27, xp: 5590, pd: 166, ph: 32 },
             { nivel: 28, xp: 6130, pd: 169, ph: 33 },
+            { nivel: 29, xp: 8000, pd: 219, ph: 34 }, // 169 + 50 PD
+            { nivel: 30, xp: 10000, pd: 319, ph: 35 } // 219 + 100 PD
         ];
 
         // Função para carregar os dados do localStorage
@@ -688,14 +725,22 @@
         }
 
         function atualizarNivel() {
+            nivelAnterior = nivel; // Armazena o nível anterior
             nivel = calcularNivel(experiencia);
             nivelSpan.textContent = nivel;
             pontosHabilidadeTotal = nivelData[nivel].pd; // Atualiza o total de PD com base no nível
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
+
+            // Verifica se o nível aumentou e aplica a aura azul
+            if (nivel > nivelAnterior) {
+                nivelSpan.classList.remove('aura-azul'); // Remove a animação anterior, se houver
+                nivelSpan.classList.add('aura-azul'); // Aplica a nova animação
+            }
+
             // Recalcula os pontos usados e atualiza PD restantes
             calcularAtributos();
-            if (nivel >= 28) {
+            if (nivel >= 30) { // Alterado de 28 para 30
                 nomePersonagemTitulo.style.color = '#FFD700';
                 tituloMestre.style.display = 'block';
             } else {
