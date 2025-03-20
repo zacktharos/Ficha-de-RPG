@@ -26,7 +26,7 @@
 
         #fichas-sidebar {
             width: 60px;
-            background-color: #ffffff; /* Alterado para branco */
+            background-color: #ffffff;
             padding: 10px 0;
             display: flex;
             flex-direction: column;
@@ -494,12 +494,12 @@
             margin-bottom: 10px;
         }
 
-        #vantagens-container, #magias-habilidades-container, #desvantagens-container {
+        #magias-habilidades-container, #vantagens-container, #desvantagens-container {
             width: calc(100% - 340px);
             margin-left: 340px;
         }
 
-        #vantagens-container textarea, #magias-habilidades-container textarea, #desvantagens-container textarea {
+        #magias-habilidades-container textarea, #vantagens-container textarea, #desvantagens-container textarea {
             width: calc(100% - 20px);
             min-height: 100px;
             margin-bottom: 15px;
@@ -700,6 +700,7 @@
                     </div>
                 </div>
             </div>
+
             <div style="display: flex;">
                 <div id="status-container">
                     <div class="mb-4">
@@ -720,17 +721,22 @@
                     </div>
                 </div>
 
-                <div id="vantagens-container" class="mb-4">
-                    <label for="vantagens" class="block text-gray-700 text-sm font-bold mb-2">Vantagens:</label>
-                    <textarea id="vantagens" placeholder="Digite as vantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-                </div>
-            </div>
-            <div style="display: flex;">
-                <div id="magias-habilidades-container" class="mb-4" style="margin-left: 340px;">
+                <!-- Reordenado: Magias e Habilidades primeiro -->
+                <div id="magias-habilidades-container" class="mb-4">
                     <label for="magias-habilidades" class="block text-gray-700 text-sm font-bold mb-2">Magias e Habilidades:</label>
                     <textarea id="magias-habilidades" placeholder="Digite as magias e habilidades do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
                 </div>
             </div>
+
+            <!-- Vantagens em seguida -->
+            <div style="display: flex;">
+                <div id="vantagens-container" class="mb-4" style="margin-left: 340px;">
+                    <label for="vantagens" class="block text-gray-700 text-sm font-bold mb-2">Vantagens:</label>
+                    <textarea id="vantagens" placeholder="Digite as vantagens do seu personagem" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                </div>
+            </div>
+
+            <!-- Desvantagens por último -->
             <div style="display: flex;">
                 <div id="desvantagens-container" class="mb-4" style="margin-left: 340px;">
                     <label for="desvantagens" class="block text-gray-700 text-sm font-bold mb-2">Desvantagens:</label>
@@ -903,7 +909,7 @@
                 fichasSidebar.removeChild(fichasSidebar.children[1]);
             }
             for (let fichaId in fichas) {
-                if (fichaId !== 'ficha-matriz') { // Não exibe a ficha matriz na sidebar
+                if (fichaId !== 'ficha-matriz') {
                     const tab = document.createElement('div');
                     tab.className = 'ficha-tab';
                     const span = document.createElement('span');
@@ -1100,10 +1106,6 @@
 
         function salvarDados() {
             if (!currentFichaId) return;
-            if (currentFichaId === 'ficha-matriz' && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (isFichaLocked && !isFichaUnlocked) {
                 abrirModalSenha();
                 return;
@@ -1318,7 +1320,7 @@
         }
 
         function expandirTextarea(textarea) {
-            textarea.style.height = '200px';
+            textarea.style.height = '300px'; // Triplo do tamanho original (100px -> 300px)
         }
 
         function minimizarTextarea(textarea) {
@@ -1362,11 +1364,20 @@
 
         function desbloquearFicha() {
             const senha = document.getElementById('senha-desbloqueio-input').value;
-            if (currentFichaId === 'ficha-matriz' && senha === senhaMatriz) {
+            if (senha === senhaMatriz) {
                 isFichaUnlocked = true;
+                if (currentFichaId !== 'ficha-matriz') {
+                    isFichaLocked = false;
+                    fichaPassword = null;
+                    database.ref(`fichas/${currentFichaId}`).update({
+                        isLocked: false,
+                        password: null
+                    });
+                }
                 fecharModal('password-modal');
-                alert('Ficha matriz desbloqueada para edição!');
+                alert('Ficha desbloqueada com a senha matriz!');
                 atualizarBotaoBloquear();
+                salvarDados();
             } else if (senha === fichaPassword) {
                 isFichaUnlocked = true;
                 isFichaLocked = false;
