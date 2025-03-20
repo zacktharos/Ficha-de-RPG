@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
+        /* O CSS permanece idêntico ao original, exceto pela adição de estilos já presentes no modal senha-gm-modal */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
@@ -552,9 +553,9 @@
             transition: transform 0.2s ease;
         }
         #salvar-vantagens-btn {
-            right: 250px; /* Ajustado para ficar mais à esquerda */
+            right: 250px;
             animation: aura-verde-btn 2s infinite;
-            display: none; /* Invisível inicialmente */
+            display: none;
         }
         #fechar-pagina-btn {
             right: 20px;
@@ -769,14 +770,14 @@
 
     <div id="senha-gm-modal" class="modal">
         <div class="modal-content">
-            <h3>Digite a Senha do GM</h3>
+            <h3>Para remover este item é necessário a senha do GM</h3>
             <input type="password" id="senha-gm-input" placeholder="Senha GM">
             <button class="confirm-btn" id="confirmar-senha-gm-btn">Confirmar</button>
             <button class="cancel-btn" onclick="fecharModal('senha-gm-modal')">Cancelar</button>
         </div>
     </div>
 
-    <!-- Notificação movida para fora do #ficha-container -->
+    <!-- Notificação -->
     <div id="notification"></div>
 
     <script>
@@ -801,6 +802,7 @@
         const senhaMatriz = "777";
         let vantagensSelecionadas = [];
         let desvantagensSelecionadas = [];
+        let bloqueioReiniciarPontos = false;
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
@@ -878,7 +880,8 @@
                 locomocao: '10',
                 isLocked: true,
                 password: senhaMatriz,
-                imagem: null
+                imagem: null,
+                bloqueioReiniciarPontos: false
             };
 
             database.ref('fichas/ficha-matriz').once('value', (snapshot) => {
@@ -971,7 +974,8 @@
                 locomocao: '10',
                 isLocked: false,
                 password: null,
-                imagem: null
+                imagem: null,
+                bloqueioReiniciarPontos: false
             };
 
             database.ref(`fichas/${fichaId}`).set(novaFicha).then(() => {
@@ -1109,6 +1113,7 @@
             isFichaLocked = ficha.isLocked || false;
             fichaPassword = ficha.password || null;
             isFichaUnlocked = false;
+            bloqueioReiniciarPontos = ficha.bloqueioReiniciarPontos || false;
 
             if (ficha.imagem) {
                 characterImage.src = ficha.imagem;
@@ -1167,7 +1172,8 @@
                 desvantagens: desvantagensInput.value,
                 inventario: inventarioInput.value,
                 locomocao: locomocaoSpan.textContent,
-                imagem: characterImage.src || null
+                imagem: characterImage.src || null,
+                bloqueioReiniciarPontos: bloqueioReiniciarPontos
             };
 
             database.ref(`fichas/${currentFichaId}`).update(updates);
@@ -1192,6 +1198,11 @@
             pontosHabilidadeTotal = nivelData[nivel].pd;
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
+
+            if (nivel >= 3 && !bloqueioReiniciarPontos) {
+                bloqueioReiniciarPontos = true;
+                database.ref(`fichas/${currentFichaId}`).update({ bloqueioReiniciarPontos: true });
+            }
 
             if (nivel > nivelAnterior) {
                 nivelSpan.classList.add('aura-azul');
@@ -1312,6 +1323,19 @@
                 return;
             }
 
+            if (bloqueioReiniciarPontos) {
+                document.getElementById('senha-gm-modal').style.display = 'flex';
+                document.getElementById('confirmar-senha-gm-btn').onclick = () => {
+                    verificarSenhaGM(() => {
+                        procederResetPontos();
+                    });
+                };
+            } else {
+                procederResetPontos();
+            }
+        }
+
+        function procederResetPontos() {
             atributosInputs.forEach(input => input.value = 0);
             pontosHabilidadeUsados = 0;
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
@@ -1429,6 +1453,16 @@
             } else {
                 alert('Senha incorreta!');
             }
+        }
+
+        function verificarSenhaGM(callback) {
+            const senha = document.getElementById('senha-gm-input').value;
+            if (senha === senhaMatriz) {
+                callback();
+            } else {
+                alert('Senha incorreta!');
+            }
+            fecharModal('senha-gm-modal');
         }
 
         nomePersonagemInput.oninput = () => {
@@ -1636,15 +1670,24 @@
             }
 
             if (vantagensSelecionadas.includes(vantagem.nome)) {
-                document.getElementById('excluir-vantagem-modal').style.display = 'flex';
-                document.getElementById('confirmar-excluir-vantagem-btn').onclick = () => {
+                if (vantagensInput.value.includes(vantagem.nome)) {
+                    document.getElementById('senha-gm-modal').style.display = 'flex';
+                    document.getElementById('confirmar-senha-gm-btn').onclick = () => {
+                        verificarSenhaGM(() => {
+                            vantagensSelecionadas = vantagensSelecionadas.filter(v => v !== vantagem.nome);
+                            pontosVantagem += vantagem.custo;
+                            pontosVantagemSpan.textContent = pontosVantagem;
+                            atualizarVantagensDesvantagensPanel();
+                            document.getElementById('salvar-vantagens-btn').style.display = 'block';
+                        });
+                    };
+                } else {
                     vantagensSelecionadas = vantagensSelecionadas.filter(v => v !== vantagem.nome);
                     pontosVantagem += vantagem.custo;
                     pontosVantagemSpan.textContent = pontosVantagem;
                     atualizarVantagensDesvantagensPanel();
-                    fecharModal('excluir-vantagem-modal');
                     document.getElementById('salvar-vantagens-btn').style.display = 'block';
-                };
+                }
                 return;
             }
 
@@ -1665,15 +1708,24 @@
 
         function comprarDesvantagem(desvantagem) {
             if (desvantagensSelecionadas.includes(desvantagem.nome)) {
-                document.getElementById('excluir-desvantagem-modal').style.display = 'flex';
-                document.getElementById('confirmar-excluir-desvantagem-btn').onclick = () => {
+                if (desvantagensInput.value.includes(desvantagem.nome)) {
+                    document.getElementById('senha-gm-modal').style.display = 'flex';
+                    document.getElementById('confirmar-senha-gm-btn').onclick = () => {
+                        verificarSenhaGM(() => {
+                            desvantagensSelecionadas = desvantagensSelecionadas.filter(d => d !== desvantagem.nome);
+                            pontosVantagem -= desvantagem.ganho;
+                            pontosVantagemSpan.textContent = pontosVantagem;
+                            atualizarVantagensDesvantagensPanel();
+                            document.getElementById('salvar-vantagens-btn').style.display = 'block';
+                        });
+                    };
+                } else {
                     desvantagensSelecionadas = desvantagensSelecionadas.filter(d => d !== desvantagem.nome);
                     pontosVantagem -= desvantagem.ganho;
                     pontosVantagemSpan.textContent = pontosVantagem;
                     atualizarVantagensDesvantagensPanel();
-                    fecharModal('excluir-desvantagem-modal');
                     document.getElementById('salvar-vantagens-btn').style.display = 'block';
-                };
+                }
                 return;
             }
 
