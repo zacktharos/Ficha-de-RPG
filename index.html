@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
+        /* Estilos mantidos idênticos ao original */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
@@ -21,7 +22,6 @@
             background-size: cover;
             background-position: center;
         }
-
         #fichas-sidebar {
             width: 100%;
             height: 60px;
@@ -38,7 +38,6 @@
             z-index: 1000;
             overflow-x: auto;
         }
-
         .ficha-tab {
             width: 100px;
             height: 50px;
@@ -53,17 +52,14 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
-
         .ficha-tab:hover {
             background-color: #a0522d;
             transform: translateY(-5px);
         }
-
         .ficha-tab.active {
             background-color: #a0522d;
             transform: translateY(-5px);
         }
-
         .ficha-tab span {
             font-family: 'MedievalSharp', serif;
             color: #000000;
@@ -74,7 +70,6 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         #add-ficha-btn {
             width: 100px;
             height: 50px;
@@ -90,7 +85,6 @@
             box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700;
             z-index: 1001;
         }
-
         #add-ficha-btn span {
             font-family: 'MedievalSharp', serif;
             color: #000000;
@@ -101,12 +95,10 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         #add-ficha-btn:hover {
             background-color: #a0522d;
             transform: translateY(-5px);
         }
-
         #ficha-container {
             background-color: rgba(240, 230, 210, 0.95);
             padding: 30px;
@@ -118,7 +110,6 @@
             border: 2px solid #b8860b;
             position: relative;
         }
-
         h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif;
             color: #1C2526;
@@ -129,20 +120,17 @@
             animation: raios 2s infinite linear;
             position: relative;
         }
-
         @keyframes raios {
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
             50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
         }
-
         label {
             font-weight: 600;
             color: #000000;
             margin-bottom: 8px;
             display: block;
         }
-
         input[type="text"], input[type="number"], textarea {
             padding: 10px;
             border: 1px solid #ccc;
@@ -154,32 +142,27 @@
             background-color: #f8f8f8;
             color: #000000;
         }
-
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
             border-color: #a0522d;
             outline: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-
         textarea {
             resize: vertical;
             height: 100px;
             transition: all 0.3s ease;
         }
-
         .atributos-container {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
         }
-
         .atributos-coluna {
             width: 48%;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
         }
-
         .atributos-coluna-destaque {
             width: 38%;
             background-color: #ffffff;
@@ -190,7 +173,6 @@
             flex-direction: column;
             align-items: flex-start;
         }
-
         .atributo-destaque {
             padding: 8px;
             margin-bottom: 10px;
@@ -199,36 +181,30 @@
             justify-content: space-between;
             width: 100%;
         }
-
         .atributo-destaque label {
             font-size: 1.1rem;
             font-weight: 700;
             color: #a0522d;
         }
-
         .atributo-destaque span {
             font-size: 1.2rem;
             font-family: 'MedievalSharp', serif;
             color: #000000;
         }
-
         .atributo-fogo {
             animation: fogo 1.5s infinite;
         }
-
         @keyframes fogo {
             0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
             50% { text-shadow: 0 0 10px #ff4500, 0 0 15px #ffd700; }
             100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
         }
-
         .vida-magia-vigor {
             display: flex;
             justify-content: space-around;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-
         .vida-magia-vigor div {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 12px;
@@ -240,13 +216,11 @@
             margin-bottom: 10px;
             text-align: center;
         }
-
         .botoes-container {
             display: flex;
             justify-content: center;
             margin-top: 20px;
         }
-
         .botao {
             padding: 12px 25px;
             border: none;
@@ -259,7 +233,6 @@
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
-
         .botao-reset { background-color: #b8860b; }
         .botao-reset:hover { background-color: #a0522d; transform: translateY(-2px); }
         .botao-recomecar { background-color: #a52a2a; }
@@ -268,7 +241,6 @@
         .botao-bloquear:hover, .botao-desbloquear:hover { background-color: #2a2a2a; transform: translateY(-2px); }
         .botao-excluir { background-color: #a52a2a; position: absolute; bottom: 20px; left: 20px; }
         .botao-excluir:hover { background-color: #8b0000; transform: translateY(-2px); }
-
         #status-container {
             display: flex;
             flex-direction: column;
@@ -276,13 +248,11 @@
             margin-right: 20px;
             width: 300px;
         }
-
         #right-container {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
-
         #nivel-container {
             position: absolute;
             bottom: 50%;
@@ -293,7 +263,6 @@
             color: #000000;
             text-align: center;
         }
-
         #nivel {
             padding: 10px;
             background-color: #f0e6d2;
@@ -308,17 +277,14 @@
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             margin: 0 auto;
         }
-
         #nivel.aura-azul {
             animation: pulsar-aura 2s 10;
         }
-
         @keyframes pulsar-aura {
             0% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
             50% { box-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 50px #00BFFF; }
             100% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
         }
-
         .expandable-textarea {
             height: 100px;
             width: 100%;
@@ -329,11 +295,9 @@
             font-size: 0.9rem;
             transition: height 0.3s ease;
         }
-
         .expandable-textarea:focus {
             height: 300px;
         }
-
         #dice-container {
             position: absolute;
             top: 20px;
@@ -345,7 +309,6 @@
             z-index: 10;
             user-select: none;
         }
-
         #dice-container label {
             font-size: 1.2rem;
             color: #000000;
@@ -354,13 +317,11 @@
             justify-content: center;
             margin-bottom: 10px;
         }
-
         #dice-container label::before {
             content: "🎲";
             margin-right: 5px;
             font-size: 1.5rem;
         }
-
         #dice-roll {
             width: 100px;
             height: 100px;
@@ -376,7 +337,6 @@
             position: relative;
             transition: all 0.3s ease;
         }
-
         #dice-roll::before {
             content: "⚅";
             font-size: 1.5rem;
@@ -385,7 +345,6 @@
             right: 5px;
             color: #a0522d;
         }
-
         #dice-result {
             margin-top: 10px;
             font-size: 1rem;
@@ -393,31 +352,25 @@
             display: none;
             animation: blink 1s infinite;
         }
-
         @keyframes blink {
             50% { opacity: 0; }
         }
-
         #dice-roll.critical-failure {
             animation: aura-vermelha 2s infinite;
         }
-
         #dice-roll.critical-success {
             animation: aura-verde 2s infinite;
         }
-
         @keyframes aura-vermelha {
             0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
             50% { box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000; }
             100% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
         }
-
         @keyframes aura-verde {
             0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
-
         #notification {
             position: absolute;
             top: 50%;
@@ -433,21 +386,17 @@
             z-index: 100;
             background-color: rgba(0, 0, 0, 0.7);
         }
-
         #notification.critical-failure {
             background-color: rgba(255, 0, 0, 0.8);
             animation: aura-vermelha 2s infinite;
         }
-
         #notification.critical-success {
             background-color: rgba(0, 255, 0, 0.8);
             animation: aura-verde 2s infinite;
         }
-
         #notification.normal-result {
             animation: blink 1s infinite;
         }
-
         #character-image-container {
             position: absolute;
             top: 10px;
@@ -464,18 +413,15 @@
             overflow: hidden;
             z-index: 10;
         }
-
         #character-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: none;
         }
-
         #character-image-container:hover {
             box-shadow: 0 0 10px #ffd700;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -488,7 +434,6 @@
             align-items: center;
             z-index: 1000;
         }
-
         .modal-content {
             background-color: #f0e6d2;
             padding: 20px;
@@ -498,13 +443,11 @@
             width: 300px;
             text-align: center;
         }
-
         .modal-content h3 {
             font-family: 'MedievalSharp', serif;
             color: #000000;
             margin-bottom: 15px;
         }
-
         .modal-content input {
             width: calc(100% - 20px);
             padding: 10px;
@@ -512,7 +455,6 @@
             border: 1px solid #ccc;
             border-radius: 6px;
         }
-
         .modal-content button {
             padding: 10px 20px;
             border: none;
@@ -522,23 +464,18 @@
             cursor: pointer;
             margin: 0 5px;
         }
-
         .modal-content .confirm-btn {
             background-color: #b8860b;
         }
-
         .modal-content .confirm-btn:hover {
             background-color: #a0522d;
         }
-
         .modal-content .cancel-btn {
             background-color: #a52a2a;
         }
-
         .modal-content .cancel-btn:hover {
             background-color: #8b0000;
         }
-
         #vantagens-desvantagens-btn {
             position: absolute;
             bottom: -50px;
@@ -555,12 +492,10 @@
             transition: background-color 0.3s ease;
             z-index: 10;
         }
-
         #vantagens-desvantagens-btn:hover {
             background-color: #a0522d;
             color: #ffffff;
         }
-
         #vantagens-desvantagens-panel {
             display: none;
             position: fixed;
@@ -575,7 +510,6 @@
             border: 2px solid #b8860b;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
-
         #vantagens-desvantagens-panel h2 {
             font-family: 'MedievalSharp', serif;
             font-size: 2rem;
@@ -583,7 +517,6 @@
             color: #a0522d;
             margin-bottom: 20px;
         }
-
         .vantagem-item, .desvantagem-item {
             padding: 10px;
             margin: 5px 0;
@@ -593,23 +526,19 @@
             cursor: pointer;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
-
         .vantagem-item:hover, .desvantagem-item:hover {
             background-color: #f0e6d2;
         }
-
         .vantagem-item.comprada {
             background-color: #ffcccc;
             color: #ff0000;
             cursor: default;
         }
-
         .desvantagem-item.comprada {
             background-color: #ccffcc;
             color: #008000;
             cursor: default;
         }
-
         #salvar-vantagens-btn, #fechar-pagina-btn {
             position: fixed;
             bottom: 20px;
@@ -623,21 +552,17 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-
         #salvar-vantagens-btn {
             right: 150px;
             animation: aura-verde-btn 2s infinite;
         }
-
         #fechar-pagina-btn {
             right: 20px;
             background-color: #a52a2a;
         }
-
         #salvar-vantagens-btn:hover, #fechar-pagina-btn:hover {
             transform: translateY(-2px);
         }
-
         @keyframes aura-verde-btn {
             0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
@@ -1523,7 +1448,27 @@
             };
         });
 
-        [armaDireitaNomeInput, armaEsquerdaNomeInput, descricaoPersonagemInput, vantagensInput, magiasHabilidadesInput, desvantagensInput, inventarioInput].forEach(input => {
+        // Adicionados eventos oninput para os campos de armamento
+        armaDireitaNomeInput.oninput = () => salvarDados();
+        armaDireitaAtaqueInput.oninput = () => {
+            calcularAtributos();
+            salvarDados();
+        };
+        armaDireitaAtaqueMagicoInput.oninput = () => {
+            calcularAtributos();
+            salvarDados();
+        };
+        armaEsquerdaNomeInput.oninput = () => salvarDados();
+        armaEsquerdaAtaqueInput.oninput = () => {
+            calcularAtributos();
+            salvarDados();
+        };
+        armaEsquerdaAtaqueMagicoInput.oninput = () => {
+            calcularAtributos();
+            salvarDados();
+        };
+
+        [descricaoPersonagemInput, vantagensInput, magiasHabilidadesInput, desvantagensInput, inventarioInput].forEach(input => {
             input.oninput = () => salvarDados();
         });
 
@@ -1558,7 +1503,9 @@
         };
 
         let isDragging = false;
-        let currentX, currentY, initialX, initialY;
+        let currentX = diceContainer.offsetLeft;
+        let currentY = diceContainer.offsetTop;
+        let initialX, initialY;
 
         diceContainer.onmousedown = (e) => {
             isDragging = true;
@@ -1738,9 +1685,6 @@
                 fecharModal('confirmar-compra-modal');
             };
         }
-
-        currentX = diceContainer.offsetLeft;
-        currentY = diceContainer.offsetTop;
 
         criarFichaMatriz();
     </script>
