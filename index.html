@@ -6,9 +6,11 @@
     <title>Ficha de Personagem RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- Adicionando o Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
+        /* Estilos personalizados para a ficha */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
@@ -20,7 +22,6 @@
             background-image: url('medieval_background.jpg');
             background-size: cover;
             background-position: center;
-            justify-content: center; /* Centraliza o conteúdo horizontalmente */
         }
 
         #fichas-sidebar {
@@ -119,7 +120,8 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 95%;
             max-width: 1200px;
-            margin: 0 auto; /* Centraliza a ficha */
+            margin: 0 auto;
+            margin-bottom: 20px;
             border: 2px solid #b8860b;
             position: relative;
         }
@@ -135,9 +137,15 @@
         }
 
         @keyframes raios {
-            0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
-            50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
-            100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
+            0% {
+                text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500;
+            }
+            50% {
+                text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500;
+            }
+            100% {
+                text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500;
+            }
         }
 
         h2 {
@@ -457,9 +465,15 @@
         }
 
         @keyframes pulsar-aura {
-            0% { box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF; }
-            50% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-            100% { box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF; }
+            0% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+            }
+            50% {
+                box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF;
+            }
+            100% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+            }
         }
 
         .small-textarea-container {
@@ -667,60 +681,6 @@
         #password-modal .modal-content {
             border: 2px solid #a52a2a;
         }
-
-        #dice-history-btn {
-            position: absolute;
-            right: -60px; /* Colado à borda direita da ficha */
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #f0e6d2;
-            border: 2px solid #b8860b;
-            border-radius: 0 10px 10px 0;
-            padding: 15px 5px;
-            cursor: pointer;
-            font-family: 'MedievalSharp', serif;
-            writing-mode: vertical-rl;
-            text-align: center;
-            color: #000000;
-            transition: background-color 0.3s ease;
-        }
-
-        #dice-history-btn:hover {
-            background-color: #a0522d;
-        }
-
-        #dice-history-panel {
-            display: none;
-            position: fixed;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 250px;
-            max-height: 400px;
-            background-color: rgba(240, 230, 210, 0.95);
-            border: 2px solid #b8860b;
-            border-radius: 8px;
-            padding: 15px;
-            overflow-y: auto;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            z-index: 1001;
-        }
-
-        #dice-history-panel h2 {
-            font-family: 'MedievalSharp', serif;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            text-align: center;
-            color: #000000;
-        }
-
-        .dice-history-entry {
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #000000;
-            border-bottom: 1px solid #b8860b;
-            padding-bottom: 5px;
-        }
     </style>
 </head>
 <body>
@@ -926,12 +886,6 @@
                 </tbody>
             </table>
         </div>
-
-        <div id="dice-history-btn">Histórico de Dados</div>
-        <div id="dice-history-panel">
-            <h2>Histórico de Dados</h2>
-            <div id="dice-history-content"></div>
-        </div>
     </div>
 
     <div id="nome-ficha-modal" class="modal">
@@ -963,13 +917,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "Sua_API_Key",
-            authDomain: "Seu_Domain",
-            databaseURL: "Seu_Database_URL",
-            projectId: "Seu_Project_Id",
-            storageBucket: "Seu_Storage_Bucket",
-            messagingSenderId: "Seu_Sender_Id",
-            appId: "Seu_App_Id"
+            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
+            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
+            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
+            projectId: "ficha-de-rpg-b9685",
+            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
+            messagingSenderId: "528610398062",
+            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -1148,9 +1102,6 @@
         const diceRoll = document.getElementById('dice-roll');
         const diceResult = document.getElementById('dice-result');
         const notification = document.getElementById('notification');
-        const diceHistoryBtn = document.getElementById('dice-history-btn');
-        const diceHistoryPanel = document.getElementById('dice-history-panel');
-        const diceHistoryContent = document.getElementById('dice-history-content');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1560,19 +1511,11 @@
             diceRoll.classList.remove('critical-failure', 'critical-success');
             diceResult.style.display = 'none';
 
-            const playerName = fichas[currentFichaId].nomeFicha || 'Desconhecido';
-            const diceData = {
-                player: playerName,
-                result: result,
-                timestamp: Date.now()
-            };
-            database.ref('dice_rolls').push(diceData);
-
             if (result === 1) {
                 diceRoll.classList.add('critical-failure');
                 diceResult.textContent = 'FALHA CRÍTICA!';
                 diceResult.style.display = 'block';
-                showNotification(`${playerName} teve uma falha crítica!`, 'critical-failure');
+                showNotification(`${fichas[currentFichaId].nomeFicha} teve uma falha crítica!`, 'critical-failure');
                 setTimeout(() => {
                     diceRoll.classList.remove('critical-failure');
                     diceResult.style.display = 'none';
@@ -1581,14 +1524,12 @@
                 diceRoll.classList.add('critical-success');
                 diceResult.textContent = 'ACERTO CRÍTICO!';
                 diceResult.style.display = 'block';
-                showNotification(`${playerName} teve um acerto crítico!`, 'critical-success');
+                showNotification(`${fichas[currentFichaId].nomeFicha} teve um acerto crítico!`, 'critical-success');
                 setTimeout(() => {
                     diceRoll.classList.remove('critical-success');
                     diceResult.style.display = 'none';
                 }, 3000);
             }
-
-            updateDiceHistory(diceData);
         }
 
         function showNotification(message, type) {
@@ -1605,26 +1546,6 @@
                 notification.style.display = 'none';
             }, 3000);
         }
-
-        function updateDiceHistory(diceData) {
-            const entry = document.createElement('div');
-            entry.className = 'dice-history-entry';
-            entry.textContent = `${diceData.player} Rolou: ${diceData.result}`;
-            diceHistoryContent.insertBefore(entry, diceHistoryContent.firstChild);
-        }
-
-        diceHistoryBtn.addEventListener('click', () => {
-            if (diceHistoryPanel.style.display === 'block') {
-                diceHistoryPanel.style.display = 'none';
-            } else {
-                diceHistoryPanel.style.display = 'block';
-            }
-        });
-
-        database.ref('dice_rolls').on('child_added', (snapshot) => {
-            const diceData = snapshot.val();
-            updateDiceHistory(diceData);
-        });
 
         database.ref('notifications').on('child_added', (snapshot) => {
             const notif = snapshot.val();
