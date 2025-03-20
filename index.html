@@ -9,7 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
-        /* Estilos mantidos idênticos ao original */
+        /* Estilos mantidos idênticos ao original, exceto os ajustes solicitados */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
@@ -555,6 +555,7 @@
         #salvar-vantagens-btn {
             right: 150px;
             animation: aura-verde-btn 2s infinite;
+            display: none; /* Invisível inicialmente */
         }
         #fechar-pagina-btn {
             right: 20px;
@@ -1448,7 +1449,6 @@
             };
         });
 
-        // Adicionados eventos oninput para os campos de armamento
         armaDireitaNomeInput.oninput = () => salvarDados();
         armaDireitaAtaqueInput.oninput = () => {
             calcularAtributos();
@@ -1544,18 +1544,20 @@
                 const roll = Math.floor(Math.random() * 20) + 1;
                 diceRoll.textContent = roll;
 
+                const nomeFicha = fichas[currentFichaId].nomeFicha || 'Sem Nome';
+                
                 if (roll === 1) {
                     diceRoll.classList.add('critical-failure');
-                    notification.textContent = 'FALHA CRÍTICA!';
+                    notification.textContent = `${nomeFicha} - FALHA CRÍTICA!`;
                     notification.classList.add('critical-failure');
                 } else if (roll === 20) {
                     diceRoll.classList.add('critical-success');
-                    notification.textContent = 'SUCESSO CRÍTICO!';
+                    notification.textContent = `${nomeFicha} - SUCESSO CRÍTICO!`;
                     notification.classList.add('critical-success');
                 } else {
-                    diceResult.textContent = `Resultado: ${roll}`;
+                    diceResult.textContent = `${nomeFicha} rolou: ${roll}`;
                     diceResult.style.display = 'block';
-                    notification.textContent = `D20: ${roll}`;
+                    notification.textContent = `${nomeFicha} rolou: ${roll}`;
                     notification.classList.add('normal-result');
                 }
 
@@ -1573,6 +1575,7 @@
                 return;
             }
             vantagensDesvantagensPanel.style.display = 'block';
+            document.getElementById('salvar-vantagens-btn').style.display = 'none';
             atualizarVantagensDesvantagensPanel();
         };
 
@@ -1640,6 +1643,7 @@
                     pontosVantagemSpan.textContent = pontosVantagem;
                     atualizarVantagensDesvantagensPanel();
                     fecharModal('excluir-vantagem-modal');
+                    document.getElementById('salvar-vantagens-btn').style.display = 'block';
                 };
                 return;
             }
@@ -1652,6 +1656,7 @@
                     pontosVantagemSpan.textContent = pontosVantagem;
                     atualizarVantagensDesvantagensPanel();
                     fecharModal('confirmar-compra-modal');
+                    document.getElementById('salvar-vantagens-btn').style.display = 'block';
                 };
             } else {
                 alert('Pontos de Vantagem insuficientes!');
@@ -1667,6 +1672,7 @@
                     pontosVantagemSpan.textContent = pontosVantagem;
                     atualizarVantagensDesvantagensPanel();
                     fecharModal('excluir-desvantagem-modal');
+                    document.getElementById('salvar-vantagens-btn').style.display = 'block';
                 };
                 return;
             }
@@ -1683,6 +1689,7 @@
                 pontosVantagemSpan.textContent = pontosVantagem;
                 atualizarVantagensDesvantagensPanel();
                 fecharModal('confirmar-compra-modal');
+                document.getElementById('salvar-vantagens-btn').style.display = 'block';
             };
         }
 
