@@ -26,7 +26,7 @@
 
         #fichas-sidebar {
             width: 60px;
-            background-color: rgba(184, 134, 11, 0.9);
+            background-color: #ffffff; /* Alterado para branco */
             padding: 10px 0;
             display: flex;
             flex-direction: column;
@@ -749,7 +749,7 @@
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
             </div>
 
-            <button id="excluir-fichas" class="botao botao-excluir">Excluir Fichas</button>
+            <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
 
             <table id="tabela-experiencia">
                 <thead>
@@ -878,6 +878,8 @@
                         carregarFicha(fichaMatrizId);
                     });
                 } else {
+                    currentFichaId = fichaMatrizId;
+                    carregarFicha(fichaMatrizId);
                     carregarFichas();
                 }
             });
@@ -890,10 +892,6 @@
                     criarFichaMatriz();
                 } else {
                     atualizarAbasFichas();
-                    if (!currentFichaId && Object.keys(fichas).length > 0) {
-                        currentFichaId = 'ficha-matriz';
-                        carregarFicha(currentFichaId);
-                    }
                 }
             });
         }
@@ -905,21 +903,23 @@
                 fichasSidebar.removeChild(fichasSidebar.children[1]);
             }
             for (let fichaId in fichas) {
-                const tab = document.createElement('div');
-                tab.className = 'ficha-tab';
-                const span = document.createElement('span');
-                span.textContent = fichas[fichaId].nomeFicha || 'Sem Nome';
-                tab.appendChild(span);
-                tab.dataset.fichaId = fichaId;
-                if (fichaId === currentFichaId) {
-                    tab.classList.add('active');
+                if (fichaId !== 'ficha-matriz') { // Não exibe a ficha matriz na sidebar
+                    const tab = document.createElement('div');
+                    tab.className = 'ficha-tab';
+                    const span = document.createElement('span');
+                    span.textContent = fichas[fichaId].nomeFicha || 'Sem Nome';
+                    tab.appendChild(span);
+                    tab.dataset.fichaId = fichaId;
+                    if (fichaId === currentFichaId) {
+                        tab.classList.add('active');
+                    }
+                    tab.onclick = () => {
+                        currentFichaId = fichaId;
+                        carregarFicha(fichaId);
+                        atualizarAbasFichas();
+                    };
+                    fichasSidebar.appendChild(tab);
                 }
-                tab.onclick = () => {
-                    currentFichaId = fichaId;
-                    carregarFicha(fichaId);
-                    atualizarAbasFichas();
-                };
-                fichasSidebar.appendChild(tab);
             }
         }
 
@@ -1362,7 +1362,12 @@
 
         function desbloquearFicha() {
             const senha = document.getElementById('senha-desbloqueio-input').value;
-            if (senha === fichaPassword || senha === senhaMatriz) {
+            if (currentFichaId === 'ficha-matriz' && senha === senhaMatriz) {
+                isFichaUnlocked = true;
+                fecharModal('password-modal');
+                alert('Ficha matriz desbloqueada para edição!');
+                atualizarBotaoBloquear();
+            } else if (senha === fichaPassword) {
                 isFichaUnlocked = true;
                 isFichaLocked = false;
                 fichaPassword = null;
@@ -1380,17 +1385,24 @@
             }
         }
 
-        document.getElementById('excluir-fichas').addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja excluir todas as fichas exceto a matriz?')) {
-                for (let fichaId in fichas) {
-                    if (fichaId !== 'ficha-matriz') {
-                        database.ref(`fichas/${fichaId}`).remove();
-                    }
-                }
-                currentFichaId = 'ficha-matriz';
-                carregarFicha('ficha-matriz');
-                atualizarAbasFichas();
-                alert('Fichas excluídas, apenas a matriz foi mantida.');
+        document.getElementById('excluir-ficha').addEventListener('click', () => {
+            if (currentFichaId === 'ficha-matriz') {
+                alert('A ficha matriz não pode ser excluída!');
+                return;
+            }
+
+            if (isFichaLocked && !isFichaUnlocked) {
+                abrirModalSenha();
+                return;
+            }
+
+            if (confirm(`Tem certeza que deseja excluir a ficha "${fichas[currentFichaId].nomeFicha}"?`)) {
+                database.ref(`fichas/${currentFichaId}`).remove().then(() => {
+                    currentFichaId = 'ficha-matriz';
+                    carregarFicha('ficha-matriz');
+                    atualizarAbasFichas();
+                    alert('Ficha excluída com sucesso!');
+                });
             }
         });
 
