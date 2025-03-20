@@ -181,6 +181,44 @@
             width: 48%;
         }
 
+        .atributos-coluna-destaque {
+            width: 48%;
+            margin-left: 20px; /* Move mais à direita */
+        }
+
+        .atributo-destaque {
+            background-color: rgba(255, 215, 0, 0.1); /* Fundo dourado claro para destaque */
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #b8860b;
+        }
+
+        .atributo-destaque label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #a0522d;
+        }
+
+        .atributo-destaque span {
+            font-size: 1.2rem;
+            font-family: 'MedievalSharp', serif;
+            color: #000000;
+        }
+
+        .atributo-fogo {
+            animation: fogo 1.5s infinite;
+        }
+
+        @keyframes fogo {
+            0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
+            50% { text-shadow: 0 0 10px #ff4500, 0 0 15px #ffd700; }
+            100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
+        }
+
         .vida-magia-vigor {
             display: flex;
             justify-content: space-around;
@@ -389,6 +427,7 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             display: none;
             z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo padrão para resultados normais */
         }
 
         #notification.critical-failure {
@@ -399,6 +438,10 @@
         #notification.critical-success {
             background-color: rgba(0, 255, 0, 0.8);
             animation: aura-verde 2s infinite;
+        }
+
+        #notification.normal-result {
+            animation: blink 1s infinite; /* Piscar para resultados normais */
         }
 
         #character-image-container {
@@ -537,13 +580,13 @@
                     <div class="atributo"><label>Constituição:</label><input type="number" id="constituicao" value="0" min="0"></div>
                     <div class="atributo"><label>Inteligência:</label><input type="number" id="inteligencia" value="0" min="0"></div>
                 </div>
-                <div class="atributos-coluna">
-                    <div class="atributo"><label>Ataque:</label><span id="ataque">0</span></div>
-                    <div class="atributo"><label>Ataque Mágico:</label><span id="ataque-magico">0</span></div>
-                    <div class="atributo"><label>Acerto:</label><span id="acerto">0</span></div>
-                    <div class="atributo"><label>Esquiva:</label><span id="esquiva">0</span></div>
-                    <div class="atributo"><label>RDF:</label><span id="rdf">0</span></div>
-                    <div class="atributo"><label>RDM:</label><span id="rdm">0</span></div>
+                <div class="atributos-coluna atributos-coluna-destaque">
+                    <div class="atributo atributo-destaque"><label>Ataque:</label><span id="ataque">0</span></div>
+                    <div class="atributo atributo-destaque"><label>Ataque Mágico:</label><span id="ataque-magico">0</span></div>
+                    <div class="atributo atributo-destaque"><label>Acerto:</label><span id="acerto">0</span></div>
+                    <div class="atributo atributo-destaque"><label>Esquiva:</label><span id="esquiva">0</span></div>
+                    <div class="atributo atributo-destaque"><label>RDF:</label><span id="rdf">0</span></div>
+                    <div class="atributo atributo-destaque"><label>RDM:</label><span id="rdm">0</span></div>
                 </div>
             </div>
 
@@ -791,7 +834,7 @@
                 currentFichaId = fichaId;
                 carregarFicha(fichaId);
                 fecharModal('nome-ficha-modal');
-                atualizarAbasFichas(); // Adicionado para atualizar as abas após criar a nova ficha
+                atualizarAbasFichas();
             }).catch((error) => {
                 console.error('Erro ao criar nova ficha:', error);
                 alert('Ocorreu um erro ao criar a ficha. Tente novamente.');
@@ -1066,6 +1109,22 @@
             vidaSpan.textContent = Math.ceil(vidaBase);
             magiaSpan.textContent = Math.ceil(magiaBase);
             vigorSpan.textContent = vigorBase.toFixed(1);
+
+            // Identificar o maior atributo e aplicar o efeito de fogo
+            const atributosDestaque = [
+                { span: ataqueSpan, valor: ataque },
+                { span: ataqueMagicoSpan, valor: ataqueMagico },
+                { span: acertoSpan, valor: acerto },
+                { span: esquivaSpan, valor: esquiva },
+                { span: rdfSpan, valor: rdf },
+                { span: rdmSpan, valor: rdm }
+            ];
+
+            atributosDestaque.forEach(attr => attr.span.classList.remove('atributo-fogo'));
+            const maiorAtributo = atributosDestaque.reduce((max, attr) => max.valor > attr.valor ? max : attr);
+            if (maiorAtributo.valor > 0) { // Só aplica se o valor for maior que 0
+                maiorAtributo.span.classList.add('atributo-fogo');
+            }
         }
 
         function validarDesvantagens() {
@@ -1237,7 +1296,7 @@
                 diceRoll.classList.add('critical-failure');
                 diceResult.textContent = 'FALHA CRÍTICA!';
                 diceResult.style.display = 'block';
-                showNotification(`${fichas[currentFichaId].nomeFicha} teve uma falha crítica!`, 'critical-failure');
+                showNotification(`${fichas[currentFichaId].nomeFicha} teve uma falha crítica!`, 'critical-failure', 3000);
                 setTimeout(() => {
                     diceRoll.classList.remove('critical-failure');
                     diceResult.style.display = 'none';
@@ -1246,17 +1305,19 @@
                 diceRoll.classList.add('critical-success');
                 diceResult.textContent = 'ACERTO CRÍTICO!';
                 diceResult.style.display = 'block';
-                showNotification(`${fichas[currentFichaId].nomeFicha} teve um acerto crítico!`, 'critical-success');
+                showNotification(`${fichas[currentFichaId].nomeFicha} teve um acerto crítico!`, 'critical-success', 3000);
                 setTimeout(() => {
                     diceRoll.classList.remove('critical-success');
                     diceResult.style.display = 'none';
                 }, 3000);
+            } else {
+                showNotification(`${fichas[currentFichaId].nomeFicha} rolou ${result}`, 'normal-result', 5000);
             }
         }
 
-        function showNotification(message, type) {
+        function showNotification(message, type, duration) {
             notification.textContent = message;
-            notification.classList.remove('critical-failure', 'critical-success');
+            notification.classList.remove('critical-failure', 'critical-success', 'normal-result');
             notification.classList.add(type);
             notification.style.display = 'block';
             database.ref('notifications').push({
@@ -1266,19 +1327,20 @@
             });
             setTimeout(() => {
                 notification.style.display = 'none';
-            }, 3000);
+            }, duration);
         }
 
         database.ref('notifications').on('child_added', (snapshot) => {
             const notif = snapshot.val();
-            if (notif.timestamp > Date.now() - 5000) {
+            if (notif.timestamp > Date.now() - 6000) { // Ajustado para cobrir os 5 segundos dos normais
                 notification.textContent = notif.message;
-                notification.classList.remove('critical-failure', 'critical-success');
+                notification.classList.remove('critical-failure', 'critical-success', 'normal-result');
                 notification.classList.add(notif.type);
                 notification.style.display = 'block';
+                const duration = (notif.type === 'normal-result') ? 5000 : 3000;
                 setTimeout(() => {
                     notification.style.display = 'none';
-                }, 3000);
+                }, duration);
             }
         });
 
