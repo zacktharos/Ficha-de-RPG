@@ -626,6 +626,55 @@
             { nivel: 28, xp: 6130, pd: 169, ph: 33 },
         ];
 
+        // Função para carregar os dados do localStorage
+        function carregarDados() {
+            nomePersonagemInput.value = localStorage.getItem('nomePersonagem') || '';
+            descricaoPersonagemInput.value = localStorage.getItem('descricaoPersonagem') || '';
+            forcaInput.value = localStorage.getItem('forca') || '0';
+            destrezaInput.value = localStorage.getItem('destreza') || '0';
+            agilidadeInput.value = localStorage.getItem('agilidade') || '0';
+            inteligenciaInput.value = localStorage.getItem('inteligencia') || '0';
+            constituicaoInput.value = localStorage.getItem('constituicao') || '0';
+            experienciaInput.value = localStorage.getItem('experiencia') || '0';
+            armaDireitaNomeInput.value = localStorage.getItem('armaDireitaNome') || '';
+            armaDireitaAtaqueInput.value = localStorage.getItem('armaDireitaAtaque') || '0';
+            armaDireitaAtaqueMagicoInput.value = localStorage.getItem('armaDireitaAtaqueMagico') || '0';
+            armaEsquerdaNomeInput.value = localStorage.getItem('armaEsquerdaNome') || '';
+            armaEsquerdaAtaqueInput.value = localStorage.getItem('armaEsquerdaAtaque') || '0';
+            armaEsquerdaAtaqueMagicoInput.value = localStorage.getItem('armaEsquerdaAtaqueMagico') || '0';
+            vantagensInput.value = localStorage.getItem('vantagens') || '';
+            magiasHabilidadesInput.value = localStorage.getItem('magiasHabilidades') || '';
+            desvantagensInput.value = localStorage.getItem('desvantagens') || '';
+            inventarioInput.value = localStorage.getItem('inventario') || '';
+
+            // Atualiza as variáveis globais com os valores carregados
+            experiencia = parseInt(experienciaInput.value) || 0;
+            atualizarNivel();
+            calcularAtributos();
+        }
+
+        // Função para salvar os dados no localStorage
+        function salvarDados() {
+            localStorage.setItem('nomePersonagem', nomePersonagemInput.value);
+            localStorage.setItem('descricaoPersonagem', descricaoPersonagemInput.value);
+            localStorage.setItem('forca', forcaInput.value);
+            localStorage.setItem('destreza', destrezaInput.value);
+            localStorage.setItem('agilidade', agilidadeInput.value);
+            localStorage.setItem('inteligencia', inteligenciaInput.value);
+            localStorage.setItem('constituicao', constituicaoInput.value);
+            localStorage.setItem('experiencia', experienciaInput.value);
+            localStorage.setItem('armaDireitaNome', armaDireitaNomeInput.value);
+            localStorage.setItem('armaDireitaAtaque', armaDireitaAtaqueInput.value);
+            localStorage.setItem('armaDireitaAtaqueMagico', armaDireitaAtaqueMagicoInput.value);
+            localStorage.setItem('armaEsquerdaNome', armaEsquerdaNomeInput.value);
+            localStorage.setItem('armaEsquerdaAtaque', armaEsquerdaAtaqueInput.value);
+            localStorage.setItem('armaEsquerdaAtaqueMagico', armaEsquerdaAtaqueMagicoInput.value);
+            localStorage.setItem('vantagens', vantagensInput.value);
+            localStorage.setItem('magiasHabilidades', magiasHabilidadesInput.value);
+            localStorage.setItem('desvantagens', desvantagensInput.value);
+            localStorage.setItem('inventario', inventarioInput.value);
+        }
+
         function calcularNivel(xp) {
             let novoNivel = 0;
             for (let i = 0; i < nivelData.length; i++) {
@@ -767,6 +816,7 @@
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
             calcularAtributos();
+            salvarDados(); // Salva os atributos redefinidos
         }
 
         function recomecarFicha() {
@@ -784,11 +834,18 @@
             nomePersonagemTitulo.style.color = '#1C2526'; // Mantém a cor preta ao redefinir
             tituloMestre.style.display = 'none';
             vidaBase = 50;
+            armaDireitaNomeInput.value = '';
+            armaDireitaAtaqueInput.value = '0';
+            armaDireitaAtaqueMagicoInput.value = '0';
+            armaEsquerdaNomeInput.value = '';
+            armaEsquerdaAtaqueInput.value = '0';
+            armaEsquerdaAtaqueMagicoInput.value = '0';
             vantagensInput.value = '';
             magiasHabilidadesInput.value = '';
             desvantagensInput.value = '';
             inventarioInput.value = '';
             calcularAtributos();
+            localStorage.clear(); // Limpa o localStorage ao recomeçar
         }
 
         // Funções para expandir e minimizar as caixas de texto
@@ -800,6 +857,35 @@
             textarea.style.height = '100px';
         }
 
+        // Carrega os dados ao iniciar a página
+        carregarDados();
+
+        // Adiciona eventos para salvar os dados ao alterar os campos
+        nomePersonagemInput.addEventListener('input', salvarDados);
+        descricaoPersonagemInput.addEventListener('input', salvarDados);
+        forcaInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        destrezaInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        agilidadeInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        inteligenciaInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        constituicaoInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        experienciaInput.addEventListener('input', () => {
+            experiencia = parseInt(experienciaInput.value) || 0;
+            atualizarNivel();
+            calcularAtributos();
+            salvarDados();
+        });
+        armaDireitaNomeInput.addEventListener('input', salvarDados);
+        armaDireitaAtaqueInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        armaDireitaAtaqueMagicoInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        armaEsquerdaNomeInput.addEventListener('input', salvarDados);
+        armaEsquerdaAtaqueInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        armaEsquerdaAtaqueMagicoInput.addEventListener('input', () => { calcularAtributos(); salvarDados(); });
+        vantagensInput.addEventListener('input', salvarDados);
+        magiasHabilidadesInput.addEventListener('input', salvarDados);
+        desvantagensInput.addEventListener('input', salvarDados);
+        inventarioInput.addEventListener('input', salvarDados);
+
+        // Eventos para expandir/minimizar textareas
         vantagensInput.addEventListener('focus', () => expandirTextarea(vantagensInput));
         vantagensInput.addEventListener('blur', () => minimizarTextarea(vantagensInput));
 
@@ -815,24 +901,8 @@
         inventarioInput.addEventListener('focus', () => expandirTextarea(inventarioInput));
         inventarioInput.addEventListener('blur', () => minimizarTextarea(inventarioInput));
 
-        atributosInputs.forEach(input => {
-            input.addEventListener('input', calcularAtributos);
-        });
-
-        armaDireitaAtaqueInput.addEventListener('input', calcularAtributos);
-        armaEsquerdaAtaqueInput.addEventListener('input', calcularAtributos);
-        armaDireitaAtaqueMagicoInput.addEventListener('input', calcularAtributos);
-        armaEsquerdaAtaqueMagicoInput.addEventListener('input', calcularAtributos);
         resetPontosButton.addEventListener('click', resetarPontos);
         recomecarButton.addEventListener('click', recomecarFicha);
-        experienciaInput.addEventListener('input', () => {
-            experiencia = parseInt(experienciaInput.value) || 0;
-            atualizarNivel();
-            calcularAtributos();
-        });
-
-        calcularAtributos();
-        atualizarNivel();
     </script>
 </body>
 </html>
