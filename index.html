@@ -114,7 +114,7 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             width: 95%;
             max-width: 1200px;
-            margin: 80px auto 20px auto; /* Ajustado para não sobrepor as abas */
+            margin: 80px auto 20px auto;
             border: 2px solid #b8860b;
             position: relative;
         }
@@ -181,8 +181,8 @@
         }
 
         .atributos-coluna-destaque {
-            width: 48%;
-            background-color: #ffffff; /* Fundo branco */
+            width: 38%; /* Reduzido de 48% para 38%, cerca de 20% menor */
+            background-color: #ffffff;
             padding: 8px;
             border-radius: 6px;
             border: 1px solid #b8860b;
@@ -289,7 +289,7 @@
             left: 50%;
             transform: translate(-50%, 50%);
             font-family: 'MedievalSharp', serif;
-            font-size: 1.8rem;
+            font-size: 2rem; /* Aumentado para maior visibilidade */
             color: #000000;
             text-align: center;
         }
@@ -299,12 +299,12 @@
             background-color: #f0e6d2;
             border: 3px solid #000000;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
+            width: 80px; /* Aumentado de 60px para 80px */
+            height: 80px; /* Aumentado de 60px para 80px */
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2.5rem; /* Aumentado de 1.8rem para 2.5rem */
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             margin: 0 auto;
         }
@@ -314,9 +314,9 @@
         }
 
         @keyframes pulsar-aura {
-            0% { box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF; }
-            50% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-            100% { box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF; }
+            0% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
+            50% { box-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 50px #00BFFF; } /* Brilho maior */
+            100% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
         }
 
         .expandable-textarea {
@@ -1040,7 +1040,7 @@
                 nivelSpan.classList.add('aura-azul');
                 setTimeout(() => {
                     nivelSpan.classList.remove('aura-azul');
-                }, 20000); // 20 segundos
+                }, 20000);
             }
 
             calcularAtributos();
