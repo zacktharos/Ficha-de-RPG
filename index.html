@@ -124,15 +124,6 @@
             50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
         }
-        #titulo-mestre.aura-azul {
-            animation: aura-azul 2s infinite;
-            color: #00BFFF;
-        }
-        @keyframes aura-azul {
-            0% { text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-            50% { text-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 60px #00BFFF; }
-            100% { text-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-        }
         label {
             font-weight: 600;
             color: #000000;
@@ -577,6 +568,7 @@
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
+        /* Estilo para Locomoção */
         .locomotion-container {
             background-color: #8B4513;
             border: 3px solid #FFD700;
@@ -601,6 +593,7 @@
             color: #FFD700;
             margin-left: 5px;
         }
+        /* Estilo para Lista de Vantagens/Desvantagens */
         .list-display {
             background-color: #f8f8f8;
             border: 1px solid #b8860b;
@@ -771,6 +764,7 @@
         </div>
     </div>
 
+    <!-- Painel de Vantagens e Desvantagens -->
     <div id="vantagens-desvantagens-panel">
         <h2>Vantagens e Desvantagens</h2>
         <div id="vantagens-list"></div>
@@ -779,6 +773,7 @@
         <button id="fechar-pagina-btn">Fechar Página</button>
     </div>
 
+    <!-- Modais -->
     <div id="nome-ficha-modal" class="modal">
         <div class="modal-content">
             <h3>Dê um Nome à Ficha</h3>
@@ -808,7 +803,7 @@
 
     <div id="confirmar-compra-modal" class="modal">
         <div class="modal-content">
-            <h3>Tem certeza que quer executar essa função?</h3>
+            <h3>Tem certeza que quer comprar isso?</h3>
             <button class="confirm-btn" id="confirmar-compra-btn">Sim</button>
             <button class="cancel-btn" onclick="fecharModal('confirmar-compra-modal')">Não</button>
         </div>
@@ -835,13 +830,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "SuaApiKey",
-            authDomain: "SeuAuthDomain",
-            databaseURL: "SeuDatabaseURL",
-            projectId: "SeuProjectId",
-            storageBucket: "SeuStorageBucket",
-            messagingSenderId: "SeuMessagingSenderId",
-            appId: "SeuAppId"
+            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
+            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
+            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
+            projectId: "ficha-de-rpg-b9685",
+            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
+            messagingSenderId: "528610398062",
+            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -862,13 +857,51 @@
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
             { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "Adiciona +2 em ataque com armas pesadas." },
             { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "Adiciona +2 em acerto com armas de longo alcance." },
+            { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." },
+            { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." },
+            { nome: "Velejar (1)", custo: 1, descricao: "" },
+            { nome: "Beleza (1)", custo: 1, descricao: "Aumenta em +3 o teste em lábia, paquera e persuasão." },
+            { nome: "Boa Fama (2)", custo: 2, descricao: "Aumenta em +4 chance de descontos em armamentos, pousadas, alimentos, etc." },
+            { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." },
+            { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." },
+            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. É um talento excelente para identificar impostores, possessões por espirito, etc." },
+            { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." },
+            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." },
+            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É membro de uma raça, classe, sexo ou grupo muito respeitado, temido ou venerado pela sociedade. Adiciona +2 pontos o teste em lábia, paquera e persuasão." },
+            { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." },
+            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% a mais de dano e gasta 15% a menos de magia para toda vez que usa a magia que você tem aptidão." },
             { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem só pode ser comprada no início do jogo. Ao comprar essa vantagem, sua locomoção, altura do pulo e distância dobram.", restricao: "inicio" },
-            // Adicione outras vantagens conforme necessário
+            { nome: "Nadar (1)", custo: 1, descricao: "" },
+            { nome: "Escalar (2)", custo: 2, descricao: "" },
+            { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." },
+            { nome: "Paquerador (2)", custo: 2, descricao: "Adiciona +4 em teste para paquera e persuasão envolvendo flerte." },
+            { nome: "Senso de perigo (5)", custo: 5, descricao: "Sempre que houver algo grave para ocorrer o mestre do RPG pedirá pra você jogar um dado para reagir." },
+            { nome: "Acrobata (3)", custo: 3, descricao: "Adiciona + fama ao lutar em público." },
+            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "Adiciona +8 em testes de equilíbrio." },
+            { nome: "Tecnologia (2)", custo: 2, descricao: "Você é engenhoso, pode inventar coisas, criar objetos improvisados." },
+            { nome: "Poder Oculto (7)", custo: 7, descricao: "Quando sua vida estiver em 10%, você ativa o poder oculto aumentando todos seus atributos em 50%. Mas a partir do momento em que sua vida sai dos 10%, os atributos voltam ao normal." },
+            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Tem facilidade para achar cavernas, criar assentamentos, barracas, achar comida e gravar caminhos no meio da floresta. Facilidade para achar água, etc." }
         ];
 
         const desvantagensData = [
             { nome: "Fobia (+2)", ganho: 2, descricao: "Você tem um medo irracional de algo específico." },
-            // Adicione outras desvantagens conforme necessário
+            { nome: "Má Fama (+2)", ganho: 2, descricao: "Você é mal visto pela sociedade, dificultando interações sociais." },
+            { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Você tem uma dependência de álcool que afeta suas decisões." },
+            { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas e pouco se importa com fama ou riqueza." },
+            { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." },
+            { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos tanto em amigos quanto inimigos." },
+            { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo de forma literal e acredita que todos estão sempre falando sério." },
+            { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." },
+            { nome: "Covardia (+2)", ganho: 2, descricao: "Tem extremo cuidado com seu bem-estar físico e dificuldade em assumir riscos." },
+            { nome: "Dependentes (+4)", ganho: 4, descricao: "Possui alguém que depende de você a todo momento (filhos, parentes, entes queridos, etc.)." },
+            { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e partir para um ataque frenético, ativado por dano, insulto ou aleatoriamente." },
+            { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." },
+            { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." },
+            { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." },
+            { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em um nível alarmante." },
+            { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal (ex.: enfrentar um boss sozinho)." },
+            { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo e não segue planos que não sejam seus." },
+            { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
         ];
 
         function criarFichaMatriz() {
@@ -1125,6 +1158,9 @@
             armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || '0';
             magiasHabilidadesInput.value = ficha.magiasHabilidades || '';
             inventarioInput.value = ficha.inventario || 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n';
+            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || '25';
+            alturaPuloSpan.textContent = ficha.alturaPulo || '1';
+            distanciaPuloSpan.textContent = ficha.distanciaPulo || '3';
             isFichaLocked = ficha.isLocked || false;
             fichaPassword = ficha.password || null;
             isFichaUnlocked = false;
@@ -1241,11 +1277,9 @@
             if (nivel >= 30) {
                 nomePersonagemTitulo.style.color = '#FFD700';
                 tituloMestre.style.display = 'block';
-                tituloMestre.classList.add('aura-azul');
             } else {
                 nomePersonagemTitulo.style.color = '#1C2526';
                 tituloMestre.style.display = 'none';
-                tituloMestre.classList.remove('aura-azul');
             }
         }
 
@@ -1324,25 +1358,6 @@
             ataque += ataqueArmaDireita + ataqueArmaEsquerda;
             ataqueMagico += ataqueMagicoArmaDireita + ataqueMagicoArmaEsquerda;
 
-            // Cálculo dos valores base de locomoção
-            const bonusVelocidade = Math.floor(agilidade / 3) * 3;
-            const velocidadeCorridaBase = 25 + bonusVelocidade;
-            const bonusAlturaPulo = Math.floor(forca / 10);
-            const alturaPuloBase = 1 + bonusAlturaPulo;
-            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
-            const distanciaPuloBase = 3 + bonusDistanciaPulo;
-
-            // Aplicação do multiplicador da vantagem "Combo Físico (4)"
-            let multiplicador = 1;
-            if (vantagensSelecionadas.includes("Combo Físico (4)")) {
-                multiplicador = 2;
-            }
-
-            velocidadeCorridaSpan.textContent = (velocidadeCorridaBase * multiplicador).toString();
-            alturaPuloSpan.textContent = (alturaPuloBase * multiplicador).toString();
-            distanciaPuloSpan.textContent = (distanciaPuloBase * multiplicador).toString();
-
-            // Aplicação de bônus de outras vantagens
             vantagensSelecionadas.forEach(vantagem => {
                 if (vantagem === "Maestria com Armas curtas (2)") {
                     ataque += 1;
@@ -1351,6 +1366,10 @@
                     ataque += 2;
                 } else if (vantagem === "Maestria com armas de longo alcance (2)") {
                     acerto += 2;
+                } else if (vantagem === "Combo Físico (4)") {
+                    velocidadeCorridaSpan.textContent = (parseInt(velocidadeCorridaSpan.textContent) * 2).toString();
+                    alturaPuloSpan.textContent = (parseInt(alturaPuloSpan.textContent) * 2).toString();
+                    distanciaPuloSpan.textContent = (parseInt(distanciaPuloSpan.textContent) * 2).toString();
                 }
             });
 
@@ -1363,6 +1382,17 @@
             vidaSpan.textContent = Math.ceil(vidaBase);
             magiaSpan.textContent = Math.ceil(magiaBase);
             vigorSpan.textContent = vigorBase.toFixed(1);
+
+            const bonusVelocidade = Math.floor(agilidade / 3) * 3;
+            const velocidadeCorrida = 25 + bonusVelocidade;
+            const bonusAlturaPulo = Math.floor(forca / 10);
+            const alturaPulo = 1 + bonusAlturaPulo;
+            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
+            const distanciaPulo = 3 + bonusDistanciaPulo;
+
+            velocidadeCorridaSpan.textContent = velocidadeCorrida;
+            alturaPuloSpan.textContent = alturaPulo;
+            distanciaPuloSpan.textContent = distanciaPulo;
 
             const atributosDestaque = [
                 { span: ataqueSpan, valor: ataque },
@@ -1394,16 +1424,15 @@
                 return;
             }
 
-            document.getElementById('confirmar-compra-modal').style.display = 'flex';
-            document.getElementById('confirmar-compra-btn').onclick = () => {
-                atributosInputs.forEach(input => input.value = 0);
-                pontosHabilidadeUsados = 0;
-                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                calcularAtributos();
-                pontosVantagemSpan.textContent = getPontosVantagem();
-                salvarDados();
-                fecharModal('confirmar-compra-modal');
-            };
+            atributosInputs.forEach(input => input.value = 0);
+            pontosHabilidadeUsados = 0;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+            velocidadeCorridaSpan.textContent = '25';
+            alturaPuloSpan.textContent = '1';
+            distanciaPuloSpan.textContent = '3';
+            calcularAtributos();
+            pontosVantagemSpan.textContent = getPontosVantagem();
+            salvarDados();
         }
 
         function recomecarFicha() {
@@ -1412,40 +1441,38 @@
                 return;
             }
 
-            document.getElementById('confirmar-compra-modal').style.display = 'flex';
-            document.getElementById('confirmar-compra-btn').onclick = () => {
-                atributosInputs.forEach(input => input.value = 0);
-                pontosHabilidadeUsados = 0;
-                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                nomePersonagemInput.value = '';
-                descricaoPersonagemInput.value = '';
-                experienciaInput.value = 0;
-                nivel = 0;
-                pontosHabilidadeTotal = nivelData[nivel].pd;
-                nivelSpan.textContent = nivel;
-                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                nomePersonagemTitulo.style.color = '#1C2526';
-                tituloMestre.style.display = 'none';
-                vidaBase = 50;
-                armaDireitaNomeInput.value = '';
-                armaDireitaAtaqueInput.value = '0';
-                armaDireitaAtaqueMagicoInput.value = '0';
-                armaEsquerdaNomeInput.value = '';
-                armaEsquerdaAtaqueInput.value = '0';
-                armaEsquerdaAtaqueMagicoInput.value = '0';
-                magiasHabilidadesInput.value = '';
-                inventarioInput.value = 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n';
-                characterImage.style.display = 'none';
-                characterImage.src = '';
-                vantagensSelecionadas = [];
-                desvantagensSelecionadas = [];
-                vantagensListDisplay.innerHTML = '';
-                desvantagensListDisplay.innerHTML = '';
-                calcularAtributos();
-                pontosVantagemSpan.textContent = getPontosVantagem();
-                salvarDados();
-                fecharModal('confirmar-compra-modal');
-            };
+            resetarPontos();
+            nomePersonagemInput.value = '';
+            descricaoPersonagemInput.value = '';
+            experienciaInput.value = 0;
+            nivel = 0;
+            pontosHabilidadeTotal = nivelData[nivel].pd;
+            pontosHabilidadeUsados = 0;
+            nivelSpan.textContent = nivel;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+            velocidadeCorridaSpan.textContent = '25';
+            alturaPuloSpan.textContent = '1';
+            distanciaPuloSpan.textContent = '3';
+            nomePersonagemTitulo.style.color = '#1C2526';
+            tituloMestre.style.display = 'none';
+            vidaBase = 50;
+            armaDireitaNomeInput.value = '';
+            armaDireitaAtaqueInput.value = '0';
+            armaDireitaAtaqueMagicoInput.value = '0';
+            armaEsquerdaNomeInput.value = '';
+            armaEsquerdaAtaqueInput.value = '0';
+            armaEsquerdaAtaqueMagicoInput.value = '0';
+            magiasHabilidadesInput.value = '';
+            inventarioInput.value = 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n';
+            characterImage.style.display = 'none';
+            characterImage.src = '';
+            vantagensSelecionadas = [];
+            desvantagensSelecionadas = [];
+            vantagensListDisplay.innerHTML = '';
+            desvantagensListDisplay.innerHTML = '';
+            calcularAtributos();
+            pontosVantagemSpan.textContent = getPontosVantagem();
+            salvarDados();
         }
 
         bloquearFichaButton.onclick = () => {
@@ -1722,7 +1749,7 @@
                         tempVantagensSelecionadas = tempVantagensSelecionadas.filter(v => v !== vantagem.nome);
                     } else {
                         if (vantagem.restricao === 'inicio' && nivel > 0) {
-                            alert('A compra dessa vantagem é somente no nível 0!');
+                            alert('Essa vantagem só pode ser comprada no início do jogo (Nível 0)!');
                             return;
                         }
                         const pontosAtuais = calcularPontosVantagemTemp();
