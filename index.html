@@ -254,9 +254,9 @@
         }
         #nivel-container {
             position: absolute;
-            bottom: 50%;
+            bottom: 50px;
             left: 50%;
-            transform: translate(-50%, 50%);
+            transform: translate(-50%, 0%);
             font-family: 'MedievalSharp', serif;
             font-size: 2rem;
             color: #000000;
@@ -568,7 +568,6 @@
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
-        /* Estilo para Locomoção */
         .locomotion-container {
             background-color: #e0e0e0;
             border: 2px solid #b8860b;
@@ -591,7 +590,6 @@
             color: #a0522d;
             margin-left: 5px;
         }
-        /* Estilo para Lista de Vantagens/Desvantagens */
         .list-display {
             background-color: #f8f8f8;
             border: 1px solid #b8860b;
@@ -610,6 +608,28 @@
         .list-item:hover {
             background-color: #e0e0e0;
         }
+        body.modo-noturno {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            background-image: url('noite_background.jpg');
+        }
+        .modo-noturno #ficha-container {
+            background-color: rgba(30, 30, 30, 0.95);
+            border-color: #ffd700;
+        }
+        .modo-noturno .ficha-tab {
+            background-color: #333333;
+            border-color: #ffd700;
+        }
+        .modo-noturno .ficha-tab:hover,
+        .modo-noturno .ficha-tab.active {
+            background-color: #ffd700;
+            color: #000000;
+        }
+        .modo-noturno #nivel {
+            background-color: #333333;
+            border-color: #ffd700;
+        }
     </style>
 </head>
 <body>
@@ -618,6 +638,9 @@
     </div>
 
     <div id="ficha-container">
+        <div id="modo-noturno-btn" style="position: absolute; top: 10px; right: 10px; cursor: pointer;">
+            <span id="icone-modo">☀️</span>
+        </div>
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
         <div id="titulo-mestre" style="display: none;">Você virou o Game Master</div>
         <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
@@ -826,13 +849,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
-            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
-            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
-            projectId: "ficha-de-rpg-b9685",
-            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
-            messagingSenderId: "528610398062",
-            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
+            apiKey: "Sua-API-Key",
+            authDomain: "Seu-Dominio.firebaseapp.com",
+            databaseURL: "Sua-URL-do-Database",
+            projectId: "Seu-Project-ID",
+            storageBucket: "Seu-Storage-Bucket.appspot.com",
+            messagingSenderId: "Seu-Messaging-Sender-ID",
+            appId: "Seu-App-ID"
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -860,44 +883,44 @@
             { nome: "Boa Fama (2)", custo: 2, descricao: "Aumenta em +4 chance de descontos em armamentos, pousadas, alimentos, etc." },
             { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." },
             { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." },
-            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. É um talento excelente para identificar impostores, possessões por espirito, etc." },
+            { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas." },
             { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." },
-            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." },
-            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É membro de uma raça, classe, sexo ou grupo muito respeitado, temido ou venerado pela sociedade. Adiciona +2 pontos o teste em lábia, paquera e persuasão." },
+            { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor ou organização que oferece ajuda." },
+            { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É respeitado pela sociedade, +2 em testes sociais." },
             { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." },
-            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% a mais de dano e gasta 15% a menos de magia para toda vez que usa a magia que você tem aptidão." },
-            { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem só pode ser comprada no início do jogo. Ao comprar essa vantagem, sua locomoção, altura do pulo e distância dobram.", restricao: "inicio" },
+            { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% de dano e reduz 15% do custo de magia." },
+            { nome: "Combo Físico (4)", custo: 4, descricao: "Dobra locomoção, altura e distância de pulo (só no início).", restricao: "inicio" },
             { nome: "Nadar (1)", custo: 1, descricao: "" },
             { nome: "Escalar (2)", custo: 2, descricao: "" },
             { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." },
-            { nome: "Paquerador (2)", custo: 2, descricao: "Adiciona +4 em teste para paquera e persuasão envolvendo flerte." },
-            { nome: "Senso de perigo (5)", custo: 5, descricao: "Sempre que houver algo grave para ocorrer o mestre do RPG pedirá pra você jogar um dado para reagir." },
-            { nome: "Acrobata (3)", custo: 3, descricao: "Adiciona + fama ao lutar em público." },
-            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "Adiciona +8 em testes de equilíbrio." },
-            { nome: "Tecnologia (2)", custo: 2, descricao: "Você é engenhoso, pode inventar coisas, criar objetos improvisados." },
-            { nome: "Poder Oculto (7)", custo: 7, descricao: "Quando sua vida estiver em 10%, você ativa o poder oculto aumentando todos seus atributos em 50%. Mas a partir do momento em que sua vida sai dos 10%, os atributos voltam ao normal." },
-            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Tem facilidade para achar cavernas, criar assentamentos, barracas, achar comida e gravar caminhos no meio da floresta. Facilidade para achar água, etc." }
+            { nome: "Paquerador (2)", custo: 2, descricao: "+4 em testes de paquera e persuasão." },
+            { nome: "Senso de perigo (5)", custo: 5, descricao: "Detecta perigos iminentes com um teste." },
+            { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." },
+            { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." },
+            { nome: "Tecnologia (2)", custo: 2, descricao: "Habilidade para inventar e criar objetos." },
+            { nome: "Poder Oculto (7)", custo: 7, descricao: "Ativa +50% nos atributos com 10% de vida." },
+            { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade em florestas." }
         ];
 
         const desvantagensData = [
-            { nome: "Fobia (+2)", ganho: 2, descricao: "Você tem um medo irracional de algo específico." },
-            { nome: "Má Fama (+2)", ganho: 2, descricao: "Você é mal visto pela sociedade, dificultando interações sociais." },
-            { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Você tem uma dependência de álcool que afeta suas decisões." },
-            { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas e pouco se importa com fama ou riqueza." },
-            { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." },
-            { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos tanto em amigos quanto inimigos." },
-            { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo de forma literal e acredita que todos estão sempre falando sério." },
-            { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." },
-            { nome: "Covardia (+2)", ganho: 2, descricao: "Tem extremo cuidado com seu bem-estar físico e dificuldade em assumir riscos." },
-            { nome: "Dependentes (+4)", ganho: 4, descricao: "Possui alguém que depende de você a todo momento (filhos, parentes, entes queridos, etc.)." },
-            { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e partir para um ataque frenético, ativado por dano, insulto ou aleatoriamente." },
-            { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." },
-            { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." },
+            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico." },
+            { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade." },
+            { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool." },
+            { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica pelos outros." },
+            { nome: "Avareza (+2)", ganho: 2, descricao: "Obcecado por riquezas." },
+            { nome: "Bullying (+3)", ganho: 3, descricao: "Provoca amigos e inimigos." },
+            { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas." },
+            { nome: "Compulsões (+3)", ganho: 3, descricao: "Vício que consome recursos." },
+            { nome: "Covardia (+2)", ganho: 2, descricao: "Evita riscos físicos." },
+            { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você." },
+            { nome: "Fúria (+2)", ganho: 2, descricao: "Perde o controle facilmente." },
+            { nome: "Honestidade (+3)", ganho: 3, descricao: "Sempre fala a verdade." },
+            { nome: "Impulsividade (+2)", ganho: 2, descricao: "Age sem pensar." },
             { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." },
-            { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em um nível alarmante." },
-            { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal (ex.: enfrentar um boss sozinho)." },
-            { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo e não segue planos que não sejam seus." },
-            { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
+            { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Atrai eventos estranhos." },
+            { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremos." },
+            { nome: "Teimosia (+1)", ganho: 1, descricao: "Faz tudo do seu jeito." },
+            { nome: "Amnésia (+2)", ganho: 2, descricao: "Esquece coisas importantes." }
         ];
 
         function criarFichaMatriz() {
@@ -1030,9 +1053,6 @@
                 carregarFicha(fichaId);
                 fecharModal('nome-ficha-modal');
                 atualizarAbasFichas();
-            }).catch((error) => {
-                console.error('Erro ao criar nova ficha:', error);
-                alert('Ocorreu um erro ao criar a ficha. Tente novamente.');
             });
         }
 
@@ -1315,7 +1335,7 @@
             let pontosUsados = forca + destreza + agilidade + inteligencia + constituicao;
 
             if (pontosUsados > pontosHabilidadeTotal) {
-                alert('Você não tem pontos de habilidade suficientes! Reduzindo os atributos para o limite disponível.');
+                alert('Pontos de habilidade insuficientes! Ajustando ao limite.');
                 let excedente = pontosUsados - pontosHabilidadeTotal;
                 while (excedente > 0) {
                     if (inteligencia > 0) { inteligencia--; excedente--; inteligenciaInput.value = inteligencia; }
@@ -1499,9 +1519,6 @@
                 fecharModal('bloquear-ficha-modal');
                 alert('Ficha bloqueada com sucesso!');
                 atualizarBotaoBloquear();
-            }).catch((error) => {
-                console.error('Erro ao bloquear ficha:', error);
-                alert('Ocorreu um erro ao bloquear a ficha. Tente novamente.');
             });
         }
 
@@ -1526,9 +1543,6 @@
                         alert('Ficha desbloqueada com sucesso!');
                         atualizarBotaoBloquear();
                         salvarDados();
-                    }).catch((error) => {
-                        console.error('Erro ao desbloquear ficha:', error);
-                        alert('Ocorreu um erro ao desbloquear a ficha. Tente novamente.');
                     });
                 } else {
                     fecharModal('password-modal');
@@ -1837,6 +1851,14 @@
         }
 
         criarFichaMatriz();
+
+        const modoNoturnoBtn = document.getElementById('modo-noturno-btn');
+        const iconeModo = document.getElementById('icone-modo');
+
+        modoNoturnoBtn.onclick = () => {
+            document.body.classList.toggle('modo-noturno');
+            iconeModo.textContent = document.body.classList.contains('modo-noturno') ? '🌙' : '☀️';
+        };
     </script>
 </body>
 </html>
