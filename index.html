@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Cinzel&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
@@ -20,6 +20,15 @@
             background-image: url('medieval_background.jpg');
             background-size: cover;
             background-position: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        body.tema-claro {
+            background-color: #f5f5f5;
+            color: #000000;
+        }
+        body.tema-escuro {
+            background-color: #000000;
+            color: #ffffff;
         }
         #fichas-sidebar {
             width: 100%;
@@ -238,6 +247,21 @@
         .botao-recomecar:hover { background-color: #8b0000; transform: translateY(-2px); }
         .botao-bloquear, .botao-desbloquear { background-color: #4a4a4a; }
         .botao-bloquear:hover, .botao-desbloquear:hover { background-color: #2a2a2a; transform: translateY(-2px); }
+        .botao-tema {
+            padding: 8px;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            background-color: #f0e6d2;
+            border: 2px solid #b8860b;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .botao-tema:hover {
+            background-color: #a0522d;
+            transform: scale(1.1);
+        }
         .botao-excluir { background-color: #a52a2a; position: absolute; bottom: 20px; left: 20px; }
         .botao-excluir:hover { background-color: #8b0000; transform: translateY(-2px); }
         #status-container {
@@ -254,25 +278,26 @@
         }
         #nivel-container {
             position: absolute;
-            bottom: 50%;
+            top: 25%;
             left: 50%;
-            transform: translate(-50%, 50%);
+            transform: translate(-50%, -50%);
             font-family: 'MedievalSharp', serif;
-            font-size: 2rem;
+            font-size: 4rem;
             color: #000000;
             text-align: center;
+            z-index: 5;
         }
         #nivel {
             padding: 10px;
             background-color: #f0e6d2;
             border: 3px solid #000000;
             border-radius: 50%;
-            width: 80px;
-            height: 80px;
+            width: 160px;
+            height: 160px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 5rem;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             margin: 0 auto;
         }
@@ -429,6 +454,7 @@
             width: 100%;
             height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
+           unas: 
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -570,12 +596,14 @@
         }
         /* Estilo para Locomoção */
         .locomotion-container {
-            background-color: #e0e0e0;
+            background-color: #f0e6d2;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
             border: 2px solid #b8860b;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            font-family: 'Cinzel', serif;
         }
         .locomotion-item {
             display: flex;
@@ -612,7 +640,7 @@
         }
     </style>
 </head>
-<body>
+<body class="tema-claro">
     <div id="fichas-sidebar">
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
@@ -626,8 +654,10 @@
         </div>
         <div id="dice-container">
             <label>Role seu dado:</label>
-            <div id="dice-roll">-</div>
-            <div id="dice-result"></div>
+            <div id Stories">
+                <div id="dice-roll">-</div>
+                <div id="dice-result"></div>
+            </div>
         </div>
 
         <div id="ficha-content">
@@ -753,6 +783,8 @@
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
+                <button id="tema-sol" class="botao-tema">☀️</button>
+                <button id="tema-lua" class="botao-tema">🌙</button>
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
@@ -1090,6 +1122,8 @@
         const desvantagensList = document.getElementById('desvantagens-list');
         const salvarVantagensBtn = document.getElementById('salvar-vantagens-btn');
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
+        const temaSolBtn = document.getElementById('tema-sol');
+        const temaLuaBtn = document.getElementById('tema-lua');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1835,6 +1869,17 @@
                 };
             }
         }
+
+        // Funções de Tema Claro/Escuro
+        temaSolBtn.onclick = () => {
+            document.body.classList.remove('tema-escuro');
+            document.body.classList.add('tema-claro');
+        };
+
+        temaLuaBtn.onclick = () => {
+            document.body.classList.remove('tema-claro');
+            document.body.classList.add('tema-escuro');
+        };
 
         criarFichaMatriz();
     </script>
