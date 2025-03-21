@@ -109,6 +109,15 @@
             border: 2px solid #b8860b;
             position: relative;
         }
+        #ficha-container.aura-azul {
+            box-shadow: 0 0 30px 15px #00BFFF;
+            animation: pulsar-aura 2s infinite;
+        }
+        @keyframes pulsar-aura {
+            0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
+            50% { box-shadow: 0 0 30px #00BFFF, 0 0 50px #00BFFF, 0 0 60px #00BFFF; }
+            100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
+        }
         h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif;
             color: #1C2526;
@@ -123,6 +132,14 @@
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
             50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
+        }
+        #game-master-message {
+            display: none;
+            color: blue;
+            font-size: 1.5rem;
+            text-align: center;
+            font-family: 'MedievalSharp', serif;
+            margin-bottom: 10px;
         }
         label {
             font-weight: 600;
@@ -278,11 +295,6 @@
         }
         #nivel.aura-azul {
             animation: pulsar-aura 2s 10;
-        }
-        @keyframes pulsar-aura {
-            0% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
-            50% { box-shadow: 0 0 20px #00BFFF, 0 0 40px #00BFFF, 0 0 50px #00BFFF; }
-            100% { box-shadow: 0 0 10px #00BFFF, 0 0 20px #00BFFF, 0 0 30px #00BFFF; }
         }
         .expandable-textarea {
             height: 100px;
@@ -621,7 +633,7 @@
 
     <div id="ficha-container">
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
-        <div id="titulo-mestre" style="display: none;">Você virou o Game Master</div>
+        <div id="game-master-message">Você virou o Game Master</div>
         <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
             <img id="character-image" alt="Imagem do Personagem">
             <input type="file" id="character-image-input" accept="image/*" style="display: none;">
@@ -870,7 +882,7 @@
             { nome: "Reconhecimento Social (2)", custo: 2, descricao: "É membro de uma raça, classe, sexo ou grupo muito respeitado, temido ou venerado pela sociedade. Adiciona +2 pontos o teste em lábia, paquera e persuasão." },
             { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." },
             { nome: "Aptidão para magia (4)", custo: 4, descricao: "Adiciona 15% a mais de dano e gasta 15% a menos de magia para toda vez que usa a magia que você tem aptidão." },
-            { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem só pode ser comprada no início do jogo. Ao comprar essa vantagem, sua locomoção, altura do pulo e distância dobram.", restricao: "inicio" },
+            { nome: "Combo Físico (4)", custo: 4, descricao: "Essa vantagem lhe concede começar sua locomoção com 50km velocidade corrida, pulo de 3 metros de altura e 9 metros de distância.", restricao: "inicio" },
             { nome: "Nadar (1)", custo: 1, descricao: "" },
             { nome: "Escalar (2)", custo: 2, descricao: "" },
             { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." },
@@ -1077,7 +1089,7 @@
         const alturaPuloSpan = document.getElementById('altura-pulo');
         const distanciaPuloSpan = document.getElementById('distancia-pulo');
         const nomePersonagemTitulo = document.getElementById('nome-personagem-titulo');
-        const tituloMestre = document.getElementById('titulo-mestre');
+        const gameMasterMessage = document.getElementById('game-master-message');
         const vantagensListDisplay = document.getElementById('vantagens-list-display');
         const desvantagensListDisplay = document.getElementById('desvantagens-list-display');
         const magiasHabilidadesInput = document.getElementById('magias-habilidades');
@@ -1094,6 +1106,7 @@
         const desvantagensList = document.getElementById('desvantagens-list');
         const salvarVantagensBtn = document.getElementById('salvar-vantagens-btn');
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
+        const fichaContainer = document.getElementById('ficha-container');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1273,14 +1286,15 @@
                 }, 20000);
             }
 
-            calcularAtributos();
             if (nivel >= 30) {
-                nomePersonagemTitulo.style.color = '#FFD700';
-                tituloMestre.style.display = 'block';
+                gameMasterMessage.style.display = 'block';
+                fichaContainer.classList.add('aura-azul');
             } else {
-                nomePersonagemTitulo.style.color = '#1C2526';
-                tituloMestre.style.display = 'none';
+                gameMasterMessage.style.display = 'none';
+                fichaContainer.classList.remove('aura-azul');
             }
+
+            calcularAtributos();
         }
 
         function getPontosVantagem() {
@@ -1358,6 +1372,23 @@
             ataque += ataqueArmaDireita + ataqueArmaEsquerda;
             ataqueMagico += ataqueMagicoArmaDireita + ataqueMagicoArmaEsquerda;
 
+            const bonusVelocidade = Math.floor(agilidade / 3) * 3;
+            const velocidadeCorridaBase = 25 + bonusVelocidade;
+            const bonusAlturaPulo = Math.floor(forca / 10);
+            const alturaPuloBase = 1 + bonusAlturaPulo;
+            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
+            const distanciaPuloBase = 3 + bonusDistanciaPulo;
+
+            if (vantagensSelecionadas.includes("Combo Físico (4)")) {
+                velocidadeCorridaSpan.textContent = '50';
+                alturaPuloSpan.textContent = '3';
+                distanciaPuloSpan.textContent = '9';
+            } else {
+                velocidadeCorridaSpan.textContent = velocidadeCorridaBase;
+                alturaPuloSpan.textContent = alturaPuloBase;
+                distanciaPuloSpan.textContent = distanciaPuloBase;
+            }
+
             vantagensSelecionadas.forEach(vantagem => {
                 if (vantagem === "Maestria com Armas curtas (2)") {
                     ataque += 1;
@@ -1366,10 +1397,6 @@
                     ataque += 2;
                 } else if (vantagem === "Maestria com armas de longo alcance (2)") {
                     acerto += 2;
-                } else if (vantagem === "Combo Físico (4)") {
-                    velocidadeCorridaSpan.textContent = (parseInt(velocidadeCorridaSpan.textContent) * 2).toString();
-                    alturaPuloSpan.textContent = (parseInt(alturaPuloSpan.textContent) * 2).toString();
-                    distanciaPuloSpan.textContent = (parseInt(distanciaPuloSpan.textContent) * 2).toString();
                 }
             });
 
@@ -1382,17 +1409,6 @@
             vidaSpan.textContent = Math.ceil(vidaBase);
             magiaSpan.textContent = Math.ceil(magiaBase);
             vigorSpan.textContent = vigorBase.toFixed(1);
-
-            const bonusVelocidade = Math.floor(agilidade / 3) * 3;
-            const velocidadeCorrida = 25 + bonusVelocidade;
-            const bonusAlturaPulo = Math.floor(forca / 10);
-            const alturaPulo = 1 + bonusAlturaPulo;
-            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
-            const distanciaPulo = 3 + bonusDistanciaPulo;
-
-            velocidadeCorridaSpan.textContent = velocidadeCorrida;
-            alturaPuloSpan.textContent = alturaPulo;
-            distanciaPuloSpan.textContent = distanciaPulo;
 
             const atributosDestaque = [
                 { span: ataqueSpan, valor: ataque },
@@ -1453,8 +1469,6 @@
             velocidadeCorridaSpan.textContent = '25';
             alturaPuloSpan.textContent = '1';
             distanciaPuloSpan.textContent = '3';
-            nomePersonagemTitulo.style.color = '#1C2526';
-            tituloMestre.style.display = 'none';
             vidaBase = 50;
             armaDireitaNomeInput.value = '';
             armaDireitaAtaqueInput.value = '0';
@@ -1586,8 +1600,17 @@
             input.oninput = () => salvarDados();
         });
 
-        resetPontosButton.onclick = resetarPontos;
-        recomecarButton.onclick = recomecarFicha;
+        resetPontosButton.onclick = () => {
+            if (confirm('Tem certeza que quer executar essa função?')) {
+                resetarPontos();
+            }
+        };
+
+        recomecarButton.onclick = () => {
+            if (confirm('Tem certeza que quer executar essa função?')) {
+                recomecarFicha();
+            }
+        };
 
         characterImageInput.onchange = (e) => {
             const file = e.target.files[0];
@@ -1749,7 +1772,7 @@
                         tempVantagensSelecionadas = tempVantagensSelecionadas.filter(v => v !== vantagem.nome);
                     } else {
                         if (vantagem.restricao === 'inicio' && nivel > 0) {
-                            alert('Essa vantagem só pode ser comprada no início do jogo (Nível 0)!');
+                            alert('A compra dessa vantagem é somente no nível 0.');
                             return;
                         }
                         const pontosAtuais = calcularPontosVantagemTemp();
