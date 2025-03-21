@@ -195,13 +195,12 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
+            width Revolving Doorwidth: 100%;
         }
         .atributo-destaque label {
             font-size: 1.1rem;
             font-weight: 700;
             color: #a0522d;
-            margin-right: 20px; /* Adicionado para espaçar os valores */
         }
         .atributo-destaque span {
             font-size: 1.2rem;
@@ -500,8 +499,7 @@
             font-family: 'MedievalSharp', serif;
             color: white;
             cursor: pointer;
-            display: inline-block; /* Botões lado a lado */
-            margin: 5px; /* Espaçamento entre botões */
+            margin: 0 5px;
         }
         .modal-content .confirm-btn {
             background-color: #b8860b;
@@ -1277,7 +1275,7 @@
             vidaAtual = vidaTotal;
             magiaAtual = magiaTotal;
             vigorAtual = vigorTotal;
-            document.getElementById('vidaλλ-atual').textContent = vidaAtual;
+            document.getElementById('vida-atual').textContent = vidaAtual;
             document.getElementById('magia-atual').textContent = magiaAtual;
             document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
             pontosVantagemSpan.textContent = getPontosVantagem();
@@ -1507,7 +1505,7 @@
                     acerto += 1;
                 } else if (vantagem === "Maestria com armas pesadas (2)") {
                     ataque += 2;
-                } else if (vaincludes("Maestria com armas de longo alcance (2)") {
+                } else if (vantagem === "Maestria com armas de longo alcance (2)") {
                     acerto += 2;
                 }
             });
@@ -2012,52 +2010,6 @@
         };
 
         criarFichaMatriz();
-
-        // Funcionalidade de segurar as flechinhas para vida, magia e vigor
-        let intervalId;
-
-        function startIncreasing(func) {
-            func();
-            intervalId = setInterval(func, 100);
-        }
-
-        function stopIncreasing() {
-            clearInterval(intervalId);
-        }
-
-        // Vida
-        document.querySelectorAll('.vida-magia-vigor .valor-atual button').forEach(button => {
-            button.onmousedown = () => {
-                const func = button.textContent === '▲' ? aumentarVida : diminuirVida;
-                startIncreasing(func);
-            };
-            button.onmouseup = stopIncreasing;
-            button.onmouseleave = stopIncreasing;
-        });
-
-        // Magia
-        document.querySelectorAll('.vida-magia-vigor .valor-atual button').forEach(button => {
-            if (button.parentElement.querySelector('span').id === 'magia-atual') {
-                button.onmousedown = () => {
-                    const func = button.textContent === '▲' ? aumentarMagia : diminuirMagia;
-                    startIncreasing(func);
-                };
-                button.onmouseup = stopIncreasing;
-                button.onmouseleave = stopIncreasing;
-            }
-        });
-
-        // Vigor
-        document.querySelectorAll('.vida-magia-vigor .valor-atual button').forEach(button => {
-            if (button.parentElement.querySelector('span').id === 'vigor-atual') {
-                button.onmousedown = () => {
-                    const func = button.textContent === '▲' ? aumentarVigor : diminuirVigor;
-                    startIncreasing(func);
-                };
-                button.onmouseup = stopIncreasing;
-                button.onmouseleave = stopIncreasing;
-            }
-        });
     </script>
 </body>
 </html>
