@@ -657,8 +657,16 @@
                         <span id="pontos-vantagem">5</span>
                     </div>
                     <div class="mb-4">
-                        <label>Locomoção (m):</label>
-                        <span id="locomocao">10</span>
+                        <label>Velocidade de Corrida (km/h):</label>
+                        <span id="velocidade-corrida">25</span>
+                    </div>
+                    <div class="mb-4">
+                        <label>Altura do Pulo (m):</label>
+                        <span id="altura-pulo">1</span>
+                    </div>
+                    <div class="mb-4">
+                        <label>Distância do Pulo (m):</label>
+                        <span id="distancia-pulo">3</span>
                     </div>
                     <div class="mb-4">
                         <label>Inventário:</label>
@@ -667,6 +675,14 @@
                 </div>
 
                 <div id="right-container">
+                    <div class="mb-4">
+                        <label>Classe:</label>
+                        <span id="classe"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label>Raça:</label>
+                        <span id="raca"></span>
+                    </div>
                     <div class="mb-4">
                         <label>Magias e Habilidades:</label>
                         <textarea id="magias-habilidades" class="expandable-textarea" placeholder="Digite as magias e habilidades"></textarea>
@@ -859,7 +875,9 @@
                 magiasHabilidades: '',
                 desvantagens: '',
                 inventario: 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n',
-                locomocao: '10',
+                velocidadeCorrida: '25',
+                alturaPulo: '1',
+                distanciaPulo: '3',
                 isLocked: true,
                 password: senhaMatriz,
                 imagem: null
@@ -952,7 +970,9 @@
                 magiasHabilidades: '',
                 desvantagens: '',
                 inventario: 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n',
-                locomocao: '10',
+                velocidadeCorrida: '25',
+                alturaPulo: '1',
+                distanciaPulo: '3',
                 isLocked: false,
                 password: null,
                 imagem: null
@@ -1002,7 +1022,9 @@
         const nivelSpan = document.getElementById('nivel');
         const pontosHabilidadeSpan = document.getElementById('pontos-habilidade');
         const pontosVantagemSpan = document.getElementById('pontos-vantagem');
-        const locomocaoSpan = document.getElementById('locomocao');
+        const velocidadeCorridaSpan = document.getElementById('velocidade-corrida');
+        const alturaPuloSpan = document.getElementById('altura-pulo');
+        const distanciaPuloSpan = document.getElementById('distancia-pulo');
         const nomePersonagemTitulo = document.getElementById('nome-personagem-titulo');
         const tituloMestre = document.getElementById('titulo-mestre');
         const vantagensInput = document.getElementById('vantagens');
@@ -1029,7 +1051,6 @@
         let pontosHabilidadeTotal = 25;
         let pontosHabilidadeUsados = 0;
         let pontosVantagem = 5;
-        let locomocaoBase = 10;
         let experiencia = 0;
         let vidaBase = 50;
 
@@ -1089,7 +1110,9 @@
             magiasHabilidadesInput.value = ficha.magiasHabilidades || '';
             desvantagensInput.value = ficha.desvantagens || '';
             inventarioInput.value = ficha.inventario || 'Slots\n1 - \n\n\n2 - \n\n\n3 - \n\n\n4 - \n\n\n5 - \n\n\n6 - \n\n\n7 - \n\n\n8 - \n\n\n9 - \n\n\n10 - \n\n';
-            locomocaoSpan.textContent = ficha.locomocao || '10';
+            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || '25';
+            alturaPuloSpan.textContent = ficha.alturaPulo || '1';
+            distanciaPuloSpan.textContent = ficha.distanciaPulo || '3';
             isFichaLocked = ficha.isLocked || false;
             fichaPassword = ficha.password || null;
             isFichaUnlocked = false;
@@ -1150,7 +1173,9 @@
                 magiasHabilidades: magiasHabilidadesInput.value,
                 desvantagens: desvantagensInput.value,
                 inventario: inventarioInput.value,
-                locomocao: locomocaoSpan.textContent,
+                velocidadeCorrida: velocidadeCorridaSpan.textContent,
+                alturaPulo: alturaPuloSpan.textContent,
+                distanciaPulo: distanciaPuloSpan.textContent,
                 imagem: characterImage.src || null
             };
 
@@ -1251,6 +1276,10 @@
                     ataque += 2;
                 } else if (vantagem === "Maestria com armas de longo alcance (2)") {
                     acerto += 2;
+                } else if (vantagem === "Combo Físico (4)") {
+                    velocidadeCorridaSpan.textContent = (parseInt(velocidadeCorridaSpan.textContent) * 2).toString();
+                    alturaPuloSpan.textContent = (parseInt(alturaPuloSpan.textContent) * 2).toString();
+                    distanciaPuloSpan.textContent = (parseInt(distanciaPuloSpan.textContent) * 2).toString();
                 }
             });
 
@@ -1263,6 +1292,18 @@
             vidaSpan.textContent = Math.ceil(vidaBase);
             magiaSpan.textContent = Math.ceil(magiaBase);
             vigorSpan.textContent = vigorBase.toFixed(1);
+
+            // Cálculo da locomoção
+            const bonusVelocidade = Math.floor(agilidade / 3) * 3;
+            const velocidadeCorrida = 25 + bonusVelocidade;
+            const bonusAlturaPulo = Math.floor(forca / 10);
+            const alturaPulo = 1 + bonusAlturaPulo;
+            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
+            const distanciaPulo = 3 + bonusDistanciaPulo;
+
+            velocidadeCorridaSpan.textContent = velocidadeCorrida;
+            alturaPuloSpan.textContent = alturaPulo;
+            distanciaPuloSpan.textContent = distanciaPulo;
 
             const atributosDestaque = [
                 { span: ataqueSpan, valor: ataque },
@@ -1301,7 +1342,9 @@
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagem = nivelData[nivel].ph;
             pontosVantagemSpan.textContent = pontosVantagem;
-            locomocaoSpan.textContent = locomocaoBase;
+            velocidadeCorridaSpan.textContent = '25';
+            alturaPuloSpan.textContent = '1';
+            distanciaPuloSpan.textContent = '3';
             calcularAtributos();
             salvarDados();
         }
@@ -1323,7 +1366,9 @@
             nivelSpan.textContent = nivel;
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
             pontosVantagemSpan.textContent = pontosVantagem;
-            locomocaoSpan.textContent = locomocaoBase;
+            velocidadeCorridaSpan.textContent = '25';
+            alturaPuloSpan.textContent = '1';
+            distanciaPuloSpan.textContent = '3';
             nomePersonagemTitulo.style.color = '#1C2526';
             tituloMestre.style.display = 'none';
             vidaBase = 50;
@@ -1620,19 +1665,18 @@
             }
 
             if (vantagensSelecionadas.includes(vantagem.nome)) {
-                // Tentar remover a vantagem
                 document.getElementById('senha-gm-modal').style.display = 'flex';
                 document.getElementById('senha-gm-input').value = '';
                 document.getElementById('confirmar-senha-gm-btn').onclick = () => {
                     const senha = document.getElementById('senha-gm-input').value;
-                    if (senha === senhaMatriz) { // Senha do GM é "777"
+                    if (senha === senhaMatriz) {
                         vantagensSelecionadas = vantagensSelecionadas.filter(v => v !== vantagem.nome);
-                        pontosVantagem += vantagem.custo; // Devolve os PH gastos
+                        pontosVantagem += vantagem.custo;
                         pontosVantagemSpan.textContent = pontosVantagem;
                         atualizarVantagensDesvantagensPanel();
                         fecharModal('senha-gm-modal');
                         document.getElementById('salvar-vantagens-btn').style.display = 'block';
-                        calcularAtributos(); // Recalcular atributos afetados
+                        calcularAtributos();
                     } else {
                         alert('Senha do GM incorreta!');
                         fecharModal('senha-gm-modal');
@@ -1650,7 +1694,7 @@
                     atualizarVantagensDesvantagensPanel();
                     fecharModal('confirmar-compra-modal');
                     document.getElementById('salvar-vantagens-btn').style.display = 'block';
-                    calcularAtributos(); // Recalcular atributos afetados
+                    calcularAtributos();
                 };
             } else {
                 alert('Pontos de Vantagem insuficientes!');
@@ -1659,14 +1703,13 @@
 
         function comprarDesvantagem(desvantagem) {
             if (desvantagensSelecionadas.includes(desvantagem.nome)) {
-                // Tentar remover a desvantagem
                 document.getElementById('senha-gm-modal').style.display = 'flex';
                 document.getElementById('senha-gm-input').value = '';
                 document.getElementById('confirmar-senha-gm-btn').onclick = () => {
                     const senha = document.getElementById('senha-gm-input').value;
-                    if (senha === senhaMatriz) { // Senha do GM é "777"
+                    if (senha === senhaMatriz) {
                         desvantagensSelecionadas = desvantagensSelecionadas.filter(d => d !== desvantagem.nome);
-                        pontosVantagem -= desvantagem.ganho; // Remove os PH ganhos
+                        pontosVantagem -= desvantagem.ganho;
                         pontosVantagemSpan.textContent = pontosVantagem;
                         atualizarVantagensDesvantagensPanel();
                         fecharModal('senha-gm-modal');
