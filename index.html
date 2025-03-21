@@ -195,7 +195,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
+            width Revolving Doorwidth: 100%;
         }
         .atributo-destaque label {
             font-size: 1.1rem;
@@ -206,7 +206,6 @@
             font-size: 1.2rem;
             font-family: 'MedievalSharp', serif;
             color: #000000;
-            padding-left: 8px; /* Desloca o número levemente para a direita */
         }
         .atributo-fogo {
             animation: fogo 1.5s infinite;
@@ -500,7 +499,7 @@
             font-family: 'MedievalSharp', serif;
             color: white;
             cursor: pointer;
-            margin: 0 25px; /* Aumentado de 15px para 25px */
+            margin: 0 5px;
         }
         .modal-content .confirm-btn {
             background-color: #b8860b;
@@ -649,10 +648,6 @@
         .list-item:hover {
             background-color: #e0e0e0;
         }
-        #anotacoes-panel {
-            background-image: url('https://www.transparenttextures.com/patterns/parchment.jpg');
-            background-size: cover;
-        }
     </style>
 </head>
 <body>
@@ -671,10 +666,6 @@
             <label>Role seu dado:</label>
             <div id="dice-roll">-</div>
             <div id="dice-result"></div>
-        </div>
-        <button id="anotacoes-btn" style="position: absolute; left: -40px; top: 50%; transform: translateY(-50%); padding: 10px; background-color: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px; font-family: 'MedievalSharp', serif; cursor: pointer;">📝 Anotações</button>
-        <div id="anotacoes-panel" style="display: none; position: absolute; left: -160px; top: 50%; transform: translateY(-50%); width: 10cm; height: 10cm; background-color: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);">
-            <textarea id="anotacoes-textarea" style="width: 100%; height: 100%; background-color: transparent; border: none; resize: none; font-family: 'MedievalSharp', serif; color: #000000;" placeholder="Suas anotações aqui..."></textarea>
         </div>
 
         <div id="ficha-content">
@@ -1017,8 +1008,7 @@
                 distanciaPulo: '3',
                 isLocked: true,
                 password: senhaMatriz,
-                imagem: null,
-                anotacoes: ''
+                imagem: null
             };
 
             database.ref('fichas/ficha-matriz').once('value', (snapshot) => {
@@ -1113,8 +1103,7 @@
                 distanciaPulo: '3',
                 isLocked: false,
                 password: null,
-                imagem: null,
-                anotacoes: ''
+                imagem: null
             };
 
             database.ref(`fichas/${fichaId}`).set(novaFicha).then(() => {
@@ -1180,9 +1169,6 @@
         const salvarVantagensBtn = document.getElementById('salvar-vantagens-btn');
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
         const fichaContainer = document.getElementById('ficha-container');
-        const anotacoesBtn = document.getElementById('anotacoes-btn');
-        const anotacoesPanel = document.getElementById('anotacoes-panel');
-        const anotacoesTextarea = document.getElementById('anotacoes-textarea');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1236,7 +1222,7 @@
             forcaInput.value = ficha.forca || '0';
             destrezaInput.value = ficha.destreza || '0';
             agilidadeInput.value = ficha.agilidade || '0';
-            inteligenciaInput.value = ficha.inteligencia || '0';
+            inteligenciaInput.value  = ficha.inteligencia || '0';
             constituicaoInput.value = ficha.constituicao || '0';
             experienciaInput.value = ficha.experiencia || '0';
             armaDireitaNomeInput.value = ficha.armaDireitaNome || '';
@@ -1293,7 +1279,6 @@
             document.getElementById('magia-atual').textContent = magiaAtual;
             document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
             pontosVantagemSpan.textContent = getPontosVantagem();
-            carregarAnotacoes();
         }
 
         function atualizarBotaoBloquear() {
@@ -1337,8 +1322,7 @@
                 velocidadeCorrida: velocidadeCorridaSpan.textContent,
                 alturaPulo: alturaPuloSpan.textContent,
                 distanciaPulo: distanciaPuloSpan.textContent,
-                imagem: characterImage.src || null,
-                anotacoes: anotacoesTextarea.value
+                imagem: characterImage.src || null
             };
 
             database.ref(`fichas/${currentFichaId}`).update(updates);
@@ -2024,34 +2008,6 @@
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
         };
-
-        anotacoesBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-            anotacoesPanel.style.display = 'block';
-            anotacoesTextarea.focus();
-        };
-
-        anotacoesTextarea.onblur = () => {
-            anotacoesPanel.style.display = 'none';
-            salvarAnotacoes();
-        };
-
-        function salvarAnotacoes() {
-            if (currentFichaId) {
-                database.ref(`fichas/${currentFichaId}/anotacoes`).set(anotacoesTextarea.value);
-            }
-        }
-
-        function carregarAnotacoes() {
-            if (fichas[currentFichaId] && fichas[currentFichaId].anotacoes) {
-                anotacoesTextarea.value = fichas[currentFichaId].anotacoes;
-            } else {
-                anotacoesTextarea.value = '';
-            }
-        }
 
         criarFichaMatriz();
     </script>
