@@ -300,16 +300,28 @@
         .botao-excluir { background-color: #a52a2a; position: absolute; bottom: 20px; left: 20px; }
         .botao-excluir:hover { background-color: #8b0000; transform: translateY(-2px); }
         #nivel-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        #nivel {
+            position: absolute;
+            bottom: calc(50% + 75px);
+            left: calc(50% - 37.5px);
+            transform: translate(-50%, 50%);
             font-family: 'MedievalSharp', serif;
             font-size: 2rem;
             color: #000000;
-            margin-left: 10px;
+            text-align: center;
+        }
+        #nivel {
+            padding: 10px;
+            background-color: #f0e6d2;
+            border: 3px solid #000000;
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.125rem;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            margin: 0 auto;
         }
         #nivel.aura-azul {
             animation: pulsar-aura 2s 10;
@@ -562,7 +574,12 @@
         .vantagem-item:hover, .desvantagem-item:hover {
             background-color: #f0e6d2;
         }
-        .vantagem-item.comprada, .desvantagem-item.comprada {
+        .vantagem-item.comprada {
+            background-color: #ffcccc;
+            color: #ff0000;
+            cursor: default;
+        }
+        .desvantagem-item.comprada {
             background-color: #ccffcc;
             color: #008000;
             cursor: default;
@@ -616,7 +633,7 @@
         }
         .locomotion-item span {
             font-size: 1.2rem;
-            color: #FFFFFF;
+            color: #FFD700;
             margin-left: 5px;
         }
         .list-display {
@@ -649,43 +666,6 @@
         .inventory-slot input[type="number"] {
             width: 60px;
         }
-        #anotacoes-btn {
-            position: fixed;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            padding: 10px 20px;
-            background-color: #f0e6d2;
-            border: 2px solid #b8860b;
-            border-radius: 0 6px 6px 0;
-            font-family: 'MedievalSharp', serif;
-            font-size: 1rem;
-            color: #000000;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        #anotacoes-panel {
-            position: fixed;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-            width: 100px;
-            height: 100px;
-            background-color: #f0e6d2;
-            border: 2px solid #b8860b;
-            border-radius: 0 6px 6px 0;
-            padding: 10px;
-            display: none;
-            z-index: 1000;
-        }
-        #anotacoes-textarea {
-            width: 100%;
-            height: 100%;
-            background-color: #fff;
-            border: none;
-            resize: none;
-            font-size: 0.9rem;
-        }
         @media (max-width: 768px) {
             body { padding: 10px; }
             #ficha-container { padding: 15px; }
@@ -716,6 +696,7 @@
         </div>
 
         <div id="ficha-content">
+            <!-- Informações Básicas -->
             <section id="informacoes-basicas">
                 <h2>Informações Básicas</h2>
                 <label for="nome-personagem">Nome do Personagem:</label>
@@ -724,6 +705,7 @@
                 <textarea id="descricao-personagem" placeholder="Digite a descrição do seu personagem"></textarea>
             </section>
 
+            <!-- Recursos -->
             <section id="recursos">
                 <h2>Recursos</h2>
                 <div class="vida-magia-vigor">
@@ -775,6 +757,7 @@
                 </div>
             </section>
 
+            <!-- Atributos -->
             <section id="atributos">
                 <h2>Atributos</h2>
                 <div class="atributos-container">
@@ -796,6 +779,7 @@
                 </div>
             </section>
 
+            <!-- Combate -->
             <section id="combate">
                 <h2>Combate</h2>
                 <div class="armamento-container">
@@ -818,6 +802,7 @@
                 </div>
             </section>
 
+            <!-- Inventário e Habilidades -->
             <section id="inventario-habilidades">
                 <h2>Inventário e Habilidades</h2>
                 <div class="flex gap-20">
@@ -839,16 +824,8 @@
                     <div style="width: 50%;">
                         <label>Magias e Habilidades:</label>
                         <div id="magias-list">
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 1" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 2" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 3" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 4" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 5" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 6" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 7" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 8" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 9" class="magia-nome"></div>
-                            <div class="inventory-slot"><input type="text" placeholder="Magia/Habilidade 10" class="magia-nome"></div>
+                            <div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div>
+                            <button onclick="addMagiaSlot()" class="mt-2">+ Adicionar Magia</button>
                         </div>
                     </div>
                 </div>
@@ -860,6 +837,7 @@
                 </div>
             </section>
 
+            <!-- Locomoção -->
             <section id="locomocao">
                 <h2>Locomoção</h2>
                 <div class="locomotion-container">
@@ -878,6 +856,7 @@
                 </div>
             </section>
 
+            <!-- Status -->
             <section id="status">
                 <h2>Status</h2>
                 <div class="flex gap-20">
@@ -889,12 +868,19 @@
                         <label>Pontos de Vantagem (PH):</label>
                         <span id="pontos-vantagem" readonly>5</span>
                     </div>
-                    <div id="nivel-container">
-                        <label>Nível:</label>
-                        <span id="nivel">0</span>
+                    <div>
+                        <label>Classe:</label>
+                        <span id="classe"></span>
+                        <label>Raça:</label>
+                        <span id="raca"></span>
                     </div>
                 </div>
             </section>
+
+            <div id="nivel-container">
+                <label>Nível:</label>
+                <span id="nivel">0</span>
+            </div>
 
             <div class="botoes-container">
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
@@ -970,11 +956,6 @@
     </div>
 
     <div id="notification"></div>
-
-    <button id="anotacoes-btn">Anotações</button>
-    <div id="anotacoes-panel">
-        <textarea id="anotacoes-textarea" placeholder="Suas anotações aqui..."></textarea>
-    </div>
 
     <script>
         const firebaseConfig = {
@@ -1243,9 +1224,6 @@
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
         const fichaContainer = document.getElementById('ficha-container');
         const magiasList = document.getElementById('magias-list');
-        const anotacoesBtn = document.getElementById('anotacoes-btn');
-        const anotacoesPanel = document.getElementById('anotacoes-panel');
-        const anotacoesTextarea = document.getElementById('anotacoes-textarea');
 
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
 
@@ -1345,10 +1323,11 @@
             });
             calcularPesoTotal();
 
+            magiasList.innerHTML = '<div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div>';
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split('\n').filter(m => m.trim()) : [];
-            const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach((input, index) => {
-                input.value = magias[index] || '';
+            magias.forEach(magia => {
+                const [nome, custo] = magia.split(' - Custo: ');
+                addMagiaSlot(nome, custo ? parseInt(custo) : 0);
             });
 
             if (ficha.imagem) {
@@ -1400,9 +1379,11 @@
             });
 
             const magias = [];
-            const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach(input => {
-                if (input.value.trim()) magias.push(input.value.trim());
+            const magiaSlots = magiasList.querySelectorAll('.inventory-slot');
+            magiaSlots.forEach(slot => {
+                const nome = slot.querySelector('.magia-nome').value;
+                const custo = slot.querySelector('.magia-custo').value;
+                if (nome) magias.push(`${nome} - Custo: ${custo}`);
             });
 
             const updates = {
@@ -1597,7 +1578,7 @@
             const velocidadeCorridaBase = 25 + bonusVelocidade;
             const bonusAlturaPulo = Math.floor(forca / 10);
             const alturaPuloBase = 1 + bonusAlturaPulo;
-            const bonusDistanciaPulo = Math.floor(Math.min(forca / 5, agilidade / 5));
+            const bonusDistanciaPulo = Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
             const distanciaPuloBase = 3 + bonusDistanciaPulo;
 
             if (vantagensSelecionadas.includes("Combo Físico (4)")) {
@@ -1721,8 +1702,7 @@
             armaEsquerdaNomeInput.value = '';
             armaEsquerdaAtaqueInput.value = '0';
             armaEsquerdaAtaqueMagicoInput.value = '0';
-            const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach(input => input.value = '');
+            magiasList.innerHTML = '<div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div>';
             const slots = inventarioSlots.querySelectorAll('.inventory-slot');
             slots.forEach(slot => {
                 slot.querySelector('.inventory-item').value = '';
@@ -1889,10 +1869,6 @@
                 alert('A ficha matriz não pode ser excluída!');
                 return;
             }
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (confirm('Tem certeza que deseja excluir esta ficha?')) {
                 database.ref(`fichas/${currentFichaId}`).remove().then(() => {
                     currentFichaId = 'ficha-matriz';
@@ -2027,30 +2003,26 @@
                 const div = document.createElement('div');
                 div.className = 'vantagem-item';
                 div.textContent = `${vantagem.nome} - Custo: ${vantagem.custo} PH - ${vantagem.descricao}`;
-                if (vantagensSelecionadas.includes(vantagem.nome)) {
+                if (tempVantagensSelecionadas.includes(vantagem.nome)) {
                     div.classList.add('comprada');
                 }
                 div.onclick = () => {
-                    if (vantagensSelecionadas.includes(vantagem.nome)) {
-                        alert('Esta vantagem já foi comprada e só pode ser removida com a senha do GM.');
+                    if (tempVantagensSelecionadas.includes(vantagem.nome)) {
+                        tempVantagensSelecionadas = tempVantagensSelecionadas.filter(v => v !== vantagem.nome);
                     } else {
-                        if (tempVantagensSelecionadas.includes(vantagem.nome)) {
-                            tempVantagensSelecionadas = tempVantagensSelecionadas.filter(v => v !== vantagem.nome);
-                        } else {
-                            if (vantagem.restricao === 'inicio' && nivel > 0) {
-                                alert('A compra dessa vantagem é somente no nível 0.');
-                                return;
-                            }
-                            const pontosAtuais = calcularPontosVantagemTemp();
-                            if (pontosAtuais >= vantagem.custo) {
-                                tempVantagensSelecionadas.push(vantagem.nome);
-                            } else {
-                                alert('Pontos de Vantagem insuficientes!');
-                            }
+                        if (vantagem.restricao === 'inicio' && nivel > 0) {
+                            alert('A compra dessa vantagem é somente no nível 0.');
+                            return;
                         }
-                        atualizarVantagensDesvantagensPanel();
-                        document.getElementById('salvar-vantagens-btn').style.display = 'block';
+                        const pontosAtuais = calcularPontosVantagemTemp();
+                        if (pontosAtuais >= vantagem.custo) {
+                            tempVantagensSelecionadas.push(vantagem.nome);
+                        } else {
+                            alert('Pontos de Vantagem insuficientes!');
+                        }
                     }
+                    atualizarVantagensDesvantagensPanel();
+                    document.getElementById('salvar-vantagens-btn').style.display = 'block';
                 };
                 vantagensList.appendChild(div);
             });
@@ -2149,6 +2121,13 @@
             pesoTotalSpan.textContent = total.toFixed(1);
         }
 
+        function addMagiaSlot(nome = '', custo = 0) {
+            const slot = document.createElement('div');
+            slot.className = 'inventory-slot';
+            slot.innerHTML = `<input type="text" placeholder="Nome da Magia" class="magia-nome" value="${nome}"><input type="number" min="0" value="${custo}" class="magia-custo" title="Custo de Mana">`;
+            magiasList.insertBefore(slot, magiasList.querySelector('button'));
+        }
+
         function showNotification(message, className) {
             notification.textContent = message;
             notification.classList.add(className);
@@ -2158,15 +2137,6 @@
                 notification.classList.remove(className);
             }, 2000);
         }
-
-        anotacoesBtn.onclick = () => {
-            anotacoesPanel.style.display = 'block';
-            anotacoesTextarea.focus();
-        };
-
-        anotacoesTextarea.onblur = () => {
-            anotacoesPanel.style.display = 'none';
-        };
 
         criarFichaMatriz();
     </script>
