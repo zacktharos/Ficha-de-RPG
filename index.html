@@ -195,7 +195,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 100%;
+            width Revolving Doorwidth: 100%;
         }
         .atributo-destaque label {
             font-size: 1.1rem;
@@ -221,7 +221,7 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .vida-magia-vigor div {
+        .atributo-container {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 12px;
             border-radius: 8px;
@@ -231,6 +231,32 @@
             min-width: 200px;
             margin-bottom: 10px;
             text-align: center;
+        }
+        .medieval-box {
+            background-color: #f0e6d2;
+            border: 2px solid #b8860b;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: center;
+        }
+        .regeneracao {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #b8860b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+        button:hover {
+            background-color: #a0522d;
         }
         .botoes-container {
             display: flex;
@@ -580,7 +606,6 @@
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
-        /* Estilo para Locomoção */
         .locomotion-container {
             background-color: #8B4513;
             border: 3px solid #FFD700;
@@ -605,7 +630,6 @@
             color: #FFD700;
             margin-left: 5px;
         }
-        /* Estilo para Lista de Vantagens/Desvantagens */
         .list-display {
             background-color: #f8f8f8;
             border: 1px solid #b8860b;
@@ -656,9 +680,51 @@
             </div>
 
             <div class="vida-magia-vigor">
-                <div><label>Pontos de Vida:</label><span id="vida">50</span></div>
-                <div><label>Pontos de Magia:</label><span id="magia">20</span></div>
-                <div><label>Pontos de Vigor:</label><span id="vigor">10</span></div>
+                <div class="atributo-container">
+                    <h3>Vida</h3>
+                    <div class="valor-total medieval-box">
+                        <span>Vida Total: </span><span id="vida-total">50</span>
+                    </div>
+                    <div class="valor-atual medieval-box">
+                        <span>Vida Atual: </span>
+                        <button onclick="diminuirVida()" title="Diminuir Vida">▼</button>
+                        <span id="vida-atual">50</span>
+                        <button onclick="aumentarVida()" title="Aumentar Vida">▲</button>
+                    </div>
+                    <div class="regeneracao">
+                        <span>Regeneração por turno: <span id="regeneracao-vida">0</span> (parado)</span>
+                    </div>
+                </div>
+                <div class="atributo-container">
+                    <h3>Magia</h3>
+                    <div class="valor-total medieval-box">
+                        <span>Magia Total: </span><span id="magia-total">20</span>
+                    </div>
+                    <div class="valor-atual medieval-box">
+                        <span>Magia Atual: </span>
+                        <button onclick="diminuirMagia()" title="Diminuir Magia">▼</button>
+                        <span id="magia-atual">20</span>
+                        <button onclick="aumentarMagia()" title="Aumentar Magia">▲</button>
+                    </div>
+                    <div class="regeneracao">
+                        <span>Regeneração por turno: <span id="regeneracao-magia">0</span></span>
+                    </div>
+                </div>
+                <div class="atributo-container">
+                    <h3>Vigor</h3>
+                    <div class="valor-total medieval-box">
+                        <span>Vigor Total: </span><span id="vigor-total">10</span>
+                    </div>
+                    <div class="valor-atual medieval-box">
+                        <span>Vigor Atual: </span>
+                        <button onclick="diminuirVigor()" title="Diminuir Vigor">▼</button>
+                        <span id="vigor-atual">10</span>
+                        <button onclick="aumentarVigor()" title="Aumentar Vigor">▲</button>
+                    </div>
+                    <div class="regeneracao">
+                        <span>Regeneração por turno: <span id="regeneracao-vigor">0</span> (parado)</span>
+                    </div>
+                </div>
             </div>
 
             <div class="atributos-container">
@@ -776,7 +842,6 @@
         </div>
     </div>
 
-    <!-- Painel de Vantagens e Desvantagens -->
     <div id="vantagens-desvantagens-panel">
         <h2>Vantagens e Desvantagens</h2>
         <div id="vantagens-list"></div>
@@ -785,7 +850,6 @@
         <button id="fechar-pagina-btn">Fechar Página</button>
     </div>
 
-    <!-- Modais -->
     <div id="nome-ficha-modal" class="modal">
         <div class="modal-content">
             <h3>Dê um Nome à Ficha</h3>
@@ -864,6 +928,7 @@
         let desvantagensSelecionadas = [];
         let tempVantagensSelecionadas = [];
         let tempDesvantagensSelecionadas = [];
+        let vidaTotal, vidaAtual, magiaTotal, magiaAtual, vigorTotal, vigorAtual;
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
@@ -1069,9 +1134,6 @@
         const esquivaSpan = document.getElementById('esquiva');
         const rdfSpan = document.getElementById('rdf');
         const rdmSpan = document.getElementById('rdm');
-        const vidaSpan = document.getElementById('vida');
-        const magiaSpan = document.getElementById('magia');
-        const vigorSpan = document.getElementById('vigor');
         const armaDireitaNomeInput = document.getElementById('arma-direita-nome');
         const armaDireitaAtaqueInput = document.getElementById('arma-direita-ataque');
         const armaDireitaAtaqueMagicoInput = document.getElementById('arma-direita-ataque-magico');
@@ -1210,6 +1272,12 @@
             experiencia = parseInt(experienciaInput.value) || 0;
             atualizarNivel();
             calcularAtributos();
+            vidaAtual = vidaTotal;
+            magiaAtual = magiaTotal;
+            vigorAtual = vigorTotal;
+            document.getElementById('vida-atual').textContent = vidaAtual;
+            document.getElementById('magia-atual').textContent = magiaAtual;
+            document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
             pontosVantagemSpan.textContent = getPontosVantagem();
         }
 
@@ -1323,6 +1391,48 @@
             return pontos;
         }
 
+        function aumentarVida() {
+            if (vidaAtual < vidaTotal) {
+                vidaAtual++;
+                document.getElementById('vida-atual').textContent = vidaAtual;
+            }
+        }
+
+        function diminuirVida() {
+            if (vidaAtual > 0) {
+                vidaAtual--;
+                document.getElementById('vida-atual').textContent = vidaAtual;
+            }
+        }
+
+        function aumentarMagia() {
+            if (magiaAtual < magiaTotal) {
+                magiaAtual++;
+                document.getElementById('magia-atual').textContent = magiaAtual;
+            }
+        }
+
+        function diminuirMagia() {
+            if (magiaAtual > 0) {
+                magiaAtual--;
+                document.getElementById('magia-atual').textContent = magiaAtual;
+            }
+        }
+
+        function aumentarVigor() {
+            if (vigorAtual < vigorTotal) {
+                vigorAtual = Math.min(vigorAtual + 0.1, vigorTotal);
+                document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
+            }
+        }
+
+        function diminuirVigor() {
+            if (vigorAtual > 0) {
+                vigorAtual = Math.max(vigorAtual - 0.1, 0);
+                document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
+            }
+        }
+
         function calcularAtributos() {
             let forca = parseInt(forcaInput.value) || 0;
             let destreza = parseInt(destrezaInput.value) || 0;
@@ -1406,9 +1516,33 @@
             esquivaSpan.textContent = esquiva;
             rdfSpan.textContent = rdf;
             rdmSpan.textContent = rdm;
-            vidaSpan.textContent = Math.ceil(vidaBase);
-            magiaSpan.textContent = Math.ceil(magiaBase);
-            vigorSpan.textContent = vigorBase.toFixed(1);
+
+            vidaTotal = Math.ceil(vidaBase);
+            magiaTotal = Math.ceil(magiaBase);
+            vigorTotal = parseFloat(vigorBase.toFixed(1));
+
+            if (typeof vidaAtual === 'undefined') vidaAtual = vidaTotal;
+            if (typeof magiaAtual === 'undefined') magiaAtual = magiaTotal;
+            if (typeof vigorAtual === 'undefined') vigorAtual = vigorTotal;
+
+            if (vidaAtual > vidaTotal) vidaAtual = vidaTotal;
+            if (magiaAtual > magiaTotal) magiaAtual = magiaTotal;
+            if (vigorAtual > vigorTotal) vigorAtual = vigorTotal;
+
+            document.getElementById('vida-total').textContent = vidaTotal;
+            document.getElementById('magia-total').textContent = magiaTotal;
+            document.getElementById('vigor-total').textContent = vigorTotal.toFixed(1);
+            document.getElementById('vida-atual').textContent = vidaAtual;
+            document.getElementById('magia-atual').textContent = magiaAtual;
+            document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
+
+            const regeneracaoVida = (constituicao * 0.2).toFixed(1);
+            const regeneracaoMagia = (constituicao * 0.8).toFixed(1);
+            const regeneracaoVigor = (constituicao * 0.4).toFixed(1);
+
+            document.getElementById('regeneracao-vida').textContent = regeneracaoVida;
+            document.getElementById('regeneracao-magia').textContent = regeneracaoMagia;
+            document.getElementById('regeneracao-vigor').textContent = regeneracaoVigor;
 
             const atributosDestaque = [
                 { span: ataqueSpan, valor: ataque },
