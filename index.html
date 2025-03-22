@@ -108,7 +108,7 @@
         .locomotion-container { background-color: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; }
         .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
         .locomotion-item label { font-weight: bold; color: #FFD700; }
-        .locomotion-item span { font-size: 1.2rem; color: #FFFFFF; margin-left: 5px; }
+        .locomotion-item span { font-size: 1.2rem; color: #FFFFFF; text-shadow: 1px 1px 2px #000000; margin-left: 5px; }
         .list-display { background-color: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto; }
         .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; }
         .list-item:hover { background-color: #e0e0e0; }
@@ -449,7 +449,7 @@
             const nomeFicha = document.getElementById('nome-ficha-input').value.trim();
             if (!nomeFicha) { alert('Por favor, dê um nome à ficha!'); return; }
             const fichaId = database.ref('fichas').push().key;
-            const novaFicha = { nomeFicha: nomeFicha, nomePersonagem: '', descricaoPersonagem: '', forca: '0', destreza: '0', agilidade: '0', inteligencia: '0', constituicao: '0', experiencia: '0', armaDireitaNome: '', armaDireitaAtaque: '0', armaDireitaAtaqueMagico: '0', armaEsquerdaNome: '', armaEsquerdaAtaque: '0', armaEsquerdaAtaqueMagico: '0', vantagens: '', magiasHabilidades: '', desvantagens: '', inventario: Array(10).fill({ item: '', peso: '0' }), velocidadeCorrida: '25', alturaPulo: '1', distanciaPulo: '3', isLocked: false, password: null, imagem: null, anotacoes: '' };
+            const novaFicha = { nomeFicha: nomeFicha, nomePersonagem: '', descricaoPersonagem: '', forca: '0', destreza: '0', agilidade: '0', inteligencia: '0', constituicao: '0', experiencia: '0', armaDireitaNome: '', armaDireitaAtaque: '0', armaDireitaAtaqueMagico: '0', armaEsquerdaNome: '', armaEsquerdaAtaque: '0', armaEsquerdaAtaqueMagico: '0', vantagens: '', magiasHabilidades: Array(10).fill('').join('\n'), desvantagens: '', inventario: Array(10).fill({ item: '', peso: '0' }), velocidadeCorrida: '25', alturaPulo: '1', distanciaPulo: '3', isLocked: false, password: null, imagem: null, anotacoes: '' };
             database.ref(`fichas/${fichaId}`).set(novaFicha).then(() => {
                 currentFichaId = fichaId;
                 carregarFicha(fichaId);
@@ -575,7 +575,7 @@
                 weightInput.value = inventario[index]?.peso || '0';
             });
             calcularPesoTotal();
-            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split('\n').filter(m => m.trim()) : [];
+            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split('\n') : Array(10).fill('');
             magiasList.innerHTML = '';
             magias.forEach((magia, index) => {
                 const input = document.createElement('input');
@@ -585,15 +585,6 @@
                 input.value = magia;
                 magiasList.appendChild(input);
             });
-            if (magias.length < 10) {
-                for (let i = magias.length; i < 10; i++) {
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.className = 'magia-nome';
-                    input.placeholder = `Magia/Habilidade ${i + 1}`;
-                    magiasList.appendChild(input);
-                }
-            }
             anotacoesTextarea.value = ficha.anotacoes || '';
             if (ficha.imagem) { characterImage.src = ficha.imagem; characterImage.style.display = 'block'; } else { characterImage.style.display = 'none'; }
             atualizarBotaoBloquear();
@@ -634,7 +625,7 @@
             });
             const magias = [];
             const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach(input => { if (input.value) magias.push(input.value); });
+            magiaInputs.forEach(input => magias.push(input.value));
             const updates = {
                 nomePersonagem: nomePersonagemInput.value,
                 descricaoPersonagem: descricaoPersonagemInput.value,
@@ -754,7 +745,7 @@
             ataqueMagico += ataqueMagicoArmaDireita + ataqueMagicoArmaEsquerda;
             const velocidadeCorridaBase = 25 + (Math.floor(agilidade / 3) * 3);
             const alturaPuloBase = 1 + Math.floor(forca / 10);
-            const distanciaPuloBase = 3 + Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
+            const distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
             if (vantagensSelecionadas.includes("Combo Físico (4)")) {
                 velocidadeCorridaSpan.textContent = '50';
                 alturaPuloSpan.textContent = '3';
