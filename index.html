@@ -30,7 +30,7 @@
         input[type="text"], input[type="number"], textarea { padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px); margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease; background-color: #fff; color: #000000; }
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus { border-color: #a0522d; outline: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
         input[readonly], span[readonly] { background-color: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed; }
-        textarea { resize: vertical; height: 100px; }
+        textarea { resize: vertical; }
         .atributos-container { display: flex; justify-content: space-between; gap: 20px; }
         .atributos-coluna, .atributos-coluna-destaque { width: 48%; display: flex; flex-direction: column; align-items: flex-start; }
         .atributos-coluna-destaque { background-color: #ffffff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
@@ -117,7 +117,11 @@
         .inventory-slot input[type="number"] { width: 60px; }
         #anotacoes-btn { position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px; background-color: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px; font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000000; cursor: pointer; transition: background-color 0.3s ease; }
         #anotacoes-btn:hover { background-color: #a0522d; color: #ffffff; }
-        #anotacoes-textarea { display: none; position: fixed; left: 60px; top: 50%; transform: translateY(-50%); width: 100px; height: 100px; background-color: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; }
+        #anotacoes-textarea { display: none; position: fixed; left: 60px; top: 50%; transform: translateY(-50%); width: 400px; height: 400px; background-color: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; }
+        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background-color: #fff; }
+        .magias-container input { margin-bottom: 10px; }
+        #adicionar-magia-btn { background-color: #b8860b; color: white; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: block; margin-top: 10px; }
+        #adicionar-magia-btn:hover { background-color: #a0522d; }
         @media (max-width: 768px) { body { padding: 10px; } #ficha-container { padding: 15px; } h1#nome-personagem-titulo { font-size: 2rem; } section h2 { font-size: 1.2rem; } input, textarea { font-size: 0.9rem; } .atributos-container, .vida-magia-vigor { flex-direction: column; } .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; } }
     </style>
 </head>
@@ -221,7 +225,7 @@
                     </div>
                     <div style="width: 50%;">
                         <label>Magias e Habilidades:</label>
-                        <div id="magias-list">
+                        <div id="magias-list" class="magias-container">
                             <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 2" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
@@ -233,6 +237,7 @@
                             <input type="text" placeholder="Magia/Habilidade 9" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
                         </div>
+                        <button id="adicionar-magia-btn">Adicionar Magia</button>
                     </div>
                 </div>
                 <div class="mt-4">
@@ -306,7 +311,7 @@
             <h3>Digite sua Senha</h3>
             <input type="password" id="senha-desbloqueio-input" placeholder="Senha (4 dígitos)" maxlength="4">
             <button class="confirm-btn" onclick="desbloquearFicha()">Confirmar</button>
-            <button class="cancel-btn" onclick="fecharModal('password-modal')">Cancelar</button>
+            <button class="cancel-btn" onclick="cancelarDesbloqueio()">Cancelar</button>
         </div>
     </div>
     <div id="confirmar-compra-modal" class="modal">
@@ -347,6 +352,7 @@
         let tempVantagensSelecionadas = [];
         let tempDesvantagensSelecionadas = [];
         let vidaTotal, vidaAtual, magiaTotal, magiaAtual, vigorTotal, vigorAtual;
+        let previousValues = new Map();
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "Adiciona +1 em ataque, +1 em acerto com armas curtas." },
             { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "Adiciona +2 em ataque com armas pesadas." },
@@ -501,6 +507,7 @@
         const fecharPaginaBtn = document.getElementById('fechar-pagina-btn');
         const fichaContainer = document.getElementById('ficha-container');
         const magiasList = document.getElementById('magias-list');
+        const adicionarMagiaBtn = document.getElementById('adicionar-magia-btn');
         const anotacoesBtn = document.getElementById('anotacoes-btn');
         const anotacoesTextarea = document.getElementById('anotacoes-textarea');
         const atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
@@ -569,8 +576,24 @@
             });
             calcularPesoTotal();
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split('\n').filter(m => m.trim()) : [];
-            const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach((input, index) => { input.value = magias[index] || ''; });
+            magiasList.innerHTML = '';
+            magias.forEach((magia, index) => {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'magia-nome';
+                input.placeholder = `Magia/Habilidade ${index + 1}`;
+                input.value = magia;
+                magiasList.appendChild(input);
+            });
+            if (magias.length < 10) {
+                for (let i = magias.length; i < 10; i++) {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'magia-nome';
+                    input.placeholder = `Magia/Habilidade ${i + 1}`;
+                    magiasList.appendChild(input);
+                }
+            }
             anotacoesTextarea.value = ficha.anotacoes || '';
             if (ficha.imagem) { characterImage.src = ficha.imagem; characterImage.style.display = 'block'; } else { characterImage.style.display = 'none'; }
             atualizarBotaoBloquear();
@@ -585,6 +608,8 @@
             document.getElementById('magia-atual').textContent = magiaAtual;
             document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
             pontosVantagemSpan.textContent = getPontosVantagem();
+            previousValues.clear();
+            document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => previousValues.set(el, el.value));
         }
         function atualizarBotaoBloquear() {
             if (isFichaLocked) {
@@ -632,10 +657,16 @@
                 velocidadeCorrida: velocidadeCorridaSpan.textContent,
                 alturaPulo: alturaPuloSpan.textContent,
                 distanciaPulo: distanciaPuloSpan.textContent,
+                isLocked: isFichaLocked,
+                password: fichaPassword,
                 imagem: characterImage.src || null,
                 anotacoes: anotacoesTextarea.value
             };
-            database.ref(`fichas/${currentFichaId}`).update(updates).then(() => { showNotification('Salvo!', 'save-success'); });
+            database.ref(`fichas/${currentFichaId}`).update(updates).then(() => {
+                showNotification('Salvo!', 'save-success');
+                previousValues.clear();
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => previousValues.set(el, el.value));
+            });
         }
         function calcularNivel(xp) {
             let novoNivel = 0;
@@ -811,8 +842,14 @@
             armaEsquerdaNomeInput.value = '';
             armaEsquerdaAtaqueInput.value = '0';
             armaEsquerdaAtaqueMagicoInput.value = '0';
-            const magiaInputs = magiasList.querySelectorAll('.magia-nome');
-            magiaInputs.forEach(input => input.value = '');
+            magiasList.innerHTML = '';
+            for (let i = 0; i < 10; i++) {
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'magia-nome';
+                input.placeholder = `Magia/Habilidade ${i + 1}`;
+                magiasList.appendChild(input);
+            }
             const slots = inventarioSlots.querySelectorAll('.inventory-slot');
             slots.forEach(slot => { slot.querySelector('.inventory-item').value = ''; slot.querySelector('.inventory-weight').value = '0'; });
             characterImage.style.display = 'none';
@@ -845,13 +882,20 @@
                 atualizarBotaoBloquear();
             }).catch((error) => { console.error('Erro ao bloquear ficha:', error); alert('Ocorreu um erro ao bloquear a ficha. Tente novamente.'); });
         }
-        function abrirModalSenha() {
+        function abrirModalSenha(element = null) {
             document.getElementById('password-modal').style.display = 'flex';
             document.getElementById('senha-desbloqueio-input').value = '';
             document.getElementById('senha-desbloqueio-input').focus();
+            if (element) {
+                document.getElementById('password-modal').dataset.elementId = element.id;
+            } else {
+                delete document.getElementById('password-modal').dataset.elementId;
+            }
         }
         function desbloquearFicha() {
             const senha = document.getElementById('senha-desbloqueio-input').value;
+            const modal = document.getElementById('password-modal');
+            const elementId = modal.dataset.elementId;
             if (senha === senhaMatriz || senha === fichaPassword) {
                 isFichaUnlocked = true;
                 if (currentFichaId !== 'ficha-matriz' && senha !== senhaMatriz) {
@@ -859,35 +903,62 @@
                     fichaPassword = null;
                     database.ref(`fichas/${currentFichaId}`).update({ isLocked: false, password: null }).then(() => {
                         fecharModal('password-modal');
-                        alert('Ficha desbloqueada com sucesso!');
+                        alert('Ficha desbloqueada permanentemente!');
                         atualizarBotaoBloquear();
-                        salvarDados();
+                        if (elementId) {
+                            const element = document.getElementById(elementId);
+                            previousValues.set(element, element.value);
+                            salvarDados();
+                        }
                     }).catch((error) => { console.error('Erro ao desbloquear ficha:', error); alert('Ocorreu um erro ao desbloquear a ficha. Tente novamente.'); });
                 } else {
                     fecharModal('password-modal');
-                    alert('Ficha desbloqueada com a senha matriz!');
-                    atualizarBotaoBloquear();
+                    alert('Ficha desbloqueada temporariamente com a senha matriz!');
+                    if (elementId) {
+                        const element = document.getElementById(elementId);
+                        previousValues.set(element, element.value);
+                        salvarDados();
+                    }
+                }
+            } else {
+                alert('Senha incorreta!');
+                if (elementId) {
+                    const element = document.getElementById(elementId);
+                    element.value = previousValues.get(element) || '';
+                }
+                fecharModal('password-modal');
+            }
+        }
+        function cancelarDesbloqueio() {
+            const modal = document.getElementById('password-modal');
+            const elementId = modal.dataset.elementId;
+            if (elementId) {
+                const element = document.getElementById(elementId);
+                element.value = previousValues.get(element) || '';
+            }
+            fecharModal('password-modal');
+        }
+        function verificarAlteracao(event) {
+            const element = event.target;
+            if (isFichaLocked && !isFichaUnlocked) {
+                event.preventDefault();
+                previousValues.set(element, element.value);
+                abrirModalSenha(element);
+            } else {
+                previousValues.set(element, element.value);
+            }
+        }
+        document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
+            el.addEventListener('beforeinput', verificarAlteracao);
+            el.addEventListener('input', () => {
+                if (!isFichaLocked || isFichaUnlocked) {
+                    if (el.id === 'experiencia') { experiencia = parseInt(el.value) || 0; atualizarNivel(); }
+                    if (atributosInputs.includes(el) || el.id.includes('arma')) { calcularAtributos(); }
                     salvarDados();
                 }
-            } else { alert('Senha incorreta!'); }
-        }
-        nomePersonagemInput.oninput = () => { nomePersonagemTitulo.textContent = nomePersonagemInput.value || 'Ficha de Personagem'; salvarDados(); };
-        experienciaInput.oninput = () => { experiencia = parseInt(experienciaInput.value) || 0; atualizarNivel(); salvarDados(); };
-        atributosInputs.forEach(input => { input.oninput = () => { calcularAtributos(); salvarDados(); }; });
-        armaDireitaNomeInput.oninput = () => salvarDados();
-        armaDireitaAtaqueInput.oninput = () => { calcularAtributos(); salvarDados(); };
-        armaDireitaAtaqueMagicoInput.oninput = () => { calcularAtributos(); salvarDados(); };
-        armaEsquerdaNomeInput.oninput = () => salvarDados();
-        armaEsquerdaAtaqueInput.oninput = () => { calcularAtributos(); salvarDados(); };
-        armaEsquerdaAtaqueMagicoInput.oninput = () => { calcularAtributos(); salvarDados(); };
-        [descricaoPersonagemInput].forEach(input => { input.oninput = () => salvarDados(); });
-        inventarioSlots.addEventListener('input', (e) => {
-            if (e.target.classList.contains('inventory-item') || e.target.classList.contains('inventory-weight')) { calcularPesoTotal(); salvarDados(); }
+            });
         });
-        magiasList.addEventListener('input', () => salvarDados());
-        anotacoesTextarea.onblur = () => { anotacoesTextarea.style.display = 'none'; salvarDados(); };
-        resetPontosButton.onclick = () => { if (confirm('Tem certeza que quer executar essa função?')) { resetarPontos(); } };
-        recomecarButton.onclick = () => { if (confirm('Tem certeza que quer executar essa função?')) { recomecarFicha(); } };
+        nomePersonagemInput.oninput = () => { nomePersonagemTitulo.textContent = nomePersonagemInput.value || 'Ficha de Personagem'; salvarDados(); };
         characterImageInput.onchange = (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -1077,6 +1148,18 @@
             pesoTotalSpan.textContent = total.toFixed(1);
         }
         anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = 'block'; anotacoesTextarea.focus(); };
+        anotacoesTextarea.onblur = () => { anotacoesTextarea.style.display = 'none'; salvarDados(); };
+        adicionarMagiaBtn.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) { abrirModalSenha(); return; }
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'magia-nome';
+            input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`;
+            magiasList.appendChild(input);
+            salvarDados();
+        };
+        resetPontosButton.onclick = () => { if (confirm('Tem certeza que quer executar essa função?')) { resetarPontos(); } };
+        recomecarButton.onclick = () => { if (confirm('Tem certeza que quer executar essa função?')) { recomecarFicha(); } };
         function showNotification(message, className) {
             notification.textContent = message;
             notification.classList.add(className);
