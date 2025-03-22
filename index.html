@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
-        /* Estilos mantidos iguais ao primeiro código fornecido */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f5f5f5;
@@ -1208,6 +1207,7 @@
         const gameMasterMessage = document.getElementById('game-master-message');
         const vantagensListDisplay = document.getElementById('vantagens-list-display');
         const desvantagensListDisplay = document.getElementById('desvantagens-list-display');
+        const magiasHabilidadesInput = document.getElementById('magias-habilidades');
         const inventarioSlots = document.getElementById('inventario-slots');
         const pesoTotalSpan = document.getElementById('peso-total');
         const diceContainer = document.getElementById('dice-container');
@@ -1268,13 +1268,6 @@
             { nivel: 30, xp: 10000, pd: 319, ph: 35 }
         ];
 
-        function toggleInputs(disabled) {
-            const inputs = document.querySelectorAll('input, textarea, button');
-            inputs.forEach(input => {
-                input.disabled = disabled;
-            });
-        }
-
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
 
@@ -1330,17 +1323,12 @@
             });
             calcularPesoTotal();
 
-            magiasList.innerHTML = '';
+            magiasList.innerHTML = '<div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div>';
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split('\n').filter(m => m.trim()) : [];
             magias.forEach(magia => {
                 const [nome, custo] = magia.split(' - Custo: ');
                 addMagiaSlot(nome, custo ? parseInt(custo) : 0);
             });
-            const button = document.createElement('button');
-            button.textContent = '+ Adicionar Magia';
-            button.className = 'mt-2';
-            button.onclick = addMagiaSlot;
-            magiasList.appendChild(button);
 
             if (ficha.imagem) {
                 characterImage.src = ficha.imagem;
@@ -1361,12 +1349,6 @@
             document.getElementById('magia-atual').textContent = magiaAtual;
             document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
             pontosVantagemSpan.textContent = getPontosVantagem();
-
-            if (isFichaLocked) {
-                toggleInputs(true);
-            } else {
-                toggleInputs(false);
-            }
         }
 
         function atualizarBotaoBloquear() {
@@ -1496,10 +1478,6 @@
         }
 
         function aumentarVida() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (vidaAtual < vidaTotal) {
                 vidaAtual++;
                 document.getElementById('vida-atual').textContent = vidaAtual;
@@ -1508,10 +1486,6 @@
         }
 
         function diminuirVida() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (vidaAtual > 0) {
                 vidaAtual--;
                 document.getElementById('vida-atual').textContent = vidaAtual;
@@ -1520,10 +1494,6 @@
         }
 
         function aumentarMagia() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (magiaAtual < magiaTotal) {
                 magiaAtual++;
                 document.getElementById('magia-atual').textContent = magiaAtual;
@@ -1532,10 +1502,6 @@
         }
 
         function diminuirMagia() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (magiaAtual > 0) {
                 magiaAtual--;
                 document.getElementById('magia-atual').textContent = magiaAtual;
@@ -1544,10 +1510,6 @@
         }
 
         function aumentarVigor() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (vigorAtual < vigorTotal) {
                 vigorAtual = Math.min(vigorAtual + 0.1, vigorTotal);
                 document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
@@ -1556,10 +1518,6 @@
         }
 
         function diminuirVigor() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (vigorAtual > 0) {
                 vigorAtual = Math.max(vigorAtual - 0.1, 0);
                 document.getElementById('vigor-atual').textContent = vigorAtual.toFixed(1);
@@ -1568,9 +1526,6 @@
         }
 
         function calcularAtributos() {
-            if (isFichaLocked && !isFichaUnlocked) {
-                return;
-            }
             let forca = parseInt(forcaInput.value) || 0;
             let destreza = parseInt(destrezaInput.value) || 0;
             let agilidade = parseInt(agilidadeInput.value) || 0;
@@ -1747,7 +1702,7 @@
             armaEsquerdaNomeInput.value = '';
             armaEsquerdaAtaqueInput.value = '0';
             armaEsquerdaAtaqueMagicoInput.value = '0';
-            magiasList.innerHTML = '<div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div><button onclick="addMagiaSlot()" class="mt-2">+ Adicionar Magia</button>';
+            magiasList.innerHTML = '<div class="inventory-slot"><input type="text" placeholder="Nome da Magia" class="magia-nome"><input type="number" min="0" value="0" class="magia-custo" title="Custo de Mana"></div>';
             const slots = inventarioSlots.querySelectorAll('.inventory-slot');
             slots.forEach(slot => {
                 slot.querySelector('.inventory-item').value = '';
@@ -1792,7 +1747,6 @@
                 fecharModal('bloquear-ficha-modal');
                 alert('Ficha bloqueada com sucesso!');
                 atualizarBotaoBloquear();
-                toggleInputs(true);
             }).catch((error) => {
                 console.error('Erro ao bloquear ficha:', error);
                 alert('Ocorreu um erro ao bloquear a ficha. Tente novamente.');
@@ -1819,7 +1773,6 @@
                         fecharModal('password-modal');
                         alert('Ficha desbloqueada com sucesso!');
                         atualizarBotaoBloquear();
-                        toggleInputs(false);
                         salvarDados();
                     }).catch((error) => {
                         console.error('Erro ao desbloquear ficha:', error);
@@ -1828,7 +1781,7 @@
                 } else {
                     fecharModal('password-modal');
                     alert('Ficha desbloqueada com a senha matriz!');
-                    toggleInputs(false);
+                    atualizarBotaoBloquear();
                     salvarDados();
                 }
             } else {
@@ -1837,19 +1790,11 @@
         }
 
         nomePersonagemInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             nomePersonagemTitulo.textContent = nomePersonagemInput.value || 'Ficha de Personagem';
             salvarDados();
         };
 
         experienciaInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             experiencia = parseInt(experienciaInput.value) || 0;
             atualizarNivel();
             salvarDados();
@@ -1857,116 +1802,56 @@
 
         atributosInputs.forEach(input => {
             input.oninput = () => {
-                if (isFichaLocked && !isFichaUnlocked) {
-                    abrirModalSenha();
-                    return;
-                }
                 calcularAtributos();
                 salvarDados();
             };
         });
 
-        armaDireitaNomeInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-            salvarDados();
-        };
+        armaDireitaNomeInput.oninput = () => salvarDados();
         armaDireitaAtaqueInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             calcularAtributos();
             salvarDados();
         };
         armaDireitaAtaqueMagicoInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             calcularAtributos();
             salvarDados();
         };
-        armaEsquerdaNomeInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-            salvarDados();
-        };
+        armaEsquerdaNomeInput.oninput = () => salvarDados();
         armaEsquerdaAtaqueInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             calcularAtributos();
             salvarDados();
         };
         armaEsquerdaAtaqueMagicoInput.oninput = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             calcularAtributos();
             salvarDados();
         };
 
         [descricaoPersonagemInput].forEach(input => {
-            input.oninput = () => {
-                if (isFichaLocked && !isFichaUnlocked) {
-                    abrirModalSenha();
-                    return;
-                }
-                salvarDados();
-            };
+            input.oninput = () => salvarDados();
         });
 
         inventarioSlots.addEventListener('input', (e) => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (e.target.classList.contains('inventory-item') || e.target.classList.contains('inventory-weight')) {
                 calcularPesoTotal();
                 salvarDados();
             }
         });
 
-        magiasList.addEventListener('input', () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
-            salvarDados();
-        });
+        magiasList.addEventListener('input', () => salvarDados());
 
         resetPontosButton.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (confirm('Tem certeza que quer executar essa função?')) {
                 resetarPontos();
             }
         };
 
         recomecarButton.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             if (confirm('Tem certeza que quer executar essa função?')) {
                 recomecarFicha();
             }
         };
 
         characterImageInput.onchange = (e) => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
-                return;
-            }
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
@@ -1982,10 +1867,6 @@
         document.getElementById('excluir-ficha').onclick = () => {
             if (currentFichaId === 'ficha-matriz') {
                 alert('A ficha matriz não pode ser excluída!');
-                return;
-            }
-            if (isFichaLocked && !isFichaUnlocked) {
-                abrirModalSenha();
                 return;
             }
             if (confirm('Tem certeza que deseja excluir esta ficha?')) {
