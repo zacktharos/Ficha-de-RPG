@@ -525,7 +525,15 @@
         function calcularAtributos() {
             const forca = parseInt(forcaInput.value) || 0, destreza = parseInt(destrezaInput.value) || 0, agilidade = parseInt(agilidadeInput.value) || 0, inteligencia = parseInt(inteligenciaInput.value) || 0, constituicao = parseInt(constituicaoInput.value) || 0;
             let totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
-            if (totalPontos > pontosHabilidadeTotal) { alert("Pontos de habilidade insuficientes! Reduzindo atributos."); while (totalPontos > pontosHabilidadeTotal) { if (inteligencia > 0) inteligenciaInput.value = --inteligencia; else if (constituicao > 0) constituicaoInput.value = --constituicao; else if (agilidade > 0) agilidadeInput.value = --agilidade; else if (destreza > 0) destrezaInput.value = --destreza; else if (forca > 0) forcaInput.value = --forca; totalPontos--; } }
+            if (totalPontos > pontosHabilidadeTotal) {
+                alert("Pontos de habilidade insuficientes!");
+                forcaInput.value = previousValues.get(forcaInput) || "0";
+                destrezaInput.value = previousValues.get(destrezaInput) || "0";
+                agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
+                inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
+                constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
+                return;
+            }
             pontosHabilidadeUsados = totalPontos; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
             let ataque = forca + Math.floor(destreza / 5), acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10), esquiva = Math.floor(agilidade / 3), rdf = Math.floor(forca / 5), rdm = Math.floor(inteligencia / 5), ataqueMagico = inteligencia, magiaBase = 20 + 3 * constituicao, vigorBase = 10 + 0.4 * constituicao;
             vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel; if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
@@ -595,7 +603,26 @@
 
         function verificarAlteracao(event) { const input = event.target; if (isFichaLocked && !isFichaUnlocked) { event.preventDefault(); previousValues.set(input, input.value); abrirModalSenha(input); } else previousValues.set(input, input.value); }
 
-        document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => { input.addEventListener("beforeinput", verificarAlteracao); input.addEventListener("input", () => { if (!isFichaLocked || isFichaUnlocked) { if (input.id === "experiencia") { experiencia = parseInt(input.value) || 0; atualizarNivel(); } else if (atributosInputs.includes(input) || input.id.includes("arma")) calcularAtributos(); salvarDados(); } }); });
+        document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(input => {
+            input.addEventListener("beforeinput", verificarAlteracao);
+            input.addEventListener("input", () => {
+                if (!isFichaLocked || isFichaUnlocked) {
+                    if (input.id === "experiencia") { experiencia = parseInt(input.value) || 0; atualizarNivel(); }
+                    else if (atributosInputs.includes(input)) {
+                        const forca = parseInt(forcaInput.value) || 0, destreza = parseInt(destrezaInput.value) || 0, agilidade = parseInt(agilidadeInput.value) || 0, inteligencia = parseInt(inteligenciaInput.value) || 0, constituicao = parseInt(constituicaoInput.value) || 0;
+                        const totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
+                        if (totalPontos > pontosHabilidadeTotal) {
+                            alert("Pontos de habilidade insuficientes!");
+                            input.value = previousValues.get(input) || "0";
+                            return;
+                        }
+                        calcularAtributos();
+                    }
+                    else if (input.id.includes("arma")) calcularAtributos();
+                    salvarDados();
+                }
+            });
+        });
 
         nomePersonagemInput.oninput = salvarDados;
         characterImageInput.onchange = e => { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { characterImage.src = e.target.result; characterImage.style.display = "block"; salvarDados(); }; reader.readAsDataURL(file); } };
