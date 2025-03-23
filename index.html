@@ -9,6 +9,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     <style>
+        /* Estilos mantidos iguais ao original */
         body { font-family: 'Inter', sans-serif; background: #f5f5f5; color: #000; display: flex; min-height: 100vh; margin: 0; padding: 20px; background-image: url('medieval_background.jpg'); background-size: cover; background-position: center; transition: background 0.3s, color 0.3s; }
         body.dark-mode { background: #121212; color: #e0e0e0; }
         #fichas-sidebar { width: 100%; height: 60px; background: #fff; padding: 10px 0; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; position: fixed; top: 0; left: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.3); z-index: 1000; overflow-x: auto; }
@@ -326,6 +327,7 @@
     <textarea id="anotacoes-textarea" placeholder="Suas anotações aqui..."></textarea>
     <div id="vantagens-desvantagens-panel">
         <h2>Vantagens e Desvantagens</h2>
+        <div>Pontos de Vantagem Temporários: <span id="ph-temp">0</span></div>
         <div id="vantagens-list"></div>
         <div id="desvantagens-list"></div>
         <button id="salvar-vantagens-btn">SALVAR</button>
@@ -502,14 +504,14 @@
         function getPontosVantagem() {
             let ph = nivelData[nivel].ph;
             vantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(d => d.nome === d); if (desvantagem) ph += desvantagem.ganho; });
+            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
             return ph;
         }
 
         function calcularPontosVantagemTemp() {
             let ph = nivelData[nivel].ph;
             tempVantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(d => d.nome === d); if (desvantagem) ph += desvantagem.ganho; });
+            tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
             return ph;
         }
 
@@ -557,9 +559,8 @@
         }
 
         function recomecarFicha() {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
-                resetarPontos(); nomePersonagemInput.value = ""; descricaoPersonagemInput.value = ""; experienciaInput.value = 0; nivel = 0; pontosHabilidadeTotal = nivelData[nivel].pd; pontosHabilidadeUsados = 0; nivelSpan.textContent = nivel; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal; vidaBase = 50; armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0"; armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0"; magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); } const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; }); characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = ""; classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeInput.value = ""; racaDescricaoInput.value = ""; calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados();
+                atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal; velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3"; nomePersonagemInput.value = ""; descricaoPersonagemInput.value = ""; experienciaInput.value = 0; nivel = 0; pontosHabilidadeTotal = nivelData[nivel].pd; pontosHabilidadeUsados = 0; nivelSpan.textContent = nivel; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal; vidaBase = 50; armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0"; armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0"; magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); } const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; }); characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = ""; classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeInput.value = ""; racaDescricaoInput.value = ""; calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados();
             }
         }
 
@@ -625,6 +626,7 @@
             vantagensList.innerHTML = "<h3>Vantagens</h3>"; desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
             vantagensData.forEach(v => { const div = document.createElement("div"); div.className = "vantagem-item"; div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`; if (tempVantagensSelecionadas.includes(v.nome)) div.classList.add("comprada"); div.onclick = () => { if (vantagensSelecionadas.includes(v.nome)) alert("Esta vantagem já foi salva e só pode ser removida com permissão do GM."); else if (tempVantagensSelecionadas.includes(v.nome)) tempVantagensSelecionadas = tempVantagensSelecionadas.filter(t => t !== v.nome); else { if (v.restricao === "inicio" && nivel > 0) return alert("A compra dessa vantagem é somente no nível 0."); if (calcularPontosVantagemTemp() >= v.custo) tempVantagensSelecionadas.push(v.nome); else alert("Pontos de Vantagem insuficientes!"); } atualizarVantagensDesvantagensPanel(); document.getElementById("salvar-vantagens-btn").style.display = "block"; }; vantagensList.appendChild(div); });
             desvantagensData.forEach(d => { const div = document.createElement("div"); div.className = "desvantagem-item"; div.textContent = `${d.nome} - Ganho: ${d.ganho} PH - ${d.descricao}`; if (tempDesvantagensSelecionadas.includes(d.nome)) div.classList.add("comprada"); div.onclick = () => { if (desvantagensSelecionadas.includes(d.nome)) alert("Esta desvantagem já foi salva e só pode ser removida com permissão do GM."); else if (tempDesvantagensSelecionadas.includes(d.nome)) tempDesvantagensSelecionadas = tempDesvantagensSelecionadas.filter(t => t !== d.nome); else { if (tempDesvantagensSelecionadas.length < 3) tempDesvantagensSelecionadas.push(d.nome); else alert("Você já atingiu o limite de 3 desvantagens!"); } atualizarVantagensDesvantagensPanel(); document.getElementById("salvar-vantagens-btn").style.display = "block"; }; desvantagensList.appendChild(div); });
+            document.getElementById("ph-temp").textContent = calcularPontosVantagemTemp();
         }
 
         function removerVantagem(v) { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(); if (confirm(`Você deseja remover a vantagem "${v}"?`)) { document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = ""; document.getElementById("confirmar-senha-gm-btn").onclick = () => { if (document.getElementById("senha-gm-input").value === senhaMatriz) { vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v); Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove(); pontosVantagemSpan.textContent = getPontosVantagem(); database.ref(`fichas/${currentFichaId}/vantagens`).set(vantagensSelecionadas.join("\n")); fecharModal("senha-gm-modal"); calcularAtributos(); } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); } }; } }
@@ -635,6 +637,13 @@
         inventarioSlots.addEventListener("input", calcularPesoTotal);
 
         anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; };
+
+        document.addEventListener('click', function(event) {
+            if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target)) {
+                anotacoesTextarea.style.display = 'none';
+            }
+        });
+
         anotacoesTextarea.oninput = salvarDados;
 
         adicionarMagiaBtn.onclick = () => { if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; magiasList.appendChild(input); salvarDados(); } else alert("Você atingiu o limite de 20 magias/habilidades!"); };
