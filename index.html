@@ -33,7 +33,7 @@
         #chat-btn-container {
             position: fixed;
             left: 10px;
-            top: calc(50% - 90px); /* Ajuste para mover o botão para cima */
+            top: calc(50% - 120px); /* Ajuste para mover o botão para cima com mais espaço */
             z-index: 1000;
         }
 
@@ -1412,11 +1412,19 @@
             flex-direction: column;
         }
 
+        #chat-modal .message-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 8px;
+        }
+
         #chat-modal .message {
             padding: 8px;
             border-radius: 5px;
-            margin-bottom: 5px;
             background-color: #e0e0e0;
+            color: #000;
+            width: fit-content;
+            max-width: 80%;
         }
 
         body.dark-mode #chat-modal .message {
@@ -1432,6 +1440,16 @@
         body.dark-mode #chat-modal .message.sent {
             background-color: #6699cc;
             color: #e0e0e0;
+        }
+
+        #chat-modal .sender-name {
+            font-size: 0.8rem;
+            color: #777;
+            margin-bottom: 2px;
+        }
+
+        body.dark-mode #chat-modal .sender-name {
+            color: #aaa;
         }
 
         #chat-modal .chat-input {
@@ -3720,10 +3738,17 @@
             const mensagensDiv = document.getElementById("mensagens");
             database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => {
                 const mensagemData = snapshot.val();
+                const messageContainer = document.createElement("div");
+                messageContainer.className = "message-container";
+                const senderName = document.createElement("div");
+                senderName.className = "sender-name";
+                senderName.textContent = fichas[mensagemData.senderId]?.nomeFicha || 'Desconhecido';
                 const mensagemDiv = document.createElement("div");
                 mensagemDiv.className = `message ${mensagemData.senderId === currentFichaId ? 'sent' : 'received'}`;
-                mensagemDiv.textContent = `${fichas[mensagemData.senderId]?.nomeFicha || 'Desconhecido'}: ${mensagemData.content}`;
-                mensagensDiv.appendChild(mensagemDiv);
+                mensagemDiv.textContent = mensagemData.content;
+                messageContainer.appendChild(senderName);
+                messageContainer.appendChild(mensagemDiv);
+                mensagensDiv.appendChild(messageContainer);
                 mensagensDiv.scrollTop = mensagensDiv.scrollHeight; // Manter a rolagem no final
             });
         }
