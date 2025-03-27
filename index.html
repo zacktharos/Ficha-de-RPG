@@ -33,7 +33,7 @@
         #chat-btn-container {
             position: fixed;
             left: 10px;
-            top: calc(50% - 120px); /* Ajuste para mover o botão para cima com mais espaço */
+            top: calc(50% - 150px); /* Ajuste para mover o botão 3cm mais para cima */
             z-index: 1000;
         }
 
@@ -1487,6 +1487,78 @@
         #raca-opcoes-modal .modal-content button:nth-child(2) {
             margin-top: 10px;
         }
+
+        /* Estilos para os botões de modo tema */
+        #lua-btn, #sol-btn {
+            font-size: 1.5rem;
+            line-height: 1;
+            padding: 8px 15px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        #sol-btn {
+            color: #ffc107; /* Amarelo para o sol */
+            background-color: #fff;
+        }
+
+        #lua-btn {
+            color: #444; /* Cinza escuro para a lua */
+            background-color: #222;
+        }
+
+        body.dark-mode #sol-btn {
+            color: #fff;
+            background-color: #333;
+        }
+
+        body.dark-mode #lua-btn {
+            color: #bbb;
+            background-color: #111;
+        }
+
+        /* Efeito de eletricidade */
+        #ficha-container.level-up-effect {
+            animation: electricity 3s ease-in-out;
+        }
+
+        @keyframes electricity {
+            0% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+                border-color: #00BFFF;
+            }
+            50% {
+                box-shadow: 0 0 20px #00FFFF, 0 0 30px #00FFFF, 0 0 40px #00FFFF;
+                border-color: #00FFFF;
+            }
+            100% {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                border-color: #b8860b;
+            }
+        }
+        body.dark-mode #ficha-container.level-up-effect {
+            animation: electricity-dark 3s ease-in-out;
+        }
+
+        @keyframes electricity-dark {
+            0% {
+                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
+                border-color: #00BFFF;
+            }
+            50% {
+                box-shadow: 0 0 20px #00FFFF, 0 0 30px #00FFFF, 0 0 40px #00FFFF;
+                border-color: #00FFFF;
+            }
+            100% {
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+                border-color: #444;
+            }
+        }
     </style>
 </head>
 
@@ -2789,7 +2861,8 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             if (nivel > nivelAnterior) {
                 nivelSpan.classList.add("aura-azul");
-                setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000);
+                fichaContainer.classList.add("level-up-effect");
+                setTimeout(() => fichaContainer.classList.remove("level-up-effect"), 3000);
             }
 
             gameMasterMessage.style.display = nivel >= 30 ?
