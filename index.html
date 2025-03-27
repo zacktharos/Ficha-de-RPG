@@ -982,7 +982,7 @@
 
         #distancia-pulo,
         #altura-pulo,
-#velocidade-corrida {
+        #velocidade-corrida {
             background-color: #8B4513;
             border-color: #8B4513
         }
@@ -1297,10 +1297,179 @@
                 width: 100%
             }
         }
+
+        /* Estilos para o botão de bate-papo */
+        #chat-button {
+            position: fixed;
+            left: 10px;
+            top: 100px; /* Ajuste a posição vertical conforme necessário */
+            background: #a0522d; /* Cor marrom medieval */
+            color: #fff;
+            border: 2px solid #b8860b; /* Borda dourada */
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 1002;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #chat-button:hover {
+            background-color: #b8860b;
+            transform: translateY(-2px);
+        }
+
+        /* Estilos para o modal de senha do bate-papo */
+        #chat-password-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1003;
+        }
+
+        #chat-password-modal .modal-content {
+            background: #f0e6d2;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+
+        #chat-password-modal .modal-content h3 {
+            font-family: 'MedievalSharp', serif;
+            color: #000;
+            margin-bottom: 15px;
+        }
+
+        #chat-password-modal .modal-content input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        #chat-password-modal .modal-content button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'MedievalSharp', serif;
+            color: #fff;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        #chat-password-modal .modal-content .confirm-btn {
+            background: #b8860b;
+        }
+
+        #chat-password-modal .modal-content .confirm-btn:hover {
+            background: #a0522d;
+        }
+
+        #chat-password-modal .modal-content .cancel-btn {
+            background: #a52a2a;
+        }
+
+        #chat-password-modal .modal-content .cancel-btn:hover {
+            background: #8b0000;
+        }
+
+        /* Estilos para o modal de bate-papo */
+        #chat-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1004;
+        }
+
+        #chat-modal .modal-content {
+            background: #f0e6d2;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-modal .modal-content h3 {
+            font-family: 'MedievalSharp', serif;
+            color: #000;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        #chat-modal .modal-content #messages-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #chat-modal .modal-content .message {
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        #chat-modal .modal-content .input-area {
+            display: flex;
+        }
+
+        #chat-modal .modal-content .input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        #chat-modal .modal-content .input-area button {
+            background: #b8860b;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            border-radius: 0 4px 4px 0;
+            font-family: 'MedievalSharp', serif;
+        }
+
+        #chat-modal .modal-content .input-area button:hover {
+            background: #a0522d;
+        }
     </style>
 </head>
 
 <body>
+    <button id="chat-button">
+        <span style="font-size: 1.2rem;">💬</span> Bate-papo
+    </button>
+
     <div id="fichas-sidebar">
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
@@ -1700,7 +1869,6 @@
         </div>
     </div>
 
-    <!-- Modal para Opções da Raça -->
     <div id="raca-opcoes-modal" class="modal">
         <div class="modal-content">
             <h3>O que você deseja fazer?</h3>
@@ -1710,7 +1878,6 @@
         </div>
     </div>
 
-    <!-- Modal para Editar Raça -->
     <div id="editar-raca-modal" class="modal">
         <div class="modal-content">
             <h3>Editar Raça</h3>
@@ -1720,6 +1887,37 @@
             <textarea id="editar-raca-descricao"></textarea>
             <button class="confirm-btn" onclick="salvarEdicaoRaca()">Salvar</button>
             <button class="cancel-btn" onclick="fecharModal('editar-raca-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="chat-password-create-modal" class="modal">
+        <div class="modal-content">
+            <h3>Criar Senha para o Bate-papo</h3>
+            <input type="password" id="chat-password-input" placeholder="Senha para o bate-papo">
+            <button class="confirm-btn" onclick="salvarChatPassword()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('chat-password-create-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="chat-password-enter-modal" class="modal">
+        <div class="modal-content">
+            <h3>Inserir Senha do Bate-papo</h3>
+            <input type="password" id="chat-password-enter-input" placeholder="Senha para o bate-papo">
+            <button class="confirm-btn" onclick="abrirChat()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('chat-password-enter-modal')">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="chat-modal" class="modal">
+        <div class="modal-content">
+            <h3>Bate-papo Privado</h3>
+            <div id="messages-container">
+                </div>
+            <div class="input-area">
+                <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+                <button onclick="enviarMensagem()">Enviar</button>
+            </div>
+            <button class="cancel-btn" onclick="fecharModal('chat-modal')">Fechar Bate-papo</button>
         </div>
     </div>
 
@@ -1736,7 +1934,6 @@
             messagingSenderId: "528610398062",
             appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
         };
-
         firebase.initializeApp(firebaseConfig);
 
         const database = firebase.database();
@@ -1760,7 +1957,6 @@
             vigorTotal,
             vigorAtual,
             previousValues = new Map();
-
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2009,9 +2205,9 @@
                 classeDescricao: "",
                 racaNome: "",
                 racaDescricao: "",
-                racaSelecionada: ""
+                racaSelecionada: "",
+                chatPassword: null // Adicionado campo para a senha do bate-papo
             };
-
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
                     currentFichaId = fichaId;
@@ -2053,7 +2249,6 @@
                     span.textContent = fichas[fichaId].nomeFicha || "Sem Nome";
                     tab.appendChild(span);
                     tab.dataset.fichaId = fichaId;
-
                     if (fichaId === currentFichaId) tab.classList.add("active");
 
                     tab.onclick = () => {
@@ -2112,9 +2307,9 @@
                 classeDescricao: "",
                 racaNome: "",
                 racaDescricao: "",
-                racaSelecionada: ""
+                racaSelecionada: "",
+                chatPassword: null // Adicionado campo para a senha do bate-papo
             };
-
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
                 carregarFicha(novaFichaId);
@@ -2194,14 +2389,12 @@
             salvarRacasBtn = document.getElementById("salvar-racas-btn"),
             racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
-
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
             pontosHabilidadeUsados = 0,
             experiencia = 0,
             vidaBase = 50;
-
         const nivelData = [{
             nivel: 0,
             xp: 0,
@@ -2359,9 +2552,61 @@
             ph: 38
         }];
 
+        let chatPassword = null;
+
+        document.getElementById('chat-button').onclick = () => {
+            database.ref(`fichas/${currentFichaId}/chatPassword`).once('value', snapshot => {
+                chatPassword = snapshot.val();
+                if (chatPassword) {
+                    document.getElementById('chat-password-enter-modal').style.display = 'flex';
+                } else {
+                    document.getElementById('chat-password-create-modal').style.display = 'flex';
+                }
+            });
+        };
+
+        function salvarChatPassword() {
+            const password = document.getElementById('chat-password-input').value;
+            if (password) {
+                database.ref(`fichas/${currentFichaId}`).update({ chatPassword: password }).then(() => {
+                    chatPassword = password;
+                    fecharModal('chat-password-create-modal');
+                    document.getElementById('chat-modal').style.display = 'flex';
+                }).catch(error => console.error("Erro ao salvar senha do chat:", error));
+            } else {
+                alert("Por favor, crie uma senha para o bate-papo.");
+            }
+        }
+
+        function abrirChat() {
+            const enteredPassword = document.getElementById('chat-password-enter-input').value;
+            if (enteredPassword === chatPassword) {
+                fecharModal('chat-password-enter-modal');
+                document.getElementById('chat-modal').style.display = 'flex';
+                // Aqui você pode adicionar a lógica para carregar mensagens existentes
+            } else {
+                alert("Senha incorreta.");
+            }
+        }
+
+        function enviarMensagem() {
+            const message = document.getElementById('message-input').value.trim();
+            if (message) {
+                // Aqui você adicionaria a lógica para enviar a mensagem para o Firebase
+                console.log("Mensagem enviada:", message);
+                document.getElementById('message-input').value = '';
+                // Simulação de recebimento de mensagem
+                const messagesContainer = document.getElementById('messages-container');
+                const newMessage = document.createElement('div');
+                newMessage.className = 'message';
+                newMessage.textContent = `Você: ${message}`;
+                messagesContainer.appendChild(newMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight; // Auto-scroll para a última mensagem
+            }
+        }
+
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
-
             const ficha = fichas[fichaId];
 
             nomePersonagemInput.value = ficha.nomePersonagem || "";
@@ -2388,7 +2633,8 @@
             isFichaUnlocked = false;
 
             vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
-            desvantagensSelecionadas = ficha.desvantagens ? ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
+            desvantagensSelecionadas = ficha.desvantagens ?
+                ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
 
             racaSelecionada = ficha.racaSelecionada || "";
             racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
@@ -2413,10 +2659,11 @@
                 desvantagensListDisplay.appendChild(div);
             });
 
-            const inventario = Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
-                item: "",
-                peso: "0"
-            });
+            const inventario =
+                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                    item: "",
+                    peso: "0"
+                });
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
             slots.forEach((slot, i) => {
                 const itemInput = slot.querySelector(".inventory-item");
@@ -2436,12 +2683,10 @@
                 input.value = m;
                 magiasList.appendChild(input);
             });
-
             anotacoesTextarea.value = ficha.anotacoes || "";
 
             classeNomeInput.value = ficha.classeNome || "";
             classeDescricaoInput.value = ficha.classeDescricao || "";
-
             if (ficha.imagem) {
                 characterImage.src = ficha.imagem;
                 characterImage.style.display = "block";
@@ -2464,7 +2709,6 @@
             document.getElementById("vida-atual").textContent = vidaAtual;
             document.getElementById("magia-atual").textContent = magiaAtual;
             document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-
             pontosVantagemSpan.textContent = getPontosVantagem();
 
             previousValues.clear();
@@ -2472,7 +2716,8 @@
         }
 
         function atualizarBotaoBloquear() {
-            bloquearFichaButton.textContent = isFichaLocked ? "Desbloquear Ficha" : "Bloquear Ficha";
+            bloquearFichaButton.textContent = isFichaLocked ?
+                "Desbloquear Ficha" : "Bloquear Ficha";
             bloquearFichaButton.classList.toggle("botao-bloquear", !isFichaLocked);
             bloquearFichaButton.classList.toggle("botao-desbloquear", isFichaLocked);
         }
@@ -2485,7 +2730,6 @@
                 item: slot.querySelector(".inventory-item").value,
                 peso: slot.querySelector(".inventory-weight").value
             }));
-
             const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
 
             const dados = {
@@ -2497,7 +2741,7 @@
                 inteligencia: inteligenciaInput.value,
                 constituicao: constituicaoInput.value,
                 experiencia: experienciaInput.value,
-                armaDireitaNome:armaDireitaNomeInput.value,
+                armaDireitaNome: armaDireitaNomeInput.value,
                 armaDireitaAtaque: armaDireitaAtaqueInput.value,
                 armaDireitaAtaqueMagico: armaDireitaAtaqueMagicoInput.value,
                 armaEsquerdaNome: armaEsquerdaNomeInput.value,
@@ -2512,15 +2756,16 @@
                 distanciaPulo: distanciaPuloSpan.textContent,
                 isLocked: isFichaLocked,
                 password: fichaPassword,
-                imagem: characterImage.src || null,
+                imagem: characterImage.src ||
+                    null,
                 anotacoes: anotacoesTextarea.value,
                 classeNome: classeNomeInput.value,
                 classeDescricao: classeDescricaoInput.value,
                 racaNome: racaNomeSpan.textContent,
                 racaDescricao: racaDescricaoInput.value,
-                racaSelecionada: racaSelecionada
+                racaSelecionada: racaSelecionada,
+                chatPassword: chatPassword // Salvar a senha do chat
             };
-
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
                 previousValues.clear();
@@ -2529,7 +2774,8 @@
         }
 
         function calcularNivel(exp) {
-            return nivelData.findLast(data => exp >= data.xp)?.nivel || 0;
+            return nivelData.findLast(data => exp >= data.xp)?.nivel ||
+                0;
         }
 
         function atualizarNivel() {
@@ -2538,13 +2784,13 @@
             nivelSpan.textContent = nivel;
             pontosHabilidadeTotal = nivelData[nivel].pd;
             pontosVantagemSpan.textContent = getPontosVantagem();
-
             if (nivel > nivelAnterior) {
                 nivelSpan.classList.add("aura-azul");
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000);
             }
 
-            gameMasterMessage.style.display = nivel >= 30 ? "block" : "none";
+            gameMasterMessage.style.display = nivel >= 30 ?
+                "block" : "none";
             fichaContainer.classList.toggle("aura-azul", nivel >= 30);
 
             calcularAtributos();
@@ -2552,17 +2798,14 @@
 
         function getPontosVantagem() {
             let ph = nivelData[nivel].ph;
-
             vantagensSelecionadas.forEach(v => {
                 const vantagem = vantagensData.find(d => d.nome === v);
                 if (vantagem) ph -= vantagem.custo;
             });
-
             desvantagensSelecionadas.forEach(d => {
                 const desvantagem = desvantagensData.find(desv => desv.nome === d);
                 if (desvantagem) ph += desvantagem.ganho;
             });
-
             if (racaSelecionada) {
                 const raca = racasData.find(r => r.nome === racaSelecionada);
                 if (raca) ph -= raca.custo;
@@ -2573,17 +2816,14 @@
 
         function calcularPontosVantagemTemp() {
             let ph = nivelData[nivel].ph;
-
             tempVantagensSelecionadas.forEach(v => {
                 const vantagem = vantagensData.find(d => d.nome === v);
                 if (vantagem) ph -= vantagem.custo;
             });
-
             tempDesvantagensSelecionadas.forEach(d => {
                 const desvantagem = desvantagensData.find(desv => desv.nome === d);
                 if (desvantagem) ph += desvantagem.ganho;
             });
-
             if (tempRacaSelecionada) {
                 const raca = racasData.find(r => r.nome === tempRacaSelecionada);
                 if (raca) ph -= raca.custo;
@@ -2641,14 +2881,18 @@
         }
 
         function calcularAtributos() {
-            const forca = parseInt(forcaInput.value) || 0,
-                destreza = parseInt(destrezaInput.value) || 0,
-                agilidade = parseInt(agilidadeInput.value) || 0,
-                inteligencia = parseInt(inteligenciaInput.value) || 0,
-                constituicao = parseInt(constituicaoInput.value) || 0;
+            const forca = parseInt(forcaInput.value) ||
+                0,
+                destreza = parseInt(destrezaInput.value) ||
+                0,
+                agilidade = parseInt(agilidadeInput.value) ||
+                0,
+                inteligencia = parseInt(inteligenciaInput.value) ||
+                0,
+                constituicao = parseInt(constituicaoInput.value) ||
+                0;
 
             let totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
-
             if (totalPontos > pontosHabilidadeTotal) {
                 alert("Pontos de habilidade insuficientes!");
                 forcaInput.value = previousValues.get(forcaInput) || "0";
@@ -2670,9 +2914,7 @@
                 ataqueMagico = inteligencia,
                 magiaBase = 20 + 3 * constituicao,
                 vigorBase = 10 + 0.4 * constituicao;
-
             vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel;
-
             if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
 
             ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
@@ -2681,22 +2923,21 @@
             const velocidadeBase = 25 + Math.floor(agilidade / 3) * 3,
                 alturaPuloBase = 1 + Math.floor(forca / 10),
                 distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
-
             let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0,
-                bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0,
-                bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
+                bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
+                2 : 0,
+                bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
+                6 : 0;
 
             velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
             alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
             distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
-
             ataqueSpan.textContent = ataque;
             ataqueMagicoSpan.textContent = ataqueMagico;
             acertoSpan.textContent = acerto;
             esquivaSpan.textContent = esquiva;
             rdfSpan.textContent = rdf;
             rdmSpan.textContent = rdm;
-
             vidaTotal = Math.ceil(vidaBase);
             magiaTotal = Math.ceil(magiaBase);
             vigorTotal = parseFloat(vigorBase.toFixed(1));
@@ -2704,18 +2945,15 @@
             vidaAtual = vidaAtual === undefined ? vidaTotal : Math.min(vidaAtual, vidaTotal);
             magiaAtual = magiaAtual === undefined ? magiaTotal : Math.min(magiaAtual, magiaTotal);
             vigorAtual = vigorAtual === undefined ? vigorTotal : Math.min(vigorAtual, vigorTotal);
-
             document.getElementById("vida-total").textContent = vidaTotal;
             document.getElementById("magia-total").textContent = magiaTotal;
             document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
             document.getElementById("vida-atual").textContent = vidaAtual;
             document.getElementById("magia-atual").textContent = magiaAtual;
             document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-
             const regeneracaoVida = (0.2 * constituicao).toFixed(1),
                 regeneracaoMagia = (0.8 * constituicao).toFixed(1),
                 regeneracaoVigor = (0.4 * constituicao).toFixed(1);
-
             document.getElementById("regeneracao-vida").textContent = regeneracaoVida;
             document.getElementById("regeneracao-magia").textContent = regeneracaoMagia;
             document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
@@ -2739,19 +2977,16 @@
                 span: rdmSpan,
                 valor: rdm
             }];
-
             atributos.forEach(a => a.span.classList.remove("atributo-fogo"));
 
             const maxAtributo = atributos.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, {
                 valor: 0
             });
-
             if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
         }
 
         function resetarPontos() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-
             if (confirm("Tem certeza que deseja reiniciar os pontos? Você precisará da permissão do GM.")) {
                 document.getElementById("senha-gm-modal").style.display = "flex";
                 document.getElementById("senha-gm-input").value = "";
@@ -2814,7 +3049,6 @@
                     slot.querySelector(".inventory-item").value = "";
                     slot.querySelector(".inventory-weight").value = "0";
                 });
-
                 characterImage.style.display = "none";
                 characterImage.src = "";
 
@@ -2849,13 +3083,11 @@
 
         function bloquearFicha() {
             const senha = document.getElementById("senha-bloqueio-input").value;
-
             if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
             if (desvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
 
             isFichaLocked = true;
             fichaPassword = senha;
-
             database.ref(`fichas/${currentFichaId}`).update({
                 isLocked: true,
                 password: senha
@@ -2878,11 +3110,9 @@
             const senha = document.getElementById("senha-desbloqueio-input").value,
                 modal = document.getElementById("password-modal"),
                 elementId = modal.dataset.elementId;
-
             if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
 
             isFichaUnlocked = true;
-
             if (currentFichaId !== "ficha-matriz" && senha !== senhaMatriz) {
                 database.ref(`fichas/${currentFichaId}`).update({
                     isLocked: false,
@@ -2951,7 +3181,6 @@
                 }
             });
         });
-
         nomePersonagemInput.oninput = salvarDados;
 
         characterImageInput.onchange = e => {
@@ -2966,7 +3195,6 @@
                 reader.readAsDataURL(file);
             }
         };
-
         document.getElementById("excluir-ficha").onclick = () => {
             if (currentFichaId === "ficha-matriz") return alert("A ficha matriz não pode ser excluída!");
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
@@ -2977,19 +3205,16 @@
                     atualizarAbasFichas();
                 });
         };
-
         let isDragging = false,
             currentX = diceContainer.offsetLeft,
             currentY = diceContainer.offsetTop,
             initialX, initialY;
-
         diceContainer.onmousedown = e => {
             isDragging = true;
             initialX = e.clientX - currentX;
             initialY = e.clientY - currentY;
             diceContainer.style.cursor = "grabbing";
         };
-
         document.onmousemove = e => {
             if (isDragging) {
                 e.preventDefault();
@@ -3012,10 +3237,8 @@
                 showNotification(`${dado.nomeFicha} rolou: ${dado.resultado}`, "normal-result");
             }
         });
-
         diceRoll.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-
             diceRoll.textContent = "Rolling...";
             diceResult.style.display = "none";
             diceRoll.classList.remove("critical-failure", "critical-success");
@@ -3046,7 +3269,6 @@
                     notification.style.display = "none";
                     notification.classList.remove("critical-failure", "critical-success", "normal-result");
                 }, 2000);
-
                 const dadoRef = database.ref('dadosRolados').push();
                 dadoRef.set({
                     fichaId: currentFichaId,
@@ -3064,24 +3286,19 @@
             document.getElementById("salvar-vantagens-btn").style.display = "none";
             atualizarVantagensDesvantagensPanel();
         };
-
         fecharPaginaBtn.onclick = () => {
             vantagensDesvantagensPanel.style.display = "none";
         };
-
         salvarVantagensBtn.onclick = () => {
             document.getElementById("salvar-vantagens-modal").style.display = "flex";
         };
-
         document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempDesvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
-
             vantagensSelecionadas = [...tempVantagensSelecionadas];
             desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
 
             vantagensListDisplay.innerHTML = "";
             desvantagensListDisplay.innerHTML = "";
-
             vantagensSelecionadas.forEach(v => {
                 const div = document.createElement("div");
                 div.textContent = v;
@@ -3151,13 +3368,11 @@
 
                 desvantagensList.appendChild(div);
             });
-
             document.getElementById("ph-temp").textContent = calcularPontosVantagemTemp();
         }
 
         function removerVantagem(v) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-
             if (confirm(`Você deseja remover a vantagem "${v}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex";
                 document.getElementById("senha-gm-input").value = "";
@@ -3179,7 +3394,6 @@
 
         function removerDesvantagem(d) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-
             if (confirm(`Você deseja remover a desvantagem "${d}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex";
                 document.getElementById("senha-gm-input").value = "";
@@ -3204,16 +3418,15 @@
         }
 
         inventarioSlots.addEventListener("input", calcularPesoTotal);
-
         anotacoesBtn.onclick = () => {
-            anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block";
+            anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ?
+                "none" : "block";
         };
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target))
                 anotacoesTextarea.style.display = 'none';
         });
-
         anotacoesTextarea.oninput = salvarDados;
 
         adicionarMagiaBtn.onclick = () => {
@@ -3226,7 +3439,6 @@
                 salvarDados();
             } else alert("Você atingiu o limite de 20 magias/habilidades!");
         };
-
         racasBtn.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             tempRacaSelecionada = racaSelecionada;
@@ -3234,15 +3446,12 @@
             racasPanel.style.display = "block";
             document.getElementById("salvar-racas-btn").style.display = "none";
         };
-
         fecharRacasBtn.onclick = () => {
             racasPanel.style.display = "none";
         };
-
         salvarRacasBtn.onclick = () => {
             document.getElementById("salvar-vantagens-modal").style.display = "flex";
         };
-
         document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
                 const raca = racasData.find(r => r.nome === tempRacaSelecionada);
@@ -3277,7 +3486,6 @@
                     div.onclick = () => removerDesvantagem(d);
                     desvantagensListDisplay.appendChild(div);
                 });
-
                 pontosVantagemSpan.textContent = getPontosVantagem();
                 salvarDados();
                 vantagensDesvantagensPanel.style.display = "none";
@@ -3288,7 +3496,6 @@
 
         function atualizarRacasPanel() {
             racasList.innerHTML = "";
-
             racasData.forEach(r => {
                 const div = document.createElement("div");
                 div.className = "raca-item";
@@ -3381,11 +3588,9 @@
         luaBtn.onclick = () => {
             document.body.classList.add("dark-mode");
         };
-
         solBtn.onclick = () => {
             document.body.classList.remove("dark-mode");
         };
-
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
 
@@ -3403,12 +3608,11 @@
             document.getElementById("historico-dados-panel").style.display = "block";
         };
 
-        document.addEventListener('click', function (event) {
+        document.addEventListener('click', function(event) {
             const panel = document.getElementById("historico-dados-panel");
             if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target))
                 panel.style.display = "none";
         });
-
         database.ref('dadosRolados').on('value', snapshot => {
             const dados = snapshot.val();
             const lista = document.getElementById("historico-lista");
