@@ -13,12 +13,13 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0e6d2; /* Cor de pergaminho padrão */
+            background: #f5f5f5;
             color: #000;
             display: flex;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
+            background-color: #d2b48c;
             background-image: none;
             background-size: cover;
             background-position: center;
@@ -26,7 +27,7 @@
         }
 
         body.dark-mode {
-            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
+            background: #121212;
             color: #e0e0e0
         }
 
@@ -34,6 +35,7 @@
             position: fixed;
             left: 10px;
             top: calc(50% - 120px);
+            /* Ajuste para mover o botão para cima com mais espaço */
             z-index: 1000;
         }
 
@@ -175,7 +177,7 @@
             margin: 80px auto 20px;
             border: 2px solid #b8860b;
             position: relative;
-            z-index: 1;
+            z-index: 1; /* Garante que a ficha fica abaixo da anotação */
         }
 
         body.dark-mode #ficha-container {
@@ -471,8 +473,7 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 20px;
-            margin-bottom: 20px; /* Adicionado margem inferior para separar da anotação */
+            margin-top: 20px
         }
 
         .botao {
@@ -521,6 +522,18 @@
         .botao-bloquear:hover,
         .botao-desbloquear:hover {
             background: #2a2a2a;
+            transform: translateY(-2px)
+        }
+
+        .botao-excluir {
+            background: #a52a2a;
+            position: absolute;
+            bottom: 20px;
+            left: 20px
+        }
+
+        .botao-excluir:hover {
+            background: #8b0000;
             transform: translateY(-2px)
         }
 
@@ -1096,6 +1109,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
             z-index: 1000;
+            /* Garante que o botão fique acima da ficha */
         }
 
         body.dark-mode #anotacoes-btn {
@@ -1122,7 +1136,7 @@
             padding: 10px;
             font-size: 0.9rem;
             resize: none;
-            z-index: 1001;
+            z-index: 1001; /* Garante que a caixa de anotações fique acima de tudo */
         }
 
         body.dark-mode #anotacoes-textarea {
@@ -1509,19 +1523,8 @@
             margin-right: 10px;
         }
 
-        /* Estilos para o seletor de cor de fundo */
-        #background-color-selector {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .color-option {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid #ccc;
+        #background-modal .modal-content #salvar-fundo-btn {
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -1540,7 +1543,8 @@
         <div id="game-master-message">Você virou o Game Master</div>
 
         <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
-            <img id="character-image" alt="Imagem do Personagem">
+            <img id="character-image" alt="Imagem do
+[source: 223] Personagem">
             <input type="file" id="character-image-input" accept="image/*" style="display:none">
         </div>
 
@@ -1557,7 +1561,8 @@
                 <input type="text" id="nome-personagem" placeholder="Digite o nome do seu personagem">
 
                 <label for="descricao-personagem">Descrição do Personagem:</label>
-                <textarea id="descricao-personagem" placeholder="Digite a descrição do seu personagem"></textarea>
+                <textarea id="descricao-personagem"
+                    placeholder="Digite a descrição do seu personagem"></textarea>
             </section>
 
             <section id="recursos">
@@ -1621,7 +1626,8 @@
                 <div class="atributos-container">
                     <div class="atributos-coluna">
                         <div class="atributo">
-                            <label for="forca" title="Afeta ataque e RDF">Força:</label>
+                            <label for="forca" title="Afeta
+[source: 240] ataque e RDF">Força:</label>
                             <input type="number" id="forca" value="0" min="0">
                         </div>
 
@@ -1681,7 +1687,8 @@
                     <div class="armamento-coluna">
                         <label>Armamento Mão Direita:</label>
                         <div class="flex items-center mb-2">
-                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="mr-2">
+                            <input type="text" id="arma-direita-nome" placeholder="Nome
+[source: 254] da Arma" class="mr-2">
                             <span>Ataque </span>
                             <input type="number" id="arma-direita-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
@@ -1695,7 +1702,8 @@
                             <span>Ataque </span>
                             <input type="number" id="arma-esquerda-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
-                            <input type="number" id="arma-esquerda-ataque-magico" value="0" class="w-20">
+                            <input type="number" id="arma-esquerda-ataque-magico"
+                                value="0" class="w-20">
                         </div>
                     </div>
                 </div>
@@ -1709,7 +1717,8 @@
                         <div id="inventario-slots">
                             <div class="inventory-slot">
                                 <input type="text" placeholder="Item 1" class="inventory-item">
-                                <input type="number" min="0" value="0" class="inventory-weight" title="Peso em kg">
+                                <input type="number" min="0" value="0" class="inventory-weight" title="Peso
+[source: 261] em kg">
                             </div>
                             <div class="inventory-slot">
                                 <input type="text" placeholder="Item 2" class="inventory-item">
@@ -1755,14 +1764,16 @@
                         <div id="magias-list" class="magias-container">
                             <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 2" class="magia-nome">
-                            <input type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
+                            <input
+                                type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 4" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 5" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 6" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 7" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 8" class="magia-nome">
                             <input type="text" placeholder="Magia/Habilidade 9" class="magia-nome">
-                            <input type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
+                            <input
+                                type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
                         </div>
                         <button id="adicionar-magia-btn">Adicionar Magia</button>
                     </div>
@@ -1809,7 +1820,8 @@
                 </div>
             </section>
 
-            <section id="status">
+            <section
+                id="status">
                 <h2>Status</h2>
                 <div class="flex gap-20">
                     <div>
@@ -1839,22 +1851,9 @@
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
-                <button id="lua-btn" class="botao" style="background-color: #333; color: #eee;">🌙</button>
-                <button id="sol-btn" class="botao" style="background-color: #ffdd00; color: #333;">☀️</button>
+                <button id="lua-btn" class="botao">🌙</button>
+                <button id="sol-btn" class="botao">☀️</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
-                <div style="display: inline-block;">
-                    <button id="cor-fundo-btn" class="botao">Cor do Fundo</button>
-                    <div id="background-color-selector" style="display: none; position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; z-index: 1002;">
-                        <div class="color-option" style="background-color: #800000;" data-color="#800000"></div>
-                        <div class="color-option" style="background-color: #000080;" data-color="#000080"></div>
-                        <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                        <div class="color-option" style="background-color: #f0e6d2;" data-color="#f0e6d2"></div>
-                        <div class="color-option" style="background-color: #ffc0cb;" data-color="#ffc0cb"></div>
-                        <div class="color-option" style="background-color: #006400;" data-color="#006400"></div>
-                        <div class="color-option" style="background-color: #ff0000;" data-color="#ff0000"></div>
-                        <div class="color-option" style="background-color: #808080;" data-color="#808080"></div>
-                    </div>
-                </div>
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
@@ -1993,10 +1992,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                        </div>
+                    </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2010,12 +2009,13 @@
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <div id="background-modal" class="modal">
         <div class="modal-content">
             <h3>Plano de Fundo</h3>
-            <label for="background-image-input">Selecionar Imagem:</label>
+            <label
+                for="background-image-input">Selecionar Imagem:</label>
             <input type="file" id="background-image-input" accept="image/*">
 
             <div class="radio-group">
@@ -2027,6 +2027,7 @@
             <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar</button>
             <button class="cancel-btn" onclick="fecharModal('background-modal')">Cancelar</button>
             <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
+            <button id="salvar-fundo-btn" class="confirm-btn" onclick="salvarPlanoDeFundo()">Salvar</button>
         </div>
     </div>
 
@@ -2066,7 +2067,6 @@
             chatPassword = null,
             isChatOpen = false,
             selectedChatUser = null;
-
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2256,27 +2256,39 @@
             nome: "Humano (3)",
             custo: 3,
             descricao: "Os humanos são versáteis, ambiciosos e mestres em se adaptar a qualquer situação. Suas vantagens refletem uma capacidade excepcional de prosperar em qualquer ambiente.",
-            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constroem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
+            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para
+[source: 357] semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constroem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas
+[source: 358] (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
         }, {
             nome: "Elfo (4)",
             custo: 4,
-            descricao: "Os elfos são sábios, mágicos e profundamente conectados ao mundo natural. Suas vantagens agora destacam sua supremacia mágica e harmonia com a natureza.",
-            vantagens: ["Sabedoria Ancestral: Dominam uma área de conhecimento (ex.: arcana, história, natureza) com maestria, podendo decifrar pergaminhos, ruínas ou magias antigas automaticamente, e aprendem 1 línguas extra.", "Visão Élfica Suprema: Enxergam no escuro até 10 metros, detectam magias fracas em um raio de 20 metros e percebem intenções hostis em seres vivos com um teste muito difícil, 19 ou +.", "Escudo Mágico: Ganham resistência inata a um tipo de efeito magico hostil (não apenas encantamentos), reduzindo o dano ou a duração desses efeitos em 50%, refletindo sua essência mágica."]
+            descricao: "Os elfos são sábios, mágicos e profundamente conectados ao mundo natural.
+[source: 360] Suas vantagens agora destacam sua supremacia mágica e harmonia com a natureza.",
+            vantagens: ["Sabedoria Ancestral: Dominam uma área de conhecimento (ex.: arcana, história, natureza) com maestria, podendo decifrar pergaminhos, ruínas ou magias antigas automaticamente, e aprendem 1 línguas extra.", "Visão Élfica Suprema: Enxergam no escuro até 10 metros, detectam magias fracas em um raio de 20 metros e percebem intenções hostis em seres vivos com um teste muito difícil, 19 ou +.", "Escudo Mágico: Ganham resistência inata a um tipo de efeito magico hostil (não apenas encantamentos), reduzindo o
+[source: 361] dano ou a duração desses efeitos em 50%, refletindo sua essência mágica."]
         }, {
             nome: "Anão (4)",
             custo: 4,
-            descricao: "Os anões são resilientes, habilidosos e ligados à terra. Suas vantagens agora enfatizam sua supremacia em crafting e sobrevivência em condições extremas.",
-            vantagens: ["Fortitude Indomável: Trabalham por 3 dias sem descanso, ignorando efeitos de fadiga, e recuperam vida e energia ao dormir em ambientes rochosos ou subterrâneos duas vezes mais rápido.", "Artesão: Escolhem uma especialização com impacto massivo: Mestre Minerador: Identificam e extraem recursos raros (ex.: mithril) com o dobro da velocidade e podem abrir túneis temporários em rochas sólidas com ferramentas improvisadas. Forjador de Lendas: Produzem armas e armaduras com 10 pontos de qualidade e propriedades mágicas temporárias (ex.: arma que causa dano elemental extra), além de reparar itens quebrados durante um curto periodo de tempo (1 a 2 dias). Joalheiro Divino: Criam artefatos que armazenam magias moderadas (ex.: um anel que lança uma bola de fogo uma vez por dia) ou concedem bônus Temporários a atributos (ex.: +1 força).", "Senhor das Profundezas: Nunca se perdem em ambientes subterrâneos, detectam armadilhas (naturais ou artificiais) automaticamente e podem sentir vibrações no solo para prever emboscadas ou colapsos."]
+            descricao: "Os anões são resilientes, habilidosos e ligados à terra.
+[source: 362] Suas vantagens agora enfatizam sua supremacia em crafting e sobrevivência em condições extremas.",
+            vantagens: ["Fortitude Indomável: Trabalham por 3 dias sem descanso, ignorando efeitos de fadiga, e recuperam vida e energia ao dormir em ambientes rochosos ou subterrâneos duas vezes mais rápido.", "Artesão: Escolhem uma especialização com impacto massivo: Mestre Minerador: Identificam e extraem recursos raros (ex.: mithril) com o dobro da velocidade e podem abrir túneis temporários em rochas sólidas com ferramentas improvisadas.
+[source: 363] Forjador de Lendas: Produzem armas e armaduras com 10 pontos de qualidade e propriedades mágicas temporárias (ex.: arma que causa dano elemental extra), além de reparar itens quebrados durante um curto periodo de tempo (1 a 2 dias).
+[source: 364] Joalheiro Divino: Criam artefatos que armazenam magias moderadas (ex.: um anel que lança uma bola de fogo uma vez por dia) ou concedem bônus Temporários a atributos (ex.: +1 força).", "Senhor das Profundezas: Nunca se perdem em ambientes subterrâneos, detectam armadilhas (naturais ou artificiais) automaticamente e podem sentir vibrações no solo para prever emboscadas ou colapsos."]
         }, {
             nome: "Orc (3)",
             custo: 3,
-            descricao: "Os orcs são guerreiros ferozes e líderes carismáticos pela força. Suas vantagens agora amplificam sua presença intimidadora e poder bruto.",
-            vantagens: ["Lenda entre Guerreiros: Inspiram temor e respeito em qualquer cultura que valorize força, garantindo alianças com facções marciais e acesso a missões épicas; inimigos menores fogem automaticamente em sua presença (teste difícil, 16 ou +).", "Resiliência Brutal: Lutam sem penalidades mesmo com ferimentos graves e só caem quando atingem PV 0, além de regenerarem ferimentos leves passivamente fora de combate.", "Domínio da Intimidação: Podem forçar inimigos a se renderem ou recuarem com um grito poderoso uma vez por encontro, afetando grupos inteiros, e ganham bônus massivos em negociações baseadas em força ou medo.", "Fúria Ancestral: Entram em um estado de fúria duas vezes por dia, duplicando força e resistência por um curto período."]
+            descricao: "Os orcs são guerreiros ferozes e líderes carismáticos pela força.
+[source: 366] Suas vantagens agora amplificam sua presença intimidadora e poder bruto.",
+            vantagens: ["Lenda entre Guerreiros: Inspiram temor e respeito em qualquer cultura que valorize força, garantindo alianças com facções marciais e acesso a missões épicas;
+[source: 367] inimigos menores fogem automaticamente em sua presença (teste difícil, 16 ou +).", "Resiliência Brutal: Lutam sem penalidades mesmo com ferimentos graves e só caem quando atingem PV 0, além de regenerarem ferimentos leves passivamente fora de combate.", "Domínio da Intimidação: Podem forçar inimigos a se renderem ou recuarem com um grito poderoso uma vez por encontro, afetando grupos inteiros, e ganham bônus massivos em negociações baseadas em força ou medo.", "Fúria Ancestral: Entram em um estado de fúria duas vezes por dia, duplicando força e resistência por um curto período."]
         }, {
             nome: "Meio Animal (Selvagem) (4)",
             custo: 4,
-            descricao: "Os meio animais combinam instinto primal com astúcia. Suas vantagens agora os tornam mestres da sobrevivência e predadores supremos.",
-            vantagens: ["Sentidos Predatórios: Pode escolher um sentido aguçado de acordo com sua parte animal. (visão, olfato, audição), permitindo rastrear alvos a quilômetros, detectar inimigos invisíveis e evitar qualquer surpresa com um teste moderado, 12 ou +.", "Senhor dos Terrenos: Adaptam-se completamente a um ambiente (ex.: floresta, deserto, pântano), ignorando todos os efeitos negativos e ganhando bônus de movimento e furtividade nesses locais. bônus +1.", "Frenesi Instintivo: Uma vez por dia, canalizam seus instintos para ganhar velocidade sobrenatural (dobro de movimento), ataques adicionais e uma percepção quase premonitória de perigos, tornando-os caçadores ou fugitivos imbatíveis por um curto período (10 min)."]
+            descricao: "Os meio animais combinam instinto primal com astúcia.
+[source: 369] Suas vantagens agora os tornam mestres da sobrevivência e predadores supremos.",
+            vantagens: ["Sentidos Predatórios: Pode escolher um sentido aguçado de acordo com sua parte animal.
+[source: 370] (visão, olfato, audição), permitindo rastrear alvos a quilômetros, detectar inimigos invisíveis e evitar qualquer surpresa com um teste moderado, 12 ou +.", "Senhor dos Terrenos: Adaptam-se completamente a um ambiente (ex.: floresta, deserto, pântano), ignorando todos os efeitos negativos e ganhando bônus de movimento e furtividade nesses locais.
+[source: 371] bônus +1.", "Frenesi Instintivo: Uma vez por dia, canalizam seus instintos para ganhar velocidade sobrenatural (dobro de movimento), ataques adicionais e uma percepção quase premonitória de perigos, tornando-os caçadores ou fugitivos imbatíveis por um curto período (10 min)."]
         }];
 
         function criarFichaMatriz() {
@@ -2318,22 +2330,19 @@
                 racaSelecionada: "",
                 chatPassword: null, // Adicionado campo para a senha do chat
                 backgroundImage: null, // Adicionado campo para a imagem de fundo
-                backgroundSize: 'cover', // Adicionado campo para o tamanho da imagem de fundo
-                backgroundColor: '#f0e6d2' // Adicionado campo para a cor de fundo
+                backgroundSize: 'cover' // Adicionado campo para o tamanho da imagem de fundo
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
                     currentFichaId = fichaId;
                     carregarFicha(fichaId);
                     carregarFichas();
-                    aplicarPlanoDeFundoInicial();
-                    aplicarCorDeFundoInicial();
+                    aplicarPlanoDeFundoInicial(); // Aplicar plano de fundo ao carregar
                 } else {
                     database.ref(`fichas/${fichaId}`).set(fichaMatriz).then(() => {
                         currentFichaId = fichaId;
                         carregarFicha(fichaId);
-                        aplicarPlanoDeFundoInicial();
-                        aplicarCorDeFundoInicial();
+                        aplicarPlanoDeFundoInicial(); // Aplicar plano de fundo ao carregar
                     });
                 }
             });
@@ -2345,7 +2354,7 @@
                 if (fichas["ficha-matriz"]) {
                     atualizarAbasFichas();
                     atualizarListaFichasChat();
-                    verificarNovasMensagens();
+                    verificarNovasMensagens(); // Verificar mensagens ao carregar fichas
                 } else {
                     criarFichaMatriz();
                 }
@@ -2374,10 +2383,9 @@
                         currentFichaId = fichaId;
                         carregarFicha(fichaId);
                         atualizarAbasFichas();
-                        atualizarListaFichasChat();
-                        verificarNovasMensagens();
+                        atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
+                        verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
                     };
-
                     sidebar.insertBefore(tab, addBtn);
                 }
             }
@@ -2417,7 +2425,8 @@
                     item: "",
                     peso: "0"
                 }),
-                velocidadeCorrida: "25",
+                velocidadeCorrida:
+                    "25",
                 alturaPulo: "1",
                 distanciaPulo: "3",
                 isLocked: false,
@@ -2429,17 +2438,16 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null,
-                backgroundImage: null,
-                backgroundSize: 'cover',
-                backgroundColor: '#f0e6d2'
+                chatPassword: null, // Adicionado campo para a senha do chat
+                backgroundImage: null, // Adicionado campo para a imagem de fundo
+                backgroundSize: 'cover' // Adicionado campo para o tamanho da imagem de fundo
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
                 carregarFicha(novaFichaId);
                 fecharModal("nome-ficha-modal");
                 atualizarAbasFichas();
-                atualizarListaFichasChat();
+                atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao criar nova ficha
             }).catch(error => console.error("Erro ao criar nova ficha:", error));
         }
 
@@ -2482,7 +2490,8 @@
             desvantagensListDisplay = document.getElementById("desvantagens-list-display"),
             inventarioSlots = document.getElementById("inventario-slots"),
             pesoTotalSpan = document.getElementById("peso-total"),
-            diceContainer = document.getElementById("dice-container"),
+            diceContainer
+            = document.getElementById("dice-container"),
             diceRoll = document.getElementById("dice-roll"),
             diceResult = document.getElementById("dice-result"),
             notification = document.getElementById("notification"),
@@ -2521,10 +2530,7 @@
             newMessageSound = document.getElementById("new-message-sound"),
             planoFundoBtn = document.getElementById("plano-fundo-btn"),
             backgroundImageInput = document.getElementById("background-image-input"),
-            backgroundModal = document.getElementById("background-modal"),
-            corFundoBtn = document.getElementById("cor-fundo-btn"),
-            backgroundColorSelector = document.getElementById("background-color-selector");
-
+            backgroundModal = document.getElementById("background-modal");
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
@@ -2588,7 +2594,8 @@
             ph: 18
         }, {
             nivel: 11,
-            xp: 670,
+            xp:
+                670,
             pd: 91,
             ph: 19
         }, {
@@ -2687,7 +2694,6 @@
             pd: 319,
             ph: 38
         }];
-
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
             const ficha = fichas[fichaId];
@@ -2735,7 +2741,8 @@
             });
 
             desvantagensSelecionadas.forEach(d => {
-                const div = document.createElement("div");
+                const div
+                    = document.createElement("div");
                 div.textContent = d;
                 div.className = "list-item";
                 div.onclick = () => removerDesvantagem(d);
@@ -2743,7 +2750,8 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -2799,7 +2807,7 @@
 
             chatPassword = ficha.chatPassword;
             atualizarEstadoChatBotao();
-
+            // Carregar e aplicar a imagem de fundo
             const backgroundImage = ficha.backgroundImage;
             const backgroundSize = ficha.backgroundSize || 'cover';
             if (backgroundImage) {
@@ -2807,21 +2815,11 @@
                 document.body.style.backgroundSize = backgroundSize;
             } else {
                 document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = '#d2b48c';
             }
             const radioButtons = document.querySelectorAll('input[name="background-size"]');
             radioButtons.forEach(radio => {
                 radio.checked = radio.value === backgroundSize;
-            });
-
-            const backgroundColor = ficha.backgroundColor || '#f0e6d2';
-            document.body.style.backgroundColor = backgroundColor;
-            const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
-            colorOptions.forEach(option => {
-                if (option.dataset.color === backgroundColor) {
-                    option.classList.add('active');
-                } else {
-                    option.classList.remove('active');
-                }
             });
         }
 
@@ -2875,9 +2873,9 @@
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
                 chatPassword: chatPassword,
-                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage.slice(5, -2),
-                backgroundSize: document.body.style.backgroundSize,
-                backgroundColor: document.body.style.backgroundColor
+                backgroundImage: document.body.style.backgroundImage === 'none' ?
+                    null : document.body.style.backgroundImage.slice(5, -2),
+                backgroundSize: document.body.style.backgroundSize
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
@@ -3038,9 +3036,9 @@
                 distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
             let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0,
                 bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
-                2 : 0,
+                    2 : 0,
                 bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
-                6 : 0;
+                    6 : 0;
 
             velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
             alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
@@ -3083,7 +3081,8 @@
             }, {
                 span: esquivaSpan,
                 valor: esquiva
-            }, {
+            },
+            {
                 span: rdfSpan,
                 valor: rdf
             }, {
@@ -3193,7 +3192,6 @@
                 document.getElementById("senha-bloqueio-input").focus();
             }
         };
-
         function bloquearFicha() {
             const senha = document.getElementById("senha-bloqueio-input").value;
             if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
@@ -3396,7 +3394,7 @@
             tempVantagensSelecionadas = [...vantagensSelecionadas];
             tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
             vantagensDesvantagensPanel.style.display = "block";
-            document.getElementById("salvar-vantagens-btn").style.display = "none";
+            document.getElementById("salvar-vantagens-btn").style.display = "block";
             atualizarVantagensDesvantagensPanel();
         };
         fecharPaginaBtn.onclick = () => {
@@ -3536,7 +3534,7 @@
                 "none" : "block";
         };
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target))
                 anotacoesTextarea.style.display = 'none';
         });
@@ -3557,7 +3555,7 @@
             tempRacaSelecionada = racaSelecionada;
             atualizarRacasPanel();
             racasPanel.style.display = "block";
-            document.getElementById("salvar-racas-btn").style.display = "none";
+            document.getElementById("salvar-racas-btn").style.display = "block";
         };
         fecharRacasBtn.onclick = () => {
             racasPanel.style.display = "none";
@@ -3606,7 +3604,6 @@
                 calcularAtributos();
             }
         };
-
         function atualizarRacasPanel() {
             racasList.innerHTML = "";
             racasData.forEach(r => {
@@ -3623,11 +3620,12 @@
                         if (calcularPontosVantagemTemp() >= r.custo) {
                             tempRacaSelecionada = r.nome;
                             document.getElementById("confirmar-compra-modal").style.display = "flex";
-                            document.getElementById("confirmar-compra-btn").onclick = () => {
-                                atualizarRacasPanel();
-                                document.getElementById("salvar-racas-btn").style.display = "block";
-                                fecharModal("confirmar-compra-modal");
-                            };
+                            document.getElementById("confirmar-compra-btn").onclick = ()
+                                => {
+                                    atualizarRacasPanel();
+                                    document.getElementById("salvar-racas-btn").style.display = "block";
+                                    fecharModal("confirmar-compra-modal");
+                                };
                         } else alert("Pontos de Vantagem insuficientes!");
                     }
                     atualizarRacasPanel();
@@ -3721,7 +3719,7 @@
             document.getElementById("historico-dados-panel").style.display = "block";
         };
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const panel = document.getElementById("historico-dados-panel");
             if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target))
                 panel.style.display = "none";
@@ -3755,7 +3753,6 @@
                 }
             };
         };
-
         // Funcionalidade do Chat
         chatBtn.onclick = () => {
             if (!chatPassword) {
@@ -3860,11 +3857,13 @@
                 messageContainer.appendChild(mensagemDiv);
                 mensagensDiv.appendChild(messageContainer);
                 mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
+                // Manter a rolagem no final
             });
         }
 
         function getChatId(id1, id2) {
-            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+            return id1 < id2 ?
+                `${id1}_${id2}` : `${id2}_${id1}`;
         }
 
         function verificarNovasMensagens() {
@@ -3903,15 +3902,11 @@
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
                     const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                     document.body.style.backgroundSize = selectedSize;
-                    salvarDados();
-                    fecharModal('background-modal');
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage !== 'none') {
                 const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                 document.body.style.backgroundSize = selectedSize;
-                salvarDados();
-                fecharModal('background-modal');
             } else {
                 alert("Nenhuma imagem selecionada.");
             }
@@ -3920,46 +3915,28 @@
         function excluirPlanoDeFundo() {
             if (confirm("Tem certeza que deseja remover a imagem de fundo?")) {
                 document.body.style.backgroundImage = 'none';
-                salvarDados();
-                fecharModal('background-modal');
+                document.body.style.backgroundColor = '#d2b48c';
             }
+        }
+
+        function salvarPlanoDeFundo() {
+            const currentBackgroundImage = document.body.style.backgroundImage === 'none' ?
+                null : document.body.style.backgroundImage.slice(5, -2);
+            const currentBackgroundSize = document.body.style.backgroundSize;
+
+            database.ref(`fichas/${currentFichaId}`).update({
+                backgroundImage: currentBackgroundImage,
+                backgroundSize: currentBackgroundSize
+            }).then(() => {
+                showNotification("Plano de fundo salvo!", "save-success");
+                fecharModal('background-modal');
+            }).catch(error => console.error("Erro ao salvar plano de fundo:", error));
         }
 
         function aplicarPlanoDeFundoInicial() {
             if (currentFichaId && fichas[currentFichaId] && fichas[currentFichaId].backgroundImage) {
                 document.body.style.backgroundImage = `url('${fichas[currentFichaId].backgroundImage}')`;
                 document.body.style.backgroundSize = fichas[currentFichaId].backgroundSize || 'cover';
-            }
-        }
-
-        // Funcionalidade da Cor de Fundo
-        corFundoBtn.onclick = () => {
-            backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' ? 'flex' : 'none';
-        };
-
-        backgroundColorSelector.addEventListener('click', function(event) {
-            if (event.target.classList.contains('color-option')) {
-                const color = event.target.dataset.color;
-                document.body.style.backgroundColor = color;
-                salvarDados();
-                backgroundColorSelector.style.display = 'none';
-                const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
-                colorOptions.forEach(option => option.classList.remove('active'));
-                event.target.classList.add('active');
-            }
-        });
-
-        function aplicarCorDeFundoInicial() {
-            if (currentFichaId && fichas[currentFichaId] && fichas[currentFichaId].backgroundColor) {
-                document.body.style.backgroundColor = fichas[currentFichaId].backgroundColor;
-                const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
-                colorOptions.forEach(option => {
-                    if (option.dataset.color === fichas[currentFichaId].backgroundColor) {
-                        option.classList.add('active');
-                    } else {
-                        option.classList.remove('active');
-                    }
-                });
             }
         }
 
