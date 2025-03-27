@@ -1877,19 +1877,19 @@
         <div id="vantagens-list"></div>
         <div id="desvantagens-list"></div>
         <button id="salvar-vantagens-btn">SALVAR</button>
-        <button id="fechar-pagina-btn">Fechar Página</button>
+        <button id="fechar-pagina-btn">Cancelar</button>
     </div>
 
     <div id="racas-panel">
         <h2>Raças</h2>
         <div id="racas-list"></div>
         <button id="salvar-racas-btn">SALVAR</button>
-        <button id="fechar-racas-btn">Fechar Página</button>
+        <button id="fechar-racas-btn">Cancelar</button>
     </div>
 
     <div id="classes-panel">
         <h2>Classes</h2>
-        <button id="fechar-classes-btn">Fechar Página</button>
+        <button id="fechar-classes-btn">Cancelar</button>
     </div>
 
     <div id="nome-ficha-modal" class="modal">
@@ -1993,10 +1993,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                        </div>
+                    </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2010,7 +2010,7 @@
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <div id="background-modal" class="modal">
         <div class="modal-content">
@@ -3396,16 +3396,13 @@
             tempVantagensSelecionadas = [...vantagensSelecionadas];
             tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
             vantagensDesvantagensPanel.style.display = "block";
-            document.getElementById("salvar-vantagens-btn").style.display = "none";
+            document.getElementById("salvar-vantagens-btn").style.display = "block";
             atualizarVantagensDesvantagensPanel();
         };
         fecharPaginaBtn.onclick = () => {
             vantagensDesvantagensPanel.style.display = "none";
         };
         salvarVantagensBtn.onclick = () => {
-            document.getElementById("salvar-vantagens-modal").style.display = "flex";
-        };
-        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempDesvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
             vantagensSelecionadas = [...tempVantagensSelecionadas];
             desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
@@ -3431,7 +3428,6 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             salvarDados();
             vantagensDesvantagensPanel.style.display = "none";
-            fecharModal("salvar-vantagens-modal");
             calcularAtributos();
         };
 
@@ -3557,15 +3553,12 @@
             tempRacaSelecionada = racaSelecionada;
             atualizarRacasPanel();
             racasPanel.style.display = "block";
-            document.getElementById("salvar-racas-btn").style.display = "none";
+            document.getElementById("salvar-racas-btn").style.display = "block";
         };
         fecharRacasBtn.onclick = () => {
             racasPanel.style.display = "none";
         };
         salvarRacasBtn.onclick = () => {
-            document.getElementById("salvar-vantagens-modal").style.display = "flex";
-        };
-        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
                 const raca = racasData.find(r => r.nome === tempRacaSelecionada);
                 if (raca) {
@@ -3575,35 +3568,9 @@
                     pontosVantagemSpan.textContent = getPontosVantagem();
                     salvarDados();
                     racasPanel.style.display = "none";
-                    fecharModal("salvar-vantagens-modal");
                 }
             } else {
-                vantagensSelecionadas = [...tempVantagensSelecionadas];
-                desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
-
-                vantagensListDisplay.innerHTML = "";
-                desvantagensListDisplay.innerHTML = "";
-
-                vantagensSelecionadas.forEach(v => {
-                    const div = document.createElement("div");
-                    div.textContent = v;
-                    div.className = "list-item";
-                    div.onclick = () => removerVantagem(v);
-                    vantagensListDisplay.appendChild(div);
-                });
-
-                desvantagensSelecionadas.forEach(d => {
-                    const div = document.createElement("div");
-                    div.textContent = d;
-                    div.className = "list-item";
-                    div.onclick = () => removerDesvantagem(d);
-                    desvantagensListDisplay.appendChild(div);
-                });
-                pontosVantagemSpan.textContent = getPontosVantagem();
-                salvarDados();
-                vantagensDesvantagensPanel.style.display = "none";
-                fecharModal("salvar-vantagens-modal");
-                calcularAtributos();
+                alert("Nenhuma raça foi selecionada.");
             }
         };
 
