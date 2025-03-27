@@ -33,8 +33,7 @@
         #chat-btn-container {
             position: fixed;
             left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: calc(50% - 90px); /* Ajuste para mover o botão para cima */
             z-index: 1000;
         }
 
@@ -1881,7 +1880,7 @@
         <div class="modal-content">
             <h3>O que você deseja fazer?</h3>
             <button class="confirm-btn" onclick="excluirRacaSelecionadaModal()">Excluir Raça</button>
-            <button class="confirm-btn" onclick="editarRacaSelecionadaModal()">Editar Raça</button>
+            <button class="confirm-btn" onclick="editarRacaSelecionadaModal()" style="margin-top: 10px;">Editar Raça</button>
             <button class="cancel-btn" onclick="fecharModal('raca-opcoes-modal')">Cancelar</button>
         </div>
     </div>
