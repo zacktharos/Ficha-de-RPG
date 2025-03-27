@@ -13,14 +13,13 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
             color: #000;
             display: flex;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #d2b48c; /* Cor de pergaminho padrão */
-            background-image: none; /* Inicialmente sem imagem de fundo */
+            background-color: #a0522d; /* Cor bordô */
+            background-image: none;
             background-size: cover;
             background-position: center;
             transition: background 0.3s, color 0.3s
@@ -35,7 +34,6 @@
             position: fixed;
             left: 10px;
             top: calc(50% - 120px);
-            /* Ajuste para mover o botão para cima com mais espaço */
             z-index: 1000;
         }
 
@@ -177,7 +175,7 @@
             margin: 80px auto 20px;
             border: 2px solid #b8860b;
             position: relative;
-            z-index: 1; /* Garante que a ficha fica abaixo da anotação */
+            z-index: 1;
         }
 
         body.dark-mode #ficha-container {
@@ -1108,7 +1106,7 @@
             color: #000;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            z-index: 1000; /* Garante que o botão fique acima da ficha */
+            z-index: 1000;
         }
 
         body.dark-mode #anotacoes-btn {
@@ -1135,7 +1133,7 @@
             padding: 10px;
             font-size: 0.9rem;
             resize: none;
-            z-index: 1001; /* Garante que a caixa de anotações fique acima de tudo */
+            z-index: 1001;
         }
 
         body.dark-mode #anotacoes-textarea {
@@ -1521,6 +1519,16 @@
             display: inline-block;
             margin-right: 10px;
         }
+
+        /* Nova regra para o botão de lua */
+        #lua-btn {
+            color: #333; /* Cor escura para a lua */
+        }
+
+        /* Nova regra para o botão de sol */
+        #sol-btn {
+            color: #ffcc00; /* Cor clara para o sol (amarelo claro) */
+        }
     </style>
 </head>
 
@@ -1837,8 +1845,8 @@
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
-                <button id="lua-btn" class="botao">🌙</button>
-                <button id="sol-btn" class="botao">☀️</button>
+                <button id="lua-btn" class="botao" style="color: #333;">🌙</button>
+                <button id="sol-btn" class="botao" style="color: #ffcc00;">☀️</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
             </div>
 
@@ -2787,7 +2795,7 @@
                 document.body.style.backgroundSize = backgroundSize;
             } else {
                 document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#d2b48c';
+                document.body.style.backgroundColor = '#a0522d'; /* Aplica a cor bordô inicial */
             }
             const radioButtons = document.querySelectorAll('input[name="background-size"]');
             radioButtons.forEach(radio => {
@@ -3743,166 +3751,8 @@
             }
             if (senha.length < 4) {
                 alert("A senha deve ter pelo menos 4 caracteres.");
-                return;
-            }
-            chatPassword = senha;
-            database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => {
-                fecharModal("chat-password-modal");
-                alert("Senha do chat definida!");
-                atualizarEstadoChatBotao();
-            }).catch(error => console.error("Erro ao definir senha do chat:", error));
-        }
-
-        function abrirChat() {
-            const senhaDigitada = document.getElementById("abrir-chat-senha-input").value;
-            if (senhaDigitada === chatPassword) {
-                fecharModal("open-chat-modal");
-                document.getElementById("chat-modal").style.display = "flex";
-                isChatOpen = true;
-                selectedChatUser = null;
-                document.getElementById("conversation-area").innerHTML = "";
-            } else {
-                alert("Senha do chat incorreta.");
             }
         }
-
-        function atualizarEstadoChatBotao() {
-            if (chatPassword) {
-                chatBtn.textContent = "💬 Chat";
-            } else {
-                chatBtn.textContent = "💬 Definir Chat";
-            }
-        }
-
-        function atualizarListaFichasChat() {
-            availableFichasDiv.innerHTML = "";
-            for (const fichaId in fichas) {
-                if (fichaId !== "ficha-matriz" && fichaId !== currentFichaId) {
-                    const ficha = fichas[fichaId];
-                    const userDiv = document.createElement("div");
-                    userDiv.className = "user-item";
-                    userDiv.textContent = ficha.nomeFicha || "Sem Nome";
-                    userDiv.dataset.fichaId = fichaId;
-                    userDiv.onclick = () => iniciarConversa(fichaId, ficha.nomeFicha || "Sem Nome");
-                    availableFichasDiv.appendChild(userDiv);
-                }
-            }
-        }
-
-        function iniciarConversa(otherFichaId, otherFichaNome) {
-            selectedChatUser = otherFichaId;
-            document.getElementById("conversation-area").innerHTML = `<h3>Conversa com ${otherFichaNome}</h3><div id="mensagens"></div>`;
-            carregarMensagens(otherFichaId);
-        }
-
-        function enviarMensagem() {
-            if (!selectedChatUser) {
-                alert("Selecione uma ficha para enviar a mensagem.");
-                return;
-            }
-            const mensagem = mensagemInput.value.trim();
-            if (mensagem) {
-                const chatRef = database.ref('mensagens').child(getChatId(currentFichaId, selectedChatUser)).push();
-                chatRef.set({
-                    senderId: currentFichaId,
-                    receiverId: selectedChatUser,
-                    content: mensagem,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                });
-                mensagemInput.value = "";
-            }
-        }
-
-        function carregarMensagens(otherFichaId) {
-            const mensagensDiv = document.getElementById("mensagens");
-            database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => {
-                const mensagemData = snapshot.val();
-                const messageContainer = document.createElement("div");
-                messageContainer.className = "message-container";
-                const senderName = document.createElement("div");
-                senderName.className = "sender-name";
-                senderName.textContent = fichas[mensagemData.senderId]?.nomeFicha || 'Desconhecido';
-                const mensagemDiv = document.createElement("div");
-                mensagemDiv.className = `message ${mensagemData.senderId === currentFichaId ? 'sent' : 'received'}`;
-                mensagemDiv.textContent = mensagemData.content;
-                messageContainer.appendChild(senderName);
-                messageContainer.appendChild(mensagemDiv);
-                mensagensDiv.appendChild(messageContainer);
-                mensagensDiv.scrollTop = mensagensDiv.scrollHeight; // Manter a rolagem no final
-            });
-        }
-
-        function getChatId(id1, id2) {
-            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
-        }
-
-        function verificarNovasMensagens() {
-            if (!currentFichaId) return;
-            database.ref('mensagens').on('value', (snapshot) => {
-                let unreadCount = 0;
-                snapshot.forEach((chat) => {
-                    const chatId = chat.key;
-                    if (chatId.includes(currentFichaId)) {
-                        chat.forEach((mensagemSnapshot) => {
-                            const mensagem = mensagemSnapshot.val();
-                            if (mensagem.receiverId === currentFichaId && mensagem.senderId !== currentFichaId && !isChatOpen) {
-                                unreadCount++;
-                            }
-                        });
-                    }
-                });
-                chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0;
-                if (unreadCount > 0 && !isChatOpen) {
-                    newMessageSound.play();
-                }
-            });
-        }
-
-        // Funcionalidade do Plano de Fundo
-        planoFundoBtn.onclick = () => {
-            backgroundModal.style.display = "flex";
-        };
-
-        function aplicarPlanoDeFundo() {
-            const file = backgroundImageInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const imageUrl = e.target.result;
-                    document.body.style.backgroundImage = `url('${imageUrl}')`;
-                    const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
-                    document.body.style.backgroundSize = selectedSize;
-                    salvarDados();
-                    fecharModal('background-modal');
-                };
-                reader.readAsDataURL(file);
-            } else if (document.body.style.backgroundImage !== 'none') {
-                const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
-                document.body.style.backgroundSize = selectedSize;
-                salvarDados();
-                fecharModal('background-modal');
-            } else {
-                alert("Nenhuma imagem selecionada.");
-            }
-        }
-
-        function excluirPlanoDeFundo() {
-            if (confirm("Tem certeza que deseja remover a imagem de fundo?")) {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#d2b48c';
-                salvarDados();
-                fecharModal('background-modal');
-            }
-        }
-
-        function aplicarPlanoDeFundoInicial() {
-            if (currentFichaId && fichas[currentFichaId] && fichas[currentFichaId].backgroundImage) {
-                document.body.style.backgroundImage = `url('${fichas[currentFichaId].backgroundImage}')`;
-                document.body.style.backgroundSize = fichas[currentFichaId].backgroundSize || 'cover';
-            }
-        }
-
-        carregarFichas();
     </script>
 </body>
 
