@@ -13,13 +13,12 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f5f5;
+            background-color: #f0e6d2; /* Cor de pergaminho padrão */
             color: #000;
             display: flex;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            background-color: #d2b48c; /* Cor de pergaminho padrão */
             background-image: none; /* Inicialmente sem imagem de fundo */
             background-size: cover;
             background-position: center;
@@ -35,7 +34,6 @@
             position: fixed;
             left: 10px;
             top: calc(50% - 120px);
-            /* Ajuste para mover o botão para cima com mais espaço */
             z-index: 1000;
         }
 
@@ -177,7 +175,7 @@
             margin: 80px auto 20px;
             border: 2px solid #b8860b;
             position: relative;
-            z-index: 1; /* Garante que a ficha fica abaixo da anotação */
+            z-index: 1;
         }
 
         body.dark-mode #ficha-container {
@@ -1108,7 +1106,7 @@
             color: #000;
             cursor: pointer;
             transition: background-color 0.3s ease;
-            z-index: 1000; /* Garante que o botão fique acima da ficha */
+            z-index: 1000;
         }
 
         body.dark-mode #anotacoes-btn {
@@ -1135,7 +1133,7 @@
             padding: 10px;
             font-size: 0.9rem;
             resize: none;
-            z-index: 1001; /* Garante que a caixa de anotações fique acima de tudo */
+            z-index: 1001;
         }
 
         body.dark-mode #anotacoes-textarea {
@@ -1837,8 +1835,8 @@
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
-                <button id="lua-btn" class="botao">🌙</button>
-                <button id="sol-btn" class="botao">☀️</button>
+                <button id="lua-btn" class="botao" style="color: #333;">🌙</button>
+                <button id="sol-btn" class="botao" style="color: #ffdd00;">☀️</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
             </div>
 
@@ -2301,21 +2299,21 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                backgroundImage: null, // Adicionado campo para a imagem de fundo
-                backgroundSize: 'cover' // Adicionado campo para o tamanho da imagem de fundo
+                chatPassword: null,
+                backgroundImage: null,
+                backgroundSize: 'cover'
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
                     currentFichaId = fichaId;
                     carregarFicha(fichaId);
                     carregarFichas();
-                    aplicarPlanoDeFundoInicial(); // Aplicar plano de fundo ao carregar
+                    aplicarPlanoDeFundoInicial();
                 } else {
                     database.ref(`fichas/${fichaId}`).set(fichaMatriz).then(() => {
                         currentFichaId = fichaId;
                         carregarFicha(fichaId);
-                        aplicarPlanoDeFundoInicial(); // Aplicar plano de fundo ao carregar
+                        aplicarPlanoDeFundoInicial();
                     });
                 }
             });
@@ -2327,7 +2325,7 @@
                 if (fichas["ficha-matriz"]) {
                     atualizarAbasFichas();
                     atualizarListaFichasChat();
-                    verificarNovasMensagens(); // Verificar mensagens ao carregar fichas
+                    verificarNovasMensagens();
                 } else {
                     criarFichaMatriz();
                 }
@@ -2356,8 +2354,8 @@
                         currentFichaId = fichaId;
                         carregarFicha(fichaId);
                         atualizarAbasFichas();
-                        atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
-                        verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
+                        atualizarListaFichasChat();
+                        verificarNovasMensagens();
                     };
 
                     sidebar.insertBefore(tab, addBtn);
@@ -2411,16 +2409,16 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                backgroundImage: null, // Adicionado campo para a imagem de fundo
-                backgroundSize: 'cover' // Adicionado campo para o tamanho da imagem de fundo
+                chatPassword: null,
+                backgroundImage: null,
+                backgroundSize: 'cover'
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
                 carregarFicha(novaFichaId);
                 fecharModal("nome-ficha-modal");
                 atualizarAbasFichas();
-                atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao criar nova ficha
+                atualizarListaFichasChat();
             }).catch(error => console.error("Erro ao criar nova ficha:", error));
         }
 
@@ -2779,7 +2777,6 @@
             chatPassword = ficha.chatPassword;
             atualizarEstadoChatBotao();
 
-            // Carregar e aplicar a imagem de fundo
             const backgroundImage = ficha.backgroundImage;
             const backgroundSize = ficha.backgroundSize || 'cover';
             if (backgroundImage) {
@@ -2787,7 +2784,6 @@
                 document.body.style.backgroundSize = backgroundSize;
             } else {
                 document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#d2b48c';
             }
             const radioButtons = document.querySelectorAll('input[name="background-size"]');
             radioButtons.forEach(radio => {
@@ -3828,7 +3824,7 @@
                 messageContainer.appendChild(senderName);
                 messageContainer.appendChild(mensagemDiv);
                 mensagensDiv.appendChild(messageContainer);
-                mensagensDiv.scrollTop = mensagensDiv.scrollHeight; // Manter a rolagem no final
+                mensagensDiv.scrollTop = mensagensDiv.scrollHeight;
             });
         }
 
@@ -3889,7 +3885,6 @@
         function excluirPlanoDeFundo() {
             if (confirm("Tem certeza que deseja remover a imagem de fundo?")) {
                 document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundColor = '#d2b48c';
                 salvarDados();
                 fecharModal('background-modal');
             }
