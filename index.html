@@ -26,7 +26,7 @@
         }
 
         body.dark-mode {
-            background: #121212;
+            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
             color: #e0e0e0
         }
 
@@ -2818,7 +2818,7 @@
             const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
             colorOptions.forEach(option => {
                 if (option.dataset.color === backgroundColor) {
-                    option.classList.add('active'); // Adiciona uma classe para indicar seleção (opcional)
+                    option.classList.add('active');
                 } else {
                     option.classList.remove('active');
                 }
