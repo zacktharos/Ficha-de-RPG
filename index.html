@@ -30,6 +30,61 @@
             color: #e0e0e0
         }
 
+        #chat-btn-container {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+        }
+
+        #chat-btn {
+            padding: 15px;
+            background: #f0e6d2;
+            border: 2px solid #b8860b;
+            border-radius: 8px;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.2rem;
+            color: #000;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.3);
+        }
+
+        #chat-btn:hover {
+            background: #a0522d;
+            transform: translateY(-3px);
+        }
+
+        #chat-btn::after {
+            content: attr(data-unread);
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px;
+            font-size: 0.8rem;
+            min-width: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        #chat-btn[data-unread]:after {
+            display: block;
+        }
+
+        body.dark-mode #chat-btn {
+            background: #1e1e1e;
+            color: #e0e0e0;
+            border-color: #444;
+        }
+
+        body.dark-mode #chat-btn:hover {
+            background: #333;
+        }
+
         #fichas-sidebar {
             width: 100%;
             height: 60px;
@@ -1298,177 +1353,130 @@
             }
         }
 
-        /* Estilos para o botão de bate-papo */
-        #chat-button {
-            position: fixed;
-            left: 10px;
-            top: 100px; /* Ajuste a posição vertical conforme necessário */
-            background: #a0522d; /* Cor marrom medieval */
-            color: #fff;
-            border: 2px solid #b8860b; /* Borda dourada */
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-family: 'MedievalSharp', serif;
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 1002;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        #chat-button:hover {
-            background-color: #b8860b;
-            transform: translateY(-2px);
-        }
-
-        /* Estilos para o modal de senha do bate-papo */
-        #chat-password-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1003;
-        }
-
-        #chat-password-modal .modal-content {
-            background: #f0e6d2;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #b8860b;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 300px;
-            text-align: center;
-        }
-
-        #chat-password-modal .modal-content h3 {
-            font-family: 'MedievalSharp', serif;
-            color: #000;
-            margin-bottom: 15px;
-        }
-
-        #chat-password-modal .modal-content input {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-
-        #chat-password-modal .modal-content button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            font-family: 'MedievalSharp', serif;
-            color: #fff;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-
-        #chat-password-modal .modal-content .confirm-btn {
-            background: #b8860b;
-        }
-
-        #chat-password-modal .modal-content .confirm-btn:hover {
-            background: #a0522d;
-        }
-
-        #chat-password-modal .modal-content .cancel-btn {
-            background: #a52a2a;
-        }
-
-        #chat-password-modal .modal-content .cancel-btn:hover {
-            background: #8b0000;
-        }
-
-        /* Estilos para o modal de bate-papo */
+        /* Estilos para o modal de chat */
         #chat-modal {
             display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 1004;
         }
 
         #chat-modal .modal-content {
-            background: #f0e6d2;
-            padding: 20px;
-            border-radius: 8px;
-            border: 2px solid #b8860b;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            width: 80%;
-            max-width: 600px;
-            height: 80%;
-            max-height: 500px;
+            width: 500px;
+            max-height: 80vh;
             display: flex;
             flex-direction: column;
         }
 
-        #chat-modal .modal-content h3 {
+        #chat-modal .chat-header {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
             font-family: 'MedievalSharp', serif;
-            color: #000;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
             text-align: center;
         }
 
-        #chat-modal .modal-content #messages-container {
+        #chat-modal .chat-body {
             flex-grow: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        #chat-modal .user-list {
+            width: 150px;
+            border-right: 1px solid #ccc;
             overflow-y: auto;
             padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
         }
 
-        #chat-modal .modal-content .message {
-            padding: 8px;
+        #chat-modal .user-list h4 {
+            font-family: 'MedievalSharp', serif;
             margin-bottom: 5px;
-            border-radius: 4px;
-            background-color: #fff;
         }
 
-        #chat-modal .modal-content .input-area {
+        #chat-modal .user-list .user-item {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        #chat-modal .user-list .user-item:hover {
+            background-color: #f0e6d2;
+        }
+
+        body.dark-mode #chat-modal .user-list .user-item:hover {
+            background-color: #333;
+        }
+
+        #chat-modal .conversation {
+            flex-grow: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chat-modal .message {
+            padding: 8px;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            background-color: #e0e0e0;
+        }
+
+        body.dark-mode #chat-modal .message {
+            background-color: #444;
+            color: #e0e0e0;
+        }
+
+        #chat-modal .message.sent {
+            background-color: #cce5ff;
+            align-self: flex-end;
+        }
+
+        body.dark-mode #chat-modal .message.sent {
+            background-color: #6699cc;
+            color: #e0e0e0;
+        }
+
+        #chat-modal .chat-input {
+            padding: 10px;
+            border-top: 1px solid #ccc;
             display: flex;
         }
 
-        #chat-modal .modal-content .input-area input[type="text"] {
+        #chat-modal .chat-input input[type="text"] {
             flex-grow: 1;
-            padding: 10px;
+            padding: 8px;
+            border-radius: 5px;
             border: 1px solid #ccc;
-            border-radius: 4px 0 0 4px;
-            font-size: 1rem;
+            margin-right: 10px;
         }
 
-        #chat-modal .modal-content .input-area button {
-            background: #b8860b;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            font-size: 1rem;
-            border-radius: 0 4px 4px 0;
-            font-family: 'MedievalSharp', serif;
+        body.dark-mode #chat-modal .chat-input input[type="text"] {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
         }
 
-        #chat-modal .modal-content .input-area button:hover {
-            background: #a0522d;
+        #chat-modal .chat-input button {
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        /* Estilos para os modais de senha do chat */
+        #chat-password-modal .modal-content,
+        #open-chat-modal .modal-content {
+            width: 350px;
+        }
+
+        /* Espaçamento dos botões de raça */
+        #raca-opcoes-modal .modal-content button:nth-child(2) {
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
-    <button id="chat-button">
-        <span style="font-size: 1.2rem;">💬</span> Bate-papo
-    </button>
+    <div id="chat-btn-container">
+        <button id="chat-btn" data-unread="0">💬 Chat</button>
+    </div>
 
     <div id="fichas-sidebar">
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
@@ -1890,39 +1898,52 @@
         </div>
     </div>
 
-    <div id="chat-password-create-modal" class="modal">
+    <div id="chat-password-modal" class="modal">
         <div class="modal-content">
-            <h3>Criar Senha para o Bate-papo</h3>
-            <input type="password" id="chat-password-input" placeholder="Senha para o bate-papo">
-            <button class="confirm-btn" onclick="salvarChatPassword()">Confirmar</button>
-            <button class="cancel-btn" onclick="fecharModal('chat-password-create-modal')">Cancelar</button>
+            <h3>Definir Senha do Chat</h3>
+            <input type="password" id="chat-senha-input" placeholder="Senha do Chat">
+            <input type="password" id="chat-confirmar-senha-input" placeholder="Confirmar Senha">
+            <button class="confirm-btn" onclick="definirSenhaChat()">Confirmar</button>
+            <button class="cancel-btn" onclick="fecharModal('chat-password-modal')">Cancelar</button>
         </div>
     </div>
 
-    <div id="chat-password-enter-modal" class="modal">
+    <div id="open-chat-modal" class="modal">
         <div class="modal-content">
-            <h3>Inserir Senha do Bate-papo</h3>
-            <input type="password" id="chat-password-enter-input" placeholder="Senha para o bate-papo">
+            <h3>Digite a Senha do Chat</h3>
+            <input type="password" id="abrir-chat-senha-input" placeholder="Senha do Chat">
             <button class="confirm-btn" onclick="abrirChat()">Confirmar</button>
-            <button class="cancel-btn" onclick="fecharModal('chat-password-enter-modal')">Cancelar</button>
+            <button class="cancel-btn" onclick="fecharModal('open-chat-modal')">Cancelar</button>
         </div>
     </div>
 
     <div id="chat-modal" class="modal">
         <div class="modal-content">
-            <h3>Bate-papo Privado</h3>
-            <div id="messages-container">
+            <div class="chat-header">
+                Chat Privado
+            </div>
+            <div class="chat-body">
+                <div class="user-list">
+                    <h4>Fichas Online</h4>
+                    <div id="available-fichas">
+                        </div>
                 </div>
-            <div class="input-area">
-                <input type="text" id="message-input" placeholder="Digite sua mensagem...">
+                <div class="conversation" id="conversation-area">
+                    </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
                 <button onclick="enviarMensagem()">Enviar</button>
             </div>
-            <button class="cancel-btn" onclick="fecharModal('chat-modal')">Fechar Bate-papo</button>
+            <button class="cancel-btn" onclick="fecharModal('chat-modal')">Fechar Chat</button>
         </div>
     </div>
 
-
     <div id="notification"></div>
+
+    <audio id="new-message-sound" preload="auto">
+        <source src="notification_sound.mp3" type="audio/mpeg">
+        </audio>
 
     <script>
         const firebaseConfig = {
@@ -1956,7 +1977,11 @@
             magiaAtual,
             vigorTotal,
             vigorAtual,
-            previousValues = new Map();
+            previousValues = new Map(),
+            chatPassword = null,
+            isChatOpen = false,
+            selectedChatUser = null;
+
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2206,7 +2231,7 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null // Adicionado campo para a senha do bate-papo
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
@@ -2227,6 +2252,8 @@
                 fichas = snapshot.val() || {};
                 if (fichas["ficha-matriz"]) {
                     atualizarAbasFichas();
+                    atualizarListaFichasChat();
+                    verificarNovasMensagens(); // Verificar mensagens ao carregar fichas
                 } else {
                     criarFichaMatriz();
                 }
@@ -2255,6 +2282,8 @@
                         currentFichaId = fichaId;
                         carregarFicha(fichaId);
                         atualizarAbasFichas();
+                        atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
+                        verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
                     };
 
                     sidebar.insertBefore(tab, addBtn);
@@ -2308,13 +2337,14 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null // Adicionado campo para a senha do bate-papo
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
                 carregarFicha(novaFichaId);
                 fecharModal("nome-ficha-modal");
                 atualizarAbasFichas();
+                atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao criar nova ficha
             }).catch(error => console.error("Erro ao criar nova ficha:", error));
         }
 
@@ -2388,7 +2418,13 @@
             solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"),
             racasList = document.getElementById("racas-list"),
-            atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput];
+            atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
+            chatBtn = document.getElementById("chat-btn"),
+            availableFichasDiv = document.getElementById("available-fichas"),
+            conversationAreaDiv = document.getElementById("conversation-area"),
+            mensagemInput = document.getElementById("mensagem-input"),
+            newMessageSound = document.getElementById("new-message-sound");
+
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
@@ -2552,59 +2588,6 @@
             ph: 38
         }];
 
-        let chatPassword = null;
-
-        document.getElementById('chat-button').onclick = () => {
-            database.ref(`fichas/${currentFichaId}/chatPassword`).once('value', snapshot => {
-                chatPassword = snapshot.val();
-                if (chatPassword) {
-                    document.getElementById('chat-password-enter-modal').style.display = 'flex';
-                } else {
-                    document.getElementById('chat-password-create-modal').style.display = 'flex';
-                }
-            });
-        };
-
-        function salvarChatPassword() {
-            const password = document.getElementById('chat-password-input').value;
-            if (password) {
-                database.ref(`fichas/${currentFichaId}`).update({ chatPassword: password }).then(() => {
-                    chatPassword = password;
-                    fecharModal('chat-password-create-modal');
-                    document.getElementById('chat-modal').style.display = 'flex';
-                }).catch(error => console.error("Erro ao salvar senha do chat:", error));
-            } else {
-                alert("Por favor, crie uma senha para o bate-papo.");
-            }
-        }
-
-        function abrirChat() {
-            const enteredPassword = document.getElementById('chat-password-enter-input').value;
-            if (enteredPassword === chatPassword) {
-                fecharModal('chat-password-enter-modal');
-                document.getElementById('chat-modal').style.display = 'flex';
-                // Aqui você pode adicionar a lógica para carregar mensagens existentes
-            } else {
-                alert("Senha incorreta.");
-            }
-        }
-
-        function enviarMensagem() {
-            const message = document.getElementById('message-input').value.trim();
-            if (message) {
-                // Aqui você adicionaria a lógica para enviar a mensagem para o Firebase
-                console.log("Mensagem enviada:", message);
-                document.getElementById('message-input').value = '';
-                // Simulação de recebimento de mensagem
-                const messagesContainer = document.getElementById('messages-container');
-                const newMessage = document.createElement('div');
-                newMessage.className = 'message';
-                newMessage.textContent = `Você: ${message}`;
-                messagesContainer.appendChild(newMessage);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight; // Auto-scroll para a última mensagem
-            }
-        }
-
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
             const ficha = fichas[fichaId];
@@ -2713,6 +2696,9 @@
 
             previousValues.clear();
             document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+
+            chatPassword = ficha.chatPassword;
+            atualizarEstadoChatBotao();
         }
 
         function atualizarBotaoBloquear() {
@@ -2764,7 +2750,7 @@
                 racaNome: racaNomeSpan.textContent,
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
-                chatPassword: chatPassword // Salvar a senha do chat
+                chatPassword: chatPassword
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
@@ -3642,6 +3628,132 @@
                 }
             };
         };
+
+        // Funcionalidade do Chat
+        chatBtn.onclick = () => {
+            if (!chatPassword) {
+                document.getElementById("chat-password-modal").style.display = "flex";
+            } else {
+                document.getElementById("open-chat-modal").style.display = "flex";
+            }
+        };
+
+        function definirSenhaChat() {
+            const senha = document.getElementById("chat-senha-input").value;
+            const confirmarSenha = document.getElementById("chat-confirmar-senha-input").value;
+            if (senha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+            if (senha.length < 4) {
+                alert("A senha deve ter pelo menos 4 caracteres.");
+                return;
+            }
+            chatPassword = senha;
+            database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => {
+                fecharModal("chat-password-modal");
+                alert("Senha do chat definida!");
+                atualizarEstadoChatBotao();
+            }).catch(error => console.error("Erro ao definir senha do chat:", error));
+        }
+
+        function abrirChat() {
+            const senhaDigitada = document.getElementById("abrir-chat-senha-input").value;
+            if (senhaDigitada === chatPassword) {
+                fecharModal("open-chat-modal");
+                document.getElementById("chat-modal").style.display = "flex";
+                isChatOpen = true;
+                selectedChatUser = null;
+                document.getElementById("conversation-area").innerHTML = "";
+            } else {
+                alert("Senha do chat incorreta.");
+            }
+        }
+
+        function atualizarEstadoChatBotao() {
+            if (chatPassword) {
+                chatBtn.textContent = "💬 Chat";
+            } else {
+                chatBtn.textContent = "💬 Definir Chat";
+            }
+        }
+
+        function atualizarListaFichasChat() {
+            availableFichasDiv.innerHTML = "";
+            for (const fichaId in fichas) {
+                if (fichaId !== "ficha-matriz" && fichaId !== currentFichaId) {
+                    const ficha = fichas[fichaId];
+                    const userDiv = document.createElement("div");
+                    userDiv.className = "user-item";
+                    userDiv.textContent = ficha.nomeFicha || "Sem Nome";
+                    userDiv.dataset.fichaId = fichaId;
+                    userDiv.onclick = () => iniciarConversa(fichaId, ficha.nomeFicha || "Sem Nome");
+                    availableFichasDiv.appendChild(userDiv);
+                }
+            }
+        }
+
+        function iniciarConversa(otherFichaId, otherFichaNome) {
+            selectedChatUser = otherFichaId;
+            document.getElementById("conversation-area").innerHTML = `<h3>Conversa com ${otherFichaNome}</h3><div id="mensagens"></div>`;
+            carregarMensagens(otherFichaId);
+        }
+
+        function enviarMensagem() {
+            if (!selectedChatUser) {
+                alert("Selecione uma ficha para enviar a mensagem.");
+                return;
+            }
+            const mensagem = mensagemInput.value.trim();
+            if (mensagem) {
+                const chatRef = database.ref('mensagens').child(getChatId(currentFichaId, selectedChatUser)).push();
+                chatRef.set({
+                    senderId: currentFichaId,
+                    receiverId: selectedChatUser,
+                    content: mensagem,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                mensagemInput.value = "";
+            }
+        }
+
+        function carregarMensagens(otherFichaId) {
+            const mensagensDiv = document.getElementById("mensagens");
+            database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => {
+                const mensagemData = snapshot.val();
+                const mensagemDiv = document.createElement("div");
+                mensagemDiv.className = `message ${mensagemData.senderId === currentFichaId ? 'sent' : 'received'}`;
+                mensagemDiv.textContent = `${fichas[mensagemData.senderId]?.nomeFicha || 'Desconhecido'}: ${mensagemData.content}`;
+                mensagensDiv.appendChild(mensagemDiv);
+                mensagensDiv.scrollTop = mensagensDiv.scrollHeight; // Manter a rolagem no final
+            });
+        }
+
+        function getChatId(id1, id2) {
+            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+        }
+
+        function verificarNovasMensagens() {
+            if (!currentFichaId) return;
+            database.ref('mensagens').on('value', (snapshot) => {
+                let unreadCount = 0;
+                snapshot.forEach((chat) => {
+                    const chatId = chat.key;
+                    if (chatId.includes(currentFichaId)) {
+                        chat.forEach((mensagemSnapshot) => {
+                            const mensagem = mensagemSnapshot.val();
+                            if (mensagem.receiverId === currentFichaId && mensagem.senderId !== currentFichaId && !isChatOpen) {
+                                unreadCount++;
+                            }
+                        });
+                    }
+                });
+                chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0;
+                if (unreadCount > 0 && !isChatOpen) {
+                    newMessageSound.play();
+                }
+            });
+        }
 
         carregarFichas();
     </script>
