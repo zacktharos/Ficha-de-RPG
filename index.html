@@ -1993,10 +1993,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                        </div>
+                    </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2010,7 +2010,7 @@
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <div id="background-modal" class="modal">
         <div class="modal-content">
@@ -2027,6 +2027,7 @@
             <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar</button>
             <button class="cancel-btn" onclick="fecharModal('background-modal')">Cancelar</button>
             <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
+            <button id="salvar-fundo-btn" class="confirm-btn" onclick="salvarPlanoDeFundo()">Salvar</button>
         </div>
     </div>
 
@@ -2743,7 +2744,8 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -3038,9 +3040,9 @@
                 distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
             let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0,
                 bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
-                2 : 0,
+                    2 : 0,
                 bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
-                6 : 0;
+                    6 : 0;
 
             velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
             alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
@@ -3083,7 +3085,8 @@
             }, {
                 span: esquivaSpan,
                 valor: esquiva
-            }, {
+            },
+            {
                 span: rdfSpan,
                 valor: rdf
             }, {
@@ -3396,7 +3399,7 @@
             tempVantagensSelecionadas = [...vantagensSelecionadas];
             tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
             vantagensDesvantagensPanel.style.display = "block";
-            document.getElementById("salvar-vantagens-btn").style.display = "none";
+            document.getElementById("salvar-vantagens-btn").style.display = "block";
             atualizarVantagensDesvantagensPanel();
         };
         fecharPaginaBtn.onclick = () => {
@@ -3536,7 +3539,7 @@
                 "none" : "block";
         };
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target))
                 anotacoesTextarea.style.display = 'none';
         });
@@ -3557,7 +3560,7 @@
             tempRacaSelecionada = racaSelecionada;
             atualizarRacasPanel();
             racasPanel.style.display = "block";
-            document.getElementById("salvar-racas-btn").style.display = "none";
+            document.getElementById("salvar-racas-btn").style.display = "block";
         };
         fecharRacasBtn.onclick = () => {
             racasPanel.style.display = "none";
@@ -3623,11 +3626,12 @@
                         if (calcularPontosVantagemTemp() >= r.custo) {
                             tempRacaSelecionada = r.nome;
                             document.getElementById("confirmar-compra-modal").style.display = "flex";
-                            document.getElementById("confirmar-compra-btn").onclick = () => {
-                                atualizarRacasPanel();
-                                document.getElementById("salvar-racas-btn").style.display = "block";
-                                fecharModal("confirmar-compra-modal");
-                            };
+                            document.getElementById("confirmar-compra-btn").onclick = ()
+                                => {
+                                    atualizarRacasPanel();
+                                    document.getElementById("salvar-racas-btn").style.display = "block";
+                                    fecharModal("confirmar-compra-modal");
+                                };
                         } else alert("Pontos de Vantagem insuficientes!");
                     }
                     atualizarRacasPanel();
@@ -3721,7 +3725,7 @@
             document.getElementById("historico-dados-panel").style.display = "block";
         };
 
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const panel = document.getElementById("historico-dados-panel");
             if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target))
                 panel.style.display = "none";
@@ -3903,15 +3907,11 @@
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
                     const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                     document.body.style.backgroundSize = selectedSize;
-                    salvarDados();
-                    fecharModal('background-modal');
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage !== 'none') {
                 const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                 document.body.style.backgroundSize = selectedSize;
-                salvarDados();
-                fecharModal('background-modal');
             } else {
                 alert("Nenhuma imagem selecionada.");
             }
@@ -3923,6 +3923,20 @@
                 salvarDados();
                 fecharModal('background-modal');
             }
+        }
+
+        function salvarPlanoDeFundo() {
+            const currentBackgroundImage = document.body.style.backgroundImage === 'none' ?
+                null : document.body.style.backgroundImage.slice(5, -2);
+            const currentBackgroundSize = document.body.style.backgroundSize;
+
+            database.ref(`fichas/${currentFichaId}`).update({
+                backgroundImage: currentBackgroundImage,
+                backgroundSize: currentBackgroundSize
+            }).then(() => {
+                showNotification("Plano de fundo salvo!", "save-success");
+                fecharModal('background-modal');
+            }).catch(error => console.error("Erro ao salvar plano de fundo:", error));
         }
 
         function aplicarPlanoDeFundoInicial() {
