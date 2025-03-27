@@ -1993,10 +1993,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                        </div>
+                    </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2010,7 +2010,7 @@
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <div id="background-modal" class="modal">
         <div class="modal-content">
@@ -2025,6 +2025,7 @@
             </div>
 
             <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar</button>
+            <button class="confirm-btn" onclick="salvarPlanoDeFundo()">Salvar Plano de Fundo</button>
             <button class="cancel-btn" onclick="fecharModal('background-modal')">Cancelar</button>
             <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
         </div>
@@ -2807,6 +2808,7 @@
                 document.body.style.backgroundSize = backgroundSize;
             } else {
                 document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = '#f0e6d2';
             }
             const radioButtons = document.querySelectorAll('input[name="background-size"]');
             radioButtons.forEach(radio => {
@@ -3403,9 +3405,6 @@
             vantagensDesvantagensPanel.style.display = "none";
         };
         salvarVantagensBtn.onclick = () => {
-            document.getElementById("salvar-vantagens-modal").style.display = "flex";
-        };
-        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempDesvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
             vantagensSelecionadas = [...tempVantagensSelecionadas];
             desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
@@ -3431,7 +3430,6 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             salvarDados();
             vantagensDesvantagensPanel.style.display = "none";
-            fecharModal("salvar-vantagens-modal");
             calcularAtributos();
         };
 
@@ -3563,9 +3561,6 @@
             racasPanel.style.display = "none";
         };
         salvarRacasBtn.onclick = () => {
-            document.getElementById("salvar-vantagens-modal").style.display = "flex";
-        };
-        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
             if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
                 const raca = racasData.find(r => r.nome === tempRacaSelecionada);
                 if (raca) {
@@ -3575,35 +3570,9 @@
                     pontosVantagemSpan.textContent = getPontosVantagem();
                     salvarDados();
                     racasPanel.style.display = "none";
-                    fecharModal("salvar-vantagens-modal");
                 }
             } else {
-                vantagensSelecionadas = [...tempVantagensSelecionadas];
-                desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
-
-                vantagensListDisplay.innerHTML = "";
-                desvantagensListDisplay.innerHTML = "";
-
-                vantagensSelecionadas.forEach(v => {
-                    const div = document.createElement("div");
-                    div.textContent = v;
-                    div.className = "list-item";
-                    div.onclick = () => removerVantagem(v);
-                    vantagensListDisplay.appendChild(div);
-                });
-
-                desvantagensSelecionadas.forEach(d => {
-                    const div = document.createElement("div");
-                    div.textContent = d;
-                    div.className = "list-item";
-                    div.onclick = () => removerDesvantagem(d);
-                    desvantagensListDisplay.appendChild(div);
-                });
-                pontosVantagemSpan.textContent = getPontosVantagem();
-                salvarDados();
-                vantagensDesvantagensPanel.style.display = "none";
-                fecharModal("salvar-vantagens-modal");
-                calcularAtributos();
+                alert("Nenhuma raça foi selecionada.");
             }
         };
 
@@ -3864,7 +3833,8 @@
         }
 
         function getChatId(id1, id2) {
-            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+            return id1 < id2 ?
+                `${id1}_${id2}` : `${id2}_${id1}`;
         }
 
         function verificarNovasMensagens() {
@@ -3903,23 +3873,25 @@
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
                     const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                     document.body.style.backgroundSize = selectedSize;
-                    salvarDados();
-                    fecharModal('background-modal');
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage !== 'none') {
                 const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
                 document.body.style.backgroundSize = selectedSize;
-                salvarDados();
-                fecharModal('background-modal');
             } else {
                 alert("Nenhuma imagem selecionada.");
             }
         }
 
+        function salvarPlanoDeFundo() {
+            salvarDados();
+            fecharModal('background-modal');
+        }
+
         function excluirPlanoDeFundo() {
             if (confirm("Tem certeza que deseja remover a imagem de fundo?")) {
                 document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = '#f0e6d2';
                 salvarDados();
                 fecharModal('background-modal');
             }
@@ -3941,8 +3913,6 @@
             if (event.target.classList.contains('color-option')) {
                 const color = event.target.dataset.color;
                 document.body.style.backgroundColor = color;
-                salvarDados();
-                backgroundColorSelector.style.display = 'none';
                 const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
                 colorOptions.forEach(option => option.classList.remove('active'));
                 event.target.classList.add('active');
