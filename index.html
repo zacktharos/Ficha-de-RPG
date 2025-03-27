@@ -1,3 +1,4 @@
+print(content_fetcher.fetch(query='''```html
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -5,11 +6,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap"
+    <link href="[https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap](https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap)"
         rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="[https://unpkg.com/@tailwindcss/browser@4](https://unpkg.com/@tailwindcss/browser@4)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js](https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js)"></script>
+    <script src="[https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js](https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js)"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -2034,7 +2035,7 @@
         const firebaseConfig = {
             apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI",
             authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
-            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
+            databaseURL: "[https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com](https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com)",
             projectId: "ficha-de-rpg-b9685",
             storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
             messagingSenderId: "528610398062",
@@ -2743,7 +2744,8 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -3920,6 +3922,7 @@
         function excluirPlanoDeFundo() {
             if (confirm("Tem certeza que deseja remover a imagem de fundo?")) {
                 document.body.style.backgroundImage = 'none';
+                document.body.style.backgroundColor = '#f0e6d2';
                 salvarDados();
                 fecharModal('background-modal');
             }
