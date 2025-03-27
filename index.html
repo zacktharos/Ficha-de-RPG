@@ -33,7 +33,7 @@
         #chat-btn-container {
             position: fixed;
             left: 10px;
-            top: calc(50% - 150px);
+            top: calc(50% - 120px); /* Ajuste para mover o botão para cima com mais espaço */
             z-index: 1000;
         }
 
@@ -1093,7 +1093,7 @@
         #anotacoes-btn {
             position: fixed;
             left: 10px;
-            top: calc(50% + 50px); /* Movido 50px para baixo do centro */
+            top: 50%;
             transform: translateY(-50%);
             padding: 10px 20px;
             background: #f0e6d2;
@@ -1487,117 +1487,6 @@
         #raca-opcoes-modal .modal-content button:nth-child(2) {
             margin-top: 10px;
         }
-
-        /* Estilos para os botões de modo tema */
-        #lua-btn,
-        #sol-btn,
-        #plano-fundo-btn {
-            font-size: 1.5rem;
-            line-height: 1;
-            padding: 8px 15px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-            border: none;
-            cursor: pointer;
-            margin: 0 5px;
-        }
-
-        #sol-btn {
-            color: #ffc107;
-            background-color: #fff;
-        }
-
-        #lua-btn {
-            color: #444;
-            background-color: #222;
-        }
-
-        body.dark-mode #sol-btn {
-            color: #fff;
-            background-color: #333;
-        }
-
-        body.dark-mode #lua-btn {
-            color: #bbb;
-            background-color: #111;
-        }
-
-        #plano-fundo-btn {
-            font-size: 1rem;
-            border-radius: 6px;
-            width: auto;
-            padding: 8px 15px;
-            background-color: #f0e6d2;
-            color: #000;
-            font-family: 'MedievalSharp', serif;
-        }
-
-        body.dark-mode #plano-fundo-btn {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-        }
-
-        #plano-fundo-btn:hover {
-            background-color: #a0522d;
-            color: #fff;
-        }
-
-        body.dark-mode #plano-fundo-btn:hover {
-            background-color: #333;
-            color: #bbb;
-        }
-
-        #plano-de-fundo-input {
-            display: none;
-        }
-
-        /* Efeito de eletricidade */
-        #ficha-container.level-up-effect {
-            animation: electricity 3s ease-in-out;
-        }
-
-        @keyframes electricity {
-            0% {
-                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
-                border-color: #00BFFF;
-            }
-
-            50% {
-                box-shadow: 0 0 20px #00FFFF, 0 0 30px #00FFFF, 0 0 40px #00FFFF;
-                border-color: #00FFFF;
-            }
-
-            100% {
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-                border-color: #b8860b;
-            }
-        }
-
-        body.dark-mode #ficha-container.level-up-effect {
-            animation: electricity-dark 3s ease-in-out;
-        }
-
-        @keyframes electricity-dark {
-            0% {
-                box-shadow: 0 0 5px #00BFFF, 0 0 10px #00BFFF, 0 0 15px #00BFFF;
-                border-color: #00BFFF;
-            }
-
-            50% {
-                box-shadow: 0 0 20px #00FFFF, 0 0 30px #00FFFF, 0 0 40px #00FFFF;
-                border-color: #00FFFF;
-            }
-
-            100% {
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-                border-color: #444;
-            }
-        }
     </style>
 </head>
 
@@ -1916,8 +1805,6 @@
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="lua-btn" class="botao">🌙</button>
                 <button id="sol-btn" class="botao">☀️</button>
-                <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
-                <input type="file" id="plano-de-fundo-input" accept="image/*">
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
@@ -2056,10 +1943,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                    </div>
+                        </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                </div>
+                    </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2073,7 +1960,7 @@
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-    </audio>
+        </audio>
 
     <script>
         const firebaseConfig = {
@@ -2361,8 +2248,7 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                backgroundImage: null // Adicionado campo para a imagem de fundo
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
@@ -2385,7 +2271,6 @@
                     atualizarAbasFichas();
                     atualizarListaFichasChat();
                     verificarNovasMensagens(); // Verificar mensagens ao carregar fichas
-                    atualizarPlanoDeFundo(); // Carregar a imagem de fundo ao carregar as fichas
                 } else {
                     criarFichaMatriz();
                 }
@@ -2416,7 +2301,6 @@
                         atualizarAbasFichas();
                         atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
                         verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
-                        atualizarPlanoDeFundo(); // Carregar a imagem de fundo ao trocar de ficha
                     };
 
                     sidebar.insertBefore(tab, addBtn);
@@ -2470,8 +2354,7 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                backgroundImage: null // Adicionado campo para a imagem de fundo
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
@@ -2557,9 +2440,7 @@
             availableFichasDiv = document.getElementById("available-fichas"),
             conversationAreaDiv = document.getElementById("conversation-area"),
             mensagemInput = document.getElementById("mensagem-input"),
-            newMessageSound = document.getElementById("new-message-sound"),
-            planoFundoBtn = document.getElementById("plano-fundo-btn"),
-            planoDeFundoInput = document.getElementById("plano-de-fundo-input");
+            newMessageSound = document.getElementById("new-message-sound");
 
         let nivel = 0,
             nivelAnterior = 0,
@@ -2835,7 +2716,6 @@
 
             chatPassword = ficha.chatPassword;
             atualizarEstadoChatBotao();
-            atualizarPlanoDeFundo();
         }
 
         function atualizarBotaoBloquear() {
@@ -2887,8 +2767,7 @@
                 racaNome: racaNomeSpan.textContent,
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
-                chatPassword: chatPassword,
-                backgroundImage: document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage
+                chatPassword: chatPassword
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
@@ -2910,8 +2789,7 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             if (nivel > nivelAnterior) {
                 nivelSpan.classList.add("aura-azul");
-                fichaContainer.classList.add("level-up-effect");
-                setTimeout(() => fichaContainer.classList.remove("level-up-effect"), 3000);
+                setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000);
             }
 
             gameMasterMessage.style.display = nivel >= 30 ?
@@ -3899,34 +3777,6 @@
                     newMessageSound.play();
                 }
             });
-        }
-
-        planoFundoBtn.onclick = () => {
-            planoDeFundoInput.click();
-        };
-
-        planoDeFundoInput.onchange = e => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                    document.body.style.backgroundSize = 'cover';
-                    document.body.style.backgroundPosition = 'center';
-                    salvarDados();
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        function atualizarPlanoDeFundo() {
-            if (currentFichaId && fichas[currentFichaId] && fichas[currentFichaId].backgroundImage) {
-                document.body.style.backgroundImage = fichas[currentFichaId].backgroundImage;
-                document.body.style.backgroundSize = 'cover';
-                document.body.style.backgroundPosition = 'center';
-            } else {
-                document.body.style.backgroundImage = "url('medieval_background.jpg')";
-            }
         }
 
         carregarFichas();
