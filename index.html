@@ -1681,7 +1681,8 @@
                     <div class="armamento-coluna">
                         <label>Armamento Mão Direita:</label>
                         <div class="flex items-center mb-2">
-                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="mr-2">
+                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma"
+                                class="mr-2">
                             <span>Ataque </span>
                             <input type="number" id="arma-direita-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
@@ -1836,15 +1837,19 @@
             </div>
 
             <div class="botoes-container">
-                <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
-                <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
-                <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
-                <button id="lua-btn" class="botao" style="background-color: #333; color: #eee;">🌙</button>
-                <button id="sol-btn" class="botao" style="background-color: #ffdd00; color: #333;">☀️</button>
-                <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
+                <button id="reset-pontos" class="botao botao-reset" style="background-color: #800000;">Reiniciar Pontos</button>
+                <button id="recomecar" class="botao botao-recomecar" style="background-color: #800000;">Recomeçar</button>
+                <button id="bloquear-ficha" class="botao botao-bloquear" style="background-color: #800000;">Bloquear Ficha</button>
+                <button id="lua-btn" class="botao" style="background-color: #333;
+                    color: #eee;">🌙</button>
+                <button id="sol-btn" class="botao" style="background-color: #ffdd00;
+                    color: #333;">☀️</button>
+                <button id="plano-fundo-btn" class="botao" style="background-color: #800000;">Plano de fundo</button>
                 <div style="display: inline-block;">
-                    <button id="cor-fundo-btn" class="botao">Cor do Fundo</button>
-                    <div id="background-color-selector" style="display: none; position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; z-index: 1002;">
+                    <button id="cor-fundo-btn" class="botao">🎨 Cor do Fundo</button>
+                    <div id="background-color-selector" style="display: none;
+                        position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px;
+                        z-index: 1002;">
                         <div class="color-option" style="background-color: #800000;" data-color="#800000"></div>
                         <div class="color-option" style="background-color: #000080;" data-color="#000080"></div>
                         <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
@@ -1857,7 +1862,7 @@
                 </div>
             </div>
 
-            <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
+            <button id="excluir-ficha" class="botao botao-excluir" style="background-color: #800000;">Excluir Ficha</button>
         </div>
     </div>
 
@@ -1931,7 +1936,8 @@
         <div class="modal-content">
             <h3>Se salvar, as alterações não poderão ser desfeitas.</h3>
             <button class="confirm-btn" id="confirmar-salvar-vantagens-btn">OK</button>
-            <button class="cancel-btn" onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
+            <button class="cancel-btn"
+                onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
         </div>
     </div>
 
@@ -2066,7 +2072,6 @@
             chatPassword = null,
             isChatOpen = false,
             selectedChatUser = null;
-
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2260,23 +2265,23 @@
         }, {
             nome: "Elfo (4)",
             custo: 4,
-            descricao: "Os elfos são sábios, mágicos e profundamente conectados ao mundo natural. Suas vantagens agora destacam sua supremacia mágica e harmonia com a natureza.",
+            descricao: "Os elfos são sábios, mágicos e profundamente conectados ao mundo natural.\nSuas vantagens agora destacam sua supremacia mágica e harmonia com a natureza.",
             vantagens: ["Sabedoria Ancestral: Dominam uma área de conhecimento (ex.: arcana, história, natureza) com maestria, podendo decifrar pergaminhos, ruínas ou magias antigas automaticamente, e aprendem 1 línguas extra.", "Visão Élfica Suprema: Enxergam no escuro até 10 metros, detectam magias fracas em um raio de 20 metros e percebem intenções hostis em seres vivos com um teste muito difícil, 19 ou +.", "Escudo Mágico: Ganham resistência inata a um tipo de efeito magico hostil (não apenas encantamentos), reduzindo o dano ou a duração desses efeitos em 50%, refletindo sua essência mágica."]
         }, {
             nome: "Anão (4)",
             custo: 4,
-            descricao: "Os anões são resilientes, habilidosos e ligados à terra. Suas vantagens agora enfatizam sua supremacia em crafting e sobrevivência em condições extremas.",
-            vantagens: ["Fortitude Indomável: Trabalham por 3 dias sem descanso, ignorando efeitos de fadiga, e recuperam vida e energia ao dormir em ambientes rochosos ou subterrâneos duas vezes mais rápido.", "Artesão: Escolhem uma especialização com impacto massivo: Mestre Minerador: Identificam e extraem recursos raros (ex.: mithril) com o dobro da velocidade e podem abrir túneis temporários em rochas sólidas com ferramentas improvisadas. Forjador de Lendas: Produzem armas e armaduras com 10 pontos de qualidade e propriedades mágicas temporárias (ex.: arma que causa dano elemental extra), além de reparar itens quebrados durante um curto periodo de tempo (1 a 2 dias). Joalheiro Divino: Criam artefatos que armazenam magias moderadas (ex.: um anel que lança uma bola de fogo uma vez por dia) ou concedem bônus Temporários a atributos (ex.: +1 força).", "Senhor das Profundezas: Nunca se perdem em ambientes subterrâneos, detectam armadilhas (naturais ou artificiais) automaticamente e podem sentir vibrações no solo para prever emboscadas ou colapsos."]
+            descricao: "Os anões são resilientes, habilidosos e ligados à terra.\nSuas vantagens agora enfatizam sua supremacia em crafting e sobrevivência em condições extremas.",
+            vantagens: ["Fortitude Indomável: Trabalham por 3 dias sem descanso, ignorando efeitos de fadiga, e recuperam vida e energia ao dormir em ambientes rochosos ou subterrâneos duas vezes mais rápido.", "Artesão: Escolhem uma especialização com impacto massivo: Mestre Minerador: Identificam e extraem recursos raros (ex.: mithril) com o dobro da velocidade e podem abrir túneis temporários em rochas sólidas com ferramentas improvisadas.\nForjador de Lendas: Produzem armas e armaduras com 10 pontos de qualidade e propriedades mágicas temporárias (ex.: arma que causa dano elemental extra), além de reparar itens quebrados durante um curto periodo de tempo (1 a 2 dias).\nJoalheiro Divino: Criam artefatos que armazenam magias moderadas (ex.: um anel que lança uma bola de fogo uma vez por dia) ou concedem bônus Temporários a atributos (ex.: +1 força).", "Senhor das Profundezas: Nunca se perdem em ambientes subterrâneos, detectam armadilhas (naturais ou artificiais) automaticamente e podem sentir vibrações no solo para prever emboscadas ou colapsos."]
         }, {
             nome: "Orc (3)",
             custo: 3,
-            descricao: "Os orcs são guerreiros ferozes e líderes carismáticos pela força. Suas vantagens agora amplificam sua presença intimidadora e poder bruto.",
-            vantagens: ["Lenda entre Guerreiros: Inspiram temor e respeito em qualquer cultura que valorize força, garantindo alianças com facções marciais e acesso a missões épicas; inimigos menores fogem automaticamente em sua presença (teste difícil, 16 ou +).", "Resiliência Brutal: Lutam sem penalidades mesmo com ferimentos graves e só caem quando atingem PV 0, além de regenerarem ferimentos leves passivamente fora de combate.", "Domínio da Intimidação: Podem forçar inimigos a se renderem ou recuarem com um grito poderoso uma vez por encontro, afetando grupos inteiros, e ganham bônus massivos em negociações baseadas em força ou medo.", "Fúria Ancestral: Entram em um estado de fúria duas vezes por dia, duplicando força e resistência por um curto período."]
+            descricao: "Os orcs são guerreiros ferozes e líderes carismáticos pela força.\nSuas vantagens agora amplificam sua presença intimidadora e poder bruto.",
+            vantagens: ["Lenda entre Guerreiros: Inspiram temor e respeito em qualquer cultura que valorize força, garantindo alianças com facções marciais e acesso a missões épicas;\ninimigos menores fogem automaticamente em sua presença (teste difícil, 16 ou +).", "Resiliência Brutal: Lutam sem penalidades mesmo com ferimentos graves e só caem quando atingem PV 0, além de regenerarem ferimentos leves passivamente fora de combate.", "Domínio da Intimidação: Podem forçar inimigos a se renderem ou recuarem com um grito poderoso uma vez por encontro, afetando grupos inteiros, e ganham bônus massivos em negociações baseadas em força ou medo.", "Fúria Ancestral: Entram em um estado de fúria duas vezes por dia, duplicando força e resistência por um curto período."]
         }, {
             nome: "Meio Animal (Selvagem) (4)",
             custo: 4,
-            descricao: "Os meio animais combinam instinto primal com astúcia. Suas vantagens agora os tornam mestres da sobrevivência e predadores supremos.",
-            vantagens: ["Sentidos Predatórios: Pode escolher um sentido aguçado de acordo com sua parte animal. (visão, olfato, audição), permitindo rastrear alvos a quilômetros, detectar inimigos invisíveis e evitar qualquer surpresa com um teste moderado, 12 ou +.", "Senhor dos Terrenos: Adaptam-se completamente a um ambiente (ex.: floresta, deserto, pântano), ignorando todos os efeitos negativos e ganhando bônus de movimento e furtividade nesses locais. bônus +1.", "Frenesi Instintivo: Uma vez por dia, canalizam seus instintos para ganhar velocidade sobrenatural (dobro de movimento), ataques adicionais e uma percepção quase premonitória de perigos, tornando-os caçadores ou fugitivos imbatíveis por um curto período (10 min)."]
+            descricao: "Os meio animais combinam instinto primal com astúcia.\nSuas vantagens agora os tornam mestres da sobrevivência e predadores supremos.",
+            vantagens: ["Sentidos Predatórios: Pode escolher um sentido aguçado de acordo com sua parte animal.\n(visão, olfato, audição), permitindo rastrear alvos a quilômetros, detectar inimigos invisíveis e evitar qualquer surpresa com um teste moderado, 12 ou +.", "Senhor dos Terrenos: Adaptam-se completamente a um ambiente (ex.: floresta, deserto, pântano), ignorando todos os efeitos negativos e ganhando bônus de movimento e furtividade nesses locais.\nbônus +1.", "Frenesi Instintivo: Uma vez por dia, canalizam seus instintos para ganhar velocidade sobrenatural (dobro de movimento), ataques adicionais e uma percepção quase premonitória de perigos, tornando-os caçadores ou fugitivos imbatíveis por um curto período (10 min)."]
         }];
 
         function criarFichaMatriz() {
@@ -2524,7 +2529,6 @@
             backgroundModal = document.getElementById("background-modal"),
             corFundoBtn = document.getElementById("cor-fundo-btn"),
             backgroundColorSelector = document.getElementById("background-color-selector");
-
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
@@ -2687,7 +2691,6 @@
             pd: 319,
             ph: 38
         }];
-
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
             const ficha = fichas[fichaId];
@@ -2743,7 +2746,8 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -2812,7 +2816,6 @@
             radioButtons.forEach(radio => {
                 radio.checked = radio.value === backgroundSize;
             });
-
             const backgroundColor = ficha.backgroundColor || '#f0e6d2';
             document.body.style.backgroundColor = backgroundColor;
             const colorOptions = document.querySelectorAll('#background-color-selector .color-option');
@@ -2875,7 +2878,8 @@
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
                 chatPassword: chatPassword,
-                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage.slice(5, -2),
+                backgroundImage: document.body.style.backgroundImage === 'none' ?
+                    null : document.body.style.backgroundImage.slice(5, -2),
                 backgroundSize: document.body.style.backgroundSize,
                 backgroundColor: document.body.style.backgroundColor
             };
@@ -3193,7 +3197,6 @@
                 document.getElementById("senha-bloqueio-input").focus();
             }
         };
-
         function bloquearFicha() {
             const senha = document.getElementById("senha-bloqueio-input").value;
             if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
@@ -3606,7 +3609,6 @@
                 calcularAtributos();
             }
         };
-
         function atualizarRacasPanel() {
             racasList.innerHTML = "";
             racasData.forEach(r => {
@@ -3755,7 +3757,6 @@
                 }
             };
         };
-
         // Funcionalidade do Chat
         chatBtn.onclick = () => {
             if (!chatPassword) {
@@ -3864,7 +3865,8 @@
         }
 
         function getChatId(id1, id2) {
-            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+            return id1 < id2 ?
+                `${id1}_${id2}` : `${id2}_${id1}`;
         }
 
         function verificarNovasMensagens() {
@@ -3934,7 +3936,8 @@
 
         // Funcionalidade da Cor de Fundo
         corFundoBtn.onclick = () => {
-            backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' ? 'flex' : 'none';
+            backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' ?
+                'flex' : 'none';
         };
 
         backgroundColorSelector.addEventListener('click', function(event) {
@@ -3948,7 +3951,6 @@
                 event.target.classList.add('active');
             }
         });
-
         function aplicarCorDeFundoInicial() {
             if (currentFichaId && fichas[currentFichaId] && fichas[currentFichaId].backgroundColor) {
                 document.body.style.backgroundColor = fichas[currentFichaId].backgroundColor;
