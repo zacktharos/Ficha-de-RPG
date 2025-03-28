@@ -1487,6 +1487,77 @@
         #raca-opcoes-modal .modal-content button:nth-child(2) {
             margin-top: 10px;
         }
+
+        /* Estilos para o modal de cor de fundo */
+        #cor-fundo-modal .modal-content {
+            width: 400px;
+            text-align: left;
+        }
+
+        #cor-fundo-modal .cores-externa,
+        #cor-fundo-modal .cores-interna {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        #cor-fundo-modal .cores-externa > span:first-child,
+        #cor-fundo-modal .cores-interna > span:first-child {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .cor-bolinha {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .cor-pergaminho-externa { background-color: #f5f5f5; }
+        .cor-bordo-externa { background-color: #800000; }
+        .cor-azul-escuro-externa { background-color: #000080; }
+        .cor-azul-claro-externa { background-color: #ADD8E6; }
+        .cor-verde-escuro-externa { background-color: #006400; }
+        .cor-verde-claro-externa { background-color: #90EE90; }
+        .cor-rosa-claro-externa { background-color: #FFB6C1; }
+        .cor-rosa-escuro-externa { background-color: #FF69B4; }
+        .cor-branco-externa { background-color: #FFFFFF; }
+        .cor-laranja-externa { background-color: #FFA500; }
+        .cor-roxo-externa { background-color: #800080; }
+        .cor-vermelho-externa { background-color: #FF0000; }
+        .cor-amarelo-externa { background-color: #FFFF00; }
+        .cor-exercito-externa { background-color: #556B2F; }
+
+        .cor-pergaminho-interna { background-color: rgba(240, 230, 210, 0.95); }
+        .cor-bordo-interna { background-color: #800000; }
+        .cor-azul-escuro-interna { background-color: #000080; }
+        .cor-azul-claro-interna { background-color: #ADD8E6; }
+        .cor-verde-escuro-interna { background-color: #006400; }
+        .cor-verde-claro-interna { background-color: #90EE90; }
+        .cor-rosa-claro-interna { background-color: #FFB6C1; }
+        .cor-rosa-escuro-interna { background-color: #FF69B4; }
+        .cor-branco-interna { background-color: #FFFFFF; }
+        .cor-laranja-interna { background-color: #FFA500; }
+        .cor-roxo-interna { background-color: #800080; }
+        .cor-vermelho-interna { background-color: #FF0000; }
+        .cor-amarelo-interna { background-color: #FFFF00; }
+        .cor-exercito-interna { background-color: #556B2F; }
+
+        #cor-fundo-modal .modal-content > h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #cor-fundo-modal .botoes-modal {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 
@@ -1645,7 +1716,8 @@
                     <div class="armamento-coluna">
                         <label>Armamento Mão Direita:</label>
                         <div class="flex items-center mb-2">
-                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="mr-2">
+                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma"
+                                class="mr-2">
                             <span>Ataque </span>
                             <input type="number" id="arma-direita-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
@@ -1805,6 +1877,7 @@
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="lua-btn" class="botao">🌙</button>
                 <button id="sol-btn" class="botao">☀️</button>
+                <button id="cor-fundo-btn" class="botao">Cor de fundo</button>
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
@@ -1943,10 +2016,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                        </div>
+                    </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                    </div>
+                </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -1956,11 +2029,62 @@
         </div>
     </div>
 
+    <div id="cor-fundo-modal" class="modal">
+        <div class="modal-content">
+            <h3>Cor de fundo</h3>
+            <div>
+                <span>Cor de fundo parte externa:</span>
+                <div class="cores-externa">
+                    <span>Cores:</span>
+                    <div class="cor-bolinha cor-pergaminho-externa" data-cor="#f5f5f5" title="Cor pergaminho"></div>
+                    <div class="cor-bolinha cor-bordo-externa" data-cor="#800000" title="Cor bordô"></div>
+                    <div class="cor-bolinha cor-azul-escuro-externa" data-cor="#000080" title="Azul escuro"></div>
+                    <div class="cor-bolinha cor-azul-claro-externa" data-cor="#ADD8E6" title="Azul claro"></div>
+                    <div class="cor-bolinha cor-verde-escuro-externa" data-cor="#006400" title="Verde escuro"></div>
+                    <div class="cor-bolinha cor-verde-claro-externa" data-cor="#90EE90" title="Verde claro"></div>
+                    <div class="cor-bolinha cor-rosa-claro-externa" data-cor="#FFB6C1" title="Rosa claro"></div>
+                    <div class="cor-bolinha cor-rosa-escuro-externa" data-cor="#FF69B4" title="Rosa escuro"></div>
+                    <div class="cor-bolinha cor-branco-externa" data-cor="#FFFFFF" title="Branco"></div>
+                    <div class="cor-bolinha cor-laranja-externa" data-cor="#FFA500" title="Laranja"></div>
+                    <div class="cor-bolinha cor-roxo-externa" data-cor="#800080" title="Roxo"></div>
+                    <div class="cor-bolinha cor-vermelho-externa" data-cor="#FF0000" title="Vermelho"></div>
+                    <div class="cor-bolinha cor-amarelo-externa" data-cor="#FFFF00" title="Amarelo"></div>
+                    <div class="cor-bolinha cor-exercito-externa" data-cor="#556B2F" title="Exército"></div>
+                </div>
+            </div>
+            <div>
+                <span>Cor de fundo parte interna:</span>
+                <div class="cores-interna">
+                    <span>Cores:</span>
+                    <div class="cor-bolinha cor-pergaminho-interna" data-cor="rgba(240, 230, 210, 0.95)" title="Cor pergaminho"></div>
+                    <div class="cor-bolinha cor-bordo-interna" data-cor="#800000" title="Cor bordô"></div>
+                    <div class="cor-bolinha cor-azul-escuro-interna" data-cor="#000080" title="Azul escuro"></div>
+                    <div class="cor-bolinha cor-azul-claro-interna" data-cor="#ADD8E6" title="Azul claro"></div>
+                    <div class="cor-bolinha cor-verde-escuro-interna" data-cor="#006400" title="Verde escuro"></div>
+                    <div class="cor-bolinha cor-verde-claro-interna" data-cor="#90EE90" title="Verde claro"></div>
+                    <div class="cor-bolinha cor-rosa-claro-interna" data-cor="#FFB6C1" title="Rosa claro"></div>
+                    <div class="cor-bolinha cor-rosa-escuro-interna" data-cor="#FF69B4" title="Rosa escuro"></div>
+                    <div class="cor-bolinha cor-branco-interna" data-cor="#FFFFFF" title="Branco"></div>
+                    <div class="cor-bolinha cor-laranja-interna" data-cor="#FFA500" title="Laranja"></div>
+                    <div class="cor-bolinha cor-roxo-interna" data-cor="#800080" title="Roxo"></div>
+                    <div class="cor-bolinha cor-vermelho-interna" data-cor="#FF0000" title="Vermelho"></div>
+                    <div class="cor-bolinha cor-amarelo-interna" data-cor="#FFFF00" title="Amarelo"></div>
+                    <div class="cor-bolinha cor-exercito-interna" data-cor="#556B2F" title="Exército"></div>
+                </div>
+            </div>
+            <div class="botoes-modal">
+                <button class="confirm-btn" id="salvar-cor-fundo">Salvar</button>
+                <button class="cancel-btn" id="excluir-cor-fundo">Excluir</button>
+                <button class="cancel-btn" onclick="fecharModal('cor-fundo-modal')">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="notification"></div>
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-        </audio>
+    </audio>
 
     <script>
         const firebaseConfig = {
@@ -1998,7 +2122,6 @@
             chatPassword = null,
             isChatOpen = false,
             selectedChatUser = null;
-
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2188,7 +2311,7 @@
             nome: "Humano (3)",
             custo: 3,
             descricao: "Os humanos são versáteis, ambiciosos e mestres em se adaptar a qualquer situação. Suas vantagens refletem uma capacidade excepcional de prosperar em qualquer ambiente.",
-            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constroem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
+            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constróem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
         }, {
             nome: "Elfo (4)",
             custo: 4,
@@ -2302,7 +2425,6 @@
                         atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
                         verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
                     };
-
                     sidebar.insertBefore(tab, addBtn);
                 }
             }
@@ -2440,8 +2562,11 @@
             availableFichasDiv = document.getElementById("available-fichas"),
             conversationAreaDiv = document.getElementById("conversation-area"),
             mensagemInput = document.getElementById("mensagem-input"),
-            newMessageSound = document.getElementById("new-message-sound");
-
+            newMessageSound = document.getElementById("new-message-sound"),
+            corFundoBtn = document.getElementById("cor-fundo-btn"),
+            corFundoModal = document.getElementById("cor-fundo-modal"),
+            salvarCorFundoBtn = document.getElementById("salvar-cor-fundo"),
+            excluirCorFundoBtn = document.getElementById("excluir-cor-fundo");
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
@@ -2604,7 +2729,6 @@
             pd: 319,
             ph: 38
         }];
-
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
             const ficha = fichas[fichaId];
@@ -2660,7 +2784,8 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -3083,7 +3208,6 @@
                 document.getElementById("senha-bloqueio-input").focus();
             }
         };
-
         function bloquearFicha() {
             const senha = document.getElementById("senha-bloqueio-input").value;
             if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
@@ -3496,7 +3620,6 @@
                 calcularAtributos();
             }
         };
-
         function atualizarRacasPanel() {
             racasList.innerHTML = "";
             racasData.forEach(r => {
@@ -3645,7 +3768,6 @@
                 }
             };
         };
-
         // Funcionalidade do Chat
         chatBtn.onclick = () => {
             if (!chatPassword) {
@@ -3754,7 +3876,8 @@
         }
 
         function getChatId(id1, id2) {
-            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+            return id1 < id2 ?
+                `${id1}_${id2}` : `${id2}_${id1}`;
         }
 
         function verificarNovasMensagens() {
@@ -3778,6 +3901,40 @@
                 }
             });
         }
+
+        // Cores de fundo
+        let corExternaSelecionada = '#f5f5f5';
+        let corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
+
+        corFundoBtn.onclick = () => {
+            corFundoModal.style.display = "flex";
+        };
+
+        document.querySelectorAll('#cor-fundo-modal .cores-externa .cor-bolinha').forEach(bolinha => {
+            bolinha.addEventListener('click', function() {
+                corExternaSelecionada = this.dataset.cor;
+            });
+        });
+
+        document.querySelectorAll('#cor-fundo-modal .cores-interna .cor-bolinha').forEach(bolinha => {
+            bolinha.addEventListener('click', function() {
+                corInternaSelecionada = this.dataset.cor;
+            });
+        });
+
+        salvarCorFundoBtn.onclick = () => {
+            document.body.style.background = corExternaSelecionada;
+            document.getElementById('ficha-container').style.background = corInternaSelecionada;
+            fecharModal('cor-fundo-modal');
+        };
+
+        excluirCorFundoBtn.onclick = () => {
+            corExternaSelecionada = '#f5f5f5';
+            corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
+            document.body.style.background = corExternaSelecionada;
+            document.getElementById('ficha-container').style.background = corInternaSelecionada;
+            fecharModal('cor-fundo-modal');
+        };
 
         carregarFichas();
     </script>
