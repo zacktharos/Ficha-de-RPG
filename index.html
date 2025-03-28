@@ -2383,7 +2383,9 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null // Adicionado campo para a senha do chat
+                chatPassword: null, // Adicionado campo para a senha do chat
+                corExterna: '#f5f5f5', // Cor padrão externa
+                corInterna: 'rgba(240, 230, 210, 0.95)' // Cor padrão interna
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
@@ -2488,7 +2490,9 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null // Adicionado campo para a senha do chat
+                chatPassword: null, // Adicionado campo para a senha do chat
+                corExterna: '#f5f5f5', // Cor padrão externa
+                corInterna: 'rgba(240, 230, 210, 0.95)' // Cor padrão interna
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
@@ -2854,6 +2858,16 @@
 
             chatPassword = ficha.chatPassword;
             atualizarEstadoChatBotao();
+
+            // Carregar cores de fundo da ficha
+            if (ficha.corExterna) {
+                corExternaSelecionada = ficha.corExterna;
+                document.body.style.background = corExternaSelecionada;
+            }
+            if (ficha.corInterna) {
+                corInternaSelecionada = ficha.corInterna;
+                document.getElementById('ficha-container').style.background = corInternaSelecionada;
+            }
         }
 
         function atualizarBotaoBloquear() {
@@ -2905,7 +2919,9 @@
                 racaNome: racaNomeSpan.textContent,
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
-                chatPassword: chatPassword
+                chatPassword: chatPassword,
+                corExterna: corExternaSelecionada,
+                corInterna: corInternaSelecionada
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
@@ -3395,7 +3411,7 @@
                     notification.classList.add("critical-failure");
                 } else if (roll === 20) {
                     diceRoll.classList.add("critical-success");
-                    notification.textContent = `${fichaNome} - SUCESSO CRÍTICO!`;
+                    notification.textContent = `${fichaNome} - SUCESSO CRÍTICA!`;
                     notification.classList.add("critical-success");
                 } else {
                     diceResult.textContent = `${fichaNome} rolou: ${roll}`;
@@ -3916,11 +3932,8 @@
         }
 
         // Cores de fundo
-        let corExternaSelecionada = localStorage.getItem('corExterna') || '#f5f5f5';
-        let corInternaSelecionada = localStorage.getItem('corInterna') || 'rgba(240, 230, 210, 0.95)';
-
-        document.body.style.background = corExternaSelecionada;
-        document.getElementById('ficha-container').style.background = corInternaSelecionada;
+        let corExternaSelecionada = '#f5f5f5';
+        let corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
 
         corFundoBtn.onclick = () => {
             corFundoModal.style.display = "flex";
@@ -3929,27 +3942,399 @@
         document.querySelectorAll('#cor-fundo-modal .cores-externa .cor-bolinha').forEach(bolinha => {
             bolinha.addEventListener('click', function() {
                 corExternaSelecionada = this.dataset.cor;
-                document.body.style.background = corExternaSelecionada;
-                localStorage.setItem('corExterna', corExternaSelecionada);
+                if (currentFichaId) {
+                    database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada });
+                }
             });
         });
 
         document.querySelectorAll('#cor-fundo-modal .cores-interna .cor-bolinha').forEach(bolinha => {
             bolinha.addEventListener('click', function() {
                 corInternaSelecionada = this.dataset.cor;
-                document.getElementById('ficha-container').style.background = corInternaSelecionada;
-                localStorage.setItem('corInterna', corInternaSelecionada);
+                if (currentFichaId) {
+                    database.ref(`fichas/${currentFichaId}`).update({ corInterna: corInternaSelecionada });
+                }
             });
         });
 
         reiniciarCorFundoBtn.onclick = () => {
             corExternaSelecionada = '#f5f5f5';
             corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
-            document.body.style.background = corExternaSelecionada;
-            document.getElementById('ficha-container').style.background = corInternaSelecionada;
-            localStorage.setItem('corExterna', corExternaSelecionada);
-            localStorage.setItem('corInterna', corInternaSelecionada);
+            if (currentFichaId) {
+                database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada, corInterna: corInternaSelecionada });
+            }
         };
+
+        function aplicarCoresFundo(ficha) {
+            const bodyElement = document.body;
+            const fichaContainerElement = document.getElementById('ficha-container');
+
+            if (bodyElement.classList.contains('dark-mode')) {
+                // O modo noturno tem prioridade, não aplicar cores personalizadas
+                return;
+            }
+
+            if (ficha && ficha.corExterna) {
+                bodyElement.style.background = ficha.corExterna;
+            } else {
+                bodyElement.style.background = '#f5f5f5'; // Cor padrão externa
+            }
+
+            if (ficha && ficha.corInterna) {
+                fichaContainerElement.style.background = ficha.corInterna;
+            } else {
+                fichaContainerElement.style.background = 'rgba(240, 230, 210, 0.95)'; // Cor padrão interna
+            }
+        }
+
+        function carregarFicha(fichaId) {
+            if (!fichas[fichaId]) return;
+            const ficha = fichas[fichaId];
+
+            nomePersonagemInput.value = ficha.nomePersonagem || "";
+            descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
+            forcaInput.value = ficha.forca || "0";
+            destrezaInput.value = ficha.destreza || "0";
+            agilidadeInput.value = ficha.agilidade || "0";
+            inteligenciaInput.value = ficha.inteligencia || "0";
+            constituicaoInput.value = ficha.constituicao || "0";
+            experienciaInput.value = ficha.experiencia || "0";
+            armaDireitaNomeInput.value = ficha.armaDireitaNome || "";
+            armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0";
+            armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
+            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || "";
+            armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0";
+            armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+
+            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25";
+            alturaPuloSpan.textContent = ficha.alturaPulo || "1";
+            distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
+
+            isFichaLocked = ficha.isLocked || false;
+            fichaPassword = ficha.password || null;
+            isFichaUnlocked = false;
+
+            vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
+            desvantagensSelecionadas = ficha.desvantagens ?
+                ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
+
+            racaSelecionada = ficha.racaSelecionada || "";
+            racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
+            racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
+
+            vantagensListDisplay.innerHTML = "";
+            desvantagensListDisplay.innerHTML = "";
+
+            vantagensSelecionadas.forEach(v => {
+                const div = document.createElement("div");
+                div.textContent = v;
+                div.className = "list-item";
+                div.onclick = () => removerVantagem(v);
+                vantagensListDisplay.appendChild(div);
+            });
+
+            desvantagensSelecionadas.forEach(d => {
+                const div = document.createElement("div");
+                div.textContent = d;
+                div.className = "list-item";
+                div.onclick = () => removerDesvantagem(d);
+                desvantagensListDisplay.appendChild(div);
+            });
+
+            const inventario =
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
+                    item: "",
+                    peso: "0"
+                });
+            const slots = inventarioSlots.querySelectorAll(".inventory-slot");
+            slots.forEach((slot, i) => {
+                const itemInput = slot.querySelector(".inventory-item");
+                const weightInput = slot.querySelector(".inventory-weight");
+                itemInput.value = inventario[i]?.item || "";
+                weightInput.value = inventario[i]?.peso || "0";
+            });
+            calcularPesoTotal();
+
+            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
+            magiasList.innerHTML = "";
+            magias.forEach((m, i) => {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "magia-nome";
+                input.placeholder = `Magia/Habilidade ${i+1}`;
+                input.value = m;
+                magiasList.appendChild(input);
+            });
+            anotacoesTextarea.value = ficha.anotacoes || "";
+
+            classeNomeInput.value = ficha.classeNome || "";
+            classeDescricaoInput.value = ficha.classeDescricao || "";
+            if (ficha.imagem) {
+                characterImage.src = ficha.imagem;
+                characterImage.style.display = "block";
+            } else {
+                characterImage.style.display = "none";
+            }
+
+            atualizarBotaoBloquear();
+            atualizarVantagensDesvantagensPanel();
+            atualizarRacasPanel();
+
+            experiencia = parseInt(experienciaInput.value) || 0;
+            atualizarNivel();
+            calcularAtributos();
+
+            vidaAtual = vidaTotal;
+            magiaAtual = magiaTotal;
+            vigorAtual = vigorTotal;
+
+            document.getElementById("vida-atual").textContent = vidaAtual;
+            document.getElementById("magia-atual").textContent = magiaAtual;
+            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
+            pontosVantagemSpan.textContent = getPontosVantagem();
+
+            previousValues.clear();
+            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+
+            chatPassword = ficha.chatPassword;
+            atualizarEstadoChatBotao();
+
+            // Aplicar cores de fundo da ficha
+            aplicarCoresFundo(ficha);
+        }
+
+        function salvarDados() {
+            if (!currentFichaId) return;
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+
+            const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({
+                item: slot.querySelector(".inventory-item").value,
+                peso: slot.querySelector(".inventory-weight").value
+            }));
+            const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
+
+            const dados = {
+                nomePersonagem: nomePersonagemInput.value,
+                descricaoPersonagem: descricaoPersonagemInput.value,
+                forca: forcaInput.value,
+                destreza: destrezaInput.value,
+                agilidade: agilidadeInput.value,
+                inteligencia: inteligenciaInput.value,
+                constituicao: constituicaoInput.value,
+                experiencia: experienciaInput.value,
+                armaDireitaNome: armaDireitaNomeInput.value,
+                armaDireitaAtaque: armaDireitaAtaqueInput.value,
+                armaDireitaAtaqueMagico: armaDireitaAtaqueMagicoInput.value,
+                armaEsquerdaNome: armaEsquerdaNomeInput.value,
+                armaEsquerdaAtaque: armaEsquerdaAtaqueInput.value,
+                armaEsquerdaAtaqueMagico: armaEsquerdaAtaqueMagicoInput.value,
+                vantagens: vantagensSelecionadas.join("\n"),
+                magiasHabilidades: magias.join("\n"),
+                desvantagens: desvantagensSelecionadas.join("\n"),
+                inventario,
+                velocidadeCorrida: velocidadeCorridaSpan.textContent,
+                alturaPulo: alturaPuloSpan.textContent,
+                distanciaPulo: distanciaPuloSpan.textContent,
+                isLocked: isFichaLocked,
+                password: fichaPassword,
+                imagem: characterImage.src ||
+                    null,
+                anotacoes: anotacoesTextarea.value,
+                classeNome: classeNomeInput.value,
+                classeDescricao: classeDescricaoInput.value,
+                racaNome: racaNomeSpan.textContent,
+                racaDescricao: racaDescricaoInput.value,
+                racaSelecionada: racaSelecionada,
+                chatPassword: chatPassword,
+                corExterna: corExternaSelecionada,
+                corInterna: corInternaSelecionada
+            };
+            database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
+                showNotification("Salvo!", "save-success");
+                previousValues.clear();
+                document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+            });
+        }
+
+        let corExternaSelecionada = '#f5f5f5';
+        let corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
+
+        corFundoBtn.onclick = () => {
+            corFundoModal.style.display = "flex";
+        };
+
+        document.querySelectorAll('#cor-fundo-modal .cores-externa .cor-bolinha').forEach(bolinha => {
+            bolinha.addEventListener('click', function() {
+                corExternaSelecionada = this.dataset.cor;
+                if (currentFichaId) {
+                    database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada });
+                    const ficha = fichas[currentFichaId];
+                    aplicarCoresFundo(ficha);
+                }
+            });
+        });
+
+        document.querySelectorAll('#cor-fundo-modal .cores-interna .cor-bolinha').forEach(bolinha => {
+            bolinha.addEventListener('click', function() {
+                corInternaSelecionada = this.dataset.cor;
+                if (currentFichaId) {
+                    database.ref(`fichas/${currentFichaId}`).update({ corInterna: corInternaSelecionada });
+                    const ficha = fichas[currentFichaId];
+                    aplicarCoresFundo(ficha);
+                }
+            });
+        });
+
+        reiniciarCorFundoBtn.onclick = () => {
+            corExternaSelecionada = '#f5f5f5';
+            corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
+            if (currentFichaId) {
+                database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada, corInterna: corInternaSelecionada });
+                const ficha = fichas[currentFichaId];
+                aplicarCoresFundo(ficha);
+            }
+        };
+
+        function aplicarCoresFundo(ficha) {
+            const bodyElement = document.body;
+            const fichaContainerElement = document.getElementById('ficha-container');
+
+            if (bodyElement.classList.contains('dark-mode')) {
+                bodyElement.style.background = '';
+                fichaContainerElement.style.background = '';
+                return;
+            }
+
+            if (ficha && ficha.corExterna) {
+                bodyElement.style.background = ficha.corExterna;
+            } else {
+                bodyElement.style.background = '#f5f5f5'; // Cor padrão externa
+            }
+
+            if (ficha && ficha.corInterna) {
+                fichaContainerElement.style.background = ficha.corInterna;
+            } else {
+                fichaContainerElement.style.background = 'rgba(240, 230, 210, 0.95)'; // Cor padrão interna
+            }
+        }
+
+        function carregarFicha(fichaId) {
+            if (!fichas[fichaId]) return;
+            const ficha = fichas[fichaId];
+
+            nomePersonagemInput.value = ficha.nomePersonagem || "";
+            descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
+            forcaInput.value = ficha.forca || "0";
+            destrezaInput.value = ficha.destreza || "0";
+            agilidadeInput.value = ficha.agilidade || "0";
+            inteligenciaInput.value = ficha.inteligencia || "0";
+            constituicaoInput.value = ficha.constituicao || "0";
+            experienciaInput.value = ficha.experiencia || "0";
+            armaDireitaNomeInput.value = ficha.armaDireitaNome || "";
+            armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0";
+            armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
+            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || "";
+            armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0";
+            armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+
+            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25";
+            alturaPuloSpan.textContent = ficha.alturaPulo || "1";
+            distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
+
+            isFichaLocked = ficha.isLocked || false;
+            fichaPassword = ficha.password || null;
+            isFichaUnlocked = false;
+
+            vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
+            desvantagensSelecionadas = ficha.desvantagens ?
+                ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
+
+            racaSelecionada = ficha.racaSelecionada || "";
+            racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
+            racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
+
+            vantagensListDisplay.innerHTML = "";
+            desvantagensListDisplay.innerHTML = "";
+
+            vantagensSelecionadas.forEach(v => {
+                const div = document.createElement("div");
+                div.textContent = v;
+                div.className = "list-item";
+                div.onclick = () => removerVantagem(v);
+                vantagensListDisplay.appendChild(div);
+            });
+
+            desvantagensSelecionadas.forEach(d => {
+                const div = document.createElement("div");
+                div.textContent = d;
+                div.className = "list-item";
+                div.onclick = () => removerDesvantagem(d);
+                desvantagensListDisplay.appendChild(div);
+            });
+
+            const inventario =
+                Array.isArray(ficha.inventario) ?
+                ficha.inventario : Array(10).fill({
+                    item: "",
+                    peso: "0"
+                });
+            const slots = inventarioSlots.querySelectorAll(".inventory-slot");
+            slots.forEach((slot, i) => {
+                const itemInput = slot.querySelector(".inventory-item");
+                const weightInput = slot.querySelector(".inventory-weight");
+                itemInput.value = inventario[i]?.item || "";
+                weightInput.value = inventario[i]?.peso || "0";
+            });
+            calcularPesoTotal();
+
+            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
+            magiasList.innerHTML = "";
+            magias.forEach((m, i) => {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "magia-nome";
+                input.placeholder = `Magia/Habilidade ${i+1}`;
+                input.value = m;
+                magiasList.appendChild(input);
+            });
+            anotacoesTextarea.value = ficha.anotacoes || "";
+
+            classeNomeInput.value = ficha.classeNome || "";
+            classeDescricaoInput.value = ficha.classeDescricao || "";
+            if (ficha.imagem) {
+                characterImage.src = ficha.imagem;
+                characterImage.style.display = "block";
+            } else {
+                characterImage.style.display = "none";
+            }
+
+            atualizarBotaoBloquear();
+            atualizarVantagensDesvantagensPanel();
+            atualizarRacasPanel();
+
+            experiencia = parseInt(experienciaInput.value) || 0;
+            atualizarNivel();
+            calcularAtributos();
+
+            vidaAtual = vidaTotal;
+            magiaAtual = magiaTotal;
+            vigorAtual = vigorTotal;
+
+            document.getElementById("vida-atual").textContent = vidaAtual;
+            document.getElementById("magia-atual").textContent = magiaAtual;
+            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
+            pontosVantagemSpan.textContent = getPontosVantagem();
+
+            previousValues.clear();
+            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+
+            chatPassword = ficha.chatPassword;
+            atualizarEstadoChatBotao();
+
+            // Aplicar cores de fundo da ficha
+            aplicarCoresFundo(ficha);
+        }
 
         carregarFichas();
     </script>
