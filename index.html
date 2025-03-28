@@ -1487,86 +1487,6 @@
         #raca-opcoes-modal .modal-content button:nth-child(2) {
             margin-top: 10px;
         }
-
-        /* Estilos para o modal de cor de fundo */
-        #cor-fundo-modal .modal-content {
-            width: 450px; /* Aumentando a largura do modal */
-            text-align: left;
-        }
-
-        #cor-fundo-modal .cores-externa,
-        #cor-fundo-modal .cores-interna {
-            display: flex;
-            flex-wrap: wrap; /* Permitir que as bolinhas quebrem para a próxima linha */
-            gap: 10px;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-
-        #cor-fundo-modal .cores-externa > span:first-child,
-        #cor-fundo-modal .cores-interna > span:first-child {
-            font-weight: bold;
-            margin-right: 10px;
-            width: 100%; /* Forçar o título para a linha de cima */
-        }
-
-        .cor-bolinha {
-            width: 30px; /* Aumentando o tamanho das bolinhas */
-            height: 30px; /* Aumentando o tamanho das bolinhas */
-            border-radius: 50%;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-            margin-right: 5px; /* Adicionando um pouco de margem entre as bolinhas */
-            margin-bottom: 5px; /* Adicionando um pouco de margem abaixo das bolinhas */
-        }
-
-        .cor-pergaminho-externa { background-color: #f5f5f5; }
-        .cor-bordo-externa { background-color: #800000; }
-        .cor-azul-escuro-externa { background-color: #000080; }
-        .cor-azul-claro-externa { background-color: #ADD8E6; }
-        .cor-verde-escuro-externa { background-color: #006400; }
-        .cor-verde-claro-externa { background-color: #90EE90; }
-        .cor-rosa-claro-externa { background-color: #FFB6C1; }
-        .cor-rosa-escuro-externa { background-color: #FF69B4; }
-        .cor-branco-externa { background-color: #FFFFFF; }
-        .cor-laranja-externa { background-color: #FFA500; }
-        .cor-roxo-externa { background-color: #800080; }
-        .cor-vermelho-externa { background-color: #FF0000; }
-        .cor-amarelo-externa { background-color: #FFFF00; }
-        .cor-exercito-externa { background-color: #556B2F; }
-
-        .cor-pergaminho-interna { background-color: rgba(240, 230, 210, 0.95); }
-        .cor-bordo-interna { background-color: #800000; }
-        .cor-azul-escuro-interna { background-color: #000080; }
-        .cor-azul-claro-interna { background-color: #ADD8E6; }
-        .cor-verde-escuro-interna { background-color: #006400; }
-        .cor-verde-claro-interna { background-color: #90EE90; }
-        .cor-rosa-claro-interna { background-color: #FFB6C1; }
-        .cor-rosa-escuro-interna { background-color: #FF69B4; }
-        .cor-branco-interna { background-color: #FFFFFF; }
-        .cor-laranja-interna { background-color: #FFA500; }
-        .cor-roxo-interna { background-color: #800080; }
-        .cor-vermelho-interna { background-color: #FF0000; }
-        .cor-amarelo-interna { background-color: #FFFF00; }
-        .cor-exercito-interna { background-color: #556B2F; }
-
-        #cor-fundo-modal .modal-content > h3 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        #cor-fundo-modal .botoes-modal {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        #cor-fundo-modal .reiniciar-btn-container {
-            text-align: center;
-            margin-top: 15px;
-        }
     </style>
 </head>
 
@@ -1725,8 +1645,7 @@
                     <div class="armamento-coluna">
                         <label>Armamento Mão Direita:</label>
                         <div class="flex items-center mb-2">
-                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma"
-                                class="mr-2">
+                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="mr-2">
                             <span>Ataque </span>
                             <input type="number" id="arma-direita-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
@@ -1886,7 +1805,6 @@
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="lua-btn" class="botao">🌙</button>
                 <button id="sol-btn" class="botao">☀️</button>
-                <button id="cor-fundo-btn" class="botao">Cor de fundo</button>
             </div>
 
             <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
@@ -2025,10 +1943,10 @@
                 <div class="user-list">
                     <h4>Fichas Online</h4>
                     <div id="available-fichas">
-                    </div>
+                        </div>
                 </div>
                 <div class="conversation" id="conversation-area">
-                </div>
+                    </div>
             </div>
             <div class="chat-input">
                 <input type="text" id="mensagem-input" placeholder="Digite sua mensagem...">
@@ -2038,65 +1956,11 @@
         </div>
     </div>
 
-    <div id="cor-fundo-modal" class="modal">
-        <div class="modal-content">
-            <h3>Cor de fundo</h3>
-            <div>
-                <span>Cor de fundo parte externa:</span>
-                <div class="cores-externa">
-                    <span>Cores:</span>
-                    <div class="cor-bolinha cor-pergaminho-externa" data-cor="#f5f5f5" title="Cor pergaminho"></div>
-                    <div class="cor-bolinha cor-bordo-externa" data-cor="#800000" title="Cor bordô"></div>
-                    <div class="cor-bolinha cor-azul-escuro-externa" data-cor="#000080" title="Azul escuro"></div>
-                    <div class="cor-bolinha cor-azul-claro-externa" data-cor="#ADD8E6" title="Azul claro"></div>
-                    <div class="cor-bolinha cor-verde-escuro-externa" data-cor="#006400" title="Verde escuro"></div>
-                    <div class="cor-bolinha cor-verde-claro-externa" data-cor="#90EE90" title="Verde claro"></div>
-                    <div class="cor-bolinha cor-rosa-claro-externa" data-cor="#FFB6C1" title="Rosa claro"></div>
-                    <div class="cor-bolinha cor-rosa-escuro-externa" data-cor="#FF69B4" title="Rosa escuro"></div>
-                    <div class="cor-bolinha cor-branco-externa" data-cor="#FFFFFF" title="Branco"></div>
-                    <div class="cor-bolinha cor-laranja-externa" data-cor="#FFA500" title="Laranja"></div>
-                    <div class="cor-bolinha cor-roxo-externa" data-cor="#800080" title="Roxo"></div>
-                    <div class="cor-bolinha cor-vermelho-externa" data-cor="#FF0000" title="Vermelho"></div>
-                    <div class="cor-bolinha cor-amarelo-externa" data-cor="#FFFF00" title="Amarelo"></div>
-                    <div class="cor-bolinha cor-exercito-externa" data-cor="#556B2F" title="Exército"></div>
-                </div>
-            </div>
-            <div>
-                <span>Cor de fundo parte interna:</span>
-                <div class="cores-interna">
-                    <span>Cores:</span>
-                    <div class="cor-bolinha cor-pergaminho-interna" data-cor="rgba(240, 230, 210, 0.95)" title="Cor pergaminho"></div>
-                    <div class="cor-bolinha cor-bordo-interna" data-cor="#800000" title="Cor bordô"></div>
-                    <div class="cor-bolinha cor-azul-escuro-interna" data-cor="#000080" title="Azul escuro"></div>
-                    <div class="cor-bolinha cor-azul-claro-interna" data-cor="#ADD8E6" title="Azul claro"></div>
-                    <div class="cor-bolinha cor-verde-escuro-interna" data-cor="#006400" title="Verde escuro"></div>
-                    <div class="cor-bolinha cor-verde-claro-interna" data-cor="#90EE90" title="Verde claro"></div>
-                    <div class="cor-bolinha cor-rosa-claro-interna" data-cor="#FFB6C1" title="Rosa claro"></div>
-                    <div class="cor-bolinha cor-rosa-escuro-interna" data-cor="#FF69B4" title="Rosa escuro"></div>
-                    <div class="cor-bolinha cor-branco-interna" data-cor="#FFFFFF" title="Branco"></div>
-                    <div class="cor-bolinha cor-laranja-interna" data-cor="#FFA500" title="Laranja"></div>
-                    <div class="cor-bolinha cor-roxo-interna" data-cor="#800080" title="Roxo"></div>
-                    <div class="cor-bolinha cor-vermelho-interna" data-cor="#FF0000" title="Vermelho"></div>
-                    <div class="cor-bolinha cor-amarelo-interna" data-cor="#FFFF00" title="Amarelo"></div>
-                    <div class="cor-bolinha cor-exercito-interna" data-cor="#556B2F" title="Exército"></div>
-                </div>
-            </div>
-            <div class="reiniciar-btn-container">
-                <button class="cancel-btn" id="reiniciar-cor-fundo">Reiniciar</button>
-            </div>
-            <div class="botoes-modal">
-                <button class="confirm-btn" id="salvar-cor-fundo" style="display:none;">Salvar</button>
-                <button class="cancel-btn" id="excluir-cor-fundo" style="display:none;">Excluir</button>
-                <button class="cancel-btn" onclick="fecharModal('cor-fundo-modal')">Fechar</button>
-            </div>
-        </div>
-    </div>
-
     <div id="notification"></div>
 
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
-    </audio>
+        </audio>
 
     <script>
         const firebaseConfig = {
@@ -2134,6 +1998,7 @@
             chatPassword = null,
             isChatOpen = false,
             selectedChatUser = null;
+
         const vantagensData = [{
             nome: "Maestria com Armas curtas (2)",
             custo: 2,
@@ -2323,7 +2188,7 @@
             nome: "Humano (3)",
             custo: 3,
             descricao: "Os humanos são versáteis, ambiciosos e mestres em se adaptar a qualquer situação. Suas vantagens refletem uma capacidade excepcional de prosperar em qualquer ambiente.",
-            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constróem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
+            vantagens: ["Explorador Nato: Começam com um cavalo de raça superior (mais rápido e resistente), equipamentos de montaria completos (selas, suprimentos para semanas) e um mapa detalhado de uma região inicial à escolha, permitindo explorar áreas distantes com facilidade e segurança.", "Mestre das Profissões: Escolhem uma profissão com benefícios. Ferreiro Lendário: Criam armas e armaduras com 5 pontos de qualidade automaticamente e podem forjar itens com propriedades únicas (ex.: espada que brilha ao detectar inimigos). Costureiro Arcano: Produzem vestimentas leves ou armaduras com resistência a dois elementos (ex.: fogo e gelo) e bônus de regeneração passiva de energia ou vida. Arquiteto Visionário: Constroem estruturas permanentes em metade do tempo e com o dobro da resistência, podendo criar bases estratégicas com defesas embutidas (ex.: torres de vigia).", "Rede de Influência: Iniciam com uma rede de contatos: um aliado influente (guildas, mercadores ou líderes locais) oferecendo acesso a informações secretas ou até intervenção em conflitos.", "Determinação Inabalável: Uma vez por dia, podem ignorar completamente uma situação de desvantagem (ex.: exaustão, ferimento grave ou efeito mágico negativo), agindo como se estivessem em plena capacidade por um curto período."]
         }, {
             nome: "Elfo (4)",
             custo: 4,
@@ -2383,9 +2248,7 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                corExterna: '#f5f5f5', // Cor padrão externa
-                corInterna: 'rgba(240, 230, 210, 0.95)' // Cor padrão interna
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
@@ -2439,6 +2302,7 @@
                         atualizarListaFichasChat(); // Atualizar lista de fichas no chat ao trocar de ficha
                         verificarNovasMensagens(); // Verificar mensagens ao trocar de ficha
                     };
+
                     sidebar.insertBefore(tab, addBtn);
                 }
             }
@@ -2490,9 +2354,7 @@
                 racaNome: "",
                 racaDescricao: "",
                 racaSelecionada: "",
-                chatPassword: null, // Adicionado campo para a senha do chat
-                corExterna: '#f5f5f5', // Cor padrão externa
-                corInterna: 'rgba(240, 230, 210, 0.95)' // Cor padrão interna
+                chatPassword: null // Adicionado campo para a senha do chat
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId;
@@ -2578,12 +2440,8 @@
             availableFichasDiv = document.getElementById("available-fichas"),
             conversationAreaDiv = document.getElementById("conversation-area"),
             mensagemInput = document.getElementById("mensagem-input"),
-            newMessageSound = document.getElementById("new-message-sound"),
-            corFundoBtn = document.getElementById("cor-fundo-btn"),
-            corFundoModal = document.getElementById("cor-fundo-modal"),
-            salvarCorFundoBtn = document.getElementById("salvar-cor-fundo"),
-            excluirCorFundoBtn = document.getElementById("excluir-cor-fundo"),
-            reiniciarCorFundoBtn = document.getElementById("reiniciar-cor-fundo");
+            newMessageSound = document.getElementById("new-message-sound");
+
         let nivel = 0,
             nivelAnterior = 0,
             pontosHabilidadeTotal = 25,
@@ -2746,6 +2604,7 @@
             pd: 319,
             ph: 38
         }];
+
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) return;
             const ficha = fichas[fichaId];
@@ -2801,8 +2660,7 @@
             });
 
             const inventario =
-                Array.isArray(ficha.inventario) ?
-                ficha.inventario : Array(10).fill({
+                Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({
                     item: "",
                     peso: "0"
                 });
@@ -2858,9 +2716,6 @@
 
             chatPassword = ficha.chatPassword;
             atualizarEstadoChatBotao();
-
-            // Aplicar cores de fundo da ficha
-            aplicarCoresFundo(ficha);
         }
 
         function atualizarBotaoBloquear() {
@@ -2912,9 +2767,7 @@
                 racaNome: racaNomeSpan.textContent,
                 racaDescricao: racaDescricaoInput.value,
                 racaSelecionada: racaSelecionada,
-                chatPassword: chatPassword,
-                corExterna: corExternaSelecionada,
-                corInterna: corInternaSelecionada
+                chatPassword: chatPassword
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
@@ -2923,106 +2776,532 @@
             });
         }
 
-        let corExternaSelecionada = '#f5f5f5';
-        let corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
+        function calcularNivel(exp) {
+            return nivelData.findLast(data => exp >= data.xp)?.nivel ||
+                0;
+        }
 
-        corFundoBtn.onclick = () => {
-            corFundoModal.style.display = "flex";
-        };
+        function atualizarNivel() {
+            nivelAnterior = nivel;
+            nivel = calcularNivel(experiencia);
+            nivelSpan.textContent = nivel;
+            pontosHabilidadeTotal = nivelData[nivel].pd;
+            pontosVantagemSpan.textContent = getPontosVantagem();
+            if (nivel > nivelAnterior) {
+                nivelSpan.classList.add("aura-azul");
+                setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000);
+            }
 
-        document.querySelectorAll('#cor-fundo-modal .cores-externa .cor-bolinha').forEach(bolinha => {
-            bolinha.addEventListener('click', function() {
-                corExternaSelecionada = this.dataset.cor;
-                if (currentFichaId) {
-                    database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada });
-                    const ficha = fichas[currentFichaId];
-                    aplicarCoresFundo(ficha);
-                }
+            gameMasterMessage.style.display = nivel >= 30 ?
+                "block" : "none";
+            fichaContainer.classList.toggle("aura-azul", nivel >= 30);
+
+            calcularAtributos();
+        }
+
+        function getPontosVantagem() {
+            let ph = nivelData[nivel].ph;
+            vantagensSelecionadas.forEach(v => {
+                const vantagem = vantagensData.find(d => d.nome === v);
+                if (vantagem) ph -= vantagem.custo;
             });
-        });
-
-        document.querySelectorAll('#cor-fundo-modal .cores-interna .cor-bolinha').forEach(bolinha => {
-            bolinha.addEventListener('click', function() {
-                corInternaSelecionada = this.dataset.cor;
-                if (currentFichaId) {
-                    database.ref(`fichas/${currentFichaId}`).update({ corInterna: corInternaSelecionada });
-                    const ficha = fichas[currentFichaId];
-                    aplicarCoresFundo(ficha);
-                }
+            desvantagensSelecionadas.forEach(d => {
+                const desvantagem = desvantagensData.find(desv => desv.nome === d);
+                if (desvantagem) ph += desvantagem.ganho;
             });
-        });
-
-        reiniciarCorFundoBtn.onclick = () => {
-            corExternaSelecionada = '#f5f5f5';
-            corInternaSelecionada = 'rgba(240, 230, 210, 0.95)';
-            if (currentFichaId) {
-                database.ref(`fichas/${currentFichaId}`).update({ corExterna: corExternaSelecionada, corInterna: corInternaSelecionada });
-                const ficha = fichas[currentFichaId];
-                aplicarCoresFundo(ficha);
-            }
-        };
-
-        function aplicarCoresFundo(ficha) {
-            const bodyElement = document.body;
-            const fichaContainerElement = document.getElementById('ficha-container');
-
-            if (bodyElement.classList.contains('dark-mode')) {
-                bodyElement.style.background = '';
-                fichaContainerElement.style.background = '';
-                return;
+            if (racaSelecionada) {
+                const raca = racasData.find(r => r.nome === racaSelecionada);
+                if (raca) ph -= raca.custo;
             }
 
-            if (ficha && ficha.corExterna) {
-                bodyElement.style.background = ficha.corExterna;
-            } else {
-                bodyElement.style.background = '#f5f5f5'; // Cor padrão externa
+            return ph;
+        }
+
+        function calcularPontosVantagemTemp() {
+            let ph = nivelData[nivel].ph;
+            tempVantagensSelecionadas.forEach(v => {
+                const vantagem = vantagensData.find(d => d.nome === v);
+                if (vantagem) ph -= vantagem.custo;
+            });
+            tempDesvantagensSelecionadas.forEach(d => {
+                const desvantagem = desvantagensData.find(desv => desv.nome === d);
+                if (desvantagem) ph += desvantagem.ganho;
+            });
+            if (tempRacaSelecionada) {
+                const raca = racasData.find(r => r.nome === tempRacaSelecionada);
+                if (raca) ph -= raca.custo;
             }
 
-            if (ficha && ficha.corInterna) {
-                fichaContainerElement.style.background = ficha.corInterna;
-            } else {
-                fichaContainerElement.style.background = 'rgba(240, 230, 210, 0.95)'; // Cor padrão interna
+            return ph;
+        }
+
+        function aumentarVida() {
+            if (vidaAtual < vidaTotal) {
+                vidaAtual++;
+                document.getElementById("vida-atual").textContent = vidaAtual;
+                salvarDados();
             }
         }
 
-        function carregarFicha(fichaId) {
-            if (!fichas[fichaId]) return;
-            const ficha = fichas[fichaId];
+        function diminuirVida() {
+            if (vidaAtual > 0) {
+                vidaAtual--;
+                document.getElementById("vida-atual").textContent = vidaAtual;
+                salvarDados();
+            }
+        }
 
-            nomePersonagemInput.value = ficha.nomePersonagem || "";
-            descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
-            forcaInput.value = ficha.forca || "0";
-            destrezaInput.value = ficha.destreza || "0";
-            agilidadeInput.value = ficha.agilidade || "0";
-            inteligenciaInput.value = ficha.inteligencia || "0";
-            constituicaoInput.value = ficha.constituicao || "0";
-            experienciaInput.value = ficha.experiencia || "0";
-            armaDireitaNomeInput.value = ficha.armaDireitaNome || "";
-            armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0";
-            armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
-            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || "";
-            armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0";
-            armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+        function aumentarMagia() {
+            if (magiaAtual < magiaTotal) {
+                magiaAtual++;
+                document.getElementById("magia-atual").textContent = magiaAtual;
+                salvarDados();
+            }
+        }
 
-            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25";
-            alturaPuloSpan.textContent = ficha.alturaPulo || "1";
-            distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
+        function diminuirMagia() {
+            if (magiaAtual > 0) {
+                magiaAtual--;
+                document.getElementById("magia-atual").textContent = magiaAtual;
+                salvarDados();
+            }
+        }
 
-            isFichaLocked = ficha.isLocked || false;
-            fichaPassword = ficha.password || null;
-            isFichaUnlocked = false;
+        function aumentarVigor() {
+            if (vigorAtual < vigorTotal) {
+                vigorAtual = Math.min(vigorAtual + 0.1, vigorTotal);
+                document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
+                salvarDados();
+            }
+        }
 
-            vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
-            desvantagensSelecionadas = ficha.desvantagens ?
-                ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
+        function diminuirVigor() {
+            if (vigorAtual > 0) {
+                vigorAtual = Math.max(vigorAtual - 0.1, 0);
+                document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
+                salvarDados();
+            }
+        }
 
-            racaSelecionada = ficha.racaSelecionada || "";
-            racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
-            racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
+        function calcularAtributos() {
+            const forca = parseInt(forcaInput.value) ||
+                0,
+                destreza = parseInt(destrezaInput.value) ||
+                0,
+                agilidade = parseInt(agilidadeInput.value) ||
+                0,
+                inteligencia = parseInt(inteligenciaInput.value) ||
+                0,
+                constituicao = parseInt(constituicaoInput.value) ||
+                0;
+
+            let totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
+            if (totalPontos > pontosHabilidadeTotal) {
+                alert("Pontos de habilidade insuficientes!");
+                forcaInput.value = previousValues.get(forcaInput) || "0";
+                destrezaInput.value = previousValues.get(destrezaInput) || "0";
+                agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
+                inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
+                constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
+                return;
+            }
+
+            pontosHabilidadeUsados = totalPontos;
+            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
+
+            let ataque = forca + Math.floor(destreza / 5),
+                acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10),
+                esquiva = Math.floor(agilidade / 3),
+                rdf = Math.floor(forca / 5),
+                rdm = Math.floor(inteligencia / 5),
+                ataqueMagico = inteligencia,
+                magiaBase = 20 + 3 * constituicao,
+                vigorBase = 10 + 0.4 * constituicao;
+            vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel;
+            if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
+
+            ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
+            ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+
+            const velocidadeBase = 25 + Math.floor(agilidade / 3) * 3,
+                alturaPuloBase = 1 + Math.floor(forca / 10),
+                distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
+            let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0,
+                bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
+                2 : 0,
+                bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
+                6 : 0;
+
+            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
+            alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
+            distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
+            ataqueSpan.textContent = ataque;
+            ataqueMagicoSpan.textContent = ataqueMagico;
+            acertoSpan.textContent = acerto;
+            esquivaSpan.textContent = esquiva;
+            rdfSpan.textContent = rdf;
+            rdmSpan.textContent = rdm;
+            vidaTotal = Math.ceil(vidaBase);
+            magiaTotal = Math.ceil(magiaBase);
+            vigorTotal = parseFloat(vigorBase.toFixed(1));
+
+            vidaAtual = vidaAtual === undefined ? vidaTotal : Math.min(vidaAtual, vidaTotal);
+            magiaAtual = magiaAtual === undefined ? magiaTotal : Math.min(magiaAtual, magiaTotal);
+            vigorAtual = vigorAtual === undefined ? vigorTotal : Math.min(vigorAtual, vigorTotal);
+            document.getElementById("vida-total").textContent = vidaTotal;
+            document.getElementById("magia-total").textContent = magiaTotal;
+            document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
+            document.getElementById("vida-atual").textContent = vidaAtual;
+            document.getElementById("magia-atual").textContent = magiaAtual;
+            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
+            const regeneracaoVida = (0.2 * constituicao).toFixed(1),
+                regeneracaoMagia = (0.8 * constituicao).toFixed(1),
+                regeneracaoVigor = (0.4 * constituicao).toFixed(1);
+            document.getElementById("regeneracao-vida").textContent = regeneracaoVida;
+            document.getElementById("regeneracao-magia").textContent = regeneracaoMagia;
+            document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
+
+            const atributos = [{
+                span: ataqueSpan,
+                valor: ataque
+            }, {
+                span: ataqueMagicoSpan,
+                valor: ataqueMagico
+            }, {
+                span: acertoSpan,
+                valor: acerto
+            }, {
+                span: esquivaSpan,
+                valor: esquiva
+            }, {
+                span: rdfSpan,
+                valor: rdf
+            }, {
+                span: rdmSpan,
+                valor: rdm
+            }];
+            atributos.forEach(a => a.span.classList.remove("atributo-fogo"));
+
+            const maxAtributo = atributos.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, {
+                valor: 0
+            });
+            if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
+        }
+
+        function resetarPontos() {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            if (confirm("Tem certeza que deseja reiniciar os pontos? Você precisará da permissão do GM.")) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        atributosInputs.forEach(input => input.value = 0);
+                        pontosHabilidadeUsados = 0;
+                        pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+                        velocidadeCorridaSpan.textContent = "25";
+                        alturaPuloSpan.textContent = "1";
+                        distanciaPuloSpan.textContent = "3";
+                        calcularAtributos();
+                        pontosVantagemSpan.textContent = getPontosVantagem();
+                        salvarDados();
+                        fecharModal("senha-gm-modal");
+                    } else {
+                        alert("Senha do GM incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        }
+
+        function recomecarFicha() {
+            if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
+                atributosInputs.forEach(input => input.value = 0);
+                pontosHabilidadeUsados = 0;
+                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+                velocidadeCorridaSpan.textContent = "25";
+                alturaPuloSpan.textContent = "1";
+                distanciaPuloSpan.textContent = "3";
+                nomePersonagemInput.value = "";
+                descricaoPersonagemInput.value = "";
+                experienciaInput.value = 0;
+                nivel = 0;
+                pontosHabilidadeTotal = nivelData[nivel].pd;
+                pontosHabilidadeUsados = 0;
+                nivelSpan.textContent = nivel;
+                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+                vidaBase = 50;
+
+                armaDireitaNomeInput.value = "";
+                armaDireitaAtaqueInput.value = "0";
+                armaDireitaAtaqueMagicoInput.value = "0";
+                armaEsquerdaNomeInput.value = "";
+                armaEsquerdaAtaqueInput.value = "0";
+                armaEsquerdaAtaqueMagicoInput.value = "0";
+
+                magiasList.innerHTML = "";
+                for (let i = 0; i < 10; i++) {
+                    const input = document.createElement("input");
+                    input.type = "text";
+                    input.className = "magia-nome";
+                    input.placeholder = `Magia/Habilidade ${i+1}`;
+                    magiasList.appendChild(input);
+                }
+
+                const slots = inventarioSlots.querySelectorAll(".inventory-slot");
+                slots.forEach(slot => {
+                    slot.querySelector(".inventory-item").value = "";
+                    slot.querySelector(".inventory-weight").value = "0";
+                });
+                characterImage.style.display = "none";
+                characterImage.src = "";
+
+                vantagensSelecionadas = [];
+                desvantagensSelecionadas = [];
+                racaSelecionada = null;
+
+                vantagensListDisplay.innerHTML = "";
+                desvantagensListDisplay.innerHTML = "";
+
+                anotacoesTextarea.value = "";
+
+                classeNomeInput.value = "";
+                classeDescricaoInput.value = "";
+                racaNomeSpan.textContent = "";
+                racaDescricaoInput.value = "";
+
+                calcularAtributos();
+                pontosVantagemSpan.textContent = getPontosVantagem();
+                salvarDados();
+            }
+        }
+
+        bloquearFichaButton.onclick = () => {
+            if (isFichaLocked) abrirModalSenha();
+            else {
+                document.getElementById("bloquear-ficha-modal").style.display = "flex";
+                document.getElementById("senha-bloqueio-input").value = "";
+                document.getElementById("senha-bloqueio-input").focus();
+            }
+        };
+
+        function bloquearFicha() {
+            const senha = document.getElementById("senha-bloqueio-input").value;
+            if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
+            if (desvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
+
+            isFichaLocked = true;
+            fichaPassword = senha;
+            database.ref(`fichas/${currentFichaId}`).update({
+                isLocked: true,
+                password: senha
+            }).then(() => {
+                fecharModal("bloquear-ficha-modal");
+                alert("Ficha bloqueada com sucesso!");
+                atualizarBotaoBloquear();
+            }).catch(error => console.error("Erro ao bloquear ficha:", error));
+        }
+
+        function abrirModalSenha(element = null) {
+            document.getElementById("password-modal").style.display = "flex";
+            document.getElementById("senha-desbloqueio-input").value = "";
+            document.getElementById("senha-desbloqueio-input").focus();
+            if (element) document.getElementById("password-modal").dataset.elementId = element.id;
+            else delete document.getElementById("password-modal").dataset.elementId;
+        }
+
+        function desbloquearFicha() {
+            const senha = document.getElementById("senha-desbloqueio-input").value,
+                modal = document.getElementById("password-modal"),
+                elementId = modal.dataset.elementId;
+            if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
+
+            isFichaUnlocked = true;
+            if (currentFichaId !== "ficha-matriz" && senha !== senhaMatriz) {
+                database.ref(`fichas/${currentFichaId}`).update({
+                    isLocked: false,
+                    password: null
+                }).then(() => {
+                    fecharModal("password-modal");
+                    alert("Ficha desbloqueada permanentemente!");
+                    atualizarBotaoBloquear();
+                    if (elementId === "reset-pontos") resetarPontos();
+                    else if (elementId === "recomecar") recomecarFicha();
+                    else if (elementId) {
+                        previousValues.set(document.getElementById(elementId), document.getElementById(elementId).value);
+                        salvarDados();
+                    }
+                }).catch(error => console.error("Erro ao desbloquear ficha:", error));
+            } else {
+                fecharModal("password-modal");
+                alert("Ficha desbloqueada temporariamente com a senha matriz!");
+                if (elementId === "reset-pontos") resetarPontos();
+                else if (elementId === "recomecar") recomecarFicha();
+                else if (elementId) {
+                    previousValues.set(document.getElementById(elementId), document.getElementById(elementId).value);
+                    salvarDados();
+                }
+            }
+        }
+
+        function cancelarDesbloqueio() {
+            const modal = document.getElementById("password-modal"),
+                elementId = modal.dataset.elementId;
+            if (elementId) document.getElementById(elementId).value = previousValues.get(document.getElementById(elementId)) || "";
+            fecharModal("password-modal");
+        }
+
+        function verificarAlteracao(event) {
+            const input = event.target;
+            if (isFichaLocked && !isFichaUnlocked) {
+                event.preventDefault();
+                previousValues.set(input, input.value);
+                abrirModalSenha(input);
+            } else previousValues.set(input, input.value);
+        }
+
+        document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
+            input.addEventListener("beforeinput", verificarAlteracao);
+            input.addEventListener("input", () => {
+                if (!isFichaLocked || isFichaUnlocked) {
+                    if (input.id === "experiencia") {
+                        experiencia = parseInt(input.value) || 0;
+                        atualizarNivel();
+                    } else if (atributosInputs.includes(input)) {
+                        const forca = parseInt(forcaInput.value) || 0,
+                            destreza = parseInt(destrezaInput.value) || 0,
+                            agilidade = parseInt(agilidadeInput.value) || 0,
+                            inteligencia = parseInt(inteligenciaInput.value) || 0,
+                            constituicao = parseInt(constituicaoInput.value) || 0;
+                        const totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
+                        if (totalPontos > pontosHabilidadeTotal) {
+                            alert("Pontos de habilidade insuficientes!");
+                            input.value = previousValues.get(input) || "0";
+                            return;
+                        }
+                        calcularAtributos();
+                    } else if (input.id.includes("arma")) calcularAtributos();
+                    salvarDados();
+                }
+            });
+        });
+        nomePersonagemInput.oninput = salvarDados;
+
+        characterImageInput.onchange = e => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    characterImage.src = e.target.result;
+                    characterImage.style.display = "block";
+                    salvarDados();
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        document.getElementById("excluir-ficha").onclick = () => {
+            if (currentFichaId === "ficha-matriz") return alert("A ficha matriz não pode ser excluída!");
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            if (confirm("Tem certeza que deseja excluir esta ficha?"))
+                database.ref(`fichas/${currentFichaId}`).remove().then(() => {
+                    currentFichaId = "ficha-matriz";
+                    carregarFicha(currentFichaId);
+                    atualizarAbasFichas();
+                });
+        };
+        let isDragging = false,
+            currentX = diceContainer.offsetLeft,
+            currentY = diceContainer.offsetTop,
+            initialX, initialY;
+        diceContainer.onmousedown = e => {
+            isDragging = true;
+            initialX = e.clientX - currentX;
+            initialY = e.clientY - currentY;
+            diceContainer.style.cursor = "grabbing";
+        };
+        document.onmousemove = e => {
+            if (isDragging) {
+                e.preventDefault();
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+                diceContainer.style.left = `${currentX}px`;
+                diceContainer.style.top = `${currentY}px`;
+                diceContainer.style.right = "auto";
+            }
+        };
+
+        document.onmouseup = () => {
+            isDragging = false;
+            diceContainer.style.cursor = "move";
+        };
+
+        database.ref('dadosRolados').on('child_added', snapshot => {
+            const dado = snapshot.val();
+            if (dado.fichaId !== currentFichaId) {
+                showNotification(`${dado.nomeFicha} rolou: ${dado.resultado}`, "normal-result");
+            }
+        });
+        diceRoll.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            diceRoll.textContent = "Rolling...";
+            diceResult.style.display = "none";
+            diceRoll.classList.remove("critical-failure", "critical-success");
+
+            setTimeout(() => {
+                const roll = Math.floor(Math.random() * 20) + 1,
+                    fichaNome = fichas[currentFichaId].nomeFicha || "Sem Nome";
+
+                diceRoll.textContent = roll;
+
+                if (roll === 1) {
+                    diceRoll.classList.add("critical-failure");
+                    notification.textContent = `${fichaNome} - FALHA CRÍTICA!`;
+                    notification.classList.add("critical-failure");
+                } else if (roll === 20) {
+                    diceRoll.classList.add("critical-success");
+                    notification.textContent = `${fichaNome} - SUCESSO CRÍTICO!`;
+                    notification.classList.add("critical-success");
+                } else {
+                    diceResult.textContent = `${fichaNome} rolou: ${roll}`;
+                    diceResult.style.display = "block";
+                    notification.textContent = `${fichaNome} rolou: ${roll}`;
+                    notification.classList.add("normal-result");
+                }
+
+                notification.style.display = "block";
+                setTimeout(() => {
+                    notification.style.display = "none";
+                    notification.classList.remove("critical-failure", "critical-success", "normal-result");
+                }, 2000);
+                const dadoRef = database.ref('dadosRolados').push();
+                dadoRef.set({
+                    fichaId: currentFichaId,
+                    nomeFicha: fichaNome,
+                    resultado: roll
+                });
+            }, 1000);
+        };
+
+        vantagensDesvantagensBtn.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            tempVantagensSelecionadas = [...vantagensSelecionadas];
+            tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
+            vantagensDesvantagensPanel.style.display = "block";
+            document.getElementById("salvar-vantagens-btn").style.display = "none";
+            atualizarVantagensDesvantagensPanel();
+        };
+        fecharPaginaBtn.onclick = () => {
+            vantagensDesvantagensPanel.style.display = "none";
+        };
+        salvarVantagensBtn.onclick = () => {
+            document.getElementById("salvar-vantagens-modal").style.display = "flex";
+        };
+        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
+            if (tempDesvantagensSelecionadas.length > 3) return alert("Você pode ter no máximo 3 desvantagens!");
+            vantagensSelecionadas = [...tempVantagensSelecionadas];
+            desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
 
             vantagensListDisplay.innerHTML = "";
             desvantagensListDisplay.innerHTML = "";
-
             vantagensSelecionadas.forEach(v => {
                 const div = document.createElement("div");
                 div.textContent = v;
@@ -3039,67 +3318,465 @@
                 desvantagensListDisplay.appendChild(div);
             });
 
-            const inventario =
-                Array.isArray(ficha.inventario) ?
-                ficha.inventario : Array(10).fill({
-                    item: "",
-                    peso: "0"
-                });
-            const slots = inventarioSlots.querySelectorAll(".inventory-slot");
-            slots.forEach((slot, i) => {
-                const itemInput = slot.querySelector(".inventory-item");
-                const weightInput = slot.querySelector(".inventory-weight");
-                itemInput.value = inventario[i]?.item || "";
-                weightInput.value = inventario[i]?.peso || "0";
-            });
-            calcularPesoTotal();
+            pontosVantagemSpan.textContent = getPontosVantagem();
+            salvarDados();
+            vantagensDesvantagensPanel.style.display = "none";
+            fecharModal("salvar-vantagens-modal");
+            calcularAtributos();
+        };
 
-            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
-            magiasList.innerHTML = "";
-            magias.forEach((m, i) => {
+        function atualizarVantagensDesvantagensPanel() {
+            vantagensList.innerHTML = "<h3>Vantagens</h3>";
+            desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
+
+            vantagensData.forEach(v => {
+                const div = document.createElement("div");
+                div.className = "vantagem-item";
+                div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`;
+
+                if (tempVantagensSelecionadas.includes(v.nome)) div.classList.add("comprada");
+
+                div.onclick = () => {
+                    if (vantagensSelecionadas.includes(v.nome)) alert("Esta vantagem já foi salva e só pode ser removida com permissão do GM.");
+                    else if (tempVantagensSelecionadas.includes(v.nome)) tempVantagensSelecionadas = tempVantagensSelecionadas.filter(t => t !== v.nome);
+                    else {
+                        if (v.restricao === "inicio" && nivel > 0) return alert("A compra dessa vantagem é somente no nível 0.");
+                        if (calcularPontosVantagemTemp() >= v.custo) tempVantagensSelecionadas.push(v.nome);
+                        else alert("Pontos de Vantagem insuficientes!");
+                    }
+                    atualizarVantagensDesvantagensPanel();
+                    document.getElementById("salvar-vantagens-btn").style.display = "block";
+                };
+
+                vantagensList.appendChild(div);
+            });
+
+            desvantagensData.forEach(d => {
+                const div = document.createElement("div");
+                div.className = "desvantagem-item";
+                div.textContent = `${d.nome} - Ganho: ${d.ganho} PH - ${d.descricao}`;
+
+                if (tempDesvantagensSelecionadas.includes(d.nome)) div.classList.add("comprada");
+
+                div.onclick = () => {
+                    if (desvantagensSelecionadas.includes(d.nome)) alert("Esta desvantagem já foi salva e só pode ser removida com permissão do GM.");
+                    else if (tempDesvantagensSelecionadas.includes(d.nome)) tempDesvantagensSelecionadas = tempDesvantagensSelecionadas.filter(t => t !== d.nome);
+                    else {
+                        if (tempDesvantagensSelecionadas.length < 3) tempDesvantagensSelecionadas.push(d.nome);
+                        else alert("Você já atingiu o limite de 3 desvantagens!");
+                    }
+                    atualizarVantagensDesvantagensPanel();
+                    document.getElementById("salvar-vantagens-btn").style.display = "block";
+                };
+
+                desvantagensList.appendChild(div);
+            });
+            document.getElementById("ph-temp").textContent = calcularPontosVantagemTemp();
+        }
+
+        function removerVantagem(v) {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            if (confirm(`Você deseja remover a vantagem "${v}"?`)) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v);
+                        Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
+                        pontosVantagemSpan.textContent = getPontosVantagem();
+                        database.ref(`fichas/${currentFichaId}/vantagens`).set(vantagensSelecionadas.join("\n"));
+                        fecharModal("senha-gm-modal");
+                        calcularAtributos();
+                    } else {
+                        alert("Senha do GM incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        }
+
+        function removerDesvantagem(d) {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            if (confirm(`Você deseja remover a desvantagem "${d}"?`)) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d);
+                        Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
+                        pontosVantagemSpan.textContent = getPontosVantagem();
+                        database.ref(`fichas/${currentFichaId}/desvantagens`).set(desvantagensSelecionadas.join("\n"));
+                        fecharModal("senha-gm-modal");
+                        calcularAtributos();
+                    } else {
+                        alert("Senha do GM incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        }
+
+        function calcularPesoTotal() {
+            pesoTotalSpan.textContent = Array.from(inventarioSlots.querySelectorAll(".inventory-weight")).reduce((total, weight) => total + (parseFloat(weight.value) || 0), 0).toFixed(1);
+        }
+
+        inventarioSlots.addEventListener("input", calcularPesoTotal);
+        anotacoesBtn.onclick = () => {
+            anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ?
+                "none" : "block";
+        };
+
+        document.addEventListener('click', function(event) {
+            if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target))
+                anotacoesTextarea.style.display = 'none';
+        });
+        anotacoesTextarea.oninput = salvarDados;
+
+        adicionarMagiaBtn.onclick = () => {
+            if (magiasList.children.length < 20) {
                 const input = document.createElement("input");
                 input.type = "text";
                 input.className = "magia-nome";
-                input.placeholder = `Magia/Habilidade ${i+1}`;
-                input.value = m;
+                input.placeholder = `Magia/Habilidade ${magiasList.children.length+1}`;
                 magiasList.appendChild(input);
-            });
-            anotacoesTextarea.value = ficha.anotacoes || "";
-
-            classeNomeInput.value = ficha.classeNome || "";
-            classeDescricaoInput.value = ficha.classeDescricao || "";
-            if (ficha.imagem) {
-                characterImage.src = ficha.imagem;
-                characterImage.style.display = "block";
-            } else {
-                characterImage.style.display = "none";
-            }
-
-            atualizarBotaoBloquear();
-            atualizarVantagensDesvantagensPanel();
+                salvarDados();
+            } else alert("Você atingiu o limite de 20 magias/habilidades!");
+        };
+        racasBtn.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            tempRacaSelecionada = racaSelecionada;
             atualizarRacasPanel();
+            racasPanel.style.display = "block";
+            document.getElementById("salvar-racas-btn").style.display = "none";
+        };
+        fecharRacasBtn.onclick = () => {
+            racasPanel.style.display = "none";
+        };
+        salvarRacasBtn.onclick = () => {
+            document.getElementById("salvar-vantagens-modal").style.display = "flex";
+        };
+        document.getElementById("confirmar-salvar-vantagens-btn").onclick = () => {
+            if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
+                const raca = racasData.find(r => r.nome === tempRacaSelecionada);
+                if (raca) {
+                    racaSelecionada = tempRacaSelecionada;
+                    racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
+                    racaDescricaoInput.value = raca.vantagens.join("\n\n");
+                    pontosVantagemSpan.textContent = getPontosVantagem();
+                    salvarDados();
+                    racasPanel.style.display = "none";
+                    fecharModal("salvar-vantagens-modal");
+                }
+            } else {
+                vantagensSelecionadas = [...tempVantagensSelecionadas];
+                desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
 
-            experiencia = parseInt(experienciaInput.value) || 0;
-            atualizarNivel();
-            calcularAtributos();
+                vantagensListDisplay.innerHTML = "";
+                desvantagensListDisplay.innerHTML = "";
 
-            vidaAtual = vidaTotal;
-            magiaAtual = magiaTotal;
-            vigorAtual = vigorTotal;
+                vantagensSelecionadas.forEach(v => {
+                    const div = document.createElement("div");
+                    div.textContent = v;
+                    div.className = "list-item";
+                    div.onclick = () => removerVantagem(v);
+                    vantagensListDisplay.appendChild(div);
+                });
 
-            document.getElementById("vida-atual").textContent = vidaAtual;
-            document.getElementById("magia-atual").textContent = magiaAtual;
-            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-            pontosVantagemSpan.textContent = getPontosVantagem();
+                desvantagensSelecionadas.forEach(d => {
+                    const div = document.createElement("div");
+                    div.textContent = d;
+                    div.className = "list-item";
+                    div.onclick = () => removerDesvantagem(d);
+                    desvantagensListDisplay.appendChild(div);
+                });
+                pontosVantagemSpan.textContent = getPontosVantagem();
+                salvarDados();
+                vantagensDesvantagensPanel.style.display = "none";
+                fecharModal("salvar-vantagens-modal");
+                calcularAtributos();
+            }
+        };
 
-            previousValues.clear();
-            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+        function atualizarRacasPanel() {
+            racasList.innerHTML = "";
+            racasData.forEach(r => {
+                const div = document.createElement("div");
+                div.className = "raca-item";
+                div.innerHTML = `<h3>${r.nome}</h3><p>${r.descricao}</p><p><strong>Vantagens:</strong></p><ul>${r.vantagens.map(v => `<li>${v}</li>`).join("")}</ul>`;
 
-            chatPassword = ficha.chatPassword;
-            atualizarEstadoChatBotao();
+                if (tempRacaSelecionada === r.nome) div.classList.add("comprada");
 
-            // Aplicar cores de fundo da ficha
-            aplicarCoresFundo(ficha);
+                div.onclick = () => {
+                    if (racaSelecionada) alert("Você já selecionou uma raça e só pode alterá-la com permissão do GM.");
+                    else if (tempRacaSelecionada === r.nome) tempRacaSelecionada = null;
+                    else {
+                        if (calcularPontosVantagemTemp() >= r.custo) {
+                            tempRacaSelecionada = r.nome;
+                            document.getElementById("confirmar-compra-modal").style.display = "flex";
+                            document.getElementById("confirmar-compra-btn").onclick = () => {
+                                atualizarRacasPanel();
+                                document.getElementById("salvar-racas-btn").style.display = "block";
+                                fecharModal("confirmar-compra-modal");
+                            };
+                        } else alert("Pontos de Vantagem insuficientes!");
+                    }
+                    atualizarRacasPanel();
+                };
+                racasList.appendChild(div);
+            });
+        }
+
+        function abrirModalRaca() {
+            document.getElementById("raca-opcoes-modal").style.display = "flex";
+        }
+
+        function excluirRacaSelecionadaModal() {
+            fecharModal('raca-opcoes-modal');
+            if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        racaSelecionada = null;
+                        racaNomeSpan.textContent = "";
+                        racaDescricaoInput.value = "";
+                        pontosVantagemSpan.textContent = getPontosVantagem();
+                        salvarDados();
+                        fecharModal("senha-gm-modal");
+                    } else {
+                        alert("Senha do GM incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        }
+
+
+        function editarRacaSelecionadaModal() {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            fecharModal('raca-opcoes-modal');
+            document.getElementById("editar-raca-modal").style.display = "flex";
+            document.getElementById("editar-raca-nome").value = racaNomeSpan.textContent;
+            document.getElementById("editar-raca-descricao").value = racaDescricaoInput.value;
+        }
+
+        function salvarEdicaoRaca() {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value;
+                        racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
+                        fecharModal('editar-raca-modal');
+                        salvarDados();
+                        fecharModal("senha-gm-modal");
+                    } else {
+                        alert("Senha do GM incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        }
+
+        classesBtn.onclick = () => {
+            classesPanel.style.display = "block";
+        };
+
+        fecharClassesBtn.onclick = () => {
+            classesPanel.style.display = "none";
+        };
+
+        luaBtn.onclick = () => {
+            document.body.classList.add("dark-mode");
+        };
+        solBtn.onclick = () => {
+            document.body.classList.remove("dark-mode");
+        };
+        resetPontosButton.onclick = resetarPontos;
+        recomecarButton.onclick = recomecarFicha;
+
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = type;
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+                notification.className = "";
+            }, 2000);
+        }
+
+        document.getElementById("historico-dados-btn").onclick = () => {
+            document.getElementById("historico-dados-panel").style.display = "block";
+        };
+
+        document.addEventListener('click', function(event) {
+            const panel = document.getElementById("historico-dados-panel");
+            if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target))
+                panel.style.display = "none";
+        });
+        database.ref('dadosRolados').on('value', snapshot => {
+            const dados = snapshot.val();
+            const lista = document.getElementById("historico-lista");
+            lista.innerHTML = "";
+            if (dados) {
+                for (let key in dados) {
+                    const dado = dados[key];
+                    const div = document.createElement("div");
+                    div.textContent = `${dado.nomeFicha} rolou: ${dado.resultado}`;
+                    lista.appendChild(div);
+                }
+            }
+        });
+
+        document.getElementById("excluir-historico-btn").onclick = () => {
+            document.getElementById("senha-gm-modal").style.display = "flex";
+            document.getElementById("senha-gm-input").value = "";
+            document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                    database.ref('dadosRolados').remove().then(() => {
+                        alert("Histórico de dados excluído com sucesso!");
+                        fecharModal("senha-gm-modal");
+                    });
+                } else {
+                    alert("Senha do GM incorreta!");
+                    fecharModal("senha-gm-modal");
+                }
+            };
+        };
+
+        // Funcionalidade do Chat
+        chatBtn.onclick = () => {
+            if (!chatPassword) {
+                document.getElementById("chat-password-modal").style.display = "flex";
+            } else {
+                document.getElementById("open-chat-modal").style.display = "flex";
+            }
+        };
+
+        function definirSenhaChat() {
+            const senha = document.getElementById("chat-senha-input").value;
+            const confirmarSenha = document.getElementById("chat-confirmar-senha-input").value;
+            if (senha !== confirmarSenha) {
+                alert("As senhas não coincidem.");
+                return;
+            }
+            if (senha.length < 4) {
+                alert("A senha deve ter pelo menos 4 caracteres.");
+                return;
+            }
+            chatPassword = senha;
+            database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => {
+                fecharModal("chat-password-modal");
+                alert("Senha do chat definida!");
+                atualizarEstadoChatBotao();
+            }).catch(error => console.error("Erro ao definir senha do chat:", error));
+        }
+
+        function abrirChat() {
+            const senhaDigitada = document.getElementById("abrir-chat-senha-input").value;
+            if (senhaDigitada === chatPassword) {
+                fecharModal("open-chat-modal");
+                document.getElementById("chat-modal").style.display = "flex";
+                isChatOpen = true;
+                selectedChatUser = null;
+                document.getElementById("conversation-area").innerHTML = "";
+            } else {
+                alert("Senha do chat incorreta.");
+            }
+        }
+
+        function atualizarEstadoChatBotao() {
+            if (chatPassword) {
+                chatBtn.textContent = "💬 Chat";
+            } else {
+                chatBtn.textContent = "💬 Definir Chat";
+            }
+        }
+
+        function atualizarListaFichasChat() {
+            availableFichasDiv.innerHTML = "";
+            for (const fichaId in fichas) {
+                if (fichaId !== "ficha-matriz" && fichaId !== currentFichaId) {
+                    const ficha = fichas[fichaId];
+                    const userDiv = document.createElement("div");
+                    userDiv.className = "user-item";
+                    userDiv.textContent = ficha.nomeFicha || "Sem Nome";
+                    userDiv.dataset.fichaId = fichaId;
+                    userDiv.onclick = () => iniciarConversa(fichaId, ficha.nomeFicha || "Sem Nome");
+                    availableFichasDiv.appendChild(userDiv);
+                }
+            }
+        }
+
+        function iniciarConversa(otherFichaId, otherFichaNome) {
+            selectedChatUser = otherFichaId;
+            document.getElementById("conversation-area").innerHTML = `<h3>Conversa com ${otherFichaNome}</h3><div id="mensagens"></div>`;
+            carregarMensagens(otherFichaId);
+        }
+
+        function enviarMensagem() {
+            if (!selectedChatUser) {
+                alert("Selecione uma ficha para enviar a mensagem.");
+                return;
+            }
+            const mensagem = mensagemInput.value.trim();
+            if (mensagem) {
+                const chatRef = database.ref('mensagens').child(getChatId(currentFichaId, selectedChatUser)).push();
+                chatRef.set({
+                    senderId: currentFichaId,
+                    receiverId: selectedChatUser,
+                    content: mensagem,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+                mensagemInput.value = "";
+            }
+        }
+
+        function carregarMensagens(otherFichaId) {
+            const mensagensDiv = document.getElementById("mensagens");
+            database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => {
+                const mensagemData = snapshot.val();
+                const messageContainer = document.createElement("div");
+                messageContainer.className = "message-container";
+                const senderName = document.createElement("div");
+                senderName.className = "sender-name";
+                senderName.textContent = fichas[mensagemData.senderId]?.nomeFicha || 'Desconhecido';
+                const mensagemDiv = document.createElement("div");
+                mensagemDiv.className = `message ${mensagemData.senderId === currentFichaId ? 'sent' : 'received'}`;
+                mensagemDiv.textContent = mensagemData.content;
+                messageContainer.appendChild(senderName);
+                messageContainer.appendChild(mensagemDiv);
+                mensagensDiv.appendChild(messageContainer);
+                mensagensDiv.scrollTop = mensagensDiv.scrollHeight; // Manter a rolagem no final
+            });
+        }
+
+        function getChatId(id1, id2) {
+            return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+        }
+
+        function verificarNovasMensagens() {
+            if (!currentFichaId) return;
+            database.ref('mensagens').on('value', (snapshot) => {
+                let unreadCount = 0;
+                snapshot.forEach((chat) => {
+                    const chatId = chat.key;
+                    if (chatId.includes(currentFichaId)) {
+                        chat.forEach((mensagemSnapshot) => {
+                            const mensagem = mensagemSnapshot.val();
+                            if (mensagem.receiverId === currentFichaId && mensagem.senderId !== currentFichaId && !isChatOpen) {
+                                unreadCount++;
+                            }
+                        });
+                    }
+                });
+                chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0;
+                if (unreadCount > 0 && !isChatOpen) {
+                    newMessageSound.play();
+                }
+            });
         }
 
         carregarFichas();
