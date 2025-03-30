@@ -21,6 +21,7 @@
             background-size: cover;
             background-position: center;
             transition: background 0.3s, color 0.3s;
+            background-attachment: fixed; /* Adicionado para fixar o fundo na tela */
         }
         body.dark-mode {
             background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
@@ -59,24 +60,31 @@
         body.dark-mode #chat-btn { background: #1e1e1e; color: #e0e0e0; border-color: #444; }
         body.dark-mode #chat-btn:hover { background: #333; }
         #fichas-sidebar {
-            width: 100%; height: 60px; padding: 0; display: flex; flex-direction: row;
+            width: 100%;
+            height: 60px; padding: 0; display: flex; flex-direction: row;
             align-items: center; justify-content: flex-start; position: fixed;
-            top: 0; left: 0; z-index: 1000; overflow-x: auto; background: transparent;
+            top: 0; left: 0; z-index: 1000;
+            overflow-x: auto; background: transparent;
         }
         .ficha-tab {
-            visibility: visible; width: 100px; height: 50px; background: #f0e6d2;
+            visibility: visible;
+            width: 100px; height: 50px; background: #f0e6d2;
             border: 2px solid #b8860b; border-radius: 10px 10px 0 0; margin-right: 10px;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
-        .ficha-tab:hover, .ficha-tab.active { background: #a0522d; transform: translateY(-5px); }
+        .ficha-tab:hover, .ficha-tab.active { background: #a0522d;
+            transform: translateY(-5px); }
         .ficha-tab span {
-            font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; text-align: center;
+            font-family: 'MedievalSharp', serif;
+            color: #000; font-size: 0.9rem; text-align: center;
             max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         #add-ficha-btn {
-            width: 100px; height: 50px; background: #f0e6d2; border: 2px solid #b8860b;
+            width: 100px;
+            height: 50px; background: #f0e6d2; border: 2px solid #b8860b;
             border-radius: 10px 10px 0 0; margin-right: 10px; display: flex; align-items: center;
             justify-content: center; cursor: pointer; transition: transform 0.2s ease;
             box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; z-index: 1001;
@@ -84,141 +92,218 @@
         #add-ficha-btn span { font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; }
         #add-ficha-btn:hover { background: #a0522d; transform: translateY(-5px); }
         #ficha-container {
-            background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
+            background: rgba(240, 230, 210, 0.95);
+            padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
-            margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
+            margin: 80px auto 20px;
+            border: 2px solid #b8860b; position: relative; z-index: 1;
         }
-        body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
-        #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
+        body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95);
+            color: #e0e0e0; }
+        #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF;
+            animation: pulsar-aura 2s infinite; }
         @keyframes pulsar-aura {
             0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
             50% { box-shadow: 0 0 30px #00BFFF, 0 0 50px #00BFFF, 0 0 60px #00BFFF; }
             100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
         }
         h1#nome-personagem-titulo {
-            font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
-            text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
+            font-family: 'MedievalSharp', serif;
+            color: #1C2526; font-size: 3rem; margin-bottom: 20px;
+            text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            animation: raios 2s infinite linear;
         }
         @keyframes raios {
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
             50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
         }
-        #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
-        section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        section h2 { text-align: center; }
-        body.dark-mode section { background: #1e1e1e; border-color: #444; }
-        label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
-        body.dark-mode label { color: #e0e0e0; }
+        #game-master-message { display: none;
+            color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px;
+        }
+        section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px;
+            margin-bottom: 20px; }
+        section h2 { text-align: center;
+        }
+        body.dark-mode section { background: #1e1e1e; border-color: #444;
+        }
+        label { font-weight: 600; color: #000; margin-bottom: 8px; display: block;
+        }
+        body.dark-mode label { color: #e0e0e0;
+        }
         input[type="text"], input[type="number"], textarea {
-            padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
+            padding: 10px;
+            border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
             margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
-            background: #fff; color: #000;
+            background: #fff;
+            color: #000;
         }
         body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea {
-            background: #333; color: #e0e0e0; border-color: #555;
+            background: #333;
+            color: #e0e0e0; border-color: #555;
         }
         input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
-            border-color: #a0522d; outline: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-color: #a0522d;
+            outline: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        input[readonly], span[readonly] { background: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed; }
-        body.dark-mode input[readonly], body.dark-mode span[readonly] { background: #444; border-color: #666; }
-        textarea { resize: vertical; }
-        .atributos-container { display: flex; justify-content: space-between; gap: 20px; }
+        input[readonly], span[readonly] { background: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed;
+        }
+        body.dark-mode input[readonly], body.dark-mode span[readonly] { background: #444; border-color: #666;
+        }
+        textarea { resize: vertical;
+        }
+        .atributos-container { display: flex; justify-content: space-between; gap: 20px;
+        }
         .atributos-coluna, .atributos-coluna-destaque {
-            width: 48%; display: flex; flex-direction: column; align-items: flex-start;
+            width: 48%;
+            display: flex; flex-direction: column; align-items: flex-start;
         }
-        .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
-        body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
-        .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
-        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
-        body.dark-mode .atributo-destaque span { color: #e0e0e0; }
-        .atributo-fogo { animation: fogo 1.5s infinite; }
+        .atributos-coluna-destaque { background: #fff; padding: 10px;
+            border-radius: 6px; border: 1px solid #b8860b; }
+        body.dark-mode .atributos-coluna-destaque { background: #333;
+            border-color: #555; }
+        .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center;
+            justify-content: space-between; width: 100%; }
+        .atributo-destaque label { font-size: 1.1rem; font-weight: 700;
+            color: #a0522d; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000;
+        }
+        body.dark-mode .atributo-destaque span { color: #e0e0e0;
+        }
+        .atributo-fogo { animation: fogo 1.5s infinite;
+        }
         @keyframes fogo {
             0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
             50% { text-shadow: 0 0 10px #ff4500, 0 0 15px #ffd700; }
             100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
         }
-        .vida-magia-vigor { display: flex; justify-content: space-around; gap: 15px; flex-wrap: wrap; }
+        .vida-magia-vigor { display: flex;
+            justify-content: space-around; gap: 15px; flex-wrap: wrap; }
         .atributo-container {
-            background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 8px; border: 1px solid #b8860b;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px; text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px; border-radius: 8px; border: 1px solid #b8860b;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px;
+            text-align: center;
         }
-        body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8); }
-        .atributo-container::before { font-size: 1.5rem; margin-bottom: 5px; display: block; }
-        .atributo-container.vida::before { content: "❤️"; }
-        .atributo-container.magia::before { content: "✨"; }
-        .atributo-container.vigor::before { content: "⚡"; }
-        .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; margin: 5px 0; text-align: center; }
-        body.dark-mode .medieval-box { background: #1e1e1e; border-color: #444; }
-        .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px; }
-        body.dark-mode .regeneracao { color: #aaa; }
+        body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8);
+        }
+        .atributo-container::before { font-size: 1.5rem; margin-bottom: 5px; display: block;
+        }
+        .atributo-container.vida::before { content: "❤️";
+        }
+        .atributo-container.magia::before { content: "✨";
+        }
+        .atributo-container.vigor::before { content: "⚡";
+        }
+        .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px;
+            margin: 5px 0; text-align: center; }
+        body.dark-mode .medieval-box { background: #1e1e1e; border-color: #444;
+        }
+        .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px;
+        }
+        body.dark-mode .regeneracao { color: #aaa;
+        }
         button {
-            background: #b8860b; color: #fff; border: none; padding: 5px 10px;
+            background: #b8860b;
+            color: #fff; border: none; padding: 5px 10px;
             cursor: pointer; font-size: 1.2rem; border-radius: 4px; margin: 0 5px;
             transition: background-color 0.3s ease;
         }
-        body.dark-mode button { background: #555; }
-        button:hover { background: #a0522d; }
-        body.dark-mode button:hover { background: #777; }
-        .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; /* Allow wrapping */ }
-        .botao {
-            padding: 12px 25px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease; font-family: 'MedievalSharp', serif;
-            color: #fff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        body.dark-mode button { background: #555;
         }
-        body.dark-mode .botao { background: #555; }
-        body.dark-mode .botao:hover { background: #777; }
+        button:hover { background: #a0522d;
+        }
+        body.dark-mode button:hover { background: #777;
+        }
+        .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px;
+            flex-wrap: wrap; /* Allow wrapping */ }
+        .botao {
+            padding: 12px 25px;
+            border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; font-family: 'MedievalSharp', serif;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode .botao { background: #555;
+        }
+        body.dark-mode .botao:hover { background: #777;
+        }
         /* Removed individual background colors - keeping them for specific buttons */
-        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha { background-color: #800000; }
+        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha { background-color: #800000;
+        }
         .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover {
-            background: #a0522d; transform: translateY(-2px);
+            background: #a0522d;
+            transform: translateY(-2px);
         }
         /* New styles for icon buttons */
         .icon-btn {
-            padding: 10px; width: 44px; height: 44px;
+            padding: 10px;
+            width: 44px; height: 44px;
             font-size: 1.2rem; line-height: 1; text-align: center;
         }
-        #lua-btn { background-color: #333; color: #eee; } /* Keep specific colors */
-        #sol-btn { background-color: #ffdd00; color: #333; } /* Keep specific colors */
-        #cor-fundo-btn { background-color: #800000; } /* Keep specific color */
+        #lua-btn { background-color: #333; color: #eee;
+        } /* Keep specific colors */
+        #sol-btn { background-color: #ffdd00; color: #333;
+        } /* Keep specific colors */
+        #cor-fundo-btn { background-color: #800000;
+        } /* Keep specific color */
 
-        #cor-fundo-btn-wrapper { line-height: 1; vertical-align: middle; }
-
-        #nivel-container { text-align: center; margin-top: 10px; }
-        #nivel {
-            padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
-            width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
-            font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
+        #cor-fundo-btn-wrapper { line-height: 1; vertical-align: middle;
         }
-        body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
-        #nivel.aura-azul { animation: pulsar-aura 2s 10; }
+
+        #nivel-container { text-align: center; margin-top: 10px;
+        }
+        #nivel {
+            padding: 10px;
+            background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
+            width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
+            font-size: 3.125rem;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
+        }
+        body.dark-mode #nivel { background: #1e1e1e; border-color: #444;
+        }
+        #nivel.aura-azul { animation: pulsar-aura 2s 10;
+        }
         .expandable-textarea {
-            height: 100px; width: 100%; background: #fff; border: 2px solid #b8860b;
+            height: 100px;
+            width: 100%; background: #fff; border: 2px solid #b8860b;
             border-radius: 6px; padding: 10px; font-size: 0.9rem; transition: height 0.3s ease;
         }
-        body.dark-mode .expandable-textarea { background: #333; }
-        .expandable-textarea:focus { height: 15cm; }
+        body.dark-mode .expandable-textarea { background: #333;
+        }
+        .expandable-textarea:focus { height: 15cm;
+        }
         #dice-container {
-            position: absolute; top: 20px; right: 20px; width: 200px; text-align: center;
+            position: absolute;
+            top: 20px; right: 20px; width: 200px; text-align: center;
             font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
         }
-        #dice-container label { font-size: 1.2rem; color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
-        body.dark-mode #dice-container label { color: #e0e0e0; }
-        #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.5rem; }
+        #dice-container label { font-size: 1.2rem; color: #000; display: flex; align-items: center;
+            justify-content: center; margin-bottom: 10px; }
+        body.dark-mode #dice-container label { color: #e0e0e0;
+        }
+        #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.5rem;
+        }
         #dice-roll {
-            width: 100px; height: 100px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 10px;
+            width: 100px;
+            height: 100px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 10px;
             display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer;
             margin: 0 auto; position: relative; transition: all 0.3s ease;
         }
-        body.dark-mode #dice-roll { background: #1e1e1e; border-color: #444; }
-        #dice-roll::before { content: "⚅"; font-size: 1.5rem; position: absolute; top: 5px; right: 5px; color: #a0522d; }
-        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; }
-        body.dark-mode #dice-result { color: #e0e0e0; }
-        @keyframes blink { 50% { opacity: 0; } }
-        #dice-roll.critical-failure { animation: aura-vermelha 2s infinite; }
-        #dice-roll.critical-success { animation: aura-verde 2s infinite; }
+        body.dark-mode #dice-roll { background: #1e1e1e;
+            border-color: #444; }
+        #dice-roll::before { content: "⚅"; font-size: 1.5rem; position: absolute; top: 5px;
+            right: 5px; color: #a0522d; }
+        #dice-result { margin-top: 10px; font-size: 1rem; color: #000;
+            display: none; animation: blink 1s infinite; }
+        body.dark-mode #dice-result { color: #e0e0e0;
+        }
+        @keyframes blink { 50% { opacity: 0;
+        } }
+        #dice-roll.critical-failure { animation: aura-vermelha 2s infinite;
+        }
+        #dice-roll.critical-success { animation: aura-verde 2s infinite;
+        }
         @keyframes aura-vermelha {
             0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
             50% { box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000; }
@@ -230,84 +315,124 @@
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
         #notification {
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;
+            position: fixed;
+            top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;
             border-radius: 8px; font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #fff;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); display: none; z-index: 100;
-            background: rgba(0, 0, 0, 0.7); transition: opacity 0.3s ease;
+            background: rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s ease;
         }
-        #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
-        #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
-        #notification.normal-result, #notification.save-success { animation: blink 1s infinite; }
-        #notification.save-success { background: rgba(0, 200, 0, 0.8); }
+        #notification.critical-failure { background: rgba(255, 0, 0, 0.8);
+            animation: aura-vermelha 2s infinite; }
+        #notification.critical-success { background: rgba(0, 255, 0, 0.8);
+            animation: aura-verde 2s infinite; }
+        #notification.normal-result, #notification.save-success { animation: blink 1s infinite;
+        }
+        #notification.save-success { background: rgba(0, 200, 0, 0.8);
+        }
         #character-image-container {
-            position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
+            position: absolute;
+            top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
             border: 2px solid #b8860b; border-radius: 8px; display: flex; align-items: center;
             justify-content: center; cursor: pointer; overflow: hidden; z-index: 10;
         }
-        body.dark-mode #character-image-container { background: #1e1e1e; }
-        #character-image { width: 100%; height: 100%; object-fit: cover; display: none; }
-        #character-image-container:hover { box-shadow: 0 0 10px #ffd700; }
+        body.dark-mode #character-image-container { background: #1e1e1e;
+        }
+        #character-image { width: 100%; height: 100%; object-fit: cover; display: none;
+        }
+        #character-image-container:hover { box-shadow: 0 0 10px #ffd700;
+        }
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;
+            z-index: 1000;
         }
         .modal-content {
-            background: #f0e6d2; padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
+            background: #f0e6d2;
+            padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 300px; text-align: center;
         }
-        body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
-        .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
-        body.dark-mode .modal-content h3 { color: #e0e0e0; }
-        .modal-content input { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
-        body.dark-mode .modal-content input { background: #333; color: #e0e0e0; border-color: #555; }
+        body.dark-mode .modal-content { background: #1e1e1e; border-color: #444;
+        }
+        .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px;
+        }
+        body.dark-mode .modal-content h3 { color: #e0e0e0;
+        }
+        .modal-content input { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px;
+            border: 1px solid #ccc; border-radius: 6px; }
+        body.dark-mode .modal-content input { background: #333;
+            color: #e0e0e0; border-color: #555; }
         .modal-content button {
-            padding: 10px 20px; border: none; border-radius: 6px; font-family: 'MedievalSharp', serif;
+            padding: 10px 20px;
+            border: none; border-radius: 6px; font-family: 'MedievalSharp', serif;
             color: #fff; cursor: pointer; margin: 0 5px;
         }
-        .modal-content .confirm-btn { background: #b8860b; }
-        .modal-content .confirm-btn:hover { background: #a0522d; }
-        .modal-content .cancel-btn { background: #a52a2a; }
-        .modal-content .cancel-btn:hover { background: #8b0000; }
+        .modal-content .confirm-btn { background: #b8860b;
+        }
+        .modal-content .confirm-btn:hover { background: #a0522d;
+        }
+        .modal-content .cancel-btn { background: #a52a2a;
+        }
+        .modal-content .cancel-btn:hover { background: #8b0000;
+        }
         #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
-            padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
+            padding: 10px 20px;
+            background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease; z-index: 10;
         }
         body.dark-mode #vantagens-desvantagens-btn, body.dark-mode #racas-btn, body.dark-mode #classes-btn {
-            background: #1e1e1e; color: #e0e0e0;
+            background: #1e1e1e;
+            color: #e0e0e0;
         }
-        #vantagens-desvantagens-btn:hover, #racas-btn:hover, #classes-btn:hover { background: #a0522d; color: #fff; }
+        #vantagens-desvantagens-btn:hover, #racas-btn:hover, #classes-btn:hover { background: #a0522d; color: #fff;
+        }
         #vantagens-desvantagens-panel, #racas-panel, #classes-panel {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(240, 230, 210, 0.95); padding: 20px; overflow-y: auto; z-index: 999;
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(240, 230, 210, 0.95); padding: 20px; overflow-y: auto;
+            z-index: 999;
             border: 2px solid #b8860b; box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
         }
         body.dark-mode #vantagens-desvantagens-panel, body.dark-mode #racas-panel, body.dark-mode #classes-panel {
             background: rgba(30, 30, 30, 0.95);
         }
         #vantagens-desvantagens-panel h2, #racas-panel h2, #classes-panel h2 {
-            font-family: 'MedievalSharp', serif; font-size: 2rem; text-align: center;
+            font-family: 'MedievalSharp', serif;
+            font-size: 2rem; text-align: center;
             color: #a0522d; margin-bottom: 20px;
         }
-        #racas-panel h2 { font-size: 3rem; }
+        #racas-panel h2 { font-size: 3rem;
+        }
         .vantagem-item, .desvantagem-item, .raca-item {
-            padding: 10px; margin: 5px 0; background: #fff; border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px 0; background: #fff; border: 1px solid #ccc;
             border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease;
         }
         body.dark-mode .vantagem-item, body.dark-mode .desvantagem-item, body.dark-mode .raca-item {
-            background: #333; border-color: #555;
+            background: #333;
+            border-color: #555;
         }
-        .vantagem-item:hover, .desvantagem-item:hover, .raca-item:hover { background: #f0e6d2; }
-        body.dark-mode .vantagem-item:hover, body.dark-mode .desvantagem-item:hover, body.dark-mode .raca-item:hover { background: #444; }
-        .vantagem-item.comprada, .raca-item.comprada { background: #ffcccc; color: #f00; cursor: default; }
-        .desvantagem-item.comprada { background: #ccffcc; color: #080; cursor: default; }
+        .vantagem-item:hover, .desvantagem-item:hover, .raca-item:hover { background: #f0e6d2;
+        }
+        body.dark-mode .vantagem-item:hover, body.dark-mode .desvantagem-item:hover, body.dark-mode .raca-item:hover { background: #444;
+        }
+        .vantagem-item.comprada, .raca-item.comprada { background: #ffcccc; color: #f00; cursor: default;
+        }
+        .desvantagem-item.comprada { background: #ccffcc; color: #080; cursor: default;
+        }
         #salvar-vantagens-btn, #salvar-racas-btn, #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn {
-            position: fixed; bottom: 20px; padding: 12px 25px; background: #a52a2a; color: #fff;
+            position: fixed;
+            bottom: 20px; padding: 12px 25px; background: #a52a2a; color: #fff;
             border: none; border-radius: 6px; font-family: 'MedievalSharp', serif; font-size: 1.2rem;
-            cursor: pointer; transition: transform 0.2s ease;
+            cursor: pointer;
+            transition: transform 0.2s ease;
         }
-        #salvar-vantagens-btn, #salvar-racas-btn { right: 250px; animation: aura-verde-btn 2s infinite; display: none; background: #000; }
-        #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn { right: 20px; }
+        #salvar-vantagens-btn, #salvar-racas-btn { right: 250px;
+            animation: aura-verde-btn 2s infinite; display: none; background: #000; }
+        #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn { right: 20px;
+        }
         #salvar-vantagens-btn:hover, #salvar-racas-btn:hover, #fechar-pagina-btn:hover, #fechar-racas-btn:hover, #fechar-classes-btn:hover {
             transform: translateY(-2px);
         }
@@ -316,129 +441,223 @@
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
-        .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; }
-        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
-        .locomotion-item label { font-weight: bold; color: #FFD700; }
-        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; margin-left: 5px; font-weight: bold; }
-        #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513; }
-        .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto; }
-        body.dark-mode .list-display { background: #333; border-color: #555; }
-        .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; }
-        body.dark-mode .list-item { border-color: #555; }
-        .list-item:hover { background: #e0e0e0; }
-        body.dark-mode .list-item:hover { background: #444; }
-        .inventory-slot { display: flex; align-items: center; margin-bottom: 10px; }
-        .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px; }
-        .inventory-slot input[type="number"] { width: 60px; }
+        .locomotion-container { background: #8B4513;
+            border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif;
+        }
+        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px;
+        }
+        .locomotion-item label { font-weight: bold; color: #FFD700;
+        }
+        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000;
+            margin-left: 5px; font-weight: bold; }
+        #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513;
+        }
+        .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px;
+            min-height: 100px; max-height: 200px; overflow-y: auto; }
+        body.dark-mode .list-display { background: #333;
+            border-color: #555; }
+        .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px;
+            border-bottom: 1px solid #ccc; }
+        body.dark-mode .list-item { border-color: #555;
+        }
+        .list-item:hover { background: #e0e0e0;
+        }
+        body.dark-mode .list-item:hover { background: #444;
+        }
+        .inventory-slot { display: flex; align-items: center; margin-bottom: 10px;
+        }
+        .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px;
+        }
+        .inventory-slot input[type="number"] { width: 60px;
+        }
         #anotacoes-btn {
-            position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
+            position: fixed;
+            left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
             background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
-            font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease; z-index: 1000;
         }
-        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; }
-        #anotacoes-btn:hover, #historico-dados-btn:hover { background: #a0522d; color: #fff; }
-        #anotacoes-textarea {
-            display: none; position: fixed; left: 60px; top: 50%; transform: translateY(-50%);
-            width: 400px; height: 400px; background: #fff; border: 2px solid #b8860b;
-            border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; z-index: 1001;
+        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0;
         }
-        body.dark-mode #anotacoes-textarea { background: #333; color: #e0e0e0; }
+        #anotacoes-btn:hover, #historico-dados-btn:hover { background: #a0522d; color: #fff;
+        }
+        #anotacoes-textarea {
+            display: none;
+            position: fixed; left: 60px; top: 50%; transform: translateY(-50%);
+            width: 400px; height: 400px; background: #fff; border: 2px solid #b8860b;
+            border-radius: 6px;
+            padding: 10px; font-size: 0.9rem; resize: none; z-index: 1001;
+        }
+        body.dark-mode #anotacoes-textarea { background: #333;
+            color: #e0e0e0; }
         #historico-dados-btn {
-            position: fixed; right: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
+            position: fixed;
+            right: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
             background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
-            font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        body.dark-mode #historico-dados-btn { background: #1e1e1e; color: #e0e0e0; }
-        #historico-dados-panel {
-            display: none; position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
-            width: 300px; background: #fff; border: 2px solid #b8860b; border-radius: 6px;
-            padding: 10px; max-height: 400px; overflow-y: auto;
+        body.dark-mode #historico-dados-btn { background: #1e1e1e; color: #e0e0e0;
         }
-        body.dark-mode #historico-dados-panel { background: #333; border-color: #555; }
-        #historico-dados-panel h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 10px; }
-        body.dark-mode #historico-dados-panel h3 { color: #e0e0e0; }
-        #historico-lista div { padding: 5px; border-bottom: 1px solid #ccc; }
-        body.dark-mode #historico-lista div { border-color: #555; }
-        #excluir-historico-btn { background: #a52a2a; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
-        #excluir-historico-btn:hover { background: #8b0000; }
-        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background: #fff; }
-        body.dark-mode .magias-container { background: #333; border-color: #555; }
-        .magias-container input { margin-bottom: 10px; }
-        #adicionar-magia-btn { background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: block; margin-top: 10px; }
-        #adicionar-magia-btn:hover { background: #a0522d; }
-        .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px; margin-top: 10px; }
-        body.dark-mode .classe-raca-container { background: #1e1e1e; border-color: #444; }
-        .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem; }
-        .classe-raca-container span[onclick] { background: #fff; border: 2px solid #b8860b; padding: 10px; cursor: pointer; display: block; }
-        body.dark-mode .classe-raca-container span[onclick] { background: #333; color: #e0e0e0; }
-        .classe-raca-container textarea { width: 100%; background: #fff; border: 2px solid #b8860b; }
-        body.dark-mode .classe-raca-container textarea { background: #333; color: #e0e0e0; }
-        .raca-item { margin-bottom: 20px; padding: 10px; background: #fff; border: 2px solid #b8860b; border-radius: 6px; }
-        .raca-item h3 { font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #a0522d; }
-        .raca-item p { font-size: 1rem; color: #000; }
-        body.dark-mode .raca-item { background: #333; border-color: #555; }
-        body.dark-mode .raca-item p { color: #e0e0e0; }
+        #historico-dados-panel {
+            display: none;
+            position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+            width: 300px; background: #fff; border: 2px solid #b8860b; border-radius: 6px;
+            padding: 10px;
+            max-height: 400px; overflow-y: auto;
+        }
+        body.dark-mode #historico-dados-panel { background: #333; border-color: #555;
+        }
+        #historico-dados-panel h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 10px;
+        }
+        body.dark-mode #historico-dados-panel h3 { color: #e0e0e0;
+        }
+        #historico-lista div { padding: 5px; border-bottom: 1px solid #ccc;
+        }
+        body.dark-mode #historico-lista div { border-color: #555;
+        }
+        #excluir-historico-btn { background: #a52a2a; color: #fff; padding: 8px 16px; border-radius: 6px;
+            cursor: pointer; margin-top: 10px; }
+        #excluir-historico-btn:hover { background: #8b0000;
+        }
+        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px;
+            padding: 10px; background: #fff; }
+        body.dark-mode .magias-container { background: #333; border-color: #555;
+        }
+        .magias-container input { margin-bottom: 10px;
+        }
+        #adicionar-magia-btn { background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px;
+            cursor: pointer; display: block; margin-top: 10px; }
+        #adicionar-magia-btn:hover { background: #a0522d;
+        }
+        .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px;
+            margin-top: 10px; }
+        body.dark-mode .classe-raca-container { background: #1e1e1e; border-color: #444;
+        }
+        .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem;
+        }
+        .classe-raca-container span[onclick] { background: #fff; border: 2px solid #b8860b; padding: 10px;
+            cursor: pointer; display: block; }
+        body.dark-mode .classe-raca-container span[onclick] { background: #333; color: #e0e0e0;
+        }
+        .classe-raca-container textarea { width: 100%; background: #fff; border: 2px solid #b8860b;
+        }
+        body.dark-mode .classe-raca-container textarea { background: #333; color: #e0e0e0;
+        }
+        .raca-item { margin-bottom: 20px; padding: 10px; background: #fff; border: 2px solid #b8860b;
+            border-radius: 6px; }
+        .raca-item h3 { font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #a0522d;
+        }
+        .raca-item p { font-size: 1rem; color: #000;
+        }
+        body.dark-mode .raca-item { background: #333; border-color: #555;
+        }
+        body.dark-mode .raca-item p { color: #e0e0e0;
+        }
         /* Container for theme/color buttons */
-        .theme-color-container { display: flex; justify-content: center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
+        .theme-color-container { display: flex;
+            justify-content: center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
         #background-color-selector {
-             bottom: 100%; /* Position above the button */
+             bottom: 100%;
+             /* Position above the button */
              left: 50%;
              transform: translateX(-50%);
              margin-bottom: 5px; /* Space between button and selector */
              margin-top: 0;
              display: none; /* Keep hidden initially */
-             position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; z-index: 1002; display: flex; gap: 10px;
+             position: absolute;
+             background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; z-index: 1002; display: flex; gap: 10px;
         }
          /* Ensure popup display logic works */
-        #background-color-selector { display: none; }
+        #background-color-selector { display: none;
+        }
 
         @media (max-width: 768px) {
-            body { padding: 10px; }
-            #ficha-container { padding: 15px; }
-            h1#nome-personagem-titulo { font-size: 2rem; }
-            section h2 { font-size: 1.2rem; }
-            input, textarea { font-size: 0.9rem; }
-            .atributos-container, .vida-magia-vigor { flex-direction: column; }
-            .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
-            .botoes-container, .theme-color-container { flex-direction: row; flex-wrap: wrap; } /* Ensure wrapping on small screens */
+            body { padding: 10px;
+            }
+            #ficha-container { padding: 15px;
+            }
+            h1#nome-personagem-titulo { font-size: 2rem;
+            }
+            section h2 { font-size: 1.2rem;
+            }
+            input, textarea { font-size: 0.9rem;
+            }
+            .atributos-container, .vida-magia-vigor { flex-direction: column;
+            }
+            .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%;
+            }
+            .botoes-container, .theme-color-container { flex-direction: row; flex-wrap: wrap;
+            } /* Ensure wrapping on small screens */
         }
         /* Estilos para o modal de chat */
-        #chat-modal { display: none; }
-        #chat-modal .modal-content { width: 500px; max-height: 80vh; display: flex; flex-direction: column; }
-        #chat-modal .chat-header { padding: 10px; border-bottom: 1px solid #ccc; font-family: 'MedievalSharp', serif; font-size: 1.5rem; text-align: center; }
-        #chat-modal .chat-body { flex-grow: 1; display: flex; overflow: hidden; }
-        #chat-modal .user-list { width: 150px; border-right: 1px solid #ccc; overflow-y: auto; padding: 10px; }
-        #chat-modal .user-list h4 { font-family: 'MedievalSharp', serif; margin-bottom: 5px; }
-        #chat-modal .user-list .user-item { padding: 8px; cursor: pointer; border-bottom: 1px solid #eee; }
-        #chat-modal .user-list .user-item:hover { background-color: #f0e6d2; }
-        body.dark-mode #chat-modal .user-list .user-item:hover { background-color: #333; }
-        #chat-modal .conversation { flex-grow: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; }
-        #chat-modal .message-container { display: flex; flex-direction: column; margin-bottom: 8px; }
-        #chat-modal .message { padding: 8px; border-radius: 5px; background-color: #e0e0e0; color: #000; width: fit-content; max-width: 80%; }
-        body.dark-mode #chat-modal .message { background-color: #444; color: #e0e0e0; }
-        #chat-modal .message.sent { background-color: #cce5ff; align-self: flex-end; }
-        body.dark-mode #chat-modal .message.sent { background-color: #6699cc; color: #e0e0e0; }
-        #chat-modal .sender-name { font-size: 0.8rem; color: #777; margin-bottom: 2px; }
-        body.dark-mode #chat-modal .sender-name { color: #aaa; }
-        #chat-modal .chat-input { padding: 10px; border-top: 1px solid #ccc; display: flex; }
-        #chat-modal .chat-input input[type="text"] { flex-grow: 1; padding: 8px; border-radius: 5px; border: 1px solid #ccc; margin-right: 10px; }
-        body.dark-mode #chat-modal .chat-input input[type="text"] { background-color: #333; color: #e0e0e0; border-color: #555; }
-        #chat-modal .chat-input button { padding: 8px 15px; border-radius: 5px; }
+        #chat-modal { display: none;
+        }
+        #chat-modal .modal-content { width: 500px; max-height: 80vh; display: flex; flex-direction: column;
+        }
+        #chat-modal .chat-header { padding: 10px; border-bottom: 1px solid #ccc; font-family: 'MedievalSharp', serif;
+            font-size: 1.5rem; text-align: center; }
+        #chat-modal .chat-body { flex-grow: 1; display: flex;
+            overflow: hidden; }
+        #chat-modal .user-list { width: 150px; border-right: 1px solid #ccc;
+            overflow-y: auto; padding: 10px; }
+        #chat-modal .user-list h4 { font-family: 'MedievalSharp', serif;
+            margin-bottom: 5px; }
+        #chat-modal .user-list .user-item { padding: 8px; cursor: pointer;
+            border-bottom: 1px solid #eee; }
+        #chat-modal .user-list .user-item:hover { background-color: #f0e6d2;
+        }
+        body.dark-mode #chat-modal .user-list .user-item:hover { background-color: #333;
+        }
+        #chat-modal .conversation { flex-grow: 1; padding: 10px; overflow-y: auto; display: flex;
+            flex-direction: column; }
+        #chat-modal .message-container { display: flex; flex-direction: column; margin-bottom: 8px;
+        }
+        #chat-modal .message { padding: 8px; border-radius: 5px; background-color: #e0e0e0; color: #000;
+            width: fit-content; max-width: 80%; }
+        body.dark-mode #chat-modal .message { background-color: #444; color: #e0e0e0;
+        }
+        #chat-modal .message.sent { background-color: #cce5ff; align-self: flex-end;
+        }
+        body.dark-mode #chat-modal .message.sent { background-color: #6699cc; color: #e0e0e0;
+        }
+        #chat-modal .sender-name { font-size: 0.8rem; color: #777; margin-bottom: 2px;
+        }
+        body.dark-mode #chat-modal .sender-name { color: #aaa;
+        }
+        #chat-modal .chat-input { padding: 10px; border-top: 1px solid #ccc; display: flex;
+        }
+        #chat-modal .chat-input input[type="text"] { flex-grow: 1; padding: 8px; border-radius: 5px;
+            border: 1px solid #ccc; margin-right: 10px; }
+        body.dark-mode #chat-modal .chat-input input[type="text"] { background-color: #333;
+            color: #e0e0e0; border-color: #555; }
+        #chat-modal .chat-input button { padding: 8px 15px;
+            border-radius: 5px; }
         /* Estilos para os modais de senha do chat */
-        #chat-password-modal .modal-content, #open-chat-modal .modal-content { width: 350px; }
+        #chat-password-modal .modal-content, #open-chat-modal .modal-content { width: 350px;
+        }
         /* Espaçamento dos botões de raça */
-        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
+        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px;
+        }
         /* Estilos para o modal de plano de fundo */
-        #background-modal { display: none; }
-        #background-modal .modal-content { width: 400px; text-align: left; }
-        #background-modal .modal-content label { display: block; margin-bottom: 5px; }
-        #background-modal .modal-content input[type="file"] { margin-bottom: 10px; }
-        #background-modal .modal-content .radio-group { margin-bottom: 15px; }
-        #background-modal .modal-content .radio-group label { display: inline-block; margin-right: 10px; }
+        #background-modal { display: none;
+        }
+        #background-modal .modal-content { width: 400px; text-align: left;
+        }
+        #background-modal .modal-content label { display: block; margin-bottom: 5px;
+        }
+        #background-modal .modal-content input[type="file"] { margin-bottom: 10px;
+        }
+        #background-modal .modal-content .radio-group { margin-bottom: 15px;
+        }
+        #background-modal .modal-content .radio-group label { display: inline-block; margin-right: 10px;
+        }
         /* Estilos para o seletor de cor de fundo */
-        .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
+        .color-option { width: 24px;
+            height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -785,7 +1004,8 @@
         <div class="modal-content">
             <h3>O que você deseja fazer?</h3>
             <button class="confirm-btn" onclick="excluirRacaSelecionadaModal()">Excluir Raça</button>
-            <button class="confirm-btn" onclick="editarRacaSelecionadaModal()" style="margin-top: 10px;">Editar Raça</button>
+            <button class="confirm-btn" onclick="editarRacaSelecionadaModal()"
+                style="margin-top: 10px;">Editar Raça</button>
             <button class="cancel-btn" onclick="fecharModal('raca-opcoes-modal')">Cancelar</button>
         </div>
     </div>
@@ -812,7 +1032,8 @@
     <div id="open-chat-modal" class="modal">
         <div class="modal-content">
             <h3>Digite a Senha do Chat</h3>
-            <input type="password" id="abrir-chat-senha-input" placeholder="Senha do Chat">
+            <input type="password" id="abrir-chat-senha-input" placeholder="Senha do
+ Chat">
             <button class="confirm-btn" onclick="abrirChat()">Confirmar</button>
             <button class="cancel-btn" onclick="fecharModal('open-chat-modal')">Cancelar</button>
         </div>
@@ -870,21 +1091,69 @@
             isFichaUnlocked = false, senhaMatriz = "1040", vantagensSelecionadas = [],
             desvantagensSelecionadas = [], tempVantagensSelecionadas = [], tempDesvantagensSelecionadas = [],
             racaSelecionada = null, tempRacaSelecionada = null, vidaTotal, vidaAtual, magiaTotal, magiaAtual,
-            vigorTotal, vigorAtual, previousValues = new Map(), chatPassword = null, isChatOpen = false, selectedChatUser = null;
+            vigorTotal, vigorAtual, previousValues = new Map(), chatPassword = null, isChatOpen
+ = false, selectedChatUser = null;
 
         const vantagensData = [
-            { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas." }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas." }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance." }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão." }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc." }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc." }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão." }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão." }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte." }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir." }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados." }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida." }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc." }
+            { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas."
+        }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas."
+        }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance."
+        }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto."
+        }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia."
+        }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão."
+        }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc."
+        }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES."
+        }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo."
+        }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc."
+        }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais."
+        }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda."
+        }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão."
+        }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro."
+        }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão."
+        }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma."
+        }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte."
+        }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir."
+        }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público."
+        }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio."
+        }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados."
+        }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida."
+        }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc."
+        }
         ];
         const desvantagensData = [
-            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico." }, { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade, dificultando interações sociais." }, { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool que afeta suas decisões." }, { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas, pouco se importa com fama ou riqueza." }, { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." }, { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos." }, { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo literal e acredita que todos estão sérios." }, { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." }, { nome: "Covardia (+2)", ganho: 2, descricao: "Extremo cuidado com bem-estar físico e dificuldade em assumir riscos." }, { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você a todo momento (filhos, parentes, etc.)." }, { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e atacar freneticamente (ativado por dano, insulto ou aleatório)." }, { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." }, { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." }, { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." }, { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em nível alarmante." }, { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal." }, { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo, não segue planos que não sejam seus." }, { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
+            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico."
+        }, { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade, dificultando interações sociais."
+        }, { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool que afeta suas decisões."
+        }, { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas, pouco se importa com fama ou riqueza."
+        }, { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas."
+        }, { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos."
+        }, { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo literal e acredita que todos estão sérios."
+        }, { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo."
+        }, { nome: "Covardia (+2)", ganho: 2, descricao: "Extremo cuidado com bem-estar físico e dificuldade em assumir riscos."
+        }, { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você a todo momento (filhos, parentes, etc.)."
+        }, { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e atacar freneticamente (ativado por dano, insulto ou aleatório)."
+        }, { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras."
+        }, { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar."
+        }, { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance."
+        }, { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em nível alarmante."
+        }, { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal."
+        }, { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo, não segue planos que não sejam seus."
+        }, { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes."
+        }
         ];
         let racasData = [
-            { nome: "Humano (3)", custo: 3, descricao: "Versáteis, ambiciosos, mestres em adaptação.", vantagens: ["Explorador Nato: Cavalo superior, equipamentos, mapa detalhado.", "Mestre das Profissões: Escolha (Ferreiro Lendário, Costureiro Arcano, Arquiteto Visionário) com benefícios únicos.", "Rede de Influência: Aliado influente (guildas, mercadores, líderes) com acesso a informações ou ajuda.", "Determinação Inabalável: Uma vez/dia, ignore uma desvantagem (exaustão, ferimento, magia) por um curto período."] }, { nome: "Elfo (4)", custo: 4, descricao: "Sábios, mágicos, conectados à natureza.", vantagens: ["Sabedoria Ancestral: Domina área (arcana, história, natureza), decifra itens antigos, aprende 1 língua extra.", "Visão Élfica Suprema: Enxerga 10m escuro, detecta magias fracas 20m, percebe intenções hostis (teste 19+).", "Escudo Mágico: Resistência inata a um tipo de efeito mágico hostil (dano ou duração -50%)."] }, { nome: "Anão (4)", custo: 4, descricao: "Resilientes, habilidosos, ligados à terra.", vantagens: ["Fortitude Indomável: Trabalha 3 dias sem descanso, recupera vida/energia 2x mais rápido em rocha/subterrâneo.", "Artesão: Escolha (Mestre Minerador, Forjador de Lendas, Joalheiro Divino) com impacto massivo.", "Senhor das Profundezas: Nunca se perde subterrâneo, detecta armadilhas, sente vibrações (prever emboscada/colapso)."] }, { nome: "Orc (3)", custo: 3, descricao: "Guerreiros ferozes, líderes pela força.", vantagens: ["Lenda entre Guerreiros: Inspira temor/respeito, alianças marciais, acesso missões épicas; inimigos menores fogem (teste 16+).", "Resiliência Brutal: Luta sem penalidades com ferimentos graves, só cai com PV 0, regenera ferimentos leves fora de combate.", "Domínio da Intimidação: Força inimigos a render/recuar com grito (1x/encontro, afeta grupos), bônus massivo negociações (força/medo).", "Fúria Ancestral: Fúria 2x/dia (dobra força/resistência por curto período)."] }, { nome: "Meio Animal (Selvagem) (4)", custo: 4, descricao: "Instinto primal com astúcia.", vantagens: ["Sentidos Predatórios: Escolha (visão, olfato, audição) aguçado; rastreia km, detecta invisíveis, evita surpresa (teste 12+).", "Senhor dos Terrenos: Adapta-se a 1 ambiente (floresta, deserto, pântano), ignora efeitos negativos, bônus movimento/furtividade (+1).", "Frenesi Instintivo: 1x/dia, velocidade sobrenatural (2x movimento), ataques adicionais, percepção pré-monitória (10 min)."] }
+            { nome: "Humano (3)", custo: 3, descricao: "Versáteis, ambiciosos, mestres em adaptação.", vantagens: ["Explorador Nato: Cavalo superior, equipamentos, mapa detalhado.", "Mestre das Profissões: Escolha (Ferreiro Lendário, Costureiro Arcano, Arquiteto Visionário) com benefícios únicos.", "Rede de Influência: Aliado influente (guildas, mercadores, líderes) com acesso a informações ou ajuda.", "Determinação Inabalável: Uma vez/dia, ignore uma desvantagem (exaustão, ferimento, magia) por um curto período."] }, { nome: "Elfo (4)", custo: 4, descricao: "Sábios, mágicos, conectados à natureza.", vantagens: ["Sabedoria
+ Ancestral: Domina área (arcana, história, natureza), decifra itens antigos, aprende 1 língua extra.", "Visão Élfica Suprema: Enxerga 10m escuro, detecta magias fracas 20m, percebe intenções hostis (teste 19+).", "Escudo Mágico: Resistência inata a um tipo de efeito mágico hostil (dano ou duração -50%)."] }, { nome: "Anão (4)", custo: 4, descricao: "Resilientes, habilidosos, ligados à terra.", vantagens: ["Fortitude Indomável: Trabalha 3 dias sem descanso, recupera vida/energia 2x mais rápido em rocha/subterrâneo.", "Artesão: Escolha (Mestre Minerador, Forjador de Lendas, Joalheiro Divino) com impacto massivo.", "Senhor das Profundezas: Nunca se perde subterrâneo, detecta armadilhas, sente vibrações (prever emboscada/colapso)."] }, { nome: "Orc
+ (3)", custo: 3, descricao: "Guerreiros ferozes, líderes pela força.", vantagens: ["Lenda entre Guerreiros: Inspira temor/respeito, alianças marciais, acesso missões épicas;
+inimigos menores fogem (teste 16+).", "Resiliência Brutal: Luta sem penalidades com ferimentos graves, só cai com PV 0, regenera ferimentos leves fora de combate.", "Domínio da Intimidação: Força inimigos a render/recuar com grito (1x/encontro, afeta grupos), bônus massivo negociações (força/medo).", "Fúria Ancestral: Fúria 2x/dia (dobra força/resistência por curto período)."] }, { nome: "Meio Animal (Selvagem) (4)", custo: 4, descricao: "Instinto primal com astúcia.", vantagens: ["Sentidos Predatórios: Escolha (visão, olfato, audição) aguçado;
+rastreia km, detecta invisíveis, evita surpresa (teste 12+).", "Senhor dos Terrenos: Adapta-se a 1 ambiente (floresta, deserto, pântano), ignora efeitos negativos, bônus movimento/furtividade (+1).", "Frenesi Instintivo: 1x/dia, velocidade sobrenatural (2x movimento), ataques adicionais, percepção pré-monitória (10 min)."] }
         ];
         const nivelData = [
-            { nivel: 0, xp: 0, pd: 25, ph: 8 }, { nivel: 1, xp: 10, pd: 31, ph: 9 }, { nivel: 2, xp: 30, pd: 37, ph: 10 }, { nivel: 3, xp: 60, pd: 43, ph: 11 }, { nivel: 4, xp: 100, pd: 49, ph: 12 }, { nivel: 5, xp: 150, pd: 55, ph: 13 }, { nivel: 6, xp: 210, pd: 61, ph: 14 }, { nivel: 7, xp: 280, pd: 67, ph: 15 }, { nivel: 8, xp: 360, pd: 73, ph: 16 }, { nivel: 9, xp: 450, pd: 79, ph: 17 }, { nivel: 10, xp: 550, pd: 85, ph: 18 }, { nivel: 11, xp: 670, pd: 91, ph: 19 }, { nivel: 12, xp: 810, pd: 97, ph: 20 }, { nivel: 13, xp: 970, pd: 103, ph: 21 }, { nivel: 14, xp: 1150, pd: 109, ph: 22 }, { nivel: 15, xp: 1350, pd: 115, ph: 23 }, { nivel: 16, xp: 1570, pd: 121, ph: 24 }, { nivel: 17, xp: 1810, pd: 127, ph: 25 }, { nivel: 18, xp: 2070, pd: 133, ph: 26 }, { nivel: 19, xp: 2350, pd: 139, ph: 27 }, { nivel: 20, xp: 2650, pd: 145, ph: 28 }, { nivel: 21, xp: 2980, pd: 148, ph: 29 }, { nivel: 22, xp: 3340, pd: 151, ph: 30 }, { nivel: 23, xp: 3730, pd: 154, ph: 31 }, { nivel: 24, xp: 4150, pd: 157, ph: 32 }, { nivel: 25, xp: 4600, pd: 160, ph: 33 }, { nivel: 26, xp: 5080, pd: 163, ph: 34 }, { nivel: 27, xp: 5590, pd: 166, ph: 35 }, { nivel: 28, xp: 6130, pd: 169, ph: 36 }, { nivel: 29, xp: 8000, pd: 219, ph: 37 }, { nivel: 30, xp: 10000, pd: 319, ph: 38 }
+            { nivel: 0, xp: 0, pd: 25, ph: 8 }, { nivel: 1, xp: 10, pd: 31, ph: 9 }, { nivel: 2, xp: 30, pd: 37, ph: 10 }, { nivel:
+ 3, xp: 60, pd: 43, ph: 11 }, { nivel: 4, xp: 100, pd: 49, ph: 12 }, { nivel: 5, xp: 150, pd: 55, ph: 13 }, { nivel: 6, xp: 210, pd: 61, ph: 14 }, { nivel: 7, xp: 280, pd: 67, ph: 15 }, { nivel: 8, xp: 360, pd: 73, ph: 16 }, { nivel: 9, xp: 450, pd: 79, ph: 17 }, { nivel: 10, xp: 550, pd: 85, ph: 18 }, { nivel: 11, xp: 670, pd: 91, ph: 19 }, { nivel: 12, xp: 810, pd: 97, ph: 20 }, { nivel:
+ 13, xp: 970, pd: 103, ph: 21 }, { nivel: 14, xp: 1150, pd: 109, ph: 22 }, { nivel: 15, xp: 1350, pd: 115, ph: 23 }, { nivel: 16, xp: 1570, pd: 121, ph: 24 }, { nivel: 17, xp: 1810, pd: 127, ph: 25 }, { nivel: 18, xp: 2070, pd: 133, ph: 26 }, { nivel: 19, xp: 2350, pd: 139, ph: 27 }, { nivel: 20, xp: 2650, pd: 145, ph: 28 }, { nivel: 21, xp: 2980, pd: 148, ph: 29 }, { nivel: 22, xp: 3340, pd: 151, ph: 30 }, { nivel:
+ 23, xp: 3730, pd: 154, ph: 31 }, { nivel: 24, xp: 4150, pd: 157, ph: 32 }, { nivel: 25, xp: 4600, pd: 160, ph: 33 }, { nivel: 26, xp: 5080, pd: 163, ph: 34 }, { nivel: 27, xp: 5590, pd: 166, ph: 35 }, { nivel: 28, xp: 6130, pd: 169, ph: 36 }, { nivel: 29, xp: 8000, pd: 219, ph: 37 }, { nivel: 30, xp: 10000, pd: 319, ph: 38 }
         ];
-
         // Cache DOM Elements
         const nomePersonagemInput = document.getElementById("nome-personagem"), descricaoPersonagemInput = document.getElementById("descricao-personagem"),
             forcaInput = document.getElementById("forca"), destrezaInput = document.getElementById("destreza"), agilidadeInput = document.getElementById("agilidade"),
@@ -902,13 +1171,15 @@
             nomePersonagemTitulo = document.getElementById("nome-personagem-titulo"), gameMasterMessage = document.getElementById("game-master-message"),
             vantagensListDisplay = document.getElementById("vantagens-list-display"), desvantagensListDisplay = document.getElementById("desvantagens-list-display"),
             inventarioSlots = document.getElementById("inventario-slots"), pesoTotalSpan = document.getElementById("peso-total"),
-            diceContainer = document.getElementById("dice-container"), diceRoll = document.getElementById("dice-roll"), diceResult = document.getElementById("dice-result"),
+            diceContainer = document.getElementById("dice-container"), diceRoll = document.getElementById("dice-roll"), diceResult
+ = document.getElementById("dice-result"),
             notification = document.getElementById("notification"), characterImageInput = document.getElementById("character-image-input"),
             characterImage = document.getElementById("character-image"), vantagensDesvantagensBtn = document.getElementById("vantagens-desvantagens-btn"),
             vantagensDesvantagensPanel = document.getElementById("vantagens-desvantagens-panel"), vantagensList = document.getElementById("vantagens-list"),
             desvantagensList = document.getElementById("desvantagens-list"), salvarVantagensBtn = document.getElementById("salvar-vantagens-btn"),
             fecharPaginaBtn = document.getElementById("fechar-pagina-btn"), fichaContainer = document.getElementById("ficha-container"),
-            magiasList = document.getElementById("magias-list"), adicionarMagiaBtn = document.getElementById("adicionar-magia-btn"),
+            magiasList =
+ document.getElementById("magias-list"), adicionarMagiaBtn = document.getElementById("adicionar-magia-btn"),
             anotacoesBtn = document.getElementById("anotacoes-btn"), anotacoesTextarea = document.getElementById("anotacoes-textarea"),
             racasBtn = document.getElementById("racas-btn"), classesBtn = document.getElementById("classes-btn"), racasPanel = document.getElementById("racas-panel"),
             classesPanel = document.getElementById("classes-panel"), fecharRacasBtn = document.getElementById("fechar-racas-btn"),
@@ -923,14 +1194,14 @@
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
             corFundoBtn = document.getElementById("cor-fundo-btn"), backgroundColorSelector = document.getElementById("background-color-selector"),
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"), // Use the specific ID for the confirm button
-            phTempRacaSpan = document.getElementById("ph-temp-raca"); // Get the PH display span in race panel
+            phTempRacaSpan = document.getElementById("ph-temp-raca");
+ // Get the PH display span in race panel
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
-
-        function criarFichaMatriz() {
+ function criarFichaMatriz() {
             const fichaId = "ficha-matriz";
-            const fichaMatriz = {
+ const fichaMatriz = {
                 nomeFicha: "Matriz", nomePersonagem: "Personagem Matriz", descricaoPersonagem: "Ficha original do sistema",
                 forca: "0", destreza: "0", agilidade: "0", inteligencia: "0", constituicao: "0", experiencia: "0",
                 armaDireitaNome: "", armaDireitaAtaque: "0", armaDireitaAtaqueMagico: "0",
@@ -942,7 +1213,7 @@
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 chatPassword: null, backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2'
             };
-            database.ref("fichas/ficha-matriz").once("value", snapshot => {
+ database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
                     currentFichaId = fichaId; carregarFicha(fichaId); carregarFichas();
                     aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
@@ -966,15 +1237,17 @@
 
         function atualizarAbasFichas() {
             const sidebar = document.getElementById("fichas-sidebar"), addBtn = document.getElementById("add-ficha-btn");
-            while (sidebar.children.length > 1) sidebar.removeChild(sidebar.children[0]);
+ while (sidebar.children.length > 1) sidebar.removeChild(sidebar.children[0]);
             for (let fichaId in fichas) {
                 if (fichaId !== "ficha-matriz") {
-                    const tab = document.createElement("div"); tab.className = "ficha-tab";
+                    const tab = document.createElement("div");
+ tab.className = "ficha-tab";
                     const span = document.createElement("span"); span.textContent = fichas[fichaId].nomeFicha || "Sem Nome";
                     tab.appendChild(span); tab.dataset.fichaId = fichaId;
-                    if (fichaId === currentFichaId) tab.classList.add("active");
+ if (fichaId === currentFichaId) tab.classList.add("active");
                     tab.onclick = () => {
-                        currentFichaId = fichaId; carregarFicha(fichaId); atualizarAbasFichas();
+                        currentFichaId = fichaId;
+ carregarFicha(fichaId); atualizarAbasFichas();
                         atualizarListaFichasChat(); verificarNovasMensagens();
                     };
                     sidebar.insertBefore(tab, addBtn);
@@ -983,14 +1256,15 @@
         }
 
         document.getElementById("add-ficha-btn").onclick = () => {
-            document.getElementById("nome-ficha-modal").style.display = "flex"; document.getElementById("nome-ficha-input").value = ""; document.getElementById("nome-ficha-input").focus();
+            document.getElementById("nome-ficha-modal").style.display = "flex";
+ document.getElementById("nome-ficha-input").value = ""; document.getElementById("nome-ficha-input").focus();
         };
 
         function criarNovaFicha() {
             const nomeFicha = document.getElementById("nome-ficha-input").value.trim();
-            if (!nomeFicha) return alert("Por favor, dê um nome à ficha!");
+ if (!nomeFicha) return alert("Por favor, dê um nome à ficha!");
             const novaFichaId = database.ref("fichas").push().key;
-            const novaFicha = {
+ const novaFicha = {
                 nomeFicha, nomePersonagem: "", descricaoPersonagem: "", forca: "0", destreza: "0", agilidade: "0",
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
@@ -1001,83 +1275,104 @@
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 chatPassword: null, backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2'
             };
-            database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
+ database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
                 currentFichaId = novaFichaId; carregarFicha(novaFichaId); fecharModal("nome-ficha-modal");
                 atualizarAbasFichas(); atualizarListaFichasChat();
             }).catch(error => console.error("Erro ao criar nova ficha:", error));
-        }
+ }
 
-        function fecharModal(modalId) { document.getElementById(modalId).style.display = "none"; }
+        function fecharModal(modalId) { document.getElementById(modalId).style.display = "none";
+ }
 
         function carregarFicha(fichaId) {
-            if (!fichas[fichaId]) return; const ficha = fichas[fichaId];
+            if (!fichas[fichaId]) return;
+ const ficha = fichas[fichaId];
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
-            forcaInput.value = ficha.forca || "0"; destrezaInput.value = ficha.destreza || "0"; agilidadeInput.value = ficha.agilidade || "0";
-            inteligenciaInput.value = ficha.inteligencia || "0"; constituicaoInput.value = ficha.constituicao || "0"; experienciaInput.value = ficha.experiencia || "0";
+            forcaInput.value = ficha.forca || "0";
+ destrezaInput.value = ficha.destreza || "0"; agilidadeInput.value = ficha.agilidade || "0";
+            inteligenciaInput.value = ficha.inteligencia || "0"; constituicaoInput.value = ficha.constituicao || "0";
+ experienciaInput.value = ficha.experiencia || "0";
             armaDireitaNomeInput.value = ficha.armaDireitaNome || ""; armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0"; armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
-            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || ""; armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0"; armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
-            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25"; alturaPuloSpan.textContent = ficha.alturaPulo || "1"; distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
-            isFichaLocked = ficha.isLocked || false; fichaPassword = ficha.password || null; isFichaUnlocked = false;
+ armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || ""; armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0"; armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25";
+ alturaPuloSpan.textContent = ficha.alturaPulo || "1"; distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
+            isFichaLocked = ficha.isLocked || false; fichaPassword = ficha.password || null;
+ isFichaUnlocked = false;
             vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
-            desvantagensSelecionadas = ficha.desvantagens ? ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
+            desvantagensSelecionadas = ficha.desvantagens ?
+ ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
             racaSelecionada = ficha.racaSelecionada || "";
-            racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : ""; // Handle empty selection display
+            racaNomeSpan.textContent = racaSelecionada ?
+ racaSelecionada.split(" (")[0] : ""; // Handle empty selection display
             racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
 
             vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = "";
             vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
-            desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
+            desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className =
+ "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
 
             const inventario = Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({ item: "", peso: "0" });
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
-            slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
+            slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item ||
+ ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal();
 
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
             magiasList.innerHTML = "";
-            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; magiasList.appendChild(input); });
-            anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
-            if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none"; }
+ magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; magiasList.appendChild(input); });
+ anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
+ if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none";
+ }
 
-            atualizarBotaoBloquear(); atualizarVantagensDesvantagensPanel(); // Update display only
-            atualizarRacasPanel(); // Update display only
-            experiencia = parseInt(experienciaInput.value) || 0; atualizarNivel(); calcularAtributos(); // This calculates derived stats including Total HP/MP etc.
+            atualizarBotaoBloquear(); atualizarVantagensDesvantagensPanel();
+ // Update display only
+            atualizarRacasPanel();
+ // Update display only
+            experiencia = parseInt(experienciaInput.value) || 0;
+ atualizarNivel(); calcularAtributos(); // This calculates derived stats including Total HP/MP etc.
 
             // Initialize current HP/MP/Stamina based on calculated totals if not already set or if they exceed new totals
-            vidaTotal = parseInt(document.getElementById("vida-total").textContent); // Get calculated total
+            vidaTotal = parseInt(document.getElementById("vida-total").textContent);
+ // Get calculated total
             magiaTotal = parseInt(document.getElementById("magia-total").textContent);
-            vigorTotal = parseFloat(document.getElementById("vigor-total").textContent);
+ vigorTotal = parseFloat(document.getElementById("vigor-total").textContent);
             vidaAtual = (typeof vidaAtual === 'number') ? Math.min(vidaAtual, vidaTotal) : vidaTotal;
-            magiaAtual = (typeof magiaAtual === 'number') ? Math.min(magiaAtual, magiaTotal) : magiaTotal;
-            vigorAtual = (typeof vigorAtual === 'number') ? Math.min(vigorAtual, vigorTotal) : vigorTotal;
+ magiaAtual = (typeof magiaAtual === 'number') ? Math.min(magiaAtual, magiaTotal) : magiaTotal;
+            vigorAtual = (typeof vigorAtual === 'number') ?
+ Math.min(vigorAtual, vigorTotal) : vigorTotal;
             document.getElementById("vida-atual").textContent = vidaAtual; document.getElementById("magia-atual").textContent = magiaAtual; document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
-            pontosVantagemSpan.textContent = getPontosVantagem(); // Update displayed PH based on loaded advantages/race
-            previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+            pontosVantagemSpan.textContent = getPontosVantagem();
+ // Update displayed PH based on loaded advantages/race
+            previousValues.clear();
+ document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
             chatPassword = ficha.chatPassword; atualizarEstadoChatBotao();
             aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
-        }
+ }
 
         function atualizarBotaoBloquear() {
-            bloquearFichaButton.textContent = isFichaLocked ? "Desbloquear Ficha" : "Bloquear Ficha";
+            bloquearFichaButton.textContent = isFichaLocked ?
+ "Desbloquear Ficha" : "Bloquear Ficha";
             bloquearFichaButton.classList.toggle("botao-bloquear", !isFichaLocked); bloquearFichaButton.classList.toggle("botao-desbloquear", isFichaLocked);
         }
 
         function salvarDados() {
             if (!currentFichaId || (isFichaLocked && !isFichaUnlocked)) return;
-            const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
+ const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
             const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
-            const dados = {
+ const dados = {
                 nomePersonagem: nomePersonagemInput.value, descricaoPersonagem: descricaoPersonagemInput.value,
                 forca: forcaInput.value, destreza: destrezaInput.value, agilidade: agilidadeInput.value, inteligencia: inteligenciaInput.value, constituicao: constituicaoInput.value,
                 experiencia: experienciaInput.value, armaDireitaNome: armaDireitaNomeInput.value, armaDireitaAtaque: armaDireitaAtaqueInput.value, armaDireitaAtaqueMagico: armaDireitaAtaqueMagicoInput.value,
                 armaEsquerdaNome: armaEsquerdaNomeInput.value, armaEsquerdaAtaque: armaEsquerdaAtaqueInput.value, armaEsquerdaAtaqueMagico: armaEsquerdaAtaqueMagicoInput.value,
                 vantagens: vantagensSelecionadas.join("\n"), magiasHabilidades: magias.join("\n"), desvantagens: desvantagensSelecionadas.join("\n"),
                 inventario, velocidadeCorrida: velocidadeCorridaSpan.textContent, alturaPulo: alturaPuloSpan.textContent, distanciaPulo: distanciaPuloSpan.textContent,
-                isLocked: isFichaLocked, password: fichaPassword, imagem: characterImage.src.startsWith('data:image') ? characterImage.src : null, anotacoes: anotacoesTextarea.value,
+                isLocked: isFichaLocked, password: fichaPassword, imagem: characterImage.src.startsWith('data:image') ?
+ characterImage.src : null, anotacoes: anotacoesTextarea.value,
                 classeNome: classeNomeInput.value, classeDescricao: classeDescricaoInput.value, racaNome: racaNomeSpan.textContent, racaDescricao: racaDescricaoInput.value, racaSelecionada: racaSelecionada,
                 chatPassword: chatPassword,
-                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage.slice(5, -2),
+                backgroundImage: document.body.style.backgroundImage === 'none' ?
+ null : document.body.style.backgroundImage.slice(5, -2),
                 backgroundSize: document.body.style.backgroundSize,
                 backgroundColor: document.body.style.backgroundColor,
                 // Persist current resource values (optional but good practice)
@@ -1085,199 +1380,250 @@
                 magiaAtual: magiaAtual,
                 vigorAtual: vigorAtual
             };
-            database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
+ database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
                 showNotification("Salvo!", "save-success");
                 previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
-            }).catch(error => console.error("Erro ao salvar dados:", error)); // Added error handling
+            }).catch(error => console.error("Erro ao salvar dados:", error));
+ // Added error handling
         }
 
-        function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ?? 0; } // Use ?? for nullish coalescing
+        function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ??
+ 0; } // Use ?? for nullish coalescing
 
         function atualizarNivel() {
-            nivelAnterior = nivel; nivel = calcularNivel(experiencia); nivelSpan.textContent = nivel;
-            pontosHabilidadeTotal = nivelData[nivel]?.pd ?? nivelData[0].pd; // Safe access
+            nivelAnterior = nivel;
+ nivel = calcularNivel(experiencia); nivelSpan.textContent = nivel;
+            pontosHabilidadeTotal = nivelData[nivel]?.pd ?? nivelData[0].pd;
+ // Safe access
             pontosVantagemSpan.textContent = getPontosVantagem();
-            if (nivel > nivelAnterior) { nivelSpan.classList.add("aura-azul"); setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000); }
-            gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; fichaContainer.classList.toggle("aura-azul", nivel >= 30);
+ if (nivel > nivelAnterior) { nivelSpan.classList.add("aura-azul"); setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000);
+ }
+            gameMasterMessage.style.display = nivel >= 30 ?
+ "block" : "none"; fichaContainer.classList.toggle("aura-azul", nivel >= 30);
             calcularAtributos();
         }
 
         function getPontosVantagem() {
-            let ph = nivelData.find(data => data.nivel === nivel)?.ph ?? nivelData[0].ph; // Safe access
+            let ph = nivelData.find(data => data.nivel === nivel)?.ph ??
+ nivelData[0].ph; // Safe access
             vantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
-            if (racaSelecionada) { const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) ph -= raca.custo; }
+ desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
+ if (racaSelecionada) { const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) ph -= raca.custo;
+ }
             return ph;
-        }
+ }
 
         function calcularPontosVantagemTemp() {
-            let ph = nivelData.find(data => data.nivel === nivel)?.ph ?? nivelData[0].ph; // Safe access
+            let ph = nivelData.find(data => data.nivel === nivel)?.ph ??
+ nivelData[0].ph; // Safe access
             tempVantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
-            if (tempRacaSelecionada) { const raca = racasData.find(r => r.nome === tempRacaSelecionada); if (raca) ph -= raca.custo; }
+ tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
+ if (tempRacaSelecionada) { const raca = racasData.find(r => r.nome === tempRacaSelecionada); if (raca) ph -= raca.custo;
+ }
             return ph;
-        }
+ }
 
-        function aumentarVida() { if (vidaAtual < vidaTotal) { vidaAtual++; document.getElementById("vida-atual").textContent = vidaAtual; salvarDados(); } }
-        function diminuirVida() { if (vidaAtual > 0) { vidaAtual--; document.getElementById("vida-atual").textContent = vidaAtual; salvarDados(); } }
-        function aumentarMagia() { if (magiaAtual < magiaTotal) { magiaAtual++; document.getElementById("magia-atual").textContent = magiaAtual; salvarDados(); } }
-        function diminuirMagia() { if (magiaAtual > 0) { magiaAtual--; document.getElementById("magia-atual").textContent = magiaAtual; salvarDados(); } }
-        function aumentarVigor() { if (vigorAtual < vigorTotal) { vigorAtual = Math.min(vigorAtual + 0.1, vigorTotal); document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1); salvarDados(); } }
-        function diminuirVigor() { if (vigorAtual > 0) { vigorAtual = Math.max(vigorAtual - 0.1, 0); document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1); salvarDados(); } }
+        function aumentarVida() { if (vidaAtual < vidaTotal) { vidaAtual++; document.getElementById("vida-atual").textContent = vidaAtual;
+ salvarDados(); } }
+        function diminuirVida() { if (vidaAtual > 0) { vidaAtual--;
+ document.getElementById("vida-atual").textContent = vidaAtual; salvarDados(); } }
+        function aumentarMagia() { if (magiaAtual < magiaTotal) { magiaAtual++;
+ document.getElementById("magia-atual").textContent = magiaAtual; salvarDados(); } }
+        function diminuirMagia() { if (magiaAtual > 0) { magiaAtual--;
+ document.getElementById("magia-atual").textContent = magiaAtual; salvarDados(); } }
+        function aumentarVigor() { if (vigorAtual < vigorTotal) { vigorAtual = Math.min(vigorAtual + 0.1, vigorTotal);
+ document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1); salvarDados(); } }
+        function diminuirVigor() { if (vigorAtual > 0) { vigorAtual = Math.max(vigorAtual - 0.1, 0);
+ document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1); salvarDados(); } }
 
         function calcularAtributos() {
-            const forca = parseInt(forcaInput.value) || 0, destreza = parseInt(destrezaInput.value) || 0, agilidade = parseInt(agilidadeInput.value) || 0,
-                  inteligencia = parseInt(inteligenciaInput.value) || 0, constituicao = parseInt(constituicaoInput.value) || 0;
+            const forca = parseInt(forcaInput.value) ||
+ 0, destreza = parseInt(destrezaInput.value) || 0, agilidade = parseInt(agilidadeInput.value) ||
+ 0,
+                  inteligencia = parseInt(inteligenciaInput.value) ||
+ 0, constituicao = parseInt(constituicaoInput.value) || 0;
             let totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
-            if (totalPontos > pontosHabilidadeTotal) {
+ if (totalPontos > pontosHabilidadeTotal) {
                 alert("Pontos de habilidade insuficientes!");
-                forcaInput.value = previousValues.get(forcaInput) || "0"; destrezaInput.value = previousValues.get(destrezaInput) || "0";
+ forcaInput.value = previousValues.get(forcaInput) || "0"; destrezaInput.value = previousValues.get(destrezaInput) || "0";
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0"; inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
-                constituicaoInput.value = previousValues.get(constituicaoInput) || "0"; return;
+ constituicaoInput.value = previousValues.get(constituicaoInput) || "0"; return;
             }
-            pontosHabilidadeUsados = totalPontos; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
+            pontosHabilidadeUsados = totalPontos;
+ pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
 
             let ataque = forca + Math.floor(destreza / 5), acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10),
                 esquiva = Math.floor(agilidade / 3), rdf = Math.floor(forca / 5), rdm = Math.floor(inteligencia / 5),
                 ataqueMagico = inteligencia, magiaBase = 20 + 3 * constituicao, vigorBase = 10 + 0.4 * constituicao;
-            vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel;
-            if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
+ vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel;
+ if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
 
             ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
-            ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+ ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
 
             const velocidadeBase = 25 + Math.floor(agilidade / 3) * 3, alturaPuloBase = 1 + Math.floor(forca / 10), distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
-            let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0, bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0, bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
+ let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0, bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ?
+ 2 : 0, bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
 
-            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade; alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo; distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
-            ataqueSpan.textContent = ataque; ataqueMagicoSpan.textContent = ataqueMagico; acertoSpan.textContent = acerto; esquivaSpan.textContent = esquiva; rdfSpan.textContent = rdf; rdmSpan.textContent = rdm;
+            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
+ alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo; distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
+            ataqueSpan.textContent = ataque; ataqueMagicoSpan.textContent = ataqueMagico; acertoSpan.textContent = acerto;
+ esquivaSpan.textContent = esquiva; rdfSpan.textContent = rdf; rdmSpan.textContent = rdm;
             vidaTotal = Math.ceil(vidaBase); magiaTotal = Math.ceil(magiaBase); vigorTotal = parseFloat(vigorBase.toFixed(1));
-
-            // Don't reset current values here, just update totals. Current values are loaded/managed elsewhere.
-            document.getElementById("vida-total").textContent = vidaTotal; document.getElementById("magia-total").textContent = magiaTotal; document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
+ // Don't reset current values here, just update totals. Current values are loaded/managed elsewhere.
+            document.getElementById("vida-total").textContent = vidaTotal; document.getElementById("magia-total").textContent = magiaTotal;
+ document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
             // Update current values display in case they exceed the new total
-            document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal); document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal); document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
+            document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal);
+ document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal); document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
 
             const regeneracaoVida = (0.2 * constituicao).toFixed(1), regeneracaoMagia = (0.8 * constituicao).toFixed(1), regeneracaoVigor = (0.4 * constituicao).toFixed(1);
-            document.getElementById("regeneracao-vida").textContent = regeneracaoVida; document.getElementById("regeneracao-magia").textContent = regeneracaoMagia; document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
+ document.getElementById("regeneracao-vida").textContent = regeneracaoVida; document.getElementById("regeneracao-magia").textContent = regeneracaoMagia; document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
 
             const atributos = [{ span: ataqueSpan, valor: ataque }, { span: ataqueMagicoSpan, valor: ataqueMagico }, { span: acertoSpan, valor: acerto }, { span: esquivaSpan, valor: esquiva }, { span: rdfSpan, valor: rdf }, { span: rdmSpan, valor: rdm }];
-            atributos.forEach(a => a.span.classList.remove("atributo-fogo"));
+ atributos.forEach(a => a.span.classList.remove("atributo-fogo"));
             const maxAtributo = atributos.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: 0 });
-            if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
+ if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
         }
 
         function resetarPontos() {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton); // Pass element for context
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
+ // Pass element for context
             if (confirm("Tem certeza que deseja reiniciar os pontos? Você precisará da permissão do GM.")) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+                document.getElementById("senha-gm-modal").style.display = "flex";
+ document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+                        atributosInputs.forEach(input => input.value = 0);
+ pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
                         velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
-                        calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal");
+                        calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados();
+ fecharModal("senha-gm-modal");
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
-            }
+ }
         }
 
         function recomecarFicha() {
-             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(recomecarButton); // Pass element for context
+             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(recomecarButton);
+ // Pass element for context
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
-                atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; experiencia = 0; nivel = 0; // Reset XP and level
-                pontosHabilidadeTotal = nivelData[nivel].pd; pontosHabilidadeUsados = 0; nivelSpan.textContent = nivel; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal; vidaBase = 50;
-                velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
-                nomePersonagemInput.value = ""; descricaoPersonagemInput.value = ""; experienciaInput.value = 0; // Set XP input too
-                armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
+                atributosInputs.forEach(input => input.value = 0);
+ pontosHabilidadeUsados = 0; experiencia = 0; nivel = 0; // Reset XP and level
+                pontosHabilidadeTotal = nivelData[nivel].pd;
+ pontosHabilidadeUsados = 0; nivelSpan.textContent = nivel; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal; vidaBase = 50;
+                velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1";
+ distanciaPuloSpan.textContent = "3";
+                nomePersonagemInput.value = ""; descricaoPersonagemInput.value = ""; experienciaInput.value = 0;
+ // Set XP input too
+                armaDireitaNomeInput.value = "";
+ armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); }
-                const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
-                characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; racaSelecionada = null;
+                magiasList.innerHTML = "";
+ for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome";
+ input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); }
+                const slots = inventarioSlots.querySelectorAll(".inventory-slot");
+ slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
+                characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = [];
+ desvantagensSelecionadas = []; racaSelecionada = null;
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
-                classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
-                calcularAtributos(); // Calculate based on zeroed stats
+                classeNomeInput.value = "";
+ classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
+                calcularAtributos();
+ // Calculate based on zeroed stats
                 // Reset current HP/MP/Stamina to new totals
-                vidaAtual = vidaTotal; magiaAtual = magiaTotal; vigorAtual = vigorTotal;
+                vidaAtual = vidaTotal;
+ magiaAtual = magiaTotal; vigorAtual = vigorTotal;
                 document.getElementById("vida-atual").textContent = vidaAtual; document.getElementById("magia-atual").textContent = magiaAtual; document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-                pontosVantagemSpan.textContent = getPontosVantagem(); // Recalculate PH
+                pontosVantagemSpan.textContent = getPontosVantagem();
+ // Recalculate PH
                 salvarDados();
-            }
+ }
         }
 
         bloquearFichaButton.onclick = () => {
             if (isFichaLocked) abrirModalSenha();
-            else { document.getElementById("bloquear-ficha-modal").style.display = "flex"; document.getElementById("senha-bloqueio-input").value = ""; document.getElementById("senha-bloqueio-input").focus(); }
+ else { document.getElementById("bloquear-ficha-modal").style.display = "flex"; document.getElementById("senha-bloqueio-input").value = ""; document.getElementById("senha-bloqueio-input").focus(); }
         };
-
-        function bloquearFicha() {
+ function bloquearFicha() {
             const senha = document.getElementById("senha-bloqueio-input").value;
-            if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
-            // Removed disadvantage check here, can be done elsewhere if needed
-            isFichaLocked = true; fichaPassword = senha;
+ if (senha.length !== 4 || !/^\d{4}$/.test(senha)) return alert("A senha deve ter exatamente 4 dígitos numéricos!");
+ // Removed disadvantage check here, can be done elsewhere if needed
+            isFichaLocked = true;
+ fichaPassword = senha;
             database.ref(`fichas/${currentFichaId}`).update({ isLocked: true, password: senha }).then(() => {
                 fecharModal("bloquear-ficha-modal"); alert("Ficha bloqueada com sucesso!"); atualizarBotaoBloquear();
             }).catch(error => console.error("Erro ao bloquear ficha:", error));
-        }
+ }
 
         function abrirModalSenha(element = null) {
-            document.getElementById("password-modal").style.display = "flex"; document.getElementById("senha-desbloqueio-input").value = ""; document.getElementById("senha-desbloqueio-input").focus();
+            document.getElementById("password-modal").style.display = "flex";
+ document.getElementById("senha-desbloqueio-input").value = ""; document.getElementById("senha-desbloqueio-input").focus();
             if (element) document.getElementById("password-modal").dataset.elementId = element.id; else delete document.getElementById("password-modal").dataset.elementId;
-        }
+ }
 
         function desbloquearFicha() {
             const senha = document.getElementById("senha-desbloqueio-input").value, modal = document.getElementById("password-modal"), elementId = modal.dataset.elementId;
-            if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
-            isFichaUnlocked = true; // Unlock temporarily
+ if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
+            isFichaUnlocked = true;
+ // Unlock temporarily
             if (currentFichaId !== "ficha-matriz" && senha !== senhaMatriz) {
                 // Ask if permanent unlock is desired
                 if(confirm("Senha correta! Deseja desbloquear a ficha permanentemente? (Cancelar para desbloqueio temporário)")) {
                     database.ref(`fichas/${currentFichaId}`).update({ isLocked: false, password: null }).then(() => {
-                         isFichaLocked = false; // Update local state
+                        isFichaLocked = false; // Update local state
                          fichaPassword = null; // Update local state
                          fecharModal("password-modal"); alert("Ficha desbloqueada permanentemente!"); atualizarBotaoBloquear();
                          // Trigger original action if needed
                          if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
                     }).catch(error => console.error("Erro ao desbloquear ficha:", error));
-                } else {
-                     fecharModal("password-modal"); alert("Ficha desbloqueada temporariamente!");
+ } else {
+                     fecharModal("password-modal");
+ alert("Ficha desbloqueada temporariamente!");
                      // Trigger original action if needed
-                     if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
+                     if (elementId === "reset-pontos") resetarPontos();
+ else if (elementId === "recomecar") recomecarFicha();
                 }
             } else { // Using GM password or on Matrix sheet
-                fecharModal("password-modal"); alert(`Ficha desbloqueada temporariamente ${senha === senhaMatriz ? 'com a senha matriz!' : ''}`);
-                // Trigger original action if needed
-                if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
+                fecharModal("password-modal");
+ alert(`Ficha desbloqueada temporariamente ${senha === senhaMatriz ? 'com a senha matriz!' : ''}`);
+ // Trigger original action if needed
+                if (elementId === "reset-pontos") resetarPontos();
+ else if (elementId === "recomecar") recomecarFicha();
             }
         }
 
 
         function cancelarDesbloqueio() {
             const modal = document.getElementById("password-modal"), elementId = modal.dataset.elementId;
-            // If an input triggered the lock, revert its value
+ // If an input triggered the lock, revert its value
             if (elementId && document.getElementById(elementId) && previousValues.has(document.getElementById(elementId))) {
-                 document.getElementById(elementId).value = previousValues.get(document.getElementById(elementId)) || "";
+                 document.getElementById(elementId).value = previousValues.get(document.getElementById(elementId)) ||
+ "";
             }
             fecharModal("password-modal");
-        }
+ }
 
 
         function verificarAlteracao(event) {
             const input = event.target;
-            // Store previous value *before* checking lock, only if different from current
+ // Store previous value *before* checking lock, only if different from current
             const currentVal = input.value;
-            if(!previousValues.has(input) || previousValues.get(input) !== currentVal) {
+ if(!previousValues.has(input) || previousValues.get(input) !== currentVal) {
                  // Find the value just before the input event started (might require more complex handling like tracking focus/blur)
                  // For simplicity, let's assume the value before 'beforeinput' is the one to revert to.
-                 // This might not be perfect if multiple inputs happen quickly.
+ // This might not be perfect if multiple inputs happen quickly.
                  // Let's capture on focus instead.
-                 // Updated logic: Capture on focus, check lock on input.
-            }
+ // Updated logic: Capture on focus, check lock on input.
+ }
 
              // Check lock on actual input attempt
              if (isFichaLocked && !isFichaUnlocked) {
-                 event.preventDefault(); // Prevent the input
+                 event.preventDefault();
+ // Prevent the input
                  // Revert to stored value if possible (use value captured on focus)
-                 input.value = previousValues.get(input) || "";
+                 input.value = previousValues.get(input) ||
+ "";
                  abrirModalSenha(input); // Pass the input itself for context if needed
              } else {
                 // Update previous value *after* successful input allowed
@@ -1285,7 +1631,8 @@
             }
         }
 
-        document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
+        document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input
+ => {
             input.addEventListener("focus", (event) => {
                 // Store value on focus to revert if needed
                 previousValues.set(event.target, event.target.value);
@@ -1295,49 +1642,63 @@
                 const inputTarget = event.target;
                 if (isFichaLocked && !isFichaUnlocked) {
                     // Prevent change and show password modal
-                    inputTarget.value = previousValues.get(inputTarget) || ""; // Revert
+                    inputTarget.value = previousValues.get(inputTarget) || "";
+ // Revert
                     abrirModalSenha(inputTarget);
-                } else {
+ } else {
                     // Allowed change, update previous value map for next potential revert
                     previousValues.set(inputTarget, inputTarget.value);
-                    // Trigger calculations and save
-                    if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) || 0; atualizarNivel(); }
-                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); } // Check PH moved inside calculate
-                    else if (inputTarget.id.includes("arma")) { calcularAtributos(); }
+ // Trigger calculations and save
+                    if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) ||
+ 0; atualizarNivel(); }
+                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos();
+ } // Check PH moved inside calculate
+                    else if (inputTarget.id.includes("arma")) { calcularAtributos();
+ }
                     // Handle inventory weight change separately if needed for peso total update
-                    else if (inputTarget.classList.contains('inventory-weight')) { calcularPesoTotal(); }
+                    else if (inputTarget.classList.contains('inventory-weight')) { calcularPesoTotal();
+ }
 
-                    salvarDados(); // Save on every valid input
+                    salvarDados();
+ // Save on every valid input
                 }
             });
-        });
+ });
         nomePersonagemInput.oninput = salvarDados; // Keep direct save for name
 
 
         characterImageInput.onchange = e => {
-            const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { characterImage.src = e.target.result; characterImage.style.display = "block"; salvarDados(); }; reader.readAsDataURL(file); }
+            const file = e.target.files[0];
+ if (file) { const reader = new FileReader(); reader.onload = e => { characterImage.src = e.target.result; characterImage.style.display = "block"; salvarDados();
+ }; reader.readAsDataURL(file); }
         };
-        document.getElementById("excluir-ficha").onclick = () => {
+ document.getElementById("excluir-ficha").onclick = () => {
             if (currentFichaId === "ficha-matriz") return alert("A ficha matriz não pode ser excluída!");
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(document.getElementById("excluir-ficha")); // Pass element
+ if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(document.getElementById("excluir-ficha")); // Pass element
             if (confirm("Tem certeza que deseja excluir esta ficha?"))
                 database.ref(`fichas/${currentFichaId}`).remove().then(() => { currentFichaId = "ficha-matriz"; carregarFicha(currentFichaId); atualizarAbasFichas(); });
-        };
-        let isDragging = false, currentX = 0, currentY = 0, initialX, initialY; // Initialize currentX/Y
+ };
+        let isDragging = false, currentX = 0, currentY = 0, initialX, initialY;
+ // Initialize currentX/Y
         // Get initial position on first load correctly
         document.addEventListener('DOMContentLoaded', () => {
             currentX = diceContainer.offsetLeft;
             currentY = diceContainer.offsetTop;
         });
-        diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
-        document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
-        document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} }; // Check isDragging before resetting cursor
+ diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY;
+ diceContainer.style.cursor = "grabbing"; };
+        document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX;
+ currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
+ document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} };
+ // Check isDragging before resetting cursor
 
 
         database.ref('dadosRolados').on('child_added', snapshot => { const dado = snapshot.val(); if (dado.fichaId !== currentFichaId) showNotification(`${dado.nomeFicha} rolou: ${dado.resultado}`, "normal-result"); });
-        diceRoll.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(diceRoll); // Pass element
-            diceRoll.textContent = "Rolling..."; diceResult.style.display = "none"; diceRoll.classList.remove("critical-failure", "critical-success");
+ diceRoll.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(diceRoll);
+ // Pass element
+            diceRoll.textContent = "Rolling..."; diceResult.style.display = "none";
+ diceRoll.classList.remove("critical-failure", "critical-success");
             setTimeout(() => {
                 const roll = Math.floor(Math.random() * 20) + 1, fichaNome = fichas[currentFichaId]?.nomeFicha || "Sem Nome";
                 diceRoll.textContent = roll; let notificationClass = "normal-result", notificationMsg = `${fichaNome} rolou: ${roll}`;
@@ -1350,18 +1711,19 @@
         };
 
         vantagensDesvantagensBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(vantagensDesvantagensBtn); // Pass element
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(vantagensDesvantagensBtn);
+ // Pass element
             tempVantagensSelecionadas = [...vantagensSelecionadas]; tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
-            vantagensDesvantagensPanel.style.display = "block"; document.getElementById("salvar-vantagens-btn").style.display = "none"; atualizarVantagensDesvantagensPanel();
+ vantagensDesvantagensPanel.style.display = "block"; document.getElementById("salvar-vantagens-btn").style.display = "none"; atualizarVantagensDesvantagensPanel();
         };
         fecharPaginaBtn.onclick = () => { vantagensDesvantagensPanel.style.display = "none"; };
-        salvarVantagensBtn.onclick = () => { // Button specific to advantages panel
+ salvarVantagensBtn.onclick = () => { // Button specific to advantages panel
              document.getElementById("salvar-modal-texto").textContent = "Se salvar, as alterações de Vantagens/Desvantagens não poderão ser desfeitas.";
-             document.getElementById("salvar-vantagens-modal").style.display = "flex";
+ document.getElementById("salvar-vantagens-modal").style.display = "flex";
         };
          salvarRacasBtn.onclick = () => { // Button specific to races panel
              document.getElementById("salvar-modal-texto").textContent = "Se salvar, a alteração de Raça não poderá ser desfeita.";
-             document.getElementById("salvar-vantagens-modal").style.display = "flex";
+ document.getElementById("salvar-vantagens-modal").style.display = "flex";
         };
 
         // Combined Save Logic
@@ -1369,129 +1731,144 @@
             if (racasPanel.style.display === "block") { // Save from Races panel
                 if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
                     const raca = racasData.find(r => r.nome === tempRacaSelecionada);
-                    // Re-verify PH just in case, using the temp state
+ // Re-verify PH just in case, using the temp state
                     if (raca && calcularPontosVantagemTemp() >= 0) {
-                        racaSelecionada = tempRacaSelecionada; // Commit the temporary selection
+                        racaSelecionada = tempRacaSelecionada;
+ // Commit the temporary selection
                         racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
                         racaDescricaoInput.value = raca.vantagens.join("\n\n");
                         salvarDados(); // Save the new permanent state
                         pontosVantagemSpan.textContent = getPontosVantagem(); // Update display based on new permanent state
                         racasPanel.style.display = "none";
                         fecharModal("salvar-vantagens-modal");
-                        calcularAtributos(); // Recalculate based on new state
+                        calcularAtributos(); // Recalculate based on
+ new state
                     } else if (raca){ // PH check failed
                         alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
                         fecharModal("salvar-vantagens-modal"); // Close modal but don't close panel
-                    } else { // Should not happen if selection logic is correct
+                        } else { // Should not happen if selection logic is correct
                          fecharModal("salvar-vantagens-modal");
                          racasPanel.style.display = "none";
-                    }
+ }
                 } else { // No change in race selection
-                    racasPanel.style.display = "none"; fecharModal("salvar-vantagens-modal");
+                    racasPanel.style.display = "none";
+ fecharModal("salvar-vantagens-modal");
                 }
             } else { // Save from Advantages/Disadvantages panel
                 if (tempDesvantagensSelecionadas.length > 3) {
                      alert("Você pode ter no máximo 3 desvantagens!");
-                     return fecharModal("salvar-vantagens-modal"); // Close modal but don't close panel
+ return fecharModal("salvar-vantagens-modal"); // Close modal but don't close panel
                 }
                  // Check PH for advantages/disadvantages
                 if (calcularPontosVantagemTemp() < 0) {
                      alert("Pontos de Vantagem insuficientes com as vantagens selecionadas!");
-                     return fecharModal("salvar-vantagens-modal"); // Close modal but don't close panel
+ return fecharModal("salvar-vantagens-modal"); // Close modal but don't close panel
                 }
 
                 vantagensSelecionadas = [...tempVantagensSelecionadas];
-                desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
+ desvantagensSelecionadas = [...tempDesvantagensSelecionadas];
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = "";
                 vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
-                desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
-                pontosVantagemSpan.textContent = getPontosVantagem(); // Update based on new permanent state
+ desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
+ pontosVantagemSpan.textContent = getPontosVantagem(); // Update based on new permanent state
                 salvarDados();
-                vantagensDesvantagensPanel.style.display = "none";
+ vantagensDesvantagensPanel.style.display = "none";
                 fecharModal("salvar-vantagens-modal");
                 calcularAtributos();
             }
         };
-
-
-        function atualizarVantagensDesvantagensPanel() {
+ function atualizarVantagensDesvantagensPanel() {
             vantagensList.innerHTML = "<h3>Vantagens</h3>"; desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
-            vantagensData.forEach(v => {
+ vantagensData.forEach(v => {
                 const div = document.createElement("div"); div.className = "vantagem-item"; div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`;
                 if (tempVantagensSelecionadas.includes(v.nome)) div.classList.add("comprada");
                 div.onclick = () => {
-                    if (vantagensSelecionadas.includes(v.nome)) alert("Vantagem salva só pode ser removida com permissão do GM.");
+                    if (vantagensSelecionadas.includes(v.nome)) alert("Vantagem salva só pode ser removida com
+ permissão do GM.");
                     else if (tempVantagensSelecionadas.includes(v.nome)) tempVantagensSelecionadas = tempVantagensSelecionadas.filter(t => t !== v.nome);
                     else {
                         if (v.restricao === "inicio" && nivel > 0) return alert("Compra dessa vantagem é somente no nível 0.");
-                         // Check PH before adding temporarily
+                        // Check PH before adding temporarily
                         if ((calcularPontosVantagemTemp() - v.custo) >= 0) tempVantagensSelecionadas.push(v.nome); else alert("PH insuficientes!");
                     }
-                    atualizarVantagensDesvantagensPanel(); document.getElementById("salvar-vantagens-btn").style.display = "block";
+                    atualizarVantagensDesvantagensPanel();
+ document.getElementById("salvar-vantagens-btn").style.display = "block";
                 }; vantagensList.appendChild(div);
             });
             desvantagensData.forEach(d => {
                 const div = document.createElement("div"); div.className = "desvantagem-item"; div.textContent = `${d.nome} - Ganho: ${d.ganho} PH - ${d.descricao}`;
                 if (tempDesvantagensSelecionadas.includes(d.nome)) div.classList.add("comprada");
                 div.onclick = () => {
-                    if (desvantagensSelecionadas.includes(d.nome)) alert("Desvantagem salva só pode ser removida com permissão do GM.");
+                    if (desvantagensSelecionadas.includes(d.nome)) alert("Desvantagem
+ salva só pode ser removida com permissão do GM.");
                     else if (tempDesvantagensSelecionadas.includes(d.nome)) tempDesvantagensSelecionadas = tempDesvantagensSelecionadas.filter(t => t !== d.nome);
                     else { if (tempDesvantagensSelecionadas.length < 3) tempDesvantagensSelecionadas.push(d.nome); else alert("Limite de 3 desvantagens!"); }
                     atualizarVantagensDesvantagensPanel(); document.getElementById("salvar-vantagens-btn").style.display = "block";
                 }; desvantagensList.appendChild(div);
             });
-            document.getElementById("ph-temp").textContent = calcularPontosVantagemTemp();
+ document.getElementById("ph-temp").textContent = calcularPontosVantagemTemp();
         }
 
         function removerVantagem(v) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-            if (confirm(`Deseja remover a vantagem "${v}"?`)) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+ if (confirm(`Deseja remover a vantagem "${v}"?`)) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+ document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v); Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
+                        vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v);
+ Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
                         pontosVantagemSpan.textContent = getPontosVantagem(); database.ref(`fichas/${currentFichaId}/vantagens`).set(vantagensSelecionadas.join("\n"));
                         fecharModal("senha-gm-modal"); calcularAtributos();
-                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
+                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal");
+ }
                 };
-            }
+ }
         }
         function removerDesvantagem(d) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-            if (confirm(`Deseja remover a desvantagem "${d}"?`)) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+ if (confirm(`Deseja remover a desvantagem "${d}"?`)) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+ document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d); Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
+                        desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d);
+ Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
                         pontosVantagemSpan.textContent = getPontosVantagem(); database.ref(`fichas/${currentFichaId}/desvantagens`).set(desvantagensSelecionadas.join("\n"));
                         fecharModal("senha-gm-modal"); calcularAtributos();
-                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
+                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal");
+ }
                 };
-            }
+ }
         }
 
-        function calcularPesoTotal() { pesoTotalSpan.textContent = Array.from(inventarioSlots.querySelectorAll(".inventory-weight")).reduce((total, weight) => total + (parseFloat(weight.value) || 0), 0).toFixed(1); }
-        inventarioSlots.addEventListener("input", (event) => { if(event.target.classList.contains('inventory-weight')){ calcularPesoTotal(); salvarDados(); } }); // Save when weight changes
+        function calcularPesoTotal() { pesoTotalSpan.textContent = Array.from(inventarioSlots.querySelectorAll(".inventory-weight")).reduce((total, weight) => total + (parseFloat(weight.value) || 0), 0).toFixed(1);
+ }
+        inventarioSlots.addEventListener("input", (event) => { if(event.target.classList.contains('inventory-weight')){ calcularPesoTotal(); salvarDados(); } });
+ // Save when weight changes
 
-        anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; };
+        anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ?
+ "none" : "block"; };
         document.addEventListener('click', (event) => { if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target)) anotacoesTextarea.style.display = 'none'; });
-        anotacoesTextarea.oninput = salvarDados;
+ anotacoesTextarea.oninput = salvarDados;
 
         adicionarMagiaBtn.onclick = () => {
              if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
-            if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; magiasList.appendChild(input); input.addEventListener('input', salvarDados); /* Add listener */ salvarDados(); } // Save after adding
+ if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome";
+ input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; magiasList.appendChild(input); input.addEventListener('input', salvarDados); /* Add listener */ salvarDados();
+ } // Save after adding
             else alert("Limite de 20 magias/habilidades!");
-        };
+ };
         // Add listener to initially loaded magic inputs too
         magiasList.querySelectorAll('.magia-nome').forEach(input => input.addEventListener('input', salvarDados));
-
-
-        racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
+ racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block";
+ document.getElementById("salvar-racas-btn").style.display = "none"; };
         fecharRacasBtn.onclick = () => { racasPanel.style.display = "none"; };
-        // Save button onclick handler is combined now (confirmarSalvarBtn)
+ // Save button onclick handler is combined now (confirmarSalvarBtn)
 
         function atualizarRacasPanel() {
-            racasList.innerHTML = ""; racasData.forEach(r => {
+            racasList.innerHTML = "";
+ racasData.forEach(r => {
                 const div = document.createElement("div"); div.className = "raca-item";
                 div.innerHTML = `<h3>${r.nome}</h3><p>${r.descricao}</p><p><strong>Vantagens:</strong></p><ul>${r.vantagens.map(v => `<li>${v}</li>`).join("")}</ul>`;
                 if (tempRacaSelecionada === r.nome) div.classList.add("comprada");
@@ -1499,108 +1876,159 @@
                     if (racaSelecionada && racaSelecionada !== r.nome) alert("Raça salva só pode ser alterada com permissão do GM.");
                     else if (tempRacaSelecionada === r.nome) { tempRacaSelecionada = null; } // Desselecionar
                     else { // Tentar selecionar
-                        // Calcula PH disponível *antes* de selecionar a nova raça (considerando remover a antiga temporária, se houver)
-                        let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo || 0) : 0);
+                        // Calcula
+ PH disponível *antes* de selecionar a nova raça (considerando remover a antiga temporária, se houver)
+                        let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo ||
+ 0) : 0);
                         if (phDisponivelParaNovaRaca >= r.custo) {
-                            tempRacaSelecionada = r.nome; // Seleciona a nova raça temporariamente
+                            tempRacaSelecionada = r.nome;
+ // Seleciona a nova raça temporariamente
                              document.getElementById("confirmar-compra-modal").style.display = "flex";
-                             document.getElementById("confirmar-compra-btn").onclick = () => {
-                                 atualizarRacasPanel(); // Re-render com a seleção temp
-                                 document.getElementById("salvar-racas-btn").style.display = "block"; // Habilita salvar
+ document.getElementById("confirmar-compra-btn").onclick = () => {
+                                 atualizarRacasPanel();
+ // Re-render com a seleção temp
+                                 document.getElementById("salvar-racas-btn").style.display = "block";
+ // Habilita salvar
                                  fecharModal("confirmar-compra-modal");
-                             };
+ };
                         } else { alert("PH insuficientes!"); tempRacaSelecionada = null; } // Reset temp if PH fails
                     }
-                    atualizarRacasPanel(); // Re-render to show selection/deselection
-                    document.getElementById("salvar-racas-btn").style.display = tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada ? "block" : "none"; // Mostra botão salvar se mudou E É DIFERENTE DA SALVA
-                }; racasList.appendChild(div);
+                    atualizarRacasPanel();
+ // Re-render to show selection/deselection
+                    document.getElementById("salvar-racas-btn").style.display = tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada ?
+ "block" : "none"; // Mostra botão salvar se mudou E É DIFERENTE DA SALVA
+                };
+ racasList.appendChild(div);
             });
              // Atualiza PH temporário no painel de raças
              phTempRacaSpan.textContent = calcularPontosVantagemTemp();
-        }
+ }
 
 
-        function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex"; }
+        function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex";
+ }
         function excluirRacaSelecionadaModal() {
-            fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            fecharModal('raca-opcoes-modal');
+ if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+                document.getElementById("senha-gm-modal").style.display = "flex";
+ document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        racaSelecionada = null; tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
+                        racaSelecionada = null;
+ tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                         pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal"); calcularAtributos();
-                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
+ } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
-            }
+ }
         }
         function editarRacaSelecionadaModal() {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(); fecharModal('raca-opcoes-modal');
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+ fecharModal('raca-opcoes-modal');
             document.getElementById("editar-raca-modal").style.display = "flex"; document.getElementById("editar-raca-nome").value = racaNomeSpan.textContent;
             document.getElementById("editar-raca-descricao").value = racaDescricaoInput.value;
-        }
+ }
         function salvarEdicaoRaca() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
-            if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+ if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
+                document.getElementById("senha-gm-modal").style.display = "flex";
+ document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value; racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
+                        racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value;
+ racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
                         fecharModal('editar-raca-modal'); salvarDados(); fecharModal("senha-gm-modal");
-                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
+                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal");
+ }
                 };
-            }
+ }
         }
 
-        classesBtn.onclick = () => { classesPanel.style.display = "block"; };
+        classesBtn.onclick = () => { classesPanel.style.display = "block";
+ };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
-        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); }; // Save theme preference
-        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); }; // Save theme preference
+ luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); };
+ // Save theme preference
+        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); };
+ // Save theme preference
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
-
-        function showNotification(message, type) {
-            notification.textContent = message; notification.className = type; notification.style.display = "block";
+ function showNotification(message, type) {
+            notification.textContent = message;
+ notification.className = type; notification.style.display = "block";
             setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
-        }
+ }
 
         document.getElementById("historico-dados-btn").onclick = () => { document.getElementById("historico-dados-panel").style.display = "block"; };
-        document.addEventListener('click', (event) => { const panel = document.getElementById("historico-dados-panel"); if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target)) panel.style.display = "none"; });
-        database.ref('dadosRolados').on('value', snapshot => { const dados = snapshot.val(), lista = document.getElementById("historico-lista"); lista.innerHTML = ""; if (dados) { const keys = Object.keys(dados).reverse(); /* Show newest first */ keys.forEach(key => { const dado = dados[key], div = document.createElement("div"); div.textContent = `${dado.nomeFicha} rolou: ${dado.resultado}`; lista.appendChild(div); });} });
-        document.getElementById("excluir-historico-btn").onclick = () => { document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = ""; document.getElementById("confirmar-senha-gm-btn").onclick = () => { if (document.getElementById("senha-gm-input").value === senhaMatriz) { database.ref('dadosRolados').remove().then(() => { alert("Histórico de dados excluído!"); fecharModal("senha-gm-modal"); }); } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); } }; };
-
-        // Chat Functionality (unchanged)
-        chatBtn.onclick = () => { if (!chatPassword) { document.getElementById("chat-password-modal").style.display = "flex"; } else { document.getElementById("open-chat-modal").style.display = "flex"; } };
-        function definirSenhaChat() { const senha = document.getElementById("chat-senha-input").value, confirmarSenha = document.getElementById("chat-confirmar-senha-input").value; if (senha !== confirmarSenha) return alert("As senhas não coincidem."); if (senha.length < 4) return alert("A senha deve ter pelo menos 4 caracteres."); chatPassword = senha; database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => { fecharModal("chat-password-modal"); alert("Senha do chat definida!"); atualizarEstadoChatBotao(); }).catch(error => console.error("Erro ao definir senha do chat:", error)); }
-        function abrirChat() { const senhaDigitada = document.getElementById("abrir-chat-senha-input").value; if (senhaDigitada === chatPassword) { fecharModal("open-chat-modal"); document.getElementById("chat-modal").style.display = "flex"; isChatOpen = true; selectedChatUser = null; document.getElementById("conversation-area").innerHTML = ""; marcarMensagensComoLidas(); } else { alert("Senha do chat incorreta."); } } // Marcar como lidas ao abrir
-        function atualizarEstadoChatBotao() { chatBtn.textContent = chatPassword ? "💬 Chat" : "💬 Definir Chat"; }
-        function atualizarListaFichasChat() { availableFichasDiv.innerHTML = ""; for (const fichaId in fichas) { if (fichaId !== "ficha-matriz" && fichaId !== currentFichaId) { const ficha = fichas[fichaId], userDiv = document.createElement("div"); userDiv.className = "user-item"; userDiv.textContent = ficha.nomeFicha || "Sem Nome"; userDiv.dataset.fichaId = fichaId; userDiv.onclick = () => iniciarConversa(fichaId, ficha.nomeFicha || "Sem Nome"); availableFichasDiv.appendChild(userDiv); } } }
-        function iniciarConversa(otherFichaId, otherFichaNome) { selectedChatUser = otherFichaId; document.getElementById("conversation-area").innerHTML = `<h3 style='text-align: center; font-family: MedievalSharp, serif;'>Conversa com ${otherFichaNome}</h3><div id="mensagens" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column-reverse;"></div>`; /* Reverse display */ carregarMensagens(otherFichaId); marcarMensagensComoLidas(otherFichaId); } // Marcar como lidas ao iniciar
-        function enviarMensagem() { if (!selectedChatUser) return alert("Selecione uma ficha para enviar a mensagem."); const mensagem = mensagemInput.value.trim(); if (mensagem) { const chatRef = database.ref('mensagens').child(getChatId(currentFichaId, selectedChatUser)).push(); chatRef.set({ senderId: currentFichaId, receiverId: selectedChatUser, content: mensagem, timestamp: firebase.database.ServerValue.TIMESTAMP, read: false }); mensagemInput.value = ""; } } // Add read: false
-        function carregarMensagens(otherFichaId) { const mensagensDiv = document.getElementById("mensagens"); mensagensDiv.innerHTML = ''; /* Clear previous */ database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => { const msgData = snapshot.val(), msgContainer = document.createElement("div"); msgContainer.className = "message-container"; const senderName = document.createElement("div"); senderName.className = "sender-name"; senderName.textContent = fichas[msgData.senderId]?.nomeFicha || 'Desconhecido'; const msgDiv = document.createElement("div"); msgDiv.className = `message ${msgData.senderId === currentFichaId ? 'sent' : 'received'}`; msgDiv.textContent = msgData.content; msgContainer.appendChild(senderName); msgContainer.appendChild(msgDiv); mensagensDiv.insertBefore(msgContainer, mensagensDiv.firstChild); /* Insert at top for reverse display */ }); }
-        function getChatId(id1, id2) { return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`; }
-        function marcarMensagensComoLidas(otherUserId = null) { if (!currentFichaId) return; database.ref('mensagens').once('value', (snapshot) => { const updates = {}; snapshot.forEach((chat) => { const chatId = chat.key; if (chatId.includes(currentFichaId)) { const otherId = chatId.replace(currentFichaId, '').replace('_', ''); // Find other user in chat ID
+ document.addEventListener('click', (event) => { const panel = document.getElementById("historico-dados-panel"); if (panel.style.display === "block" && !panel.contains(event.target) && !document.getElementById("historico-dados-btn").contains(event.target)) panel.style.display = "none"; });
+ database.ref('dadosRolados').on('value', snapshot => { const dados = snapshot.val(), lista = document.getElementById("historico-lista"); lista.innerHTML = ""; if (dados) { const keys = Object.keys(dados).reverse(); /* Show newest first */ keys.forEach(key => { const dado = dados[key], div = document.createElement("div"); div.textContent = `${dado.nomeFicha} rolou: ${dado.resultado}`; lista.appendChild(div); });} });
+ document.getElementById("excluir-historico-btn").onclick = () => { document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
+ document.getElementById("confirmar-senha-gm-btn").onclick = () => { if (document.getElementById("senha-gm-input").value === senhaMatriz) { database.ref('dadosRolados').remove().then(() => { alert("Histórico de dados excluído!"); fecharModal("senha-gm-modal"); });
+ } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); } }; };
+ // Chat Functionality (unchanged)
+        chatBtn.onclick = () => { if (!chatPassword) { document.getElementById("chat-password-modal").style.display = "flex";
+ } else { document.getElementById("open-chat-modal").style.display = "flex"; } };
+        function definirSenhaChat() { const senha = document.getElementById("chat-senha-input").value, confirmarSenha = document.getElementById("chat-confirmar-senha-input").value;
+ if (senha !== confirmarSenha) return alert("As senhas não coincidem."); if (senha.length < 4) return alert("A senha deve ter pelo menos 4 caracteres.");
+ chatPassword = senha; database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => { fecharModal("chat-password-modal"); alert("Senha do chat definida!"); atualizarEstadoChatBotao(); }).catch(error => console.error("Erro ao definir senha do chat:", error));
+ }
+        function abrirChat() { const senhaDigitada = document.getElementById("abrir-chat-senha-input").value;
+ if (senhaDigitada === chatPassword) { fecharModal("open-chat-modal"); document.getElementById("chat-modal").style.display = "flex"; isChatOpen = true; selectedChatUser = null; document.getElementById("conversation-area").innerHTML = ""; marcarMensagensComoLidas();
+ } else { alert("Senha do chat incorreta."); } } // Marcar como lidas ao abrir
+        function atualizarEstadoChatBotao() { chatBtn.textContent = chatPassword ?
+ "💬 Chat" : "💬 Definir Chat"; }
+        function atualizarListaFichasChat() { availableFichasDiv.innerHTML = "";
+ for (const fichaId in fichas) { if (fichaId !== "ficha-matriz" && fichaId !== currentFichaId) { const ficha = fichas[fichaId], userDiv = document.createElement("div");
+ userDiv.className = "user-item"; userDiv.textContent = ficha.nomeFicha || "Sem Nome"; userDiv.dataset.fichaId = fichaId;
+ userDiv.onclick = () => iniciarConversa(fichaId, ficha.nomeFicha || "Sem Nome"); availableFichasDiv.appendChild(userDiv);
+ } } }
+        function iniciarConversa(otherFichaId, otherFichaNome) { selectedChatUser = otherFichaId;
+ document.getElementById("conversation-area").innerHTML = `<h3 style='text-align: center; font-family: MedievalSharp, serif;'>Conversa com ${otherFichaNome}</h3><div id="mensagens" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column-reverse;"></div>`;
+ /* Reverse display */ carregarMensagens(otherFichaId); marcarMensagensComoLidas(otherFichaId); } // Marcar como lidas ao iniciar
+        function enviarMensagem() { if (!selectedChatUser) return alert("Selecione uma ficha para enviar a mensagem.");
+ const mensagem = mensagemInput.value.trim(); if (mensagem) { const chatRef = database.ref('mensagens').child(getChatId(currentFichaId, selectedChatUser)).push();
+ chatRef.set({ senderId: currentFichaId, receiverId: selectedChatUser, content: mensagem, timestamp: firebase.database.ServerValue.TIMESTAMP, read: false }); mensagemInput.value = "";
+ } } // Add read: false
+        function carregarMensagens(otherFichaId) { const mensagensDiv = document.getElementById("mensagens");
+ mensagensDiv.innerHTML = ''; /* Clear previous */ database.ref('mensagens').child(getChatId(currentFichaId, otherFichaId)).orderByChild('timestamp').on('child_added', snapshot => { const msgData = snapshot.val(), msgContainer = document.createElement("div"); msgContainer.className = "message-container"; const senderName = document.createElement("div"); senderName.className = "sender-name"; senderName.textContent = fichas[msgData.senderId]?.nomeFicha || 'Desconhecido'; const msgDiv = document.createElement("div"); msgDiv.className = `message ${msgData.senderId === currentFichaId ? 'sent' : 'received'}`; msgDiv.textContent = msgData.content; msgContainer.appendChild(senderName); msgContainer.appendChild(msgDiv); mensagensDiv.insertBefore(msgContainer, mensagensDiv.firstChild); /* Insert at top for reverse display */ });
+ }
+        function getChatId(id1, id2) { return id1 < id2 ? `${id1}_${id2}` : `${id2}_${id1}`;
+ }
+        function marcarMensagensComoLidas(otherUserId = null) { if (!currentFichaId) return;
+ database.ref('mensagens').once('value', (snapshot) => { const updates = {}; snapshot.forEach((chat) => { const chatId = chat.key; if (chatId.includes(currentFichaId)) { const otherId = chatId.replace(currentFichaId, '').replace('_', ''); // Find other user in chat ID
          // Mark as read only if chat with specific user is open, or mark all if no specific user provided (e.g., initial load)
-        if (!otherUserId || otherId === otherUserId) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { updates[`${chatId}/${msgSnapshot.key}/read`] = true; } }); } } }); if (Object.keys(updates).length > 0) database.ref('mensagens').update(updates); }); }
-        function verificarNovasMensagens() { if (!currentFichaId) return; database.ref('mensagens').on('value', (snapshot) => { let unreadCount = 0; let shouldPlaySound = false; snapshot.forEach((chat) => { const chatId = chat.key; if (chatId.includes(currentFichaId)) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { unreadCount++; // If chat isn't open OR chat is open but not with this sender
+        if (!otherUserId || otherId === otherUserId) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { updates[`${chatId}/${msgSnapshot.key}/read`] = true; } }); }
+ } }); if (Object.keys(updates).length > 0) database.ref('mensagens').update(updates); }); }
+        function verificarNovasMensagens() { if (!currentFichaId) return;
+ database.ref('mensagens').on('value', (snapshot) => { let unreadCount = 0; let shouldPlaySound = false; snapshot.forEach((chat) => { const chatId = chat.key; if (chatId.includes(currentFichaId)) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { unreadCount++; // If chat isn't open OR chat is open but not with this sender
         if (!isChatOpen || (isChatOpen && selectedChatUser !== msg.senderId)) { shouldPlaySound = true; } } }); } }); chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0; chatBtn.style.setProperty('--unread-count', `"${unreadCount}"`); // For potential CSS display
-        if (shouldPlaySound && document.getElementById("new-message-sound")) { newMessageSound.play().catch(e => console.log("Erro ao tocar som:", e)); } }); }
+        if (shouldPlaySound && document.getElementById("new-message-sound")) { newMessageSound.play().catch(e => console.log("Erro ao tocar som:", e)); } });
+ }
 
 
         // Background Functionality (unchanged)
-        planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex"; };
-        function aplicarPlanoDeFundo() { const file = backgroundImageInput.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { const imageUrl = e.target.result; document.body.style.backgroundImage = `url('${imageUrl}')`; const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); }; reader.readAsDataURL(file); } else if (document.body.style.backgroundImage !== 'none') { const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); } else { alert("Nenhuma imagem selecionada."); } }
-        function excluirPlanoDeFundo() { if (confirm("Remover imagem de fundo?")) { document.body.style.backgroundImage = 'none'; salvarDados(); fecharModal('background-modal'); } }
-        function aplicarPlanoDeFundoInicial() { const bgImage = fichas[currentFichaId]?.backgroundImage; const bgSize = fichas[currentFichaId]?.backgroundSize || 'cover'; if (currentFichaId && fichas[currentFichaId] && bgImage) { document.body.style.backgroundImage = `url('${bgImage}')`; document.body.style.backgroundSize = bgSize; } else { document.body.style.backgroundImage = 'none'; } }
+        planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex";
+ };
+        function aplicarPlanoDeFundo() { const file = backgroundImageInput.files[0]; if (file) { const reader = new FileReader();
+ reader.onload = e => { const imageUrl = e.target.result; document.body.style.backgroundImage = `url('${imageUrl}')`; const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados();
+ fecharModal('background-modal'); }; reader.readAsDataURL(file); } else if (document.body.style.backgroundImage !== 'none') { const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal');
+ } else { alert("Nenhuma imagem selecionada."); } }
+        function excluirPlanoDeFundo() { if (confirm("Remover imagem de fundo?")) { document.body.style.backgroundImage = 'none';
+ salvarDados(); fecharModal('background-modal'); } }
+        function aplicarPlanoDeFundoInicial() { const bgImage = fichas[currentFichaId]?.backgroundImage;
+ const bgSize = fichas[currentFichaId]?.backgroundSize || 'cover'; if (currentFichaId && fichas[currentFichaId] && bgImage) { document.body.style.backgroundImage = `url('${bgImage}')`; document.body.style.backgroundSize = bgSize;
+ } else { document.body.style.backgroundImage = 'none'; } }
 
         // Background Color Functionality
-        corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' || backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
+        corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' ||
+ backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
         backgroundColorSelector.addEventListener('click', (event) => { if (event.target.classList.contains('color-option')) { const color = event.target.dataset.color; document.body.style.backgroundColor = color; salvarDados(); backgroundColorSelector.style.display = 'none'; document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active')); event.target.classList.add('active'); } });
-        function aplicarCorDeFundoInicial() { const bgColor = fichas[currentFichaId]?.backgroundColor; if (currentFichaId && fichas[currentFichaId] && bgColor) { document.body.style.backgroundColor = bgColor; document.querySelectorAll('#background-color-selector .color-option').forEach(option => { option.classList.toggle('active', option.dataset.color === bgColor); }); } else { document.body.style.backgroundColor = '#f0e6d2'; /* Default color */ } }
+ function aplicarCorDeFundoInicial() { const bgColor = fichas[currentFichaId]?.backgroundColor; if (currentFichaId && fichas[currentFichaId] && bgColor) { document.body.style.backgroundColor = bgColor;
+ document.querySelectorAll('#background-color-selector .color-option').forEach(option => { option.classList.toggle('active', option.dataset.color === bgColor); }); } else { document.body.style.backgroundColor = '#f0e6d2';
+ /* Default color */ } }
         // Close color picker if clicking outside
         document.addEventListener('click', function(event) { if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) { backgroundColorSelector.style.display = 'none'; } });
-
-
-        carregarFichas();
+ carregarFichas();
     </script>
 </body>
 </html>
