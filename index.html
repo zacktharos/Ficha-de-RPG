@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -13,13 +14,14 @@
             font-family: 'Inter', sans-serif;
             background-color: #f0e6d2; /* Cor de pergaminho padrão */
             color: #000;
-            display: flex;
+            /* display: flex; REMOVED display:flex from body if not strictly needed for direct children alignment */
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 20px; /* Padding on body can affect layout with fixed bg, consider moving to main container if needed */
             background-image: none;
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* Makes the background fixed to the viewport */
             transition: background 0.3s, color 0.3s;
         }
         body.dark-mode {
@@ -86,7 +88,7 @@
         #ficha-container {
             background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
-            margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
+            margin: 80px auto 20px; /* Auto margins center it */ border: 2px solid #b8860b; position: relative; z-index: 1;
         }
         body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
@@ -693,13 +695,15 @@
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
-                <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button> </div>
+                <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
+            </div>
 
             <div class="theme-color-container">
                 <button id="lua-btn" class="botao icon-btn">🌙</button>
                 <button id="sol-btn" class="botao icon-btn">☀️</button>
                 <div id="cor-fundo-btn-wrapper" style="display: inline-block; position: relative;">
-                     <button id="cor-fundo-btn" class="botao icon-btn">🎨</button> <div id="background-color-selector">
+                     <button id="cor-fundo-btn" class="botao icon-btn">🎨</button>
+                     <div id="background-color-selector">
                           <div class="color-option" style="background-color: #800000;" data-color="#800000"></div>
                           <div class="color-option" style="background-color: #000080;" data-color="#000080"></div>
                           <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
@@ -711,7 +715,9 @@
                      </div>
                 </div>
             </div>
-        </div> </div> <button id="anotacoes-btn">Anotações</button>
+        </div>
+    </div>
+    <button id="anotacoes-btn">Anotações</button>
     <textarea id="anotacoes-textarea" placeholder="Suas anotações aqui..."></textarea>
     <button id="historico-dados-btn">Histórico de dados</button>
     <div id="historico-dados-panel">
@@ -729,7 +735,8 @@
     </div>
     <div id="racas-panel">
         <h2>Raças</h2>
-        <div id="ph-temp-raca-container" style="text-align: center; margin-bottom: 10px;">Pontos de Vantagem Temporários: <span id="ph-temp-raca">0</span></div> <div id="racas-list"></div>
+        <div id="ph-temp-raca-container" style="text-align: center; margin-bottom: 10px;">Pontos de Vantagem Temporários: <span id="ph-temp-raca">0</span></div>
+        <div id="racas-list"></div>
         <button id="salvar-racas-btn">SALVAR</button>
         <button id="fechar-racas-btn">Fechar Página</button>
     </div>
@@ -768,9 +775,11 @@
             <button class="cancel-btn" onclick="fecharModal('confirmar-compra-modal')">Não</button>
         </div>
     </div>
-    <div id="salvar-vantagens-modal" class="modal"> <div class="modal-content">
+    <div id="salvar-vantagens-modal" class="modal">
+        <div class="modal-content">
             <h3 id="salvar-modal-texto">Se salvar, as alterações não poderão ser desfeitas.</h3>
-            <button class="confirm-btn" id="confirmar-salvar-btn">OK</button> <button class="cancel-btn" onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
+            <button class="confirm-btn" id="confirmar-salvar-btn">OK</button>
+            <button class="cancel-btn" onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
         </div>
     </div>
     <div id="senha-gm-modal" class="modal">
@@ -837,6 +846,7 @@
     <div id="notification"></div>
     <audio id="new-message-sound" preload="auto">
         <source src="notification_sound.mp3" type="audio/mpeg">
+        <!-- Provide a fallback or handle audio loading errors if needed -->
     </audio>
     <div id="background-modal" class="modal">
         <div class="modal-content">
@@ -855,13 +865,14 @@
     </div>
     <script>
         const firebaseConfig = {
-            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI", // Atenção: Chaves hardcoded podem ser um risco de segurança.
-            authDomain: "ficha-de-rpg-b9685.firebaseapp.com",
-            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com",
-            projectId: "ficha-de-rpg-b9685",
-            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app",
-            messagingSenderId: "528610398062",
-            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f"
+            // IMPORTANT: Replace with your actual Firebase config values
+            apiKey: "AIzaSyBbbwbwPXv6gztkyP3TXK-DtooEI7FcClI", // Replace with your real API key
+            authDomain: "ficha-de-rpg-b9685.firebaseapp.com", // Replace with your real auth domain
+            databaseURL: "https://ficha-de-rpg-b9685-default-rtdb.firebaseio.com", // Replace with your real database URL
+            projectId: "ficha-de-rpg-b9685", // Replace with your real project ID
+            storageBucket: "ficha-de-rpg-b9685.firebasestorage.app", // Replace with your real storage bucket
+            messagingSenderId: "528610398062", // Replace with your real messaging sender ID
+            appId: "1:528610398062:web:8fdb9cfd5ded8167613b7f" // Replace with your real app ID
         };
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
@@ -1047,15 +1058,18 @@
             vidaTotal = parseInt(document.getElementById("vida-total").textContent); // Get calculated total
             magiaTotal = parseInt(document.getElementById("magia-total").textContent);
             vigorTotal = parseFloat(document.getElementById("vigor-total").textContent);
-            vidaAtual = (typeof vidaAtual === 'number') ? Math.min(vidaAtual, vidaTotal) : vidaTotal;
-            magiaAtual = (typeof magiaAtual === 'number') ? Math.min(magiaAtual, magiaTotal) : magiaTotal;
-            vigorAtual = (typeof vigorAtual === 'number') ? Math.min(vigorAtual, vigorTotal) : vigorTotal;
+
+            // Load saved current values if they exist, otherwise default to total
+            vidaAtual = typeof ficha.vidaAtual === 'number' ? Math.min(ficha.vidaAtual, vidaTotal) : vidaTotal;
+            magiaAtual = typeof ficha.magiaAtual === 'number' ? Math.min(ficha.magiaAtual, magiaTotal) : magiaTotal;
+            vigorAtual = typeof ficha.vigorAtual === 'number' ? Math.min(ficha.vigorAtual, vigorTotal) : vigorTotal;
+
             document.getElementById("vida-atual").textContent = vidaAtual; document.getElementById("magia-atual").textContent = magiaAtual; document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
             pontosVantagemSpan.textContent = getPontosVantagem(); // Update displayed PH based on loaded advantages/race
             previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
             chatPassword = ficha.chatPassword; atualizarEstadoChatBotao();
-            aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
+            aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial(); // Apply saved background settings
         }
 
         function atualizarBotaoBloquear() {
@@ -1077,10 +1091,11 @@
                 isLocked: isFichaLocked, password: fichaPassword, imagem: characterImage.src.startsWith('data:image') ? characterImage.src : null, anotacoes: anotacoesTextarea.value,
                 classeNome: classeNomeInput.value, classeDescricao: classeDescricaoInput.value, racaNome: racaNomeSpan.textContent, racaDescricao: racaDescricaoInput.value, racaSelecionada: racaSelecionada,
                 chatPassword: chatPassword,
-                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage.slice(5, -2),
+                // Save background settings
+                backgroundImage: document.body.style.backgroundImage.startsWith('url("data:image') ? document.body.style.backgroundImage.slice(5, -2) : (document.body.style.backgroundImage.startsWith('url(') ? document.body.style.backgroundImage.slice(4,-1).replace(/"/g,"") : null), // Handle data URLs and regular URLs
                 backgroundSize: document.body.style.backgroundSize,
-                backgroundColor: document.body.style.backgroundColor,
-                // Persist current resource values (optional but good practice)
+                backgroundColor: document.body.style.backgroundColor, // Save solid color too
+                // Persist current resource values
                 vidaAtual: vidaAtual,
                 magiaAtual: magiaAtual,
                 vigorAtual: vigorAtual
@@ -1153,10 +1168,18 @@
             ataqueSpan.textContent = ataque; ataqueMagicoSpan.textContent = ataqueMagico; acertoSpan.textContent = acerto; esquivaSpan.textContent = esquiva; rdfSpan.textContent = rdf; rdmSpan.textContent = rdm;
             vidaTotal = Math.ceil(vidaBase); magiaTotal = Math.ceil(magiaBase); vigorTotal = parseFloat(vigorBase.toFixed(1));
 
-            // Don't reset current values here, just update totals. Current values are loaded/managed elsewhere.
+            // Update total displays
             document.getElementById("vida-total").textContent = vidaTotal; document.getElementById("magia-total").textContent = magiaTotal; document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
-            // Update current values display in case they exceed the new total
-            document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal); document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal); document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
+
+            // Ensure current values don't exceed new totals after calculation
+            vidaAtual = Math.min(vidaAtual, vidaTotal);
+            magiaAtual = Math.min(magiaAtual, magiaTotal);
+            vigorAtual = Math.min(vigorAtual, vigorTotal);
+
+            // Update current values display
+            document.getElementById("vida-atual").textContent = vidaAtual;
+            document.getElementById("magia-atual").textContent = magiaAtual;
+            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
             const regeneracaoVida = (0.2 * constituicao).toFixed(1), regeneracaoMagia = (0.8 * constituicao).toFixed(1), regeneracaoVigor = (0.4 * constituicao).toFixed(1);
             document.getElementById("regeneracao-vida").textContent = regeneracaoVida; document.getElementById("regeneracao-magia").textContent = regeneracaoMagia; document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
@@ -1236,17 +1259,35 @@
                          fichaPassword = null; // Update local state
                          fecharModal("password-modal"); alert("Ficha desbloqueada permanentemente!"); atualizarBotaoBloquear();
                          // Trigger original action if needed
-                         if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
+                         if (elementId === "reset-pontos") resetarPontos();
+                         else if (elementId === "recomecar") recomecarFicha();
+                         else if (elementId === "excluir-ficha") document.getElementById("excluir-ficha").onclick(); // Re-trigger exclusion if needed
+                         else if (elementId === "vantagens-desvantagens-btn") vantagensDesvantagensBtn.onclick();
+                         else if (elementId === "racas-btn") racasBtn.onclick();
+                         // Add other elements if needed
+
                     }).catch(error => console.error("Erro ao desbloquear ficha:", error));
                 } else {
                      fecharModal("password-modal"); alert("Ficha desbloqueada temporariamente!");
                      // Trigger original action if needed
-                     if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
+                     if (elementId === "reset-pontos") resetarPontos();
+                     else if (elementId === "recomecar") recomecarFicha();
+                     else if (elementId === "excluir-ficha") document.getElementById("excluir-ficha").onclick();
+                     else if (elementId === "vantagens-desvantagens-btn") vantagensDesvantagensBtn.onclick();
+                     else if (elementId === "racas-btn") racasBtn.onclick();
+                     // Add other elements if needed
+
                 }
             } else { // Using GM password or on Matrix sheet
                 fecharModal("password-modal"); alert(`Ficha desbloqueada temporariamente ${senha === senhaMatriz ? 'com a senha matriz!' : ''}`);
                 // Trigger original action if needed
-                if (elementId === "reset-pontos") resetarPontos(); else if (elementId === "recomecar") recomecarFicha();
+                if (elementId === "reset-pontos") resetarPontos();
+                else if (elementId === "recomecar") recomecarFicha();
+                else if (elementId === "excluir-ficha") document.getElementById("excluir-ficha").onclick();
+                else if (elementId === "vantagens-desvantagens-btn") vantagensDesvantagensBtn.onclick();
+                else if (elementId === "racas-btn") racasBtn.onclick();
+                // Add other elements if needed
+
             }
         }
 
@@ -1261,36 +1302,11 @@
         }
 
 
-        function verificarAlteracao(event) {
-            const input = event.target;
-            // Store previous value *before* checking lock, only if different from current
-            const currentVal = input.value;
-            if(!previousValues.has(input) || previousValues.get(input) !== currentVal) {
-                 // Find the value just before the input event started (might require more complex handling like tracking focus/blur)
-                 // For simplicity, let's assume the value before 'beforeinput' is the one to revert to.
-                 // This might not be perfect if multiple inputs happen quickly.
-                 // Let's capture on focus instead.
-                 // Updated logic: Capture on focus, check lock on input.
-            }
-
-             // Check lock on actual input attempt
-             if (isFichaLocked && !isFichaUnlocked) {
-                 event.preventDefault(); // Prevent the input
-                 // Revert to stored value if possible (use value captured on focus)
-                 input.value = previousValues.get(input) || "";
-                 abrirModalSenha(input); // Pass the input itself for context if needed
-             } else {
-                // Update previous value *after* successful input allowed
-                // Handled by the 'input' event listener now
-            }
-        }
-
         document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
                 // Store value on focus to revert if needed
                 previousValues.set(event.target, event.target.value);
             });
-            // Removed beforeinput listener, check lock directly on input attempt
             input.addEventListener("input", (event) => { // Check lock on input
                 const inputTarget = event.target;
                 if (isFichaLocked && !isFichaUnlocked) {
@@ -1302,16 +1318,20 @@
                     previousValues.set(inputTarget, inputTarget.value);
                     // Trigger calculations and save
                     if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) || 0; atualizarNivel(); }
-                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); } // Check PH moved inside calculate
+                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); }
                     else if (inputTarget.id.includes("arma")) { calcularAtributos(); }
-                    // Handle inventory weight change separately if needed for peso total update
                     else if (inputTarget.classList.contains('inventory-weight')) { calcularPesoTotal(); }
+                    else if (inputTarget.classList.contains('inventory-item')) { /* Only weight affects total weight, but save item name */ }
+                    else if (inputTarget.classList.contains('magia-nome')) { /* Save needed */ }
+                    else if (inputTarget === anotacoesTextarea) { /* Save needed */ }
+                    else if (inputTarget === nomePersonagemInput || inputTarget === descricaoPersonagemInput || inputTarget === classeNomeInput || inputTarget === classeDescricaoInput) { /* Save needed */ }
 
                     salvarDados(); // Save on every valid input
                 }
             });
         });
-        nomePersonagemInput.oninput = salvarDados; // Keep direct save for name
+        // Simplified: Save on any input if allowed
+        // nomePersonagemInput.oninput = salvarDados; // Keep direct save for name
 
 
         characterImageInput.onchange = e => {
@@ -1326,28 +1346,35 @@
         let isDragging = false, currentX = 0, currentY = 0, initialX, initialY; // Initialize currentX/Y
         // Get initial position on first load correctly
         document.addEventListener('DOMContentLoaded', () => {
-            currentX = diceContainer.offsetLeft;
-            currentY = diceContainer.offsetTop;
+             if(diceContainer) { // Check if element exists before accessing properties
+                currentX = diceContainer.offsetLeft;
+                currentY = diceContainer.offsetTop;
+            }
         });
-        diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
-        document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
-        document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} }; // Check isDragging before resetting cursor
+        if(diceContainer) { // Check if element exists before adding listener
+             diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
+        }
+        document.onmousemove = e => { if (isDragging && diceContainer) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
+        document.onmouseup = () => { if(isDragging && diceContainer) {isDragging = false; diceContainer.style.cursor = "move";} }; // Check isDragging before resetting cursor
 
 
         database.ref('dadosRolados').on('child_added', snapshot => { const dado = snapshot.val(); if (dado.fichaId !== currentFichaId) showNotification(`${dado.nomeFicha} rolou: ${dado.resultado}`, "normal-result"); });
-        diceRoll.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(diceRoll); // Pass element
-            diceRoll.textContent = "Rolling..."; diceResult.style.display = "none"; diceRoll.classList.remove("critical-failure", "critical-success");
-            setTimeout(() => {
-                const roll = Math.floor(Math.random() * 20) + 1, fichaNome = fichas[currentFichaId]?.nomeFicha || "Sem Nome";
-                diceRoll.textContent = roll; let notificationClass = "normal-result", notificationMsg = `${fichaNome} rolou: ${roll}`;
-                if (roll === 1) { diceRoll.classList.add("critical-failure"); notificationClass = "critical-failure"; notificationMsg = `${fichaNome} - FALHA CRÍTICA!`; }
-                else if (roll === 20) { diceRoll.classList.add("critical-success"); notificationClass = "critical-success"; notificationMsg = `${fichaNome} - SUCESSO CRÍTICO!`; }
-                else { diceResult.textContent = notificationMsg; diceResult.style.display = "block"; }
-                showNotification(notificationMsg, notificationClass);
-                const dadoRef = database.ref('dadosRolados').push(); dadoRef.set({ fichaId: currentFichaId, nomeFicha: fichaNome, resultado: roll });
-            }, 1000);
-        };
+        if(diceRoll) { // Check if element exists before adding listener
+             diceRoll.onclick = () => {
+                if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(diceRoll); // Pass element
+                diceRoll.textContent = "Rolling..."; diceResult.style.display = "none"; diceRoll.classList.remove("critical-failure", "critical-success");
+                setTimeout(() => {
+                    const roll = Math.floor(Math.random() * 20) + 1, fichaNome = fichas[currentFichaId]?.nomeFicha || "Sem Nome";
+                    diceRoll.textContent = roll; let notificationClass = "normal-result", notificationMsg = `${fichaNome} rolou: ${roll}`;
+                    if (roll === 1) { diceRoll.classList.add("critical-failure"); notificationClass = "critical-failure"; notificationMsg = `${fichaNome} - FALHA CRÍTICA!`; }
+                    else if (roll === 20) { diceRoll.classList.add("critical-success"); notificationClass = "critical-success"; notificationMsg = `${fichaNome} - SUCESSO CRÍTICO!`; }
+                    else { diceResult.textContent = notificationMsg; diceResult.style.display = "block"; }
+                    showNotification(notificationMsg, notificationClass);
+                    const dadoRef = database.ref('dadosRolados').push(); dadoRef.set({ fichaId: currentFichaId, nomeFicha: fichaNome, resultado: roll });
+                }, 1000);
+            };
+        }
+
 
         vantagensDesvantagensBtn.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(vantagensDesvantagensBtn); // Pass element
@@ -1479,8 +1506,17 @@
 
         adicionarMagiaBtn.onclick = () => {
              if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
-            if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; magiasList.appendChild(input); input.addEventListener('input', salvarDados); /* Add listener */ salvarDados(); } // Save after adding
-            else alert("Limite de 20 magias/habilidades!");
+            if (magiasList.children.length < 20) {
+                const input = document.createElement("input");
+                input.type = "text";
+                input.className = "magia-nome";
+                input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`;
+                magiasList.appendChild(input);
+                input.addEventListener('input', salvarDados); // Add listener to the new input
+                salvarDados(); // Save after adding the element structurally
+            } else {
+                alert("Limite de 20 magias/habilidades!");
+            }
         };
         // Add listener to initially loaded magic inputs too
         magiasList.querySelectorAll('.magia-nome').forEach(input => input.addEventListener('input', salvarDados));
@@ -1502,16 +1538,17 @@
                         // Calcula PH disponível *antes* de selecionar a nova raça (considerando remover a antiga temporária, se houver)
                         let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo || 0) : 0);
                         if (phDisponivelParaNovaRaca >= r.custo) {
-                            tempRacaSelecionada = r.nome; // Seleciona a nova raça temporariamente
+                             // Confirmation modal before temporary selection
                              document.getElementById("confirmar-compra-modal").style.display = "flex";
                              document.getElementById("confirmar-compra-btn").onclick = () => {
+                                 tempRacaSelecionada = r.nome; // Seleciona a nova raça temporariamente *after* confirmation
                                  atualizarRacasPanel(); // Re-render com a seleção temp
                                  document.getElementById("salvar-racas-btn").style.display = "block"; // Habilita salvar
                                  fecharModal("confirmar-compra-modal");
                              };
-                        } else { alert("PH insuficientes!"); tempRacaSelecionada = null; } // Reset temp if PH fails
+                        } else { alert("PH insuficientes!"); /* tempRacaSelecionada remains unchanged or null */ } // Don't change temp selection if PH fails
                     }
-                    atualizarRacasPanel(); // Re-render to show selection/deselection
+                    atualizarRacasPanel(); // Re-render to show selection/deselection or keep current state if PH failed
                     document.getElementById("salvar-racas-btn").style.display = tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada ? "block" : "none"; // Mostra botão salvar se mudou E É DIFERENTE DA SALVA
                 }; racasList.appendChild(div);
             });
@@ -1520,7 +1557,7 @@
         }
 
 
-        function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex"; }
+        function abrirModalRaca() { if(racaNomeSpan.textContent.trim()) document.getElementById("raca-opcoes-modal").style.display = "flex"; else racasBtn.onclick(); } // Open race selection if none is selected
         function excluirRacaSelecionadaModal() {
             fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
@@ -1545,6 +1582,8 @@
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value; racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
+                        // Update racaSelecionada if the name was edited to match internal data (optional, could break things if name no longer matches racasData)
+                        // racaSelecionada = racasData.find(r => r.nome.split(' (')[0] === racaNomeSpan.textContent)?.nome || racaSelecionada; // Example: try to find matching name
                         fecharModal('editar-raca-modal'); salvarDados(); fecharModal("senha-gm-modal");
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
@@ -1568,7 +1607,7 @@
         database.ref('dadosRolados').on('value', snapshot => { const dados = snapshot.val(), lista = document.getElementById("historico-lista"); lista.innerHTML = ""; if (dados) { const keys = Object.keys(dados).reverse(); /* Show newest first */ keys.forEach(key => { const dado = dados[key], div = document.createElement("div"); div.textContent = `${dado.nomeFicha} rolou: ${dado.resultado}`; lista.appendChild(div); });} });
         document.getElementById("excluir-historico-btn").onclick = () => { document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = ""; document.getElementById("confirmar-senha-gm-btn").onclick = () => { if (document.getElementById("senha-gm-input").value === senhaMatriz) { database.ref('dadosRolados').remove().then(() => { alert("Histórico de dados excluído!"); fecharModal("senha-gm-modal"); }); } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); } }; };
 
-        // Chat Functionality (unchanged)
+        // Chat Functionality
         chatBtn.onclick = () => { if (!chatPassword) { document.getElementById("chat-password-modal").style.display = "flex"; } else { document.getElementById("open-chat-modal").style.display = "flex"; } };
         function definirSenhaChat() { const senha = document.getElementById("chat-senha-input").value, confirmarSenha = document.getElementById("chat-confirmar-senha-input").value; if (senha !== confirmarSenha) return alert("As senhas não coincidem."); if (senha.length < 4) return alert("A senha deve ter pelo menos 4 caracteres."); chatPassword = senha; database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => { fecharModal("chat-password-modal"); alert("Senha do chat definida!"); atualizarEstadoChatBotao(); }).catch(error => console.error("Erro ao definir senha do chat:", error)); }
         function abrirChat() { const senhaDigitada = document.getElementById("abrir-chat-senha-input").value; if (senhaDigitada === chatPassword) { fecharModal("open-chat-modal"); document.getElementById("chat-modal").style.display = "flex"; isChatOpen = true; selectedChatUser = null; document.getElementById("conversation-area").innerHTML = ""; marcarMensagensComoLidas(); } else { alert("Senha do chat incorreta."); } } // Marcar como lidas ao abrir
@@ -1586,21 +1625,85 @@
         if (shouldPlaySound && document.getElementById("new-message-sound")) { newMessageSound.play().catch(e => console.log("Erro ao tocar som:", e)); } }); }
 
 
-        // Background Functionality (unchanged)
+        // Background Functionality
         planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex"; };
-        function aplicarPlanoDeFundo() { const file = backgroundImageInput.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { const imageUrl = e.target.result; document.body.style.backgroundImage = `url('${imageUrl}')`; const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); }; reader.readAsDataURL(file); } else if (document.body.style.backgroundImage !== 'none') { const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); } else { alert("Nenhuma imagem selecionada."); } }
+        function aplicarPlanoDeFundo() { const file = backgroundImageInput.files[0]; const selectedSize = document.querySelector('input[name="background-size"]:checked').value; if (file) { const reader = new FileReader(); reader.onload = e => { const imageUrl = e.target.result; document.body.style.backgroundImage = `url('${imageUrl}')`; document.body.style.backgroundSize = selectedSize; document.body.style.backgroundAttachment = 'fixed'; /* Ensure fixed */ salvarDados(); fecharModal('background-modal'); }; reader.readAsDataURL(file); } else if (document.body.style.backgroundImage !== 'none') { /* If only changing size of existing bg */ document.body.style.backgroundSize = selectedSize; document.body.style.backgroundAttachment = 'fixed'; /* Ensure fixed */ salvarDados(); fecharModal('background-modal'); } else { alert("Nenhuma imagem selecionada e nenhum fundo existente para modificar."); } }
         function excluirPlanoDeFundo() { if (confirm("Remover imagem de fundo?")) { document.body.style.backgroundImage = 'none'; salvarDados(); fecharModal('background-modal'); } }
-        function aplicarPlanoDeFundoInicial() { const bgImage = fichas[currentFichaId]?.backgroundImage; const bgSize = fichas[currentFichaId]?.backgroundSize || 'cover'; if (currentFichaId && fichas[currentFichaId] && bgImage) { document.body.style.backgroundImage = `url('${bgImage}')`; document.body.style.backgroundSize = bgSize; } else { document.body.style.backgroundImage = 'none'; } }
+        function aplicarPlanoDeFundoInicial() {
+            if (currentFichaId && fichas[currentFichaId]) {
+                 const ficha = fichas[currentFichaId];
+                 const bgImage = ficha.backgroundImage;
+                 const bgSize = ficha.backgroundSize || 'cover';
+                 const bgColor = ficha.backgroundColor || '#f0e6d2'; // Default light parchment
+
+                 if (bgImage) {
+                     document.body.style.backgroundImage = `url('${bgImage}')`;
+                     document.body.style.backgroundSize = bgSize;
+                     document.body.style.backgroundColor = ''; // Clear solid color if image exists
+                 } else {
+                     document.body.style.backgroundImage = 'none';
+                     document.body.style.backgroundColor = bgColor; // Apply solid color if no image
+                 }
+                document.body.style.backgroundAttachment = 'fixed'; // Always apply fixed attachment
+                document.body.classList.toggle('dark-mode', ficha.backgroundColor === '#121212'); // Basic dark mode check based on color
+
+                // Update radio buttons in modal
+                const radioToCheck = document.querySelector(`input[name="background-size"][value="${bgSize}"]`);
+                if (radioToCheck) radioToCheck.checked = true;
+
+            } else { // Default if no ficha loaded
+                 document.body.style.backgroundImage = 'none';
+                 document.body.style.backgroundColor = '#f0e6d2';
+                 document.body.style.backgroundAttachment = 'fixed';
+                 document.body.classList.remove('dark-mode');
+            }
+        }
 
         // Background Color Functionality
         corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' || backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
-        backgroundColorSelector.addEventListener('click', (event) => { if (event.target.classList.contains('color-option')) { const color = event.target.dataset.color; document.body.style.backgroundColor = color; salvarDados(); backgroundColorSelector.style.display = 'none'; document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active')); event.target.classList.add('active'); } });
-        function aplicarCorDeFundoInicial() { const bgColor = fichas[currentFichaId]?.backgroundColor; if (currentFichaId && fichas[currentFichaId] && bgColor) { document.body.style.backgroundColor = bgColor; document.querySelectorAll('#background-color-selector .color-option').forEach(option => { option.classList.toggle('active', option.dataset.color === bgColor); }); } else { document.body.style.backgroundColor = '#f0e6d2'; /* Default color */ } }
+        backgroundColorSelector.addEventListener('click', (event) => { if (event.target.classList.contains('color-option')) { const color = event.target.dataset.color; document.body.style.backgroundColor = color; document.body.style.backgroundImage = 'none'; // Remove image when color is set
+        document.body.classList.toggle('dark-mode', color === '#121212'); // Example dark mode trigger
+        salvarDados(); backgroundColorSelector.style.display = 'none'; document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active')); event.target.classList.add('active'); } });
+        function aplicarCorDeFundoInicial() {
+             if (currentFichaId && fichas[currentFichaId]) {
+                 const ficha = fichas[currentFichaId];
+                 const bgColor = ficha.backgroundColor;
+                 const bgImage = ficha.backgroundImage;
+
+                 if (!bgImage && bgColor) { // Only apply solid color if no image is set
+                     document.body.style.backgroundColor = bgColor;
+                     document.body.style.backgroundImage = 'none';
+                     document.querySelectorAll('#background-color-selector .color-option').forEach(option => {
+                         option.classList.toggle('active', option.dataset.color === bgColor);
+                     });
+                     document.body.classList.toggle('dark-mode', bgColor === '#121212');
+                 } else if (!bgImage) { // No image and no saved color, use default
+                     document.body.style.backgroundColor = '#f0e6d2';
+                     document.body.style.backgroundImage = 'none';
+                     document.querySelectorAll('#background-color-selector .color-option').forEach(option => {
+                         option.classList.toggle('active', option.dataset.color === '#f0e6d2');
+                     });
+                    document.body.classList.remove('dark-mode');
+                 }
+                 // If bgImage exists, aplicarPlanoDeFundoInicial handles it
+            } else {
+                 document.body.style.backgroundColor = '#f0e6d2'; // Default for no ficha
+                 document.body.style.backgroundImage = 'none';
+                 document.querySelectorAll('#background-color-selector .color-option').forEach(option => {
+                     option.classList.toggle('active', option.dataset.color === '#f0e6d2');
+                 });
+                 document.body.classList.remove('dark-mode');
+            }
+            document.body.style.backgroundAttachment = 'fixed'; // Ensure fixed is always set initially
+        }
         // Close color picker if clicking outside
         document.addEventListener('click', function(event) { if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) { backgroundColorSelector.style.display = 'none'; } });
 
 
-        carregarFichas();
+        // Initial Load Call
+        carregarFichas(); // This will eventually call carregarFicha -> aplicarPlanoDeFundoInicial/aplicarCorDeFundoInicial
+
     </script>
 </body>
 </html>
+```
