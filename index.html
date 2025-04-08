@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -18,16 +17,13 @@ html
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            /* Background Image Styles */
-            background-image: none; /* Default, will be set by JS */
-            background-size: cover; /* Default size, can be changed */
-            background-position: center center; /* Center the image */
-            background-repeat: no-repeat; /* Don't repeat the image */
-            background-attachment: fixed; /* <<< THIS IS THE KEY CHANGE for fixed background */
+            background-image: none;
+            background-size: cover;
+            background-position: center;
             transition: background 0.3s, color 0.3s;
         }
         body.dark-mode {
-            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro if no color is set */
+            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
             color: #e0e0e0;
         }
         #chat-btn-container { position: fixed; left: 10px; top: calc(50% - 120px); z-index: 1000; }
@@ -944,60 +940,33 @@ html
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
-                chatPassword: null,
-                backgroundImage: null, // Default background image
-                backgroundSize: 'cover', // Default background size
-                backgroundColor: '#f0e6d2' // Default background color (pergaminho)
+                chatPassword: null, backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2'
             };
             database.ref("fichas/ficha-matriz").once("value", snapshot => {
                 if (snapshot.exists()) {
-                    // Ficha Matriz exists, load it and apply styles
-                    currentFichaId = fichaId;
-                    // Load ficha data first, then apply styles
-                    carregarFicha(fichaId); // This will call applyBackgrounds inside
-                    carregarFichas(); // Load other fichas
+                    currentFichaId = fichaId; carregarFicha(fichaId); carregarFichas();
+                    aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
                 } else {
-                    // Create Ficha Matriz, then load it and apply styles
                     database.ref(`fichas/${fichaId}`).set(fichaMatriz).then(() => {
-                        currentFichaId = fichaId;
-                        // Load ficha data first, then apply styles
-                        carregarFicha(fichaId); // This will call applyBackgrounds inside
-                        carregarFichas(); // Load other fichas if any exist (unlikely here)
+                        currentFichaId = fichaId; carregarFicha(fichaId);
+                        aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
                     });
                 }
             });
         }
 
-
         function carregarFichas() {
             database.ref("fichas").on("value", snapshot => {
                 fichas = snapshot.val() || {};
                 if (fichas["ficha-matriz"]) {
-                    if (!currentFichaId) {
-                        // If no ficha is selected yet (initial load), default to Matriz
-                        currentFichaId = "ficha-matriz";
-                        carregarFicha(currentFichaId); // Load and apply styles for Matriz
-                    } else {
-                         // If a ficha IS selected, ensure its data (including styles) is applied
-                         // This might re-apply styles if another ficha was loaded, which is fine
-                         carregarFicha(currentFichaId);
-                    }
-                    atualizarAbasFichas();
-                    atualizarListaFichasChat();
-                    verificarNovasMensagens();
-                } else {
-                    criarFichaMatriz(); // Create Matriz if it doesn't exist
-                }
+                    atualizarAbasFichas(); atualizarListaFichasChat(); verificarNovasMensagens();
+                } else { criarFichaMatriz(); }
             });
         }
 
         function atualizarAbasFichas() {
             const sidebar = document.getElementById("fichas-sidebar"), addBtn = document.getElementById("add-ficha-btn");
-            // Clear existing tabs except the add button
-            const existingTabs = sidebar.querySelectorAll('.ficha-tab');
-            existingTabs.forEach(tab => sidebar.removeChild(tab));
-
-            // Add tabs for each ficha (except Matriz)
+            while (sidebar.children.length > 1) sidebar.removeChild(sidebar.children[0]);
             for (let fichaId in fichas) {
                 if (fichaId !== "ficha-matriz") {
                     const tab = document.createElement("div"); tab.className = "ficha-tab";
@@ -1005,8 +974,7 @@ html
                     tab.appendChild(span); tab.dataset.fichaId = fichaId;
                     if (fichaId === currentFichaId) tab.classList.add("active");
                     tab.onclick = () => {
-                        currentFichaId = fichaId; carregarFicha(fichaId); // Load new ficha (will apply its styles)
-                        atualizarAbasFichas(); // Update active tab style
+                        currentFichaId = fichaId; carregarFicha(fichaId); atualizarAbasFichas();
                         atualizarListaFichasChat(); verificarNovasMensagens();
                     };
                     sidebar.insertBefore(tab, addBtn);
@@ -1031,36 +999,18 @@ html
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
-                chatPassword: null,
-                backgroundImage: null, // Default background image
-                backgroundSize: 'cover', // Default background size
-                backgroundColor: '#f0e6d2' // Default background color
+                chatPassword: null, backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2'
             };
             database.ref(`fichas/${novaFichaId}`).set(novaFicha).then(() => {
-                currentFichaId = novaFichaId;
-                carregarFicha(novaFichaId); // Load the new ficha (will apply default styles)
-                fecharModal("nome-ficha-modal");
-                atualizarAbasFichas(); // Add the new tab
-                atualizarListaFichasChat();
+                currentFichaId = novaFichaId; carregarFicha(novaFichaId); fecharModal("nome-ficha-modal");
+                atualizarAbasFichas(); atualizarListaFichasChat();
             }).catch(error => console.error("Erro ao criar nova ficha:", error));
         }
 
         function fecharModal(modalId) { document.getElementById(modalId).style.display = "none"; }
 
         function carregarFicha(fichaId) {
-            if (!fichas[fichaId]) {
-                console.error(`Ficha with ID ${fichaId} not found.`);
-                // Optionally, load the Matriz ficha as a fallback
-                if (fichas["ficha-matriz"]) {
-                    currentFichaId = "ficha-matriz";
-                    carregarFicha(currentFichaId);
-                }
-                return;
-            }
-            const ficha = fichas[fichaId];
-            currentFichaId = fichaId; // Ensure currentFichaId is set
-
-            // Load basic info
+            if (!fichas[fichaId]) return; const ficha = fichas[fichaId];
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
             forcaInput.value = ficha.forca || "0"; destrezaInput.value = ficha.destreza || "0"; agilidadeInput.value = ficha.agilidade || "0";
             inteligenciaInput.value = ficha.inteligencia || "0"; constituicaoInput.value = ficha.constituicao || "0"; experienciaInput.value = ficha.experiencia || "0";
@@ -1074,64 +1024,39 @@ html
             racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : ""; // Handle empty selection display
             racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
 
-            // Update Vantagens/Desvantagens display
             vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = "";
             vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
             desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
 
-            // Load Inventory
             const inventario = Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({ item: "", peso: "0" });
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal();
 
-            // Load Magias/Habilidades
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
             magiasList.innerHTML = "";
-            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; input.addEventListener('input', salvarDados); magiasList.appendChild(input); });
-
-            // Load other fields
+            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; magiasList.appendChild(input); });
             anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
             if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none"; }
 
-            // Update UI states
-            atualizarBotaoBloquear();
-            atualizarVantagensDesvantagensPanel(); // Update display only (temporary state reset)
-            atualizarRacasPanel(); // Update display only (temporary state reset)
+            atualizarBotaoBloquear(); atualizarVantagensDesvantagensPanel(); // Update display only
+            atualizarRacasPanel(); // Update display only
+            experiencia = parseInt(experienciaInput.value) || 0; atualizarNivel(); calcularAtributos(); // This calculates derived stats including Total HP/MP etc.
 
-            // Calculate level and derived stats
-            experiencia = parseInt(experienciaInput.value) || 0;
-            atualizarNivel(); // This calls calcularAtributos
+            // Initialize current HP/MP/Stamina based on calculated totals if not already set or if they exceed new totals
+            vidaTotal = parseInt(document.getElementById("vida-total").textContent); // Get calculated total
+            magiaTotal = parseInt(document.getElementById("magia-total").textContent);
+            vigorTotal = parseFloat(document.getElementById("vigor-total").textContent);
+            vidaAtual = (typeof vidaAtual === 'number') ? Math.min(vidaAtual, vidaTotal) : vidaTotal;
+            magiaAtual = (typeof magiaAtual === 'number') ? Math.min(magiaAtual, magiaTotal) : magiaTotal;
+            vigorAtual = (typeof vigorAtual === 'number') ? Math.min(vigorAtual, vigorTotal) : vigorTotal;
+            document.getElementById("vida-atual").textContent = vidaAtual; document.getElementById("magia-atual").textContent = magiaAtual; document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
-            // Load current resource values AFTER totals are calculated by calcularAtributos
-            vidaAtual = (typeof ficha.vidaAtual === 'number') ? ficha.vidaAtual : vidaTotal; // Use saved value or default to total
-            magiaAtual = (typeof ficha.magiaAtual === 'number') ? ficha.magiaAtual : magiaTotal;
-            vigorAtual = (typeof ficha.vigorAtual === 'number') ? ficha.vigorAtual : vigorTotal;
-            // Ensure current values don't exceed totals
-            vidaAtual = Math.min(vidaAtual, vidaTotal);
-            magiaAtual = Math.min(magiaAtual, magiaTotal);
-            vigorAtual = Math.min(vigorAtual, vigorTotal);
-            document.getElementById("vida-atual").textContent = vidaAtual;
-            document.getElementById("magia-atual").textContent = magiaAtual;
-            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-
-
-            // Update PH display based on loaded advantages/race/level
-            pontosVantagemSpan.textContent = getPontosVantagem();
-
-            // Store initial values for revert logic
-            previousValues.clear();
-            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
-
-            // Load chat password and update button
-            chatPassword = ficha.chatPassword;
-            atualizarEstadoChatBotao();
-
-            // Apply saved background image and color <<< MOVED TO END
-            aplicarPlanoDeFundoInicial();
-            aplicarCorDeFundoInicial();
+            pontosVantagemSpan.textContent = getPontosVantagem(); // Update displayed PH based on loaded advantages/race
+            previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+            chatPassword = ficha.chatPassword; atualizarEstadoChatBotao();
+            aplicarPlanoDeFundoInicial(); aplicarCorDeFundoInicial();
         }
-
 
         function atualizarBotaoBloquear() {
             bloquearFichaButton.textContent = isFichaLocked ? "Desbloquear Ficha" : "Bloquear Ficha";
@@ -1152,24 +1077,16 @@ html
                 isLocked: isFichaLocked, password: fichaPassword, imagem: characterImage.src.startsWith('data:image') ? characterImage.src : null, anotacoes: anotacoesTextarea.value,
                 classeNome: classeNomeInput.value, classeDescricao: classeDescricaoInput.value, racaNome: racaNomeSpan.textContent, racaDescricao: racaDescricaoInput.value, racaSelecionada: racaSelecionada,
                 chatPassword: chatPassword,
-                // Persist background styles
-                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage, // Save full 'url(...)' or null
+                backgroundImage: document.body.style.backgroundImage === 'none' ? null : document.body.style.backgroundImage.slice(5, -2),
                 backgroundSize: document.body.style.backgroundSize,
-                backgroundColor: document.body.style.backgroundColor, // Save color string (e.g., 'rgb(x, y, z)' or '#hex')
-                // Persist current resource values
+                backgroundColor: document.body.style.backgroundColor,
+                // Persist current resource values (optional but good practice)
                 vidaAtual: vidaAtual,
                 magiaAtual: magiaAtual,
                 vigorAtual: vigorAtual
             };
             database.ref(`fichas/${currentFichaId}`).update(dados).then(() => {
-                // Only show notification if it wasn't triggered by theme/bg change itself
-                // This avoids spamming "Salvo!" when changing theme/bg
-                 if (!window.themeChangeInProgress && !window.bgChangeInProgress) {
-                    showNotification("Salvo!", "save-success");
-                 }
-                 window.themeChangeInProgress = false; // Reset flags
-                 window.bgChangeInProgress = false;
-
+                showNotification("Salvo!", "save-success");
                 previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
             }).catch(error => console.error("Erro ao salvar dados:", error)); // Added error handling
         }
@@ -1182,7 +1099,7 @@ html
             pontosVantagemSpan.textContent = getPontosVantagem();
             if (nivel > nivelAnterior) { nivelSpan.classList.add("aura-azul"); setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000); }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; fichaContainer.classList.toggle("aura-azul", nivel >= 30);
-            calcularAtributos(); // Recalculate attributes based on new level
+            calcularAtributos();
         }
 
         function getPontosVantagem() {
@@ -1234,23 +1151,12 @@ html
 
             velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade; alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo; distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
             ataqueSpan.textContent = ataque; ataqueMagicoSpan.textContent = ataqueMagico; acertoSpan.textContent = acerto; esquivaSpan.textContent = esquiva; rdfSpan.textContent = rdf; rdmSpan.textContent = rdm;
+            vidaTotal = Math.ceil(vidaBase); magiaTotal = Math.ceil(magiaBase); vigorTotal = parseFloat(vigorBase.toFixed(1));
 
-            // Update Total resource values
-            vidaTotal = Math.ceil(vidaBase);
-            magiaTotal = Math.ceil(magiaBase);
-            vigorTotal = parseFloat(vigorBase.toFixed(1));
-            document.getElementById("vida-total").textContent = vidaTotal;
-            document.getElementById("magia-total").textContent = magiaTotal;
-            document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
-
-            // Update current values display AND ensure they don't exceed new totals
-            vidaAtual = Math.min(vidaAtual, vidaTotal);
-            magiaAtual = Math.min(magiaAtual, magiaTotal);
-            vigorAtual = Math.min(vigorAtual, vigorTotal);
-            document.getElementById("vida-atual").textContent = vidaAtual;
-            document.getElementById("magia-atual").textContent = magiaAtual;
-            document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-
+            // Don't reset current values here, just update totals. Current values are loaded/managed elsewhere.
+            document.getElementById("vida-total").textContent = vidaTotal; document.getElementById("magia-total").textContent = magiaTotal; document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
+            // Update current values display in case they exceed the new total
+            document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal); document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal); document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
 
             const regeneracaoVida = (0.2 * constituicao).toFixed(1), regeneracaoMagia = (0.8 * constituicao).toFixed(1), regeneracaoVigor = (0.4 * constituicao).toFixed(1);
             document.getElementById("regeneracao-vida").textContent = regeneracaoVida; document.getElementById("regeneracao-magia").textContent = regeneracaoMagia; document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
@@ -1269,12 +1175,7 @@ html
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
                         velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
-                        calcularAtributos(); // This recalculates stats and updates totals
-                        // Current HP/MP/Stamina should ideally be reset or handled based on game rules, here we reset to new totals
-                        vidaAtual = vidaTotal; magiaAtual = magiaTotal; vigorAtual = vigorTotal;
-                        document.getElementById("vida-atual").textContent = vidaAtual; document.getElementById("magia-atual").textContent = magiaAtual; document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
-                        pontosVantagemSpan.textContent = getPontosVantagem();
-                        salvarDados(); fecharModal("senha-gm-modal");
+                        calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal");
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
             }
@@ -1289,7 +1190,7 @@ html
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = ""; experienciaInput.value = 0; // Set XP input too
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); input.addEventListener('input', salvarDados);}
+                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; magiasList.appendChild(input); }
                 const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
                 characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; racaSelecionada = null;
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
@@ -1361,16 +1262,25 @@ html
 
 
         function verificarAlteracao(event) {
-             const inputTarget = event.target;
+            const input = event.target;
+            // Store previous value *before* checking lock, only if different from current
+            const currentVal = input.value;
+            if(!previousValues.has(input) || previousValues.get(input) !== currentVal) {
+                 // Find the value just before the input event started (might require more complex handling like tracking focus/blur)
+                 // For simplicity, let's assume the value before 'beforeinput' is the one to revert to.
+                 // This might not be perfect if multiple inputs happen quickly.
+                 // Let's capture on focus instead.
+                 // Updated logic: Capture on focus, check lock on input.
+            }
+
              // Check lock on actual input attempt
              if (isFichaLocked && !isFichaUnlocked) {
-                 // Prevent the input
-                 event.preventDefault();
+                 event.preventDefault(); // Prevent the input
                  // Revert to stored value if possible (use value captured on focus)
-                 inputTarget.value = previousValues.get(inputTarget) || "";
-                 abrirModalSenha(inputTarget); // Pass the input itself for context if needed
+                 input.value = previousValues.get(input) || "";
+                 abrirModalSenha(input); // Pass the input itself for context if needed
              } else {
-                // Allowed change, update previous value map for next potential revert
+                // Update previous value *after* successful input allowed
                 // Handled by the 'input' event listener now
             }
         }
@@ -1380,7 +1290,7 @@ html
                 // Store value on focus to revert if needed
                 previousValues.set(event.target, event.target.value);
             });
-
+            // Removed beforeinput listener, check lock directly on input attempt
             input.addEventListener("input", (event) => { // Check lock on input
                 const inputTarget = event.target;
                 if (isFichaLocked && !isFichaUnlocked) {
@@ -1392,7 +1302,7 @@ html
                     previousValues.set(inputTarget, inputTarget.value);
                     // Trigger calculations and save
                     if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) || 0; atualizarNivel(); }
-                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); } // PH check moved inside calculate
+                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); } // Check PH moved inside calculate
                     else if (inputTarget.id.includes("arma")) { calcularAtributos(); }
                     // Handle inventory weight change separately if needed for peso total update
                     else if (inputTarget.classList.contains('inventory-weight')) { calcularPesoTotal(); }
@@ -1401,16 +1311,7 @@ html
                 }
             });
         });
-        // Special case for name, save directly without calculations
-        nomePersonagemInput.addEventListener("input", (event) => {
-             if (isFichaLocked && !isFichaUnlocked) {
-                 event.target.value = previousValues.get(event.target) || ""; // Revert
-                 abrirModalSenha(event.target);
-             } else {
-                 previousValues.set(event.target, event.target.value); // Update previous value
-                 salvarDados(); // Save name change
-             }
-         });
+        nomePersonagemInput.oninput = salvarDados; // Keep direct save for name
 
 
         characterImageInput.onchange = e => {
@@ -1420,12 +1321,7 @@ html
             if (currentFichaId === "ficha-matriz") return alert("A ficha matriz não pode ser excluída!");
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(document.getElementById("excluir-ficha")); // Pass element
             if (confirm("Tem certeza que deseja excluir esta ficha?"))
-                database.ref(`fichas/${currentFichaId}`).remove().then(() => {
-                    // Switch to Matriz ficha after deletion
-                    currentFichaId = "ficha-matriz";
-                    carregarFicha(currentFichaId); // Load Matriz (will apply its styles)
-                    atualizarAbasFichas(); // Remove deleted tab, set Matriz (implicitly) active
-                 });
+                database.ref(`fichas/${currentFichaId}`).remove().then(() => { currentFichaId = "ficha-matriz"; carregarFicha(currentFichaId); atualizarAbasFichas(); });
         };
         let isDragging = false, currentX = 0, currentY = 0, initialX, initialY; // Initialize currentX/Y
         // Get initial position on first load correctly
@@ -1586,7 +1482,8 @@ html
             if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; magiasList.appendChild(input); input.addEventListener('input', salvarDados); /* Add listener */ salvarDados(); } // Save after adding
             else alert("Limite de 20 magias/habilidades!");
         };
-        // Add listener to initially loaded magic inputs too (done in carregarFicha now)
+        // Add listener to initially loaded magic inputs too
+        magiasList.querySelectorAll('.magia-nome').forEach(input => input.addEventListener('input', salvarDados));
 
 
         racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
@@ -1656,22 +1553,8 @@ html
 
         classesBtn.onclick = () => { classesPanel.style.display = "block"; };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
-
-        // Theme Toggle Logic
-        window.themeChangeInProgress = false; // Flag to prevent save notification spam
-        luaBtn.onclick = () => {
-             window.themeChangeInProgress = true;
-             document.body.classList.add("dark-mode");
-             aplicarCorDeFundoInicial(); // Re-apply default or saved color for dark mode
-             salvarDados();
-        };
-        solBtn.onclick = () => {
-            window.themeChangeInProgress = true;
-            document.body.classList.remove("dark-mode");
-            aplicarCorDeFundoInicial(); // Re-apply default or saved color for light mode
-            salvarDados();
-        };
-
+        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); }; // Save theme preference
+        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); }; // Save theme preference
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
 
@@ -1685,7 +1568,7 @@ html
         database.ref('dadosRolados').on('value', snapshot => { const dados = snapshot.val(), lista = document.getElementById("historico-lista"); lista.innerHTML = ""; if (dados) { const keys = Object.keys(dados).reverse(); /* Show newest first */ keys.forEach(key => { const dado = dados[key], div = document.createElement("div"); div.textContent = `${dado.nomeFicha} rolou: ${dado.resultado}`; lista.appendChild(div); });} });
         document.getElementById("excluir-historico-btn").onclick = () => { document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = ""; document.getElementById("confirmar-senha-gm-btn").onclick = () => { if (document.getElementById("senha-gm-input").value === senhaMatriz) { database.ref('dadosRolados').remove().then(() => { alert("Histórico de dados excluído!"); fecharModal("senha-gm-modal"); }); } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); } }; };
 
-        // Chat Functionality (unchanged from previous logic)
+        // Chat Functionality (unchanged)
         chatBtn.onclick = () => { if (!chatPassword) { document.getElementById("chat-password-modal").style.display = "flex"; } else { document.getElementById("open-chat-modal").style.display = "flex"; } };
         function definirSenhaChat() { const senha = document.getElementById("chat-senha-input").value, confirmarSenha = document.getElementById("chat-confirmar-senha-input").value; if (senha !== confirmarSenha) return alert("As senhas não coincidem."); if (senha.length < 4) return alert("A senha deve ter pelo menos 4 caracteres."); chatPassword = senha; database.ref(`fichas/${currentFichaId}`).update({ chatPassword: senha }).then(() => { fecharModal("chat-password-modal"); alert("Senha do chat definida!"); atualizarEstadoChatBotao(); }).catch(error => console.error("Erro ao definir senha do chat:", error)); }
         function abrirChat() { const senhaDigitada = document.getElementById("abrir-chat-senha-input").value; if (senhaDigitada === chatPassword) { fecharModal("open-chat-modal"); document.getElementById("chat-modal").style.display = "flex"; isChatOpen = true; selectedChatUser = null; document.getElementById("conversation-area").innerHTML = ""; marcarMensagensComoLidas(); } else { alert("Senha do chat incorreta."); } } // Marcar como lidas ao abrir
@@ -1699,126 +1582,25 @@ html
          // Mark as read only if chat with specific user is open, or mark all if no specific user provided (e.g., initial load)
         if (!otherUserId || otherId === otherUserId) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { updates[`${chatId}/${msgSnapshot.key}/read`] = true; } }); } } }); if (Object.keys(updates).length > 0) database.ref('mensagens').update(updates); }); }
         function verificarNovasMensagens() { if (!currentFichaId) return; database.ref('mensagens').on('value', (snapshot) => { let unreadCount = 0; let shouldPlaySound = false; snapshot.forEach((chat) => { const chatId = chat.key; if (chatId.includes(currentFichaId)) { chat.forEach((msgSnapshot) => { const msg = msgSnapshot.val(); if (msg.receiverId === currentFichaId && msg.senderId !== currentFichaId && !msg.read) { unreadCount++; // If chat isn't open OR chat is open but not with this sender
-        if (!isChatOpen || (isChatOpen && selectedChatUser !== msg.senderId)) { shouldPlaySound = true; } } }); } }); chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0; // Update unread count attribute
-         // Update the visual indicator (after pseudo-element)
-        const unreadIndicator = document.querySelector('#chat-btn::after');
-        if (unreadIndicator) {
-            unreadIndicator.style.display = unreadCount > 0 ? 'block' : 'none';
-        }
+        if (!isChatOpen || (isChatOpen && selectedChatUser !== msg.senderId)) { shouldPlaySound = true; } } }); } }); chatBtn.dataset.unread = unreadCount > 0 ? unreadCount : 0; chatBtn.style.setProperty('--unread-count', `"${unreadCount}"`); // For potential CSS display
         if (shouldPlaySound && document.getElementById("new-message-sound")) { newMessageSound.play().catch(e => console.log("Erro ao tocar som:", e)); } }); }
 
 
-        // Background Functionality
-        window.bgChangeInProgress = false; // Flag to prevent save notification spam
-        planoFundoBtn.onclick = () => {
-            // Set radio buttons based on current style before showing modal
-             const currentSize = document.body.style.backgroundSize || 'cover';
-             const radioToCheck = document.querySelector(`input[name="background-size"][value="${currentSize}"]`);
-             if (radioToCheck) radioToCheck.checked = true;
-             else document.querySelector('input[name="background-size"][value="cover"]').checked = true; // Default if unknown
-
-            backgroundModal.style.display = "flex";
-        };
-
-        function aplicarPlanoDeFundo() {
-             window.bgChangeInProgress = true;
-             const file = backgroundImageInput.files[0];
-             const selectedSize = document.querySelector('input[name="background-size"]:checked').value;
-
-             if (file) {
-                 const reader = new FileReader();
-                 reader.onload = e => {
-                     const imageUrl = e.target.result; // This is the data URL
-                     document.body.style.backgroundImage = `url('${imageUrl}')`;
-                     document.body.style.backgroundSize = selectedSize;
-                     document.body.style.backgroundAttachment = 'fixed'; // Ensure fixed
-                     document.body.style.backgroundPosition = 'center'; // Ensure centered
-                     salvarDados(); // Save the new data URL and size
-                     fecharModal('background-modal');
-                 };
-                 reader.readAsDataURL(file);
-             } else if (document.body.style.backgroundImage !== 'none') {
-                 // If no new file selected, but an image exists, just update the size
-                 document.body.style.backgroundSize = selectedSize;
-                 salvarDados(); // Save the updated size
-                 fecharModal('background-modal');
-             } else {
-                 alert("Nenhuma imagem selecionada.");
-                 window.bgChangeInProgress = false; // Reset flag if no change happened
-             }
-         }
-
-        function excluirPlanoDeFundo() {
-             if (confirm("Remover imagem de fundo?")) {
-                 window.bgChangeInProgress = true;
-                 document.body.style.backgroundImage = 'none';
-                 document.body.style.backgroundAttachment = 'scroll'; // Reset attachment
-                 salvarDados(); // Save the 'none' state
-                 fecharModal('background-modal');
-             }
-         }
-
-        function aplicarPlanoDeFundoInicial() {
-             // Always apply based on the currently loaded ficha's data
-             const bgImage = fichas[currentFichaId]?.backgroundImage; // Expects 'url(...)' or null
-             const bgSize = fichas[currentFichaId]?.backgroundSize || 'cover';
-
-             if (currentFichaId && fichas[currentFichaId] && bgImage && bgImage !== 'none') {
-                 document.body.style.backgroundImage = bgImage; // Apply the saved 'url(...)' string
-                 document.body.style.backgroundSize = bgSize;
-                 document.body.style.backgroundAttachment = 'fixed'; // Apply fixed attachment
-                 document.body.style.backgroundPosition = 'center'; // Apply center position
-             } else {
-                 document.body.style.backgroundImage = 'none';
-                 document.body.style.backgroundAttachment = 'scroll'; // Reset attachment
-                 // Don't reset size or position, let defaults apply
-             }
-         }
-
+        // Background Functionality (unchanged)
+        planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex"; };
+        function aplicarPlanoDeFundo() { const file = backgroundImageInput.files[0]; if (file) { const reader = new FileReader(); reader.onload = e => { const imageUrl = e.target.result; document.body.style.backgroundImage = `url('${imageUrl}')`; const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); }; reader.readAsDataURL(file); } else if (document.body.style.backgroundImage !== 'none') { const selectedSize = document.querySelector('input[name="background-size"]:checked').value; document.body.style.backgroundSize = selectedSize; salvarDados(); fecharModal('background-modal'); } else { alert("Nenhuma imagem selecionada."); } }
+        function excluirPlanoDeFundo() { if (confirm("Remover imagem de fundo?")) { document.body.style.backgroundImage = 'none'; salvarDados(); fecharModal('background-modal'); } }
+        function aplicarPlanoDeFundoInicial() { const bgImage = fichas[currentFichaId]?.backgroundImage; const bgSize = fichas[currentFichaId]?.backgroundSize || 'cover'; if (currentFichaId && fichas[currentFichaId] && bgImage) { document.body.style.backgroundImage = `url('${bgImage}')`; document.body.style.backgroundSize = bgSize; } else { document.body.style.backgroundImage = 'none'; } }
 
         // Background Color Functionality
         corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' || backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
-        backgroundColorSelector.addEventListener('click', (event) => {
-             if (event.target.classList.contains('color-option')) {
-                 window.bgChangeInProgress = true; // Set flag
-                 const color = event.target.dataset.color;
-                 document.body.style.backgroundColor = color;
-                 salvarDados(); // Save the selected color
-                 backgroundColorSelector.style.display = 'none';
-                 document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active'));
-                 event.target.classList.add('active');
-             }
-         });
-
-        function aplicarCorDeFundoInicial() {
-             const bgColor = fichas[currentFichaId]?.backgroundColor; // Expects color string like '#hex' or 'rgb(...)'
-
-             if (currentFichaId && fichas[currentFichaId] && bgColor) {
-                 document.body.style.backgroundColor = bgColor; // Apply saved color
-                 // Update color picker active state
-                 document.querySelectorAll('#background-color-selector .color-option').forEach(option => {
-                     // Normalize colors for comparison (simple case, might need more robust solution for different formats)
-                     const optionColor = option.dataset.color.toLowerCase();
-                     const savedColor = bgColor.toLowerCase();
-                     option.classList.toggle('active', optionColor === savedColor);
-                 });
-             } else {
-                 // Apply default color based on current theme if no color is saved
-                 const defaultColor = document.body.classList.contains('dark-mode') ? '#121212' : '#f0e6d2';
-                 document.body.style.backgroundColor = defaultColor;
-                 // Clear active state in picker if using default
-                 document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active'));
-
-             }
-         }
-
+        backgroundColorSelector.addEventListener('click', (event) => { if (event.target.classList.contains('color-option')) { const color = event.target.dataset.color; document.body.style.backgroundColor = color; salvarDados(); backgroundColorSelector.style.display = 'none'; document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active')); event.target.classList.add('active'); } });
+        function aplicarCorDeFundoInicial() { const bgColor = fichas[currentFichaId]?.backgroundColor; if (currentFichaId && fichas[currentFichaId] && bgColor) { document.body.style.backgroundColor = bgColor; document.querySelectorAll('#background-color-selector .color-option').forEach(option => { option.classList.toggle('active', option.dataset.color === bgColor); }); } else { document.body.style.backgroundColor = '#f0e6d2'; /* Default color */ } }
         // Close color picker if clicking outside
         document.addEventListener('click', function(event) { if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) { backgroundColorSelector.style.display = 'none'; } });
 
 
-        // Initial Load - Start by trying to load Fichas, which triggers Matriz creation if needed
         carregarFichas();
-
     </script>
 </body>
 </html>
