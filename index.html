@@ -12,65 +12,48 @@
             background-color: #f0e6d2; /* Cor de pergaminho padrão */
             color: #000;
             display: flex;
-            flex-direction: column; /* Ensure sidebar and container stack */
             min-height: 100vh;
             margin: 0;
-            padding-top: 70px; /* Space for fixed sidebar */
-            padding-left: 10px;
-            padding-right: 10px;
-            padding-bottom: 20px;
+            padding: 20px;
             background-image: none;
             background-size: cover;
             background-position: center;
             transition: background 0.3s, color 0.3s, font-family 0.3s;
         }
         body.dark-mode {
-            background-color: #121212 !important;
+            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
             color: #e0e0e0;
         }
         #fichas-sidebar {
-            width: 100%; height: 60px; padding: 10px; display: flex; flex-direction: row;
+            width: 100%; height: 60px; padding: 0; display: flex; flex-direction: row;
             align-items: center; justify-content: flex-start; position: fixed;
-            top: 0; left: 0; z-index: 1000; overflow-x: auto; background: rgba(240, 230, 210, 0.8);
-            backdrop-filter: blur(5px);
-            border-bottom: 2px solid #b8860b;
-        }
-        body.dark-mode #fichas-sidebar {
-            background: rgba(30, 30, 30, 0.8);
-            border-bottom: 2px solid #444;
+            top: 0; left: 0; z-index: 1000; overflow-x: auto; background: transparent;
         }
         .ficha-tab {
-            min-width: 90px; height: 40px; background: #e0d4c0; /* Slightly darker tab */
-            border: 1px solid #b8860b; border-bottom: none;
-            border-radius: 8px 8px 0 0; margin-right: 5px;
+            visibility: visible; width: 100px; height: 50px; background: #f0e6d2;
+            border: 2px solid #b8860b; border-radius: 10px 10px 0 0; margin-right: 10px;
             display: flex; align-items: center; justify-content: center; cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-            padding: 0 10px; /* Padding for text */
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
-        .ficha-tab:hover, .ficha-tab.active { background: #a0522d; color: #fff; transform: translateY(-3px); }
-        .ficha-tab.active span { color: #fff; }
+        .ficha-tab:hover, .ficha-tab.active { background: #a0522d; transform: translateY(-5px); }
         .ficha-tab span {
-            font-family: 'MedievalSharp', serif; color: #3a2a0b; font-size: 0.85rem; text-align: center;
-            max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; text-align: center;
+            max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         #add-ficha-btn {
-            min-width: 90px; height: 40px; background: #d4c0a0; border: 1px solid #b8860b; border-bottom:none;
-            border-radius: 8px 8px 0 0; margin-right: 5px; display: flex; align-items: center;
+            width: 100px; height: 50px; background: #f0e6d2; border: 2px solid #b8860b;
+            border-radius: 10px 10px 0 0; margin-right: 10px; display: flex; align-items: center;
             justify-content: center; cursor: pointer; transition: transform 0.2s ease;
-            box-shadow: 0 0 8px #ffd700, 0 0 15px #ffd700; z-index: 1001;
-            padding: 0 10px;
+            box-shadow: 0 0 10px #ffd700, 0 0 20px #ffd700; z-index: 1001;
         }
-        #add-ficha-btn span { font-family: 'MedievalSharp', serif; color: #3a2a0b; font-size: 0.85rem; }
-        #add-ficha-btn:hover { background: #a0522d; transform: translateY(-3px); }
-        #add-ficha-btn:hover span { color: #fff; }
-
+        #add-ficha-btn span { font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; }
+        #add-ficha-btn:hover { background: #a0522d; transform: translateY(-5px); }
         #ficha-container {
-            background: rgba(240, 230, 210, 0.95); padding: 20px; border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 100%; max-width: 1200px;
-            margin: 10px auto 20px; /* Adjusted margin for fixed sidebar */
-            border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s;
+            background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
+            margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
+            transition: font-family 0.3s; /* Add transition for font changes */
         }
         body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
@@ -80,27 +63,24 @@
             100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
         }
         h1#nome-personagem-titulo {
-            font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 2.5rem; margin-bottom: 15px;
+            font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
             text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
         }
-        body.dark-mode h1#nome-personagem-titulo { color: #f0e6d2; }
-
         @keyframes raios {
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
             50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
         }
-        #game-master-message { display: none; color: blue; font-size: 1.2rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
+        #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        section h2 { text-align: center; font-family: 'MedievalSharp', serif; font-size: 1.5rem; margin-bottom:10px;}
+        section h2 { text-align: center; font-family: 'MedievalSharp', serif;} /* Titles specific font */
         body.dark-mode section { background: #1e1e1e; border-color: #444; }
-        body.dark-mode section h2 { color: #f0e6d2; }
-        label { font-weight: 600; color: #000; margin-bottom: 6px; display: block; font-size: 0.9rem; }
+        label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
         input[type="text"], input[type="number"], textarea {
-            padding: 8px; border: 2px solid #b8860b; border-radius: 6px; width: 100%; /* Full width for stacking */
-            margin-bottom: 10px; font-size: 0.9rem; transition: border-color 0.3s ease;
-            background: #fff; color: #000; box-sizing: border-box;
+            padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
+            margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
+            background: #fff; color: #000;
         }
         body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea {
             background: #333; color: #e0e0e0; border-color: #555;
@@ -111,136 +91,257 @@
         input[readonly], span[readonly] { background: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed; }
         body.dark-mode input[readonly], body.dark-mode span[readonly] { background: #444; border-color: #666; }
         textarea { resize: vertical; }
-
-        .top-elements-wrapper {
-            display: flex;
-            flex-direction: column; /* Stack on mobile by default */
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
+        .atributos-container { display: flex; justify-content: space-between; gap: 20px; }
+        .atributos-coluna, .atributos-coluna-destaque {
+            width: 48%; display: flex; flex-direction: column; align-items: flex-start;
         }
-
+        .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
+        body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
+        .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
+        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
+        body.dark-mode .atributo-destaque span { color: #e0e0e0; }
+        .atributo-fogo { animation: fogo 1.5s infinite; }
+        @keyframes fogo {
+            0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
+            50% { text-shadow: 0 0 10px #ff4500, 0 0 15px #ffd700; }
+            100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
+        }
+        .vida-magia-vigor { display: flex; justify-content: space-around; gap: 15px; flex-wrap: wrap; }
+        .atributo-container {
+            background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 8px; border: 1px solid #b8860b;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px; text-align: center;
+        }
+        body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8); }
+        .atributo-container::before { font-size: 1.5rem; margin-bottom: 5px; display: block; }
+        .atributo-container.vida::before { content: "❤️"; }
+        .atributo-container.magia::before { content: "✨"; }
+        .atributo-container.vigor::before { content: "⚡"; }
+        .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; margin: 5px 0; text-align: center; }
+        body.dark-mode .medieval-box { background: #1e1e1e; border-color: #444; }
+        .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px; }
+        body.dark-mode .regeneracao { color: #aaa; }
+        button {
+            background: #b8860b; color: #fff; border: none; padding: 5px 10px;
+            cursor: pointer; font-size: 1.2rem; border-radius: 4px; margin: 0 5px;
+            transition: background-color 0.3s ease;
+        }
+        body.dark-mode button { background: #555; }
+        button:hover { background: #a0522d; }
+        body.dark-mode button:hover { background: #777; }
+        .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; }
+        .botao {
+            padding: 12px 25px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease; font-family: 'MedievalSharp', serif;
+            color: #fff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode .botao { background: #555; }
+        body.dark-mode .botao:hover { background: #777; }
+        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha { background-color: #800000; }
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover {
+            background: #a0522d; transform: translateY(-2px);
+        }
+        .icon-btn {
+            padding: 10px; width: 44px; height: 44px;
+            font-size: 1.2rem; line-height: 1; text-align: center;
+        }
+        #lua-btn { background-color: #333; color: #eee; }
+        #sol-btn { background-color: #ffdd00; color: #333; }
+        #cor-fundo-visual-btn { /* Will be styled dynamically by JS */ }
+        #nivel-container { text-align: center; margin-top: 10px; }
+        #nivel {
+            padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
+            width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
+            font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
+            font-family: 'MedievalSharp', serif; /* Specific font */
+        }
+        body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
+        #nivel.aura-azul { animation: pulsar-aura 2s 10; }
+        .expandable-textarea {
+            height: 100px; width: 100%; background: #fff; border: 2px solid #b8860b;
+            border-radius: 6px; padding: 10px; font-size: 0.9rem; transition: height 0.3s ease;
+        }
+        body.dark-mode .expandable-textarea { background: #333; }
+        .expandable-textarea:focus { height: 15cm; }
+        #dice-container {
+            position: absolute; top: 20px; right: 20px; width: 200px; text-align: center;
+            font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
+        }
+        #dice-container label { font-size: 1.2rem; color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+        body.dark-mode #dice-container label { color: #e0e0e0; }
+        #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.5rem; }
+        #dice-roll {
+            width: 100px; height: 100px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer;
+            margin: 0 auto; position: relative; transition: all 0.3s ease;
+             font-family: 'MedievalSharp', serif; /* Specific font */
+        }
+        body.dark-mode #dice-roll { background: #1e1e1e; border-color: #444; }
+        #dice-roll::before { content: "⚅"; font-size: 1.5rem; position: absolute; top: 5px; right: 5px; color: #a0522d; }
+        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; }
+        body.dark-mode #dice-result { color: #e0e0e0; }
+        @keyframes blink { 50% { opacity: 0; } }
+        #dice-roll.critical-failure { animation: aura-vermelha 2s infinite; }
+        #dice-roll.critical-success { animation: aura-verde 2s infinite; }
+        @keyframes aura-vermelha {
+            0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
+            50% { box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000; }
+            100% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; }
+        }
+        @keyframes aura-verde {
+            0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+            50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
+            100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+        }
+        #notification {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;
+            border-radius: 8px; font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #fff;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); display: none; z-index: 100;
+            background: rgba(0, 0, 0, 0.7); transition: opacity 0.3s ease;
+        }
+        #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
+        #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
+        #notification.normal-result, #notification.save-success { animation: blink 1s infinite; }
+        #notification.save-success { background: rgba(0, 200, 0, 0.8); }
         #character-image-container {
-            width: 100px; height: 100px; background: #f0e6d2;
+            position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
             border: 2px solid #b8860b; border-radius: 8px; display: flex; align-items: center;
-            justify-content: center; cursor: pointer; overflow: hidden;
-            order: 1; /* Default order */
+            justify-content: center; cursor: pointer; overflow: hidden; z-index: 10;
         }
         body.dark-mode #character-image-container { background: #1e1e1e; }
         #character-image { width: 100%; height: 100%; object-fit: cover; display: none; }
         #character-image-container:hover { box-shadow: 0 0 10px #ffd700; }
-
-        #dice-container {
-            width: 180px; text-align: center;
-            font-family: 'MedievalSharp', serif; user-select: none;
-            order: 2; /* Default order */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; z-index: 1000;
         }
-        #dice-container label { font-size: 1.1rem; color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
-        body.dark-mode #dice-container label { color: #e0e0e0; }
-        #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.3rem; }
-        #dice-roll {
-            width: 80px; height: 80px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; font-size: 1.8rem; cursor: pointer;
-            margin: 0 auto; position: relative; transition: all 0.3s ease;
-             font-family: 'MedievalSharp', serif;
+        .modal-content {
+            background: #f0e6d2; padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 300px; text-align: center;
         }
-        body.dark-mode #dice-roll { background: #1e1e1e; border-color: #444; }
-        #dice-roll::before { content: "⚅"; font-size: 1.3rem; position: absolute; top: 5px; right: 5px; color: #a0522d; }
-        #dice-result { margin-top: 8px; font-size: 0.9rem; color: #000; display: none; animation: blink 1s infinite; }
-        body.dark-mode #dice-result { color: #e0e0e0; }
-
-
-        .atributos-container { display: flex; flex-direction: column; gap: 15px; } /* Stack by default */
-        .atributos-coluna, .atributos-coluna-destaque { width: 100%; }
-
-        .vida-magia-vigor { display: flex; flex-direction: column; gap: 15px; }
-        .atributo-container { width: 100%; min-width: unset; }
-
-        .armamento-container { display: flex; flex-direction: column; gap: 15px; }
-        .armamento-coluna { width: 100%; }
-        .armamento-coluna .flex { flex-direction: column; align-items: stretch; }
-        .armamento-coluna .flex input[type="number"] { width: 100%; margin-right: 0; margin-bottom: 5px; }
-        .armamento-coluna .flex span { margin-bottom: 5px; text-align: left; }
-
-
-        #inventario-habilidades .flex { flex-direction: column; gap: 15px; }
-        #inventario-habilidades .flex > div { width: 100%; }
-
-        .botoes-container, .theme-color-container { flex-wrap: wrap; justify-content: center; gap: 8px; }
-        .botao, .icon-btn { padding: 10px 15px; font-size: 0.9rem; }
-        .icon-btn { width: 40px; height: 40px; }
-        #font-selector { padding: 8px 12px; height: 40px; font-size: 0.85rem;}
-
-
-        .modal-content { width: 90%; max-width: 350px; }
-
+        body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
+        .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
+        body.dark-mode .modal-content h3 { color: #e0e0e0; }
+        .modal-content input { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+        body.dark-mode .modal-content input { background: #333; color: #e0e0e0; border-color: #555; }
+        .modal-content button {
+            padding: 10px 20px; border: none; border-radius: 6px; font-family: 'MedievalSharp', serif;
+            color: #fff; cursor: pointer; margin: 0 5px;
+        }
+        .modal-content .confirm-btn { background: #b8860b; }
+        .modal-content .confirm-btn:hover { background: #a0522d; }
+        .modal-content .cancel-btn { background: #a52a2a; }
+        .modal-content .cancel-btn:hover { background: #8b0000; }
+        #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
+            padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
+            font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
+            transition: background-color 0.3s ease; z-index: 10;
+        }
+        body.dark-mode #vantagens-desvantagens-btn, body.dark-mode #racas-btn, body.dark-mode #classes-btn {
+            background: #1e1e1e; color: #e0e0e0;
+        }
+        #vantagens-desvantagens-btn:hover, #racas-btn:hover, #classes-btn:hover { background: #a0522d; color: #fff; }
+        #vantagens-desvantagens-panel, #racas-panel, #classes-panel {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(240, 230, 210, 0.95); padding: 20px; overflow-y: auto; z-index: 999;
+            border: 2px solid #b8860b; box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode #vantagens-desvantagens-panel, body.dark-mode #racas-panel, body.dark-mode #classes-panel {
+            background: rgba(30, 30, 30, 0.95);
+        }
+        #vantagens-desvantagens-panel h2, #racas-panel h2, #classes-panel h2 {
+            font-family: 'MedievalSharp', serif; font-size: 2rem; text-align: center;
+            color: #a0522d; margin-bottom: 20px;
+        }
+        #racas-panel h2 { font-size: 3rem; }
+        .vantagem-item, .desvantagem-item, .raca-item {
+            padding: 10px; margin: 5px 0; background: #fff; border: 1px solid #ccc;
+            border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease;
+        }
+        body.dark-mode .vantagem-item, body.dark-mode .desvantagem-item, body.dark-mode .raca-item {
+            background: #333; border-color: #555;
+        }
+        .vantagem-item:hover, .desvantagem-item:hover, .raca-item:hover { background: #f0e6d2; }
+        body.dark-mode .vantagem-item:hover, body.dark-mode .desvantagem-item:hover, body.dark-mode .raca-item:hover { background: #444; }
+        .vantagem-item.comprada, .raca-item.comprada { background: #ffcccc; color: #f00; cursor: default; }
+        .desvantagem-item.comprada { background: #ccffcc; color: #080; cursor: default; }
+        #salvar-vantagens-btn, #salvar-racas-btn, #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn {
+            position: fixed; bottom: 20px; padding: 12px 25px; background: #a52a2a; color: #fff;
+            border: none; border-radius: 6px; font-family: 'MedievalSharp', serif; font-size: 1.2rem;
+            cursor: pointer; transition: transform 0.2s ease;
+        }
+        #salvar-vantagens-btn, #salvar-racas-btn { right: 250px; animation: aura-verde-btn 2s infinite; display: none; background: #000; }
+        #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn { right: 20px; }
+        #salvar-vantagens-btn:hover, #salvar-racas-btn:hover, #fechar-pagina-btn:hover, #fechar-racas-btn:hover, #fechar-classes-btn:hover {
+            transform: translateY(-2px);
+        }
+        @keyframes aura-verde-btn {
+            0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+            50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
+            100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
+        }
+        .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; }
+        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .locomotion-item label { font-weight: bold; color: #FFD700; }
+        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; margin-left: 5px; font-weight: bold; }
+        #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513; }
+        .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto; }
+        body.dark-mode .list-display { background: #333; border-color: #555; }
+        .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; }
+        body.dark-mode .list-item { border-color: #555; }
+        .list-item:hover { background: #e0e0e0; }
+        body.dark-mode .list-item:hover { background: #444; }
+        .inventory-slot { display: flex; align-items: center; margin-bottom: 10px; }
+        .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px; }
+        .inventory-slot input[type="number"] { width: 60px; }
         #anotacoes-btn {
-            position: fixed; left: 10px; bottom: 10px; top: auto; transform: none;
-            padding: 8px 15px; font-size: 0.9rem; z-index: 1000;
+            position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
+            background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
+            font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
+            transition: background-color 0.3s ease; z-index: 1000;
         }
+        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; }
+        #anotacoes-btn:hover { background: #a0522d; color: #fff; }
         #anotacoes-textarea {
-            position: fixed; bottom: 60px; left: 10px; right: 10px;
-            width: auto; height: 200px;
-            transform: none; z-index: 1001;
+            display: none; position: fixed; left: 60px; top: 50%; transform: translateY(-50%);
+            width: 400px; height: 400px; background: #fff; border: 2px solid #b8860b;
+            border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; z-index: 1001;
         }
+        body.dark-mode #anotacoes-textarea { background: #333; color: #e0e0e0; }
+        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background: #fff; }
+        body.dark-mode .magias-container { background: #333; border-color: #555; }
+        .magias-container input { margin-bottom: 10px; }
+        #adicionar-magia-btn { background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: block; margin-top: 10px; }
+        #adicionar-magia-btn:hover { background: #a0522d; }
+        .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px; margin-top: 10px; }
+        body.dark-mode .classe-raca-container { background: #1e1e1e; border-color: #444; }
+        .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem; }
+        .classe-raca-container span[onclick] { background: #fff; border: 2px solid #b8860b; padding: 10px; cursor: pointer; display: block; }
+        body.dark-mode .classe-raca-container span[onclick] { background: #333; color: #e0e0e0; }
+        .classe-raca-container textarea { width: 100%; background: #fff; border: 2px solid #b8860b; }
+        body.dark-mode .classe-raca-container textarea { background: #333; color: #e0e0e0; }
+        .raca-item { margin-bottom: 20px; padding: 10px; background: #fff; border: 2px solid #b8860b; border-radius: 6px; }
+        .raca-item h3 { font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #a0522d; }
+        .raca-item p { font-size: 1rem; color: #000; }
+        body.dark-mode .raca-item { background: #333; border-color: #555; }
+        body.dark-mode .raca-item p { color: #e0e0e0; }
+        .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
+        .theme-option { position: relative; }
+        #cor-fundo-visual-btn { cursor: pointer; }
 
-        /* Larger screens */
-        @media (min-width: 768px) {
-            body { padding-left: 20px; padding-right: 20px; }
-            #ficha-container { padding: 30px; margin-top: 80px; }
-            h1#nome-personagem-titulo { font-size: 3rem; margin-bottom: 20px; }
-            section h2 { font-size: 1.8rem; margin-bottom: 15px;}
-            label { font-size: 1rem; margin-bottom: 8px; }
-            input[type="text"], input[type="number"], textarea { padding: 10px; font-size: 1rem; margin-bottom: 15px;}
-
-            .top-elements-wrapper {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-start; /* Align to top */
-            }
-            #character-image-container { order: 1; /* Left */ }
-            #dice-container { order: 2; /* Right */ }
-
-
-            .atributos-container { flex-direction: row; gap: 20px; }
-            .atributos-coluna, .atributos-coluna-destaque { width: 48%; }
-
-            .vida-magia-vigor { flex-direction: row; justify-content: space-around; gap: 15px; }
-            .atributo-container { width: 30%; min-width: 200px; }
-
-            .armamento-container { flex-direction: row; gap: 20px; }
-            .armamento-coluna { width: 50%; }
-            .armamento-coluna .flex { flex-direction: row; align-items: center; }
-            .armamento-coluna .flex input[type="number"] { width: 80px; margin-right: 8px; margin-bottom: 0; }
-            .armamento-coluna .flex span { margin-bottom: 0; }
-
-
-            #inventario-habilidades .flex { flex-direction: row; gap: 20px; }
-            #inventario-habilidades .flex > div { width: 50%; }
-
-            .botoes-container, .theme-color-container { gap: 10px; }
-            .botao, .icon-btn { padding: 12px 25px; font-size: 1rem; }
-            .icon-btn { width: 44px; height: 44px; }
-            #font-selector { padding: 10px 15px; height: 44px; font-size: 1rem;}
-
-            #anotacoes-btn { top: 50%; bottom: auto; transform: translateY(-50%); }
-            #anotacoes-textarea {
-                left: 60px; top: 50%; bottom: auto; right: auto;
-                width: 400px; height: 400px;
-                transform: translateY(-50%);
-            }
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            #ficha-container { padding: 15px; }
+            h1#nome-personagem-titulo { font-size: 2rem; }
+            section h2 { font-size: 1.2rem; }
+            input, textarea { font-size: 0.9rem; }
+            .atributos-container, .vida-magia-vigor { flex-direction: column; }
+            .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
+            .botoes-container, .theme-color-container { flex-direction: row; flex-wrap: wrap; }
         }
-
-        @media (min-width: 1024px) { /* For even larger screens, if needed */
-             #character-image-container { position: absolute; top: 10px; left: 10px; }
-             #dice-container { position: absolute; top: 20px; right: 20px; }
-             .top-elements-wrapper { margin-bottom: 0; /* Remove margin if elements are absolute */ }
-        }
-
-
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
         #background-modal { display: none; }
-        #background-modal .modal-content { width: 90%; max-width:400px; text-align: left; }
+        #background-modal .modal-content { width: 400px; text-align: left; }
         #background-modal .modal-content label { display: block; margin-bottom: 5px; }
         #background-modal .modal-content input[type="file"] { margin-bottom: 10px; }
         #background-modal .modal-content .radio-group { margin-bottom: 15px; }
@@ -253,20 +354,17 @@
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
     <div id="ficha-container">
-        <div class="top-elements-wrapper">
-            <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
-                <img id="character-image" alt="Imagem do Personagem">
-                <input type="file" id="character-image-input" accept="image/*" style="display:none">
-            </div>
-            <h1 id="nome-personagem-titulo" class="order-first md:order-none">Ficha de Personagem</h1>
-            <div id="dice-container">
-                <label>Role seu dado:</label>
-                <div id="dice-roll">-</div>
-                <div id="dice-result"></div>
-            </div>
-        </div>
+        <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
         <div id="game-master-message">Você virou o Game Master</div>
-
+        <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
+            <img id="character-image" alt="Imagem do Personagem">
+            <input type="file" id="character-image-input" accept="image/*" style="display:none">
+        </div>
+        <div id="dice-container">
+            <label>Role seu dado:</label>
+            <div id="dice-roll">-</div>
+            <div id="dice-result"></div>
+        </div>
         <div id="ficha-content">
             <section id="informacoes-basicas">
                 <h2>Informações Básicas</h2>
@@ -386,30 +484,30 @@
                 <div class="armamento-container">
                     <div class="armamento-coluna">
                         <label>Armamento Mão Direita:</label>
-                        <div class="flex">
-                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="md:mr-2">
+                        <div class="flex items-center mb-2">
+                            <input type="text" id="arma-direita-nome" placeholder="Nome da Arma" class="mr-2">
                             <span>Ataque </span>
-                            <input type="number" id="arma-direita-ataque" value="0" class="md:w-20 md:mr-2">
+                            <input type="number" id="arma-direita-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
-                            <input type="number" id="arma-direita-ataque-magico" value="0" class="md:w-20">
+                            <input type="number" id="arma-direita-ataque-magico" value="0" class="w-20">
                         </div>
                     </div>
                     <div class="armamento-coluna">
                         <label>Armamento Mão Esquerda:</label>
-                        <div class="flex">
-                            <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="md:mr-2">
+                        <div class="flex items-center">
+                            <input type="text" id="arma-esquerda-nome" placeholder="Nome da Arma" class="mr-2">
                             <span>Ataque </span>
-                            <input type="number" id="arma-esquerda-ataque" value="0" class="md:w-20 md:mr-2">
+                            <input type="number" id="arma-esquerda-ataque" value="0" class="w-20 mr-2">
                             <span>Ataque Mágico </span>
-                            <input type="number" id="arma-esquerda-ataque-magico" value="0" class="md:w-20">
+                            <input type="number" id="arma-esquerda-ataque-magico" value="0" class="w-20">
                         </div>
                     </div>
                 </div>
             </section>
             <section id="inventario-habilidades">
                 <h2>Inventário e Habilidades</h2>
-                <div class="flex flex-col md:flex-row md:gap-20 gap-4">
-                    <div class="md:w-1/2 w-full">
+                <div class="flex gap-20">
+                    <div style="width:50%">
                         <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg):</label>
                         <div id="inventario-slots">
                             <div class="inventory-slot"><input type="text" placeholder="Item 1" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight" title="Peso em kg"></div>
@@ -424,7 +522,7 @@
                             <div class="inventory-slot"><input type="text" placeholder="Item 10" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight"></div>
                         </div>
                     </div>
-                    <div class="md:w-1/2 w-full">
+                    <div style="width:50%">
                         <label>Magias e Habilidades:</label>
                         <div id="magias-list" class="magias-container">
                             <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
@@ -472,7 +570,7 @@
             </section>
             <section id="status">
                 <h2>Status</h2>
-                <div class="flex flex-col md:flex-row gap-4 md:gap-20">
+                <div class="flex gap-20">
                     <div>
                         <label>Experiência:</label>
                         <input type="number" id="experiencia" value="0" min="0">
@@ -489,10 +587,10 @@
                 </div>
             </section>
 
-            <div class="flex flex-wrap justify-center gap-4 md:gap-5 mb-5">
-                <button id="vantagens-desvantagens-btn" class="botao">Vantagens e Desvantagens</button>
-                <button id="racas-btn" class="botao">Raças 🏰</button>
-                <button id="classes-btn" class="botao">Classes ⚔️</button>
+            <div style="display:flex;justify-content:center;gap:20px;margin-bottom:20px">
+                <button id="vantagens-desvantagens-btn">Vantagens e Desvantagens</button>
+                <button id="racas-btn">Raças 🏰</button>
+                <button id="classes-btn">Classes ⚔️</button>
             </div>
 
             <div class="botoes-container">
@@ -664,7 +762,7 @@
             nomePersonagemTitulo = document.getElementById("nome-personagem-titulo"), gameMasterMessage = document.getElementById("game-master-message"),
             vantagensListDisplay = document.getElementById("vantagens-list-display"), desvantagensListDisplay = document.getElementById("desvantagens-list-display"),
             inventarioSlots = document.getElementById("inventario-slots"), pesoTotalSpan = document.getElementById("peso-total"),
-            capacidadeCargaSpan = document.getElementById("capacidade-carga"), 
+            capacidadeCargaSpan = document.getElementById("capacidade-carga"), // Added for encumbrance
             diceContainer = document.getElementById("dice-container"), diceRoll = document.getElementById("dice-roll"), diceResult = document.getElementById("dice-result"),
             notification = document.getElementById("notification"), characterImageInput = document.getElementById("character-image-input"),
             characterImage = document.getElementById("character-image"), vantagensDesvantagensBtn = document.getElementById("vantagens-desvantagens-btn"),
@@ -682,9 +780,9 @@
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
             planoFundoBtn = document.getElementById("plano-fundo-btn"),
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
-            backgroundColorInput = document.getElementById('background-color-input'), 
-            backgroundColorButtonVisual = document.getElementById('cor-fundo-visual-btn'), 
-            fontSelector = document.getElementById('font-selector'), 
+            backgroundColorInput = document.getElementById('background-color-input'), // For color picker input
+            backgroundColorButtonVisual = document.getElementById('cor-fundo-visual-btn'), // For visual color button
+            fontSelector = document.getElementById('font-selector'), // For font selector
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo");
@@ -865,8 +963,7 @@
             const inventario = Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({ item: "", peso: "0" });
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
-            // calcularPesoTotal will be called within calcularAtributos if Forca changes, or directly if weight changes.
-            // For initial load, it's good to call it after setting Forca and before setting current HP/MP etc.
+            calcularPesoTotal(); // This will also trigger calcularAtributos for encumbrance
 
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
             magiasList.innerHTML = "";
@@ -886,8 +983,8 @@
             magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : (parseInt(document.getElementById("magia-total").textContent) || 20);
             vigorAtual = ficha.vigorAtual !== undefined ? ficha.vigorAtual : (parseFloat(document.getElementById("vigor-total").textContent) || 10);
 
-            atualizarNivel(); // This calls calcularAtributos which also handles encumbrance
-            // calcularAtributos(); // Already effectively called by atualizarNivel and then by calcularPesoTotal
+            atualizarNivel(); // This calls calcularAtributos
+            // calcularAtributos(); // Already called by atualizarNivel and calcularPesoTotal
 
             document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal);
             document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal);
@@ -900,7 +997,7 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             previousValues.clear(); 
             document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
-                previousValues.set(input, input.value); 
+                previousValues.set(input, input.value); // Set initial previous values on load
             });
             
             aplicarPlanoDeFundoInicial(ficha); 
@@ -965,7 +1062,10 @@
             fichaAtual.vigorAtual = vigorAtual;
 
             saveFichasToStorage(fichas);
+            // Only show "Salvo" notification if not triggered by an attribute revert, to avoid spamming.
+            // However, it's complex to track. For now, always show.
             showNotification("Salvo Localmente!", "save-success");
+            // previousValues are updated within calcularAtributos for attributes, and on focus for others
         }
 
         function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ?? 0; }
@@ -1013,10 +1113,8 @@
             let currentConstituicao = parseInt(constituicaoInput.value) || 0;
 
             let totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
-            let isOverLimit = false;
 
             if (totalPontosAtuais > pontosHabilidadeTotal) {
-                isOverLimit = true;
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
                 
                 forcaInput.value = previousValues.get(forcaInput) || "0";
@@ -1132,8 +1230,6 @@
             atributosSpans.forEach(a => a.span.classList.remove("atributo-fogo"));
             const maxAtributo = atributosSpans.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: 0 });
             if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
-
-            return !isOverLimit; // Return true if valid, false if reverted
         }
 
         function resetarPontos() {
@@ -1267,23 +1363,19 @@
                     return; 
                 }
 
-                let calculationValid = true;
                 if (atributosInputs.includes(inputTarget)) {
-                    calculationValid = calcularAtributos(); 
+                    calcularAtributos(); 
                 } else if (inputTarget.id.includes("arma")) {
-                    previousValues.set(inputTarget, inputTarget.value); // Update previous before calc
-                    calculationValid = calcularAtributos(); 
+                    previousValues.set(inputTarget, inputTarget.value);
+                    calcularAtributos(); 
                 } else if (inputTarget.classList.contains('inventory-weight')) {
                     previousValues.set(inputTarget, inputTarget.value);
-                    calcularPesoTotal();
-                    calculationValid = calcularAtributos(); // Update encumbrance penalties
+                    calcularPesoTotal(); // Calls calcularAtributos
+                    calcularAtributos(); // Ensure encumbrance is updated
                 } else {
                     previousValues.set(inputTarget, inputTarget.value);
                 }
-
-                if (calculationValid) { // Only save if attributes were not reverted
-                    salvarDados();
-                }
+                salvarDados();
             });
         });
         nomePersonagemInput.oninput = salvarDados;
@@ -1713,7 +1805,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-             if (diceContainer) { 
+             if (diceContainer) { // Ensure diceContainer exists before accessing offsetLeft/Top
                 currentX = diceContainer.offsetLeft;
                 currentY = diceContainer.offsetTop;
             }
