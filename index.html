@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -18,7 +18,7 @@
             background-image: none;
             background-size: cover;
             background-position: center;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s, color 0.3s, font-family 0.3s;
         }
         body.dark-mode {
             background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
@@ -53,6 +53,7 @@
             background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
+            transition: font-family 0.3s; /* Add transition for font changes */
         }
         body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
@@ -72,7 +73,7 @@
         }
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        section h2 { text-align: center; }
+        section h2 { text-align: center; font-family: 'MedievalSharp', serif;} /* Titles specific font */
         body.dark-mode section { background: #1e1e1e; border-color: #444; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
@@ -128,7 +129,7 @@
         body.dark-mode button { background: #555; }
         button:hover { background: #a0522d; }
         body.dark-mode button:hover { background: #777; }
-        .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; /* Allow wrapping */ }
+        .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         .botao {
             padding: 12px 25px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease; font-family: 'MedievalSharp', serif;
@@ -146,13 +147,13 @@
         }
         #lua-btn { background-color: #333; color: #eee; }
         #sol-btn { background-color: #ffdd00; color: #333; }
-        #cor-fundo-btn { background-color: #800000; }
-        #cor-fundo-btn-wrapper { line-height: 1; vertical-align: middle; }
+        #cor-fundo-visual-btn { /* Will be styled dynamically by JS */ }
         #nivel-container { text-align: center; margin-top: 10px; }
         #nivel {
             padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
             width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
             font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
+            font-family: 'MedievalSharp', serif; /* Specific font */
         }
         body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
         #nivel.aura-azul { animation: pulsar-aura 2s 10; }
@@ -173,6 +174,7 @@
             width: 100px; height: 100px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 10px;
             display: flex; align-items: center; justify-content: center; font-size: 2rem; cursor: pointer;
             margin: 0 auto; position: relative; transition: all 0.3s ease;
+             font-family: 'MedievalSharp', serif; /* Specific font */
         }
         body.dark-mode #dice-roll { background: #1e1e1e; border-color: #444; }
         #dice-roll::before { content: "⚅"; font-size: 1.5rem; position: absolute; top: 5px; right: 5px; color: #a0522d; }
@@ -323,17 +325,10 @@
         .raca-item p { font-size: 1rem; color: #000; }
         body.dark-mode .raca-item { background: #333; border-color: #555; }
         body.dark-mode .raca-item p { color: #e0e0e0; }
-        .theme-color-container { display: flex; justify-content: center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
-        #background-color-selector {
-             bottom: 100%; /* Position above the button */
-             left: 50%;
-             transform: translateX(-50%);
-             margin-bottom: 5px; /* Space between button and selector */
-             margin-top: 0;
-             display: none; /* Keep hidden initially */
-             position: absolute; background-color: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 5px; z-index: 1002; display: flex; gap: 10px;
-        }
-        #background-color-selector { display: none; }
+        .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
+        .theme-option { position: relative; }
+        #cor-fundo-visual-btn { cursor: pointer; }
+
         @media (max-width: 768px) {
             body { padding: 10px; }
             #ficha-container { padding: 15px; }
@@ -513,7 +508,7 @@
                 <h2>Inventário e Habilidades</h2>
                 <div class="flex gap-20">
                     <div style="width:50%">
-                        <label>Inventário (Peso Total: <span id="peso-total">0</span> kg):</label>
+                        <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg):</label>
                         <div id="inventario-slots">
                             <div class="inventory-slot"><input type="text" placeholder="Item 1" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight" title="Peso em kg"></div>
                             <div class="inventory-slot"><input type="text" placeholder="Item 2" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight"></div>
@@ -608,17 +603,20 @@
             <div class="theme-color-container">
                 <button id="lua-btn" class="botao icon-btn">🌙</button>
                 <button id="sol-btn" class="botao icon-btn">☀️</button>
-                <div id="cor-fundo-btn-wrapper" style="display: inline-block; position: relative;">
-                     <button id="cor-fundo-btn" class="botao icon-btn">🎨</button> <div id="background-color-selector">
-                          <div class="color-option" style="background-color: #800000;" data-color="#800000"></div>
-                          <div class="color-option" style="background-color: #000080;" data-color="#000080"></div>
-                          <div class="color-option" style="background-color: #ffffff;" data-color="#ffffff"></div>
-                          <div class="color-option" style="background-color: #f0e6d2;" data-color="#f0e6d2"></div>
-                          <div class="color-option" style="background-color: #ffc0cb;" data-color="#ffc0cb"></div>
-                          <div class="color-option" style="background-color: #006400;" data-color="#006400"></div>
-                          <div class="color-option" style="background-color: #ff0000;" data-color="#ff0000"></div>
-                          <div class="color-option" style="background-color: #808080;" data-color="#808080"></div>
-                     </div>
+                <div class="theme-option">
+                    <label for="background-color-input" id="cor-fundo-visual-btn" class="botao icon-btn" title="Cor de Fundo" style="cursor: pointer;">🎨</label>
+                    <input type="color" id="background-color-input" style="visibility: hidden; width: 0; height: 0; padding:0; margin:0; border:none;">
+                </div>
+                <div class="theme-option">
+                    <select id="font-selector" class="botao" title="Fonte Principal" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif;">
+                        <option value="'Inter', sans-serif">Padrão (Inter)</option>
+                        <option value="'MedievalSharp', cursive">Medieval</option>
+                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                        <option value="'Arial', Helvetica, sans-serif">Arial</option>
+                        <option value="'Courier New', Courier, monospace">Courier New</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                        <option value="'Verdana', Geneva, sans-serif">Verdana</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -764,6 +762,7 @@
             nomePersonagemTitulo = document.getElementById("nome-personagem-titulo"), gameMasterMessage = document.getElementById("game-master-message"),
             vantagensListDisplay = document.getElementById("vantagens-list-display"), desvantagensListDisplay = document.getElementById("desvantagens-list-display"),
             inventarioSlots = document.getElementById("inventario-slots"), pesoTotalSpan = document.getElementById("peso-total"),
+            capacidadeCargaSpan = document.getElementById("capacidade-carga"), // Added for encumbrance
             diceContainer = document.getElementById("dice-container"), diceRoll = document.getElementById("dice-roll"), diceResult = document.getElementById("dice-result"),
             notification = document.getElementById("notification"), characterImageInput = document.getElementById("character-image-input"),
             characterImage = document.getElementById("character-image"), vantagensDesvantagensBtn = document.getElementById("vantagens-desvantagens-btn"),
@@ -781,7 +780,9 @@
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
             planoFundoBtn = document.getElementById("plano-fundo-btn"),
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
-            corFundoBtn = document.getElementById("cor-fundo-btn"), backgroundColorSelector = document.getElementById("background-color-selector"),
+            backgroundColorInput = document.getElementById('background-color-input'), // For color picker input
+            backgroundColorButtonVisual = document.getElementById('cor-fundo-visual-btn'), // For visual color button
+            fontSelector = document.getElementById('font-selector'), // For font selector
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo");
@@ -832,6 +833,7 @@
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                     backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2', 
+                    fontFamily: "'Inter', sans-serif", // Default font
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
@@ -913,6 +915,7 @@
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2',
+                fontFamily: "'Inter', sans-serif", // Default font for new fichas
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 
             };
             fichas[novaFichaId] = novaFicha;
@@ -960,7 +963,7 @@
             const inventario = Array.isArray(ficha.inventario) ? ficha.inventario : Array(10).fill({ item: "", peso: "0" });
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
-            calcularPesoTotal();
+            calcularPesoTotal(); // This will also trigger calcularAtributos for encumbrance
 
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
             magiasList.innerHTML = "";
@@ -980,8 +983,8 @@
             magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : (parseInt(document.getElementById("magia-total").textContent) || 20);
             vigorAtual = ficha.vigorAtual !== undefined ? ficha.vigorAtual : (parseFloat(document.getElementById("vigor-total").textContent) || 10);
 
-            atualizarNivel(); 
-            calcularAtributos(); 
+            atualizarNivel(); // This calls calcularAtributos
+            // calcularAtributos(); // Already called by atualizarNivel and calcularPesoTotal
 
             document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal);
             document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal);
@@ -992,10 +995,14 @@
             vigorAtual = Math.min(vigorAtual, vigorTotal);
 
             pontosVantagemSpan.textContent = getPontosVantagem();
-            previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+            previousValues.clear(); 
+            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
+                previousValues.set(input, input.value); // Set initial previous values on load
+            });
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarCorDeFundoInicial(ficha);   
+            aplicarFonteInicial(ficha);
             document.body.classList.toggle("dark-mode", ficha.darkMode === true);
         }
 
@@ -1047,14 +1054,18 @@
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundColor = document.body.style.backgroundColor;
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
+            fichaAtual.fontFamily = fontSelector ? fontSelector.value : "'Inter', sans-serif";
+
 
             fichaAtual.vidaAtual = vidaAtual;
             fichaAtual.magiaAtual = magiaAtual;
             fichaAtual.vigorAtual = vigorAtual;
 
             saveFichasToStorage(fichas);
+            // Only show "Salvo" notification if not triggered by an attribute revert, to avoid spamming.
+            // However, it's complex to track. For now, always show.
             showNotification("Salvo Localmente!", "save-success");
-            previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
+            // previousValues are updated within calcularAtributos for attributes, and on focus for others
         }
 
         function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ?? 0; }
@@ -1095,7 +1106,6 @@
 
 
         function calcularAtributos() {
-            // Get current values from inputs
             let currentForca = parseInt(forcaInput.value) || 0;
             let currentDestreza = parseInt(destrezaInput.value) || 0;
             let currentAgilidade = parseInt(agilidadeInput.value) || 0;
@@ -1107,14 +1117,12 @@
             if (totalPontosAtuais > pontosHabilidadeTotal) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
                 
-                // Revert input values in the DOM using previousValues
                 forcaInput.value = previousValues.get(forcaInput) || "0";
                 destrezaInput.value = previousValues.get(destrezaInput) || "0";
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
                 inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
                 constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
 
-                // Re-read values from DOM after reversion for calculations
                 currentForca = parseInt(forcaInput.value) || 0;
                 currentDestreza = parseInt(destrezaInput.value) || 0;
                 currentAgilidade = parseInt(agilidadeInput.value) || 0;
@@ -1123,9 +1131,6 @@
                 totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
             }
             
-            // After validation (and potential reversion), update previousValues with the *final current state* of the inputs
-            // This ensures that if the user clicks OK on the alert, the next 'focus' event on the same input
-            // will correctly store the reverted (valid) value.
             previousValues.set(forcaInput, forcaInput.value);
             previousValues.set(destrezaInput, destrezaInput.value);
             previousValues.set(agilidadeInput, agilidadeInput.value);
@@ -1148,6 +1153,38 @@
 
             ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
             ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+
+            // Encumbrance Calculation
+            const capacidadeBase = 5;
+            const bonusForcaCarga = Math.floor(currentForca / 5);
+            const capacidadeCarga = capacidadeBase + bonusForcaCarga;
+            if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCarga;
+
+            const pesoTotalAtual = parseFloat(pesoTotalSpan.textContent) || 0;
+            let penalidadeEsquivaAcerto = 0;
+            const sobrecarga = pesoTotalAtual - capacidadeCarga;
+
+            if (sobrecarga > 0) {
+                penalidadeEsquivaAcerto = -1; 
+                const sobrecargaAdicional = sobrecarga - 3;
+                if (sobrecargaAdicional > 0) {
+                    penalidadeEsquivaAcerto -= Math.ceil(sobrecargaAdicional / 3);
+                }
+            }
+
+            acerto += penalidadeEsquivaAcerto;
+            esquiva += penalidadeEsquivaAcerto;
+
+            if (pesoTotalSpan && capacidadeCargaSpan) {
+                if (sobrecarga > 0) {
+                    pesoTotalSpan.style.color = 'red';
+                    capacidadeCargaSpan.style.color = 'red';
+                } else {
+                    pesoTotalSpan.style.color = ''; 
+                    capacidadeCargaSpan.style.color = ''; 
+                }
+            }
+
 
             const velocidadeBase = 25 + Math.floor(currentAgilidade / 3) * 3;
             const alturaPuloBase = 1 + Math.floor(currentForca / 10);
@@ -1316,7 +1353,6 @@
 
         document.querySelectorAll('input[type="text"],input[type="number"]:not(#experiencia),textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
-                // Store the value *before* any change, to ensure we can revert to it if an invalid change is attempted.
                 previousValues.set(event.target, event.target.value);
             });
             input.addEventListener("input", (event) => {
@@ -1334,7 +1370,8 @@
                     calcularAtributos(); 
                 } else if (inputTarget.classList.contains('inventory-weight')) {
                     previousValues.set(inputTarget, inputTarget.value);
-                    calcularPesoTotal();
+                    calcularPesoTotal(); // Calls calcularAtributos
+                    calcularAtributos(); // Ensure encumbrance is updated
                 } else {
                     previousValues.set(inputTarget, inputTarget.value);
                 }
@@ -1407,10 +1444,7 @@
             }
         };
         let isDragging = false, currentX = 0, currentY = 0, initialX, initialY;
-        document.addEventListener('DOMContentLoaded', () => {
-            currentX = diceContainer.offsetLeft;
-            currentY = diceContainer.offsetTop;
-        });
+        
         diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
         document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
         document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} };
@@ -1548,8 +1582,20 @@
             }
         }
 
-        function calcularPesoTotal() { pesoTotalSpan.textContent = Array.from(inventarioSlots.querySelectorAll(".inventory-weight")).reduce((total, weight) => total + (parseFloat(weight.value) || 0), 0).toFixed(1); }
-        inventarioSlots.addEventListener("input", (event) => { if(event.target.classList.contains('inventory-weight')){ calcularPesoTotal(); salvarDados(); } });
+        function calcularPesoTotal() { 
+            pesoTotalSpan.textContent = Array.from(inventarioSlots.querySelectorAll(".inventory-weight")).reduce((total, weight) => total + (parseFloat(weight.value) || 0), 0).toFixed(1);
+            // calcularAtributos(); // Call this to update encumbrance penalties when weight changes
+        }
+        inventarioSlots.addEventListener("input", (event) => {
+            if (event.target.classList.contains('inventory-weight')) {
+                calcularPesoTotal();
+                calcularAtributos(); // Update encumbrance penalties
+                salvarDados();
+            } else if (event.target.classList.contains('inventory-item')) {
+                salvarDados(); 
+            }
+        });
+
 
         anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; };
         document.addEventListener('click', (event) => { if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target)) anotacoesTextarea.style.display = 'none'; });
@@ -1682,37 +1728,52 @@
             }
         }
 
-        corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' || backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
-        backgroundColorSelector.addEventListener('click', (event) => {
-            if (event.target.classList.contains('color-option')) {
-                const color = event.target.dataset.color;
-                document.body.style.backgroundColor = color;
+        if (backgroundColorButtonVisual && backgroundColorInput) {
+            backgroundColorButtonVisual.addEventListener('click', () => backgroundColorInput.click());
+            backgroundColorInput.addEventListener('input', (event) => {
+                document.body.style.backgroundColor = event.target.value;
+                backgroundColorButtonVisual.style.backgroundColor = event.target.value; 
                 salvarDados();
-                backgroundColorSelector.style.display = 'none';
-                document.querySelectorAll('#background-color-selector .color-option').forEach(option => option.classList.remove('active'));
-                event.target.classList.add('active');
-            }
-        });
-
+            });
+        }
+        
         function aplicarCorDeFundoInicial(ficha) {
-            const defaultColor = '#f0e6d2'; 
-            const darkModeDefaultColor = '#121212'; 
+            const defaultColorLight = '#f0e6d2'; 
+            const defaultColorDark = '#121212'; 
 
-            let bgColorToApply = ficha?.darkMode ? darkModeDefaultColor : defaultColor;
+            let bgColorToApply = ficha?.darkMode ? defaultColorDark : defaultColorLight;
             if (ficha?.backgroundColor) {
                 bgColorToApply = ficha.backgroundColor;
             }
             
             document.body.style.backgroundColor = bgColorToApply;
-            document.querySelectorAll('#background-color-selector .color-option').forEach(option => {
-                option.classList.toggle('active', option.dataset.color === bgColorToApply);
+            if (backgroundColorInput) backgroundColorInput.value = bgColorToApply;
+            if (backgroundColorButtonVisual) backgroundColorButtonVisual.style.backgroundColor = bgColorToApply;
+        }
+        
+        if (fontSelector) {
+            fontSelector.addEventListener('change', (event) => {
+                const selectedFont = event.target.value;
+                document.body.style.fontFamily = selectedFont;
+                if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
+                salvarDados(); 
             });
         }
 
+        function aplicarFonteInicial(ficha) {
+            const defaultFont = "'Inter', sans-serif";
+            const bodyFont = ficha?.fontFamily || defaultFont;
+            document.body.style.fontFamily = bodyFont;
+            if (fichaContainer) fichaContainer.style.fontFamily = bodyFont;
+            if (fontSelector) fontSelector.value = bodyFont;
+        }
+
+
         document.addEventListener('click', function(event) {
-            if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) {
-                backgroundColorSelector.style.display = 'none';
-            }
+            // This was for a different color picker, the input type="color" handles its own dismissal.
+            // if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) {
+            //     backgroundColorSelector.style.display = 'none';
+            // }
         });
         
         // --- Hold Button Functionality ---
@@ -1744,6 +1805,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+             if (diceContainer) { // Ensure diceContainer exists before accessing offsetLeft/Top
+                currentX = diceContainer.offsetLeft;
+                currentY = diceContainer.offsetTop;
+            }
             carregarFichas(); 
 
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
@@ -1753,14 +1818,12 @@
             const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
 
-            // Remove onclick from HTML and assign here if they were previously set that way
             if(btnDiminuirVida) btnDiminuirVida.onclick = null;
             if(btnAumentarVida) btnAumentarVida.onclick = null;
             if(btnDiminuirMagia) btnDiminuirMagia.onclick = null;
             if(btnAumentarMagia) btnAumentarMagia.onclick = null;
             if(btnDiminuirVigor) btnDiminuirVigor.onclick = null;
             if(btnAumentarVigor) btnAumentarVigor.onclick = null;
-
 
             setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
             setupHoldButtonEvents(btnAumentarVida, aumentarVida);
