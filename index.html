@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -682,7 +682,7 @@
     </div>
     <div id="senha-gm-modal" class="modal">
         <div class="modal-content">
-            <h3>Peça permissão ao GM</h3>
+            <h3 id="senha-gm-titulo">Peça permissão ao GM</h3>
             <input type="password" id="senha-gm-input" placeholder="Senha GM">
             <button class="confirm-btn" id="confirmar-senha-gm-btn">Confirmar</button>
             <button class="cancel-btn" onclick="fecharModal('senha-gm-modal')">Cancelar</button>
@@ -783,12 +783,16 @@
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
             corFundoBtn = document.getElementById("cor-fundo-btn"), backgroundColorSelector = document.getElementById("background-color-selector"),
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
-            phTempRacaSpan = document.getElementById("ph-temp-raca");
+            phTempRacaSpan = document.getElementById("ph-temp-raca"),
+            senhaGmTitulo = document.getElementById("senha-gm-titulo");
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
-        let currentActionIntervalId = null; // For hold-to-change functionality
-        const REPEAT_DELAY_MS = 75; // Speed for holding down buttons (lower is faster)
+        let currentActionIntervalId = null; 
+        const REPEAT_DELAY_MS = 75; 
+        let xpUnlockTimerId = null;
+        let isXpUnlocked = false; 
+        const XP_UNLOCK_DURATION_MS = 20000; 
 
         // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
@@ -815,7 +819,7 @@
 
 
         function criarFichaMatriz() {
-            fichas = getFichasFromStorage(); // Load existing fichas first
+            fichas = getFichasFromStorage(); 
             if (!fichas[FICHA_MATRIZ_ID]) {
                 const fichaMatriz = {
                     nomeFicha: "Matriz", nomePersonagem: "Personagem Matriz", descricaoPersonagem: "Ficha original do sistema",
@@ -827,8 +831,8 @@
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
-                    backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2', // Default theme
-                    vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 // Default current resources
+                    backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2', 
+                    vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -836,7 +840,7 @@
         }
 
         function carregarFichas() {
-            criarFichaMatriz(); // Ensures matriz exists
+            criarFichaMatriz(); 
             fichas = getFichasFromStorage();
             const storedCurrentFichaId = getCurrentFichaIdFromStorage();
 
@@ -909,7 +913,7 @@
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 backgroundImage: null, backgroundSize: 'cover', backgroundColor: '#f0e6d2',
-                vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 // Initial resources
+                vidaAtual: 50, magiaAtual: 20, vigorAtual: 10 
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -927,7 +931,7 @@
                 console.error("Ficha não encontrada:", fichaId);
                 currentFichaId = FICHA_MATRIZ_ID;
                 saveCurrentFichaIdToStorage(currentFichaId);
-                if (!fichas[currentFichaId]) criarFichaMatriz();
+                if (!fichas[currentFichaId]) criarFichaMatriz(); 
                 fichaId = currentFichaId;
             }
             const ficha = fichas[fichaId];
@@ -968,6 +972,10 @@
             atualizarRacasPanel();
             experiencia = parseInt(experienciaInput.value) || 0;
             
+            experienciaInput.readOnly = true; 
+            isXpUnlocked = false; 
+            if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId); 
+
             vidaAtual = ficha.vidaAtual !== undefined ? ficha.vidaAtual : (parseInt(document.getElementById("vida-total").textContent) || 50);
             magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : (parseInt(document.getElementById("magia-total").textContent) || 20);
             vigorAtual = ficha.vigorAtual !== undefined ? ficha.vigorAtual : (parseFloat(document.getElementById("vigor-total").textContent) || 10);
@@ -1087,37 +1095,64 @@
 
 
         function calcularAtributos() {
-            const forca = parseInt(forcaInput.value) || 0, destreza = parseInt(destrezaInput.value) || 0, agilidade = parseInt(agilidadeInput.value) || 0,
-                  inteligencia = parseInt(inteligenciaInput.value) || 0, constituicao = parseInt(constituicaoInput.value) || 0;
-            let totalPontos = forca + destreza + agilidade + inteligencia + constituicao;
+            let currentForca = parseInt(forcaInput.value) || 0;
+            let currentDestreza = parseInt(destrezaInput.value) || 0;
+            let currentAgilidade = parseInt(agilidadeInput.value) || 0;
+            let currentInteligencia = parseInt(inteligenciaInput.value) || 0;
+            let currentConstituicao = parseInt(constituicaoInput.value) || 0;
 
-            if (totalPontos > pontosHabilidadeTotal) {
-                alert("Pontos de habilidade insuficientes!");
+            let totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
+
+            if (totalPontosAtuais > pontosHabilidadeTotal) {
+                alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
+                
                 forcaInput.value = previousValues.get(forcaInput) || "0";
                 destrezaInput.value = previousValues.get(destrezaInput) || "0";
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
                 inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
                 constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
-                totalPontos = (parseInt(forcaInput.value) || 0) + (parseInt(destrezaInput.value) || 0) + (parseInt(agilidadeInput.value) || 0) + (parseInt(inteligenciaInput.value) || 0) + (parseInt(constituicaoInput.value) || 0);
+
+                currentForca = parseInt(forcaInput.value) || 0;
+                currentDestreza = parseInt(destrezaInput.value) || 0;
+                currentAgilidade = parseInt(agilidadeInput.value) || 0;
+                currentInteligencia = parseInt(inteligenciaInput.value) || 0;
+                currentConstituicao = parseInt(constituicaoInput.value) || 0;
+                totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
             }
-            pontosHabilidadeUsados = totalPontos;
+            
+            pontosHabilidadeUsados = totalPontosAtuais; 
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
 
-
-            let ataque = forca + Math.floor(destreza / 5), acerto = Math.floor(destreza / 3) + Math.floor(agilidade / 10),
-                esquiva = Math.floor(agilidade / 3), rdf = Math.floor(forca / 5), rdm = Math.floor(inteligencia / 5),
-                ataqueMagico = inteligencia, magiaBase = 20 + 3 * constituicao, vigorBase = 10 + 0.4 * constituicao;
-            vidaBase = 50 + (constituicao * (3 + Math.floor(forca / 10))) + 10 * nivel;
-            if (inteligencia >= 10) magiaBase += constituicao * Math.floor(inteligencia / 10);
+            let ataque = currentForca + Math.floor(currentDestreza / 5);
+            let acerto = Math.floor(currentDestreza / 3) + Math.floor(currentAgilidade / 10);
+            let esquiva = Math.floor(currentAgilidade / 3);
+            let rdf = Math.floor(currentForca / 5);
+            let rdm = Math.floor(currentInteligencia / 5);
+            let ataqueMagico = currentInteligencia;
+            let magiaBase = 20 + 3 * currentConstituicao;
+            let vigorBase = 10 + 0.4 * currentConstituicao;
+            vidaBase = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel;
+            if (currentInteligencia >= 10) magiaBase += currentConstituicao * Math.floor(currentInteligencia / 10);
 
             ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
             ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
 
-            const velocidadeBase = 25 + Math.floor(agilidade / 3) * 3, alturaPuloBase = 1 + Math.floor(forca / 10), distanciaPuloBase = 3 + 3 * Math.min(Math.floor(forca / 5), Math.floor(agilidade / 5));
-            let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0, bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0, bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
+            const velocidadeBase = 25 + Math.floor(currentAgilidade / 3) * 3;
+            const alturaPuloBase = 1 + Math.floor(currentForca / 10);
+            const distanciaPuloBase = 3 + 3 * Math.min(Math.floor(currentForca / 5), Math.floor(currentAgilidade / 5));
+            let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0;
+            let bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0;
+            let bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
 
-            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade; alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo; distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
-            ataqueSpan.textContent = ataque; ataqueMagicoSpan.textContent = ataqueMagico; acertoSpan.textContent = acerto; esquivaSpan.textContent = esquiva; rdfSpan.textContent = rdf; rdmSpan.textContent = rdm;
+            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
+            alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
+            distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
+            ataqueSpan.textContent = ataque;
+            ataqueMagicoSpan.textContent = ataqueMagico;
+            acertoSpan.textContent = acerto;
+            esquivaSpan.textContent = esquiva;
+            rdfSpan.textContent = rdf;
+            rdmSpan.textContent = rdm;
             
             vidaTotal = Math.ceil(vidaBase);
             magiaTotal = Math.ceil(magiaBase);
@@ -1135,27 +1170,31 @@
             document.getElementById("magia-atual").textContent = magiaAtual;
             document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
-            const regeneracaoVida = (0.2 * constituicao).toFixed(1), regeneracaoMagia = (0.8 * constituicao).toFixed(1), regeneracaoVigor = (0.4 * constituicao).toFixed(1);
-            document.getElementById("regeneracao-vida").textContent = regeneracaoVida; document.getElementById("regeneracao-magia").textContent = regeneracaoMagia; document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
+            const regeneracaoVida = (0.2 * currentConstituicao).toFixed(1);
+            const regeneracaoMagia = (0.8 * currentConstituicao).toFixed(1);
+            const regeneracaoVigor = (0.4 * currentConstituicao).toFixed(1);
+            document.getElementById("regeneracao-vida").textContent = regeneracaoVida;
+            document.getElementById("regeneracao-magia").textContent = regeneracaoMagia;
+            document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
 
-            const atributos = [{ span: ataqueSpan, valor: ataque }, { span: ataqueMagicoSpan, valor: ataqueMagico }, { span: acertoSpan, valor: acerto }, { span: esquivaSpan, valor: esquiva }, { span: rdfSpan, valor: rdf }, { span: rdmSpan, valor: rdm }];
-            atributos.forEach(a => a.span.classList.remove("atributo-fogo"));
-            const maxAtributo = atributos.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: 0 });
+            const atributosSpans = [{ span: ataqueSpan, valor: ataque }, { span: ataqueMagicoSpan, valor: ataqueMagico }, { span: acertoSpan, valor: acerto }, { span: esquivaSpan, valor: esquiva }, { span: rdfSpan, valor: rdf }, { span: rdmSpan, valor: rdm }];
+            atributosSpans.forEach(a => a.span.classList.remove("atributo-fogo"));
+            const maxAtributo = atributosSpans.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: 0 });
             if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
         }
 
         function resetarPontos() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
-            if (confirm("Tem certeza que deseja reiniciar os pontos? Você precisará da permissão do GM.")) {
-                document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
-                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                        velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
-                        calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal");
-                    } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
-                };
-            }
+            senhaGmTitulo.textContent = "Peça permissão ao GM para Resetar Pontos";
+            document.getElementById("senha-gm-modal").style.display = "flex"; 
+            document.getElementById("senha-gm-input").value = "";
+            document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                    atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
+                    velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
+                    calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal");
+                } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
+            };
         }
 
         function recomecarFicha() {
@@ -1165,6 +1204,10 @@
                 experienciaInput.value = "0";
                 experiencia = 0;
                 nivel = 0;
+                
+                experienciaInput.readOnly = true; 
+                isXpUnlocked = false;
+                if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId);
                 
                 const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
                 pontosHabilidadeTotal = nivelInfo.pd;
@@ -1223,7 +1266,7 @@
 
             if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
             
-            isFichaUnlocked = true; // Temporarily unlock
+            isFichaUnlocked = true; 
 
             if (currentFichaId !== FICHA_MATRIZ_ID && senha !== senhaMatriz) {
                 if(confirm("Senha correta! Deseja desbloquear a ficha permanentemente? (Cancelar para desbloqueio temporário)")) {
@@ -1232,7 +1275,7 @@
                      fichas[currentFichaId].password = null;
                      saveFichasToStorage(fichas);
                      fecharModal("password-modal"); alert("Ficha desbloqueada permanentemente!"); atualizarBotaoBloquear();
-                     if (originalButton && typeof originalButton.onclick === 'function' && !originalButton.id.startsWith('btn-')) { // Avoid re-triggering for hold buttons
+                     if (originalButton && typeof originalButton.onclick === 'function' && !originalButton.id.startsWith('btn-')) { 
                         originalButton.click();
                      }
                 } else {
@@ -1259,7 +1302,7 @@
         }
 
 
-        document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
+        document.querySelectorAll('input[type="text"],input[type="number"]:not(#experiencia),textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
                 previousValues.set(event.target, event.target.value);
             });
@@ -1270,15 +1313,63 @@
                     abrirModalSenha(inputTarget);
                 } else {
                     previousValues.set(inputTarget, inputTarget.value); 
-                    if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) || 0; atualizarNivel(); }
-                    else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); }
-                    else if (inputTarget.id.includes("arma")) { calcularAtributos(); }
-                    else if (inputTarget.classList.contains('inventory-weight')) { calcularPesoTotal(); }
+                    if (atributosInputs.includes(inputTarget)) {
+                        calcularAtributos();
+                    } else if (inputTarget.id.includes("arma")) {
+                        calcularAtributos();
+                    } else if (inputTarget.classList.contains('inventory-weight')) {
+                        calcularPesoTotal();
+                    }
                     salvarDados();
                 }
             });
         });
         nomePersonagemInput.oninput = salvarDados;
+
+        experienciaInput.addEventListener('focus', (event) => {
+            previousValues.set(event.target, event.target.value); // Store previous value
+            if (experienciaInput.readOnly && !isXpUnlocked) {
+                event.preventDefault();
+                senhaGmTitulo.textContent = "Desbloquear Campo de Experiência";
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("senha-gm-input").focus();
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => confirmarDesbloqueioExperiencia();
+            }
+        });
+
+        experienciaInput.addEventListener('input', (event) => {
+            if (!experienciaInput.readOnly) {
+                experiencia = parseInt(event.target.value) || 0;
+                atualizarNivel(); // This calls calcularAtributos
+                salvarDados(); 
+            } else {
+                // If somehow input happens while readOnly, revert (should be rare)
+                event.target.value = previousValues.get(event.target) || "0";
+            }
+        });
+
+
+        function confirmarDesbloqueioExperiencia() {
+            if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                experienciaInput.readOnly = false;
+                isXpUnlocked = true; 
+                experienciaInput.focus(); 
+                showNotification("Campo de experiência desbloqueado por 20 segundos.", "normal-result");
+
+                if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId);
+                xpUnlockTimerId = setTimeout(() => {
+                    experienciaInput.readOnly = true;
+                    isXpUnlocked = false; 
+                    alert("Tempo para editar experiência expirou. Insira a senha novamente se precisar.");
+                    salvarDados(); 
+                }, XP_UNLOCK_DURATION_MS);
+                fecharModal("senha-gm-modal");
+            } else {
+                alert("Senha do GM incorreta!");
+                fecharModal("senha-gm-modal");
+            }
+        }
 
 
         characterImageInput.onchange = e => {
@@ -1411,6 +1502,7 @@
 
         function removerVantagem(v) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Vantagem";
             if (confirm(`Deseja remover a vantagem "${v}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
@@ -1424,6 +1516,7 @@
         }
         function removerDesvantagem(d) {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Desvantagem";
             if (confirm(`Deseja remover a desvantagem "${d}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
@@ -1484,6 +1577,7 @@
         function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex"; }
         function excluirRacaSelecionadaModal() {
             fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            senhaGmTitulo.textContent = "Peça permissão ao GM para Excluir Raça";
             if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
@@ -1501,6 +1595,7 @@
         }
         function salvarEdicaoRaca() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
+            senhaGmTitulo.textContent = "Peça permissão ao GM para Editar Raça";
             if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
@@ -1600,7 +1695,7 @@
                 backgroundColorSelector.style.display = 'none';
             }
         });
-
+        
         // --- Hold Button Functionality ---
         function setupHoldButtonEvents(buttonElement, actionFunction) {
             if (!buttonElement) return;
@@ -1630,8 +1725,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // ... (outro código DOMContentLoaded se houver) ...
-            carregarFichas(); // Mover para cá para garantir que os elementos existem
+            carregarFichas(); 
 
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
             const btnAumentarVida = document.getElementById('btn-aumentar-vida');
@@ -1639,6 +1733,15 @@
             const btnAumentarMagia = document.getElementById('btn-aumentar-magia');
             const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
+
+            // Remove onclick from HTML and assign here if they were previously set that way
+            if(btnDiminuirVida) btnDiminuirVida.onclick = null;
+            if(btnAumentarVida) btnAumentarVida.onclick = null;
+            if(btnDiminuirMagia) btnDiminuirMagia.onclick = null;
+            if(btnAumentarMagia) btnAumentarMagia.onclick = null;
+            if(btnDiminuirVigor) btnDiminuirVigor.onclick = null;
+            if(btnAumentarVigor) btnAumentarVigor.onclick = null;
+
 
             setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
             setupHoldButtonEvents(btnAumentarVida, aumentarVida);
