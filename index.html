@@ -1095,6 +1095,7 @@
 
 
         function calcularAtributos() {
+            // Get current values from inputs
             let currentForca = parseInt(forcaInput.value) || 0;
             let currentDestreza = parseInt(destrezaInput.value) || 0;
             let currentAgilidade = parseInt(agilidadeInput.value) || 0;
@@ -1106,12 +1107,14 @@
             if (totalPontosAtuais > pontosHabilidadeTotal) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
                 
+                // Revert input values in the DOM using previousValues
                 forcaInput.value = previousValues.get(forcaInput) || "0";
                 destrezaInput.value = previousValues.get(destrezaInput) || "0";
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
                 inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
                 constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
 
+                // Re-read values from DOM after reversion for calculations
                 currentForca = parseInt(forcaInput.value) || 0;
                 currentDestreza = parseInt(destrezaInput.value) || 0;
                 currentAgilidade = parseInt(agilidadeInput.value) || 0;
@@ -1120,6 +1123,15 @@
                 totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
             }
             
+            // After validation (and potential reversion), update previousValues with the *final current state* of the inputs
+            // This ensures that if the user clicks OK on the alert, the next 'focus' event on the same input
+            // will correctly store the reverted (valid) value.
+            previousValues.set(forcaInput, forcaInput.value);
+            previousValues.set(destrezaInput, destrezaInput.value);
+            previousValues.set(agilidadeInput, agilidadeInput.value);
+            previousValues.set(inteligenciaInput, inteligenciaInput.value);
+            previousValues.set(constituicaoInput, constituicaoInput.value);
+
             pontosHabilidadeUsados = totalPontosAtuais; 
             pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
 
@@ -1304,6 +1316,7 @@
 
         document.querySelectorAll('input[type="text"],input[type="number"]:not(#experiencia),textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
+                // Store the value *before* any change, to ensure we can revert to it if an invalid change is attempted.
                 previousValues.set(event.target, event.target.value);
             });
             input.addEventListener("input", (event) => {
@@ -1311,24 +1324,28 @@
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) { 
                     inputTarget.value = previousValues.get(inputTarget) || "";
                     abrirModalSenha(inputTarget);
-                } else {
-                    previousValues.set(inputTarget, inputTarget.value); 
-                    if (atributosInputs.includes(inputTarget)) {
-                        calcularAtributos();
-                    } else if (inputTarget.id.includes("arma")) {
-                        calcularAtributos();
-                    } else if (inputTarget.classList.contains('inventory-weight')) {
-                        calcularPesoTotal();
-                    }
-                    salvarDados();
+                    return; 
                 }
+
+                if (atributosInputs.includes(inputTarget)) {
+                    calcularAtributos(); 
+                } else if (inputTarget.id.includes("arma")) {
+                    previousValues.set(inputTarget, inputTarget.value);
+                    calcularAtributos(); 
+                } else if (inputTarget.classList.contains('inventory-weight')) {
+                    previousValues.set(inputTarget, inputTarget.value);
+                    calcularPesoTotal();
+                } else {
+                    previousValues.set(inputTarget, inputTarget.value);
+                }
+                salvarDados();
             });
         });
         nomePersonagemInput.oninput = salvarDados;
 
         experienciaInput.addEventListener('focus', (event) => {
-            previousValues.set(event.target, event.target.value); // Store previous value
-            if (experienciaInput.readOnly && !isXpUnlocked) {
+            previousValues.set(event.target, event.target.value); 
+            if (experienciaInput.readOnly && !isXpUnlocked) { 
                 event.preventDefault();
                 senhaGmTitulo.textContent = "Desbloquear Campo de Experiência";
                 document.getElementById("senha-gm-modal").style.display = "flex";
@@ -1339,13 +1356,12 @@
         });
 
         experienciaInput.addEventListener('input', (event) => {
-            if (!experienciaInput.readOnly) {
+            if (!experienciaInput.readOnly) { 
                 experiencia = parseInt(event.target.value) || 0;
-                atualizarNivel(); // This calls calcularAtributos
+                atualizarNivel(); 
                 salvarDados(); 
             } else {
-                // If somehow input happens while readOnly, revert (should be rare)
-                event.target.value = previousValues.get(event.target) || "0";
+                event.target.value = previousValues.get(event.target) || "0"; 
             }
         });
 
@@ -1362,7 +1378,10 @@
                     experienciaInput.readOnly = true;
                     isXpUnlocked = false; 
                     alert("Tempo para editar experiência expirou. Insira a senha novamente se precisar.");
-                    salvarDados(); 
+                    if (fichas[currentFichaId]) { 
+                        fichas[currentFichaId].experiencia = experienciaInput.value; 
+                        saveFichasToStorage(fichas); 
+                    }
                 }, XP_UNLOCK_DURATION_MS);
                 fecharModal("senha-gm-modal");
             } else {
