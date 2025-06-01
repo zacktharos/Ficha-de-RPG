@@ -389,9 +389,9 @@
                         </div>
                         <div class="valor-atual medieval-box">
                             <span>Vida Atual: </span>
-                            <button onclick="diminuirVida()" title="Diminuir Vida">▼</button>
+                            <button id="btn-diminuir-vida" title="Diminuir Vida">▼</button>
                             <span id="vida-atual">50</span>
-                            <button onclick="aumentarVida()" title="Aumentar Vida">▲</button>
+                            <button id="btn-aumentar-vida" title="Aumentar Vida">▲</button>
                         </div>
                         <div class="regeneracao">
                             <span>Regeneração por turno: <span id="regeneracao-vida">0</span> (parado)</span>
@@ -405,9 +405,9 @@
                         </div>
                         <div class="valor-atual medieval-box">
                             <span>Magia Atual: </span>
-                            <button onclick="diminuirMagia()" title="Diminuir Magia">▼</button>
+                            <button id="btn-diminuir-magia" title="Diminuir Magia">▼</button>
                             <span id="magia-atual">20</span>
-                            <button onclick="aumentarMagia()" title="Aumentar Magia">▲</button>
+                            <button id="btn-aumentar-magia" title="Aumentar Magia">▲</button>
                         </div>
                         <div class="regeneracao">
                             <span>Regeneração por turno: <span id="regeneracao-magia">0</span></span>
@@ -421,9 +421,9 @@
                         </div>
                         <div class="valor-atual medieval-box">
                             <span>Vigor Atual: </span>
-                            <button onclick="diminuirVigor()" title="Diminuir Vigor">▼</button>
+                            <button id="btn-diminuir-vigor" title="Diminuir Vigor">▼</button>
                             <span id="vigor-atual">10</span>
-                            <button onclick="aumentarVigor()" title="Aumentar Vigor">▲</button>
+                            <button id="btn-aumentar-vigor" title="Aumentar Vigor">▲</button>
                         </div>
                         <div class="regeneracao">
                             <span>Regeneração por turno: <span id="regeneracao-vigor">0</span> (parado)</span>
@@ -787,6 +787,8 @@
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
+        let currentActionIntervalId = null; // For hold-to-change functionality
+        const REPEAT_DELAY_MS = 75; // Speed for holding down buttons (lower is faster)
 
         // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
@@ -846,19 +848,17 @@
             }
             carregarFicha(currentFichaId);
             atualizarAbasFichas();
-            // No chat/shared history to load
         }
 
 
         function atualizarAbasFichas() {
             const sidebar = document.getElementById("fichas-sidebar"), addBtn = document.getElementById("add-ficha-btn");
-            // Clear existing tabs except the add button
             while (sidebar.children.length > 1 && sidebar.firstChild !== addBtn) {
                  sidebar.removeChild(sidebar.firstChild);
             }
 
             for (let fichaId in fichas) {
-                if (fichaId !== FICHA_MATRIZ_ID) { // Don't show Matriz as a switchable tab usually, unless it's the only one or explicitly desired
+                if (fichaId !== FICHA_MATRIZ_ID) { 
                     const tab = document.createElement("div"); tab.className = "ficha-tab";
                     const span = document.createElement("span"); span.textContent = fichas[fichaId].nomeFicha || "Sem Nome";
                     tab.appendChild(span); tab.dataset.fichaId = fichaId;
@@ -872,7 +872,6 @@
                     sidebar.insertBefore(tab, addBtn);
                 }
             }
-             // Ensure Matriz tab is shown if it's the current one, or if no other tabs exist.
             if (currentFichaId === FICHA_MATRIZ_ID || Object.keys(fichas).length === 1) {
                  const matrizTabExists = Array.from(sidebar.children).some(child => child.dataset && child.dataset.fichaId === FICHA_MATRIZ_ID);
                  if (!matrizTabExists && fichas[FICHA_MATRIZ_ID]) {
@@ -926,10 +925,9 @@
         function carregarFicha(fichaId) {
             if (!fichas[fichaId]) {
                 console.error("Ficha não encontrada:", fichaId);
-                // Fallback to matriz if current ficha is somehow lost
                 currentFichaId = FICHA_MATRIZ_ID;
                 saveCurrentFichaIdToStorage(currentFichaId);
-                if (!fichas[currentFichaId]) criarFichaMatriz(); // Ensure matriz exists if even it was lost
+                if (!fichas[currentFichaId]) criarFichaMatriz();
                 fichaId = currentFichaId;
             }
             const ficha = fichas[fichaId];
@@ -970,20 +968,17 @@
             atualizarRacasPanel();
             experiencia = parseInt(experienciaInput.value) || 0;
             
-            // Load current resources from ficha object
             vidaAtual = ficha.vidaAtual !== undefined ? ficha.vidaAtual : (parseInt(document.getElementById("vida-total").textContent) || 50);
             magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : (parseInt(document.getElementById("magia-total").textContent) || 20);
             vigorAtual = ficha.vigorAtual !== undefined ? ficha.vigorAtual : (parseFloat(document.getElementById("vigor-total").textContent) || 10);
 
-            atualizarNivel(); // This calls calcularAtributos, which sets totals
-            calcularAtributos(); // Ensure totals are set before adjusting current
+            atualizarNivel(); 
+            calcularAtributos(); 
 
-            // After calcularAtributos updates totals, ensure current values are not exceeding them
             document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal);
             document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal);
             document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
             
-            // Update actual current values based on this logic
             vidaAtual = Math.min(vidaAtual, vidaTotal);
             magiaAtual = Math.min(magiaAtual, magiaTotal);
             vigorAtual = Math.min(vigorAtual, vigorTotal);
@@ -991,8 +986,8 @@
             pontosVantagemSpan.textContent = getPontosVantagem();
             previousValues.clear(); document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => previousValues.set(input, input.value));
             
-            aplicarPlanoDeFundoInicial(ficha); // Pass current ficha data
-            aplicarCorDeFundoInicial(ficha);   // Pass current ficha data
+            aplicarPlanoDeFundoInicial(ficha); 
+            aplicarCorDeFundoInicial(ficha);   
             document.body.classList.toggle("dark-mode", ficha.darkMode === true);
         }
 
@@ -1036,9 +1031,9 @@
             fichaAtual.anotacoes = anotacoesTextarea.value;
             fichaAtual.classeNome = classeNomeInput.value;
             fichaAtual.classeDescricao = classeDescricaoInput.value;
-            fichaAtual.racaNome = racaNomeSpan.textContent; // This is just display part
+            fichaAtual.racaNome = racaNomeSpan.textContent; 
             fichaAtual.racaDescricao = racaDescricaoInput.value;
-            fichaAtual.racaSelecionada = racaSelecionada; // This is the key for race data
+            fichaAtual.racaSelecionada = racaSelecionada; 
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
@@ -1048,7 +1043,6 @@
             fichaAtual.vidaAtual = vidaAtual;
             fichaAtual.magiaAtual = magiaAtual;
             fichaAtual.vigorAtual = vigorAtual;
-
 
             saveFichasToStorage(fichas);
             showNotification("Salvo Localmente!", "save-success");
@@ -1104,7 +1098,6 @@
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
                 inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
                 constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
-                // Recalculate totalPontos based on reverted values to prevent infinite loop if previousValues were also invalid
                 totalPontos = (parseInt(forcaInput.value) || 0) + (parseInt(destrezaInput.value) || 0) + (parseInt(agilidadeInput.value) || 0) + (parseInt(inteligenciaInput.value) || 0) + (parseInt(constituicaoInput.value) || 0);
             }
             pontosHabilidadeUsados = totalPontos;
@@ -1134,7 +1127,6 @@
             document.getElementById("magia-total").textContent = magiaTotal;
             document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
 
-            // Adjust current values if they exceed new totals
             vidaAtual = Math.min(vidaAtual, vidaTotal);
             magiaAtual = Math.min(magiaAtual, magiaTotal);
             vigorAtual = Math.min(vigorAtual, vigorTotal);
@@ -1179,7 +1171,7 @@
                 pontosHabilidadeUsados = 0;
                 nivelSpan.textContent = nivel;
                 pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                vidaBase = 50; // Reset base for calculations
+                vidaBase = 50; 
 
                 velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = "";
@@ -1191,9 +1183,8 @@
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
                 classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                 
-                calcularAtributos(); // This will set new totals
+                calcularAtributos(); 
 
-                // Reset current HP/MP/Stamina to new totals
                 vidaAtual = vidaTotal;
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
@@ -1228,8 +1219,12 @@
 
         function desbloquearFicha() {
             const senha = document.getElementById("senha-desbloqueio-input").value, modal = document.getElementById("password-modal"), elementId = modal.dataset.elementId;
+            const originalButton = elementId ? document.getElementById(elementId) : null;
+
             if (senha !== senhaMatriz && senha !== fichaPassword) return alert("Senha incorreta!");
-            isFichaUnlocked = true;
+            
+            isFichaUnlocked = true; // Temporarily unlock
+
             if (currentFichaId !== FICHA_MATRIZ_ID && senha !== senhaMatriz) {
                 if(confirm("Senha correta! Deseja desbloquear a ficha permanentemente? (Cancelar para desbloqueio temporário)")) {
                      isFichaLocked = false; fichaPassword = null;
@@ -1237,14 +1232,20 @@
                      fichas[currentFichaId].password = null;
                      saveFichasToStorage(fichas);
                      fecharModal("password-modal"); alert("Ficha desbloqueada permanentemente!"); atualizarBotaoBloquear();
-                     if (elementId) document.getElementById(elementId)?.click(); // Trigger original action if an element was passed
+                     if (originalButton && typeof originalButton.onclick === 'function' && !originalButton.id.startsWith('btn-')) { // Avoid re-triggering for hold buttons
+                        originalButton.click();
+                     }
                 } else {
                      fecharModal("password-modal"); alert("Ficha desbloqueada temporariamente!");
-                     if (elementId) document.getElementById(elementId)?.click();
+                     if (originalButton && typeof originalButton.onclick === 'function' && !originalButton.id.startsWith('btn-')) {
+                        originalButton.click();
+                     }
                 }
             } else {
                 fecharModal("password-modal"); alert(`Ficha desbloqueada temporariamente ${senha === senhaMatriz ? 'com a senha matriz!' : ''}`);
-                if (elementId) document.getElementById(elementId)?.click();
+                if (originalButton && typeof originalButton.onclick === 'function' && !originalButton.id.startsWith('btn-')) {
+                   originalButton.click();
+                }
             }
         }
 
@@ -1264,11 +1265,11 @@
             });
             input.addEventListener("input", (event) => {
                 const inputTarget = event.target;
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) { // Matriz can always be edited if GM pass used for lock
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) { 
                     inputTarget.value = previousValues.get(inputTarget) || "";
                     abrirModalSenha(inputTarget);
                 } else {
-                    previousValues.set(inputTarget, inputTarget.value); // Update previous value after allowed input
+                    previousValues.set(inputTarget, inputTarget.value); 
                     if (inputTarget.id === "experiencia") { experiencia = parseInt(inputTarget.value) || 0; atualizarNivel(); }
                     else if (atributosInputs.includes(inputTarget)) { calcularAtributos(); }
                     else if (inputTarget.id.includes("arma")) { calcularAtributos(); }
@@ -1289,7 +1290,7 @@
             if (confirm("Tem certeza que deseja excluir esta ficha?")) {
                 delete fichas[currentFichaId];
                 saveFichasToStorage(fichas);
-                currentFichaId = FICHA_MATRIZ_ID; // Fallback to matriz
+                currentFichaId = FICHA_MATRIZ_ID; 
                 saveCurrentFichaIdToStorage(currentFichaId);
                 carregarFicha(currentFichaId);
                 atualizarAbasFichas();
@@ -1316,9 +1317,8 @@
                 let notificationMsg = `${fichaNome} rolou: ${roll}`;
                 if (roll === 1) { diceRoll.classList.add("critical-failure"); notificationClass = "critical-failure"; notificationMsg = `${fichaNome} - FALHA CRÍTICA!`; }
                 else if (roll === 20) { diceRoll.classList.add("critical-success"); notificationClass = "critical-success"; notificationMsg = `${fichaNome} - SUCESSO CRÍTICO!`; }
-                else { diceResult.textContent = `Resultado: ${roll}`; diceResult.style.display = "block"; } // Display simple result
+                else { diceResult.textContent = `Resultado: ${roll}`; diceResult.style.display = "block"; } 
                 showNotification(notificationMsg, notificationClass);
-                // No shared history saving
             }, 1000);
         };
 
@@ -1355,7 +1355,7 @@
                 } else {
                     racasPanel.style.display = "none";
                 }
-            } else { // Advantages/Disadvantages panel
+            } else { 
                 if (tempDesvantagensSelecionadas.length > 3) {
                      alert("Você pode ter no máximo 3 desvantagens!");
                      fecharModal("salvar-vantagens-modal");
@@ -1374,7 +1374,7 @@
                 desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
                 pontosVantagemSpan.textContent = getPontosVantagem();
                 vantagensDesvantagensPanel.style.display = "none";
-                calcularAtributos(); // Recalculate after changes
+                calcularAtributos(); 
                 salvarDados();
             }
             fecharModal("salvar-vantagens-modal");
@@ -1505,8 +1505,6 @@
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        // Note: Editing name/desc like this doesn't change the underlying "racaSelecionada" key
-                        // This is more of a custom override. If they pick a new race later, these edits are lost.
                         racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value;
                         racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
                         fecharModal('editar-raca-modal'); salvarDados(); fecharModal("senha-gm-modal");
@@ -1528,7 +1526,6 @@
             setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
 
-        // Background Functionality
         planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex"; };
         function aplicarPlanoDeFundo() {
             const file = backgroundImageInput.files[0];
@@ -1544,7 +1541,6 @@
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
-                // Only update size if an image is already set
                 document.body.style.backgroundSize = selectedSize;
                 salvarDados();
                 fecharModal('background-modal');
@@ -1572,8 +1568,6 @@
             }
         }
 
-
-        // Background Color Functionality
         corFundoBtn.onclick = () => { backgroundColorSelector.style.display = backgroundColorSelector.style.display === 'none' || backgroundColorSelector.style.display === '' ? 'flex' : 'none'; };
         backgroundColorSelector.addEventListener('click', (event) => {
             if (event.target.classList.contains('color-option')) {
@@ -1587,8 +1581,8 @@
         });
 
         function aplicarCorDeFundoInicial(ficha) {
-            const defaultColor = '#f0e6d2'; // Light mode default
-            const darkModeDefaultColor = '#121212'; // Dark mode default
+            const defaultColor = '#f0e6d2'; 
+            const darkModeDefaultColor = '#121212'; 
 
             let bgColorToApply = ficha?.darkMode ? darkModeDefaultColor : defaultColor;
             if (ficha?.backgroundColor) {
@@ -1601,15 +1595,59 @@
             });
         }
 
-
         document.addEventListener('click', function(event) {
             if (!backgroundColorSelector.contains(event.target) && !corFundoBtn.contains(event.target)) {
                 backgroundColorSelector.style.display = 'none';
             }
         });
 
-        // Initial load
-        carregarFichas();
+        // --- Hold Button Functionality ---
+        function setupHoldButtonEvents(buttonElement, actionFunction) {
+            if (!buttonElement) return;
+
+            const startAction = (event) => {
+                event.preventDefault(); 
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
+                    abrirModalSenha(buttonElement); 
+                    return;
+                }
+                actionFunction(); 
+                if (currentActionIntervalId) clearInterval(currentActionIntervalId);
+                currentActionIntervalId = setInterval(actionFunction, REPEAT_DELAY_MS);
+            };
+
+            const stopAction = () => {
+                clearInterval(currentActionIntervalId);
+                currentActionIntervalId = null;
+            };
+
+            buttonElement.addEventListener('mousedown', startAction);
+            buttonElement.addEventListener('mouseup', stopAction);
+            buttonElement.addEventListener('mouseleave', stopAction);
+            buttonElement.addEventListener('touchstart', startAction, { passive: false });
+            buttonElement.addEventListener('touchend', stopAction);
+            buttonElement.addEventListener('touchcancel', stopAction);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // ... (outro código DOMContentLoaded se houver) ...
+            carregarFichas(); // Mover para cá para garantir que os elementos existem
+
+            const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
+            const btnAumentarVida = document.getElementById('btn-aumentar-vida');
+            const btnDiminuirMagia = document.getElementById('btn-diminuir-magia');
+            const btnAumentarMagia = document.getElementById('btn-aumentar-magia');
+            const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
+            const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
+
+            setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
+            setupHoldButtonEvents(btnAumentarVida, aumentarVida);
+            setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia);
+            setupHoldButtonEvents(btnAumentarMagia, aumentarMagia);
+            setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
+            setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
+        });
+
     </script>
 </body>
 </html>
