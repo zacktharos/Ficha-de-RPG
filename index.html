@@ -300,13 +300,12 @@ html
         body.dark-mode #dice-history-trigger { background-color: #555; border-color: #444;}
 
         #dice-history-panel {
-            display: none; 
             position: fixed; 
             right: 50px; 
             top: calc(50% + 70px); 
             transform: translateY(-50%);
             width: 400px; 
-            height: 400px; 
+            max-height: 400px; /* Max height to prevent overflow */
             background: #fff; 
             border: 2px solid #b8860b;
             border-radius: 6px; 
@@ -314,14 +313,14 @@ html
             font-size: 0.9rem; 
             z-index: 1001; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: flex;
+            display: none; /* Starts hidden */
             flex-direction: column;
         }
         body.dark-mode #dice-history-panel { background: #333; color: #e0e0e0; border-color: #555;}
 
         #dice-history-panel h2 {
             font-family: 'MedievalSharp', serif; font-size: 1.5rem; text-align: center;
-            color: #a0522d; margin-bottom: 10px;
+            color: #a0522d; margin-bottom: 10px; flex-shrink: 0; /* Prevent shrinking */
         }
         body.dark-mode #dice-history-panel h2 { color: #c58c5a;}
 
@@ -339,13 +338,16 @@ html
             padding: 6px 4px;
             border-bottom: 1px dashed #d2b48c;
             font-size: 0.9rem;
+            display: flex; /* For better alignment of timestamp */
+            justify-content: space-between; /* For better alignment of timestamp */
+            align-items: center; /* For better alignment of timestamp */
         }
         body.dark-mode .dice-history-item { border-bottom-color: #4a3c2a; }
         .dice-history-item:last-child { border-bottom: none; }
-        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; float: right; }
+        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; white-space: nowrap; }
         body.dark-mode .dice-history-item .timestamp { color: #aaa; }
 
-        .dice-history-buttons { display: flex; justify-content: space-between; margin-top: auto;}
+        .dice-history-buttons { display: flex; justify-content: space-between; margin-top: auto; flex-shrink: 0;}
         #fechar-historico-btn, #limpar-historico-btn {
             padding: 8px 15px; font-size: 0.9rem; flex-basis: 48%;
         }
@@ -494,6 +496,34 @@ html
         #cor-fundo-visual-btn { cursor: pointer; }
 
         .lock-icon { margin-left: 5px; cursor: help; }
+        
+        /* Estilo para o tooltip customizado */
+        #custom-tooltip {
+            position: absolute;
+            visibility: hidden;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            z-index: 2000; /* Acima de outros elementos */
+            pointer-events: none; /* Para não interferir com o mouse */
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 250px; /* Para evitar que fique muito largo */
+            text-align: left;
+        }
+        body.dark-mode #custom-tooltip {
+            background-color: #f0e6d2;
+            color: #1e1e1e;
+            border: 1px solid #444;
+        }
+        #custom-tooltip.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
 
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -517,11 +547,9 @@ html
                 top: calc(50% + 120px); /* Mais para baixo em telas menores */
             }
             #dice-history-panel { 
-                right: 40px; width: calc(100vw - 60px); height: 300px;
+                right: 40px; width: calc(100vw - 60px); max-height: 300px;
                 top: calc(50% + 120px);
             }
-            #dice-history-list { max-height: calc(300px - 90px); } 
-
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
         #background-modal { display: none; }
@@ -630,23 +658,23 @@ html
                     <div class="atributos-container">
                         <div class="atributos-coluna">
                             <div class="atributo">
-                                <label for="forca" title="Afeta ataque e RDF">Força:</label>
+                                <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
                                 <input type="number" id="forca" value="0" min="0">
                             </div>
                             <div class="atributo">
-                                <label for="destreza" title="Afeta ataque e acerto">Destreza:</label>
+                                <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
                                 <input type="number" id="destreza" value="0" min="0">
                             </div>
                             <div class="atributo">
-                                <label for="agilidade" title="Afeta esquiva e acerto">Agilidade:</label>
+                                <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
                                 <input type="number" id="agilidade" value="0" min="0">
                             </div>
                             <div class="atributo">
-                                <label for="constituicao" title="Afeta vida, magia e vigor">Constituição:</label>
+                                <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
                                 <input type="number" id="constituicao" value="0" min="0">
                             </div>
                             <div class="atributo">
-                                <label for="inteligencia" title="Afeta ataque mágico e RDM">Inteligência:</label>
+                                <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
                                 <input type="number" id="inteligencia" value="0" min="0">
                             </div>
                         </div>
@@ -941,15 +969,19 @@ html
     <div id="fireworks-container"></div>
     <!-- Gatilho e Painel para Histórico de Dados -->
     <div id="dice-history-trigger">Histórico de Dados</div>
-    <div id="dice-history-panel" style="display:none;"> 
+    <div id="dice-history-panel"> 
         <h2>Histórico de Rolagens</h2>
         <div id="dice-history-list">
+            <!-- Os itens do histórico serão inseridos aqui pelo JavaScript -->
         </div>
         <div class="dice-history-buttons">
             <button id="limpar-historico-btn" class="botao">Limpar Histórico</button>
             <button id="fechar-historico-btn" class="botao">Fechar Caixa</button>
         </div>
     </div>
+    <!-- Tooltip Customizado -->
+    <div id="custom-tooltip"></div>
+
     <script>
         const RGP_FICHAS_KEY = 'rpgFichas';
         const RPG_CURRENT_FICHA_ID_KEY = 'rpgCurrentFichaId';
@@ -1026,7 +1058,8 @@ html
             diceHistoryPanel = document.getElementById('dice-history-panel'), 
             diceHistoryList = document.getElementById('dice-history-list'), 
             fecharHistoricoBtn = document.getElementById('fechar-historico-btn'),
-            limparHistoricoBtn = document.getElementById('limpar-historico-btn'); 
+            limparHistoricoBtn = document.getElementById('limpar-historico-btn'),
+            customTooltipElement = document.getElementById('custom-tooltip');
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
@@ -1038,6 +1071,7 @@ html
         let isDiceRolling = false;
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
+        let tooltipTimeoutId = null; // Para o tooltip customizado
 
         // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
@@ -1081,7 +1115,7 @@ html
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                     diceColor: '#f0e6d2', diceNumberColor: '#000000',
                     diceRolls: [],
-                    collapsedSections: {} // Novo
+                    collapsedSections: {} 
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1861,7 +1895,7 @@ html
                         result: roll,
                         timestamp: timestamp
                     });
-                    if (fichas[currentFichaId].diceRolls.length > 100) {
+                    if (fichas[currentFichaId].diceRolls.length > 100) { // Limita o histórico a 100 rolagens
                         fichas[currentFichaId].diceRolls.pop();
                     }
                     salvarDados(); 
@@ -1905,7 +1939,7 @@ html
             }
 
             // Fechar painel de histórico de dados
-            if (diceHistoryPanel.style.display === 'flex' && // 'flex' por causa do display:flex no CSS
+            if (diceHistoryPanel.style.display === 'flex' &&
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
                 diceHistoryPanel.style.display = 'none';
@@ -2045,7 +2079,7 @@ html
 
         anotacoesBtn.onclick = () => { 
             anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; 
-            if (diceHistoryPanel.style.display === 'flex') { // Mudado para 'flex'
+            if (diceHistoryPanel.style.display === 'flex') {
                 diceHistoryPanel.style.display = 'none';
             }
         };
@@ -2269,7 +2303,7 @@ html
         }
         
         diceHistoryTrigger.addEventListener('click', () => {
-            if (diceHistoryPanel.style.display === 'flex') { // Mudado de 'block' para 'flex'
+            if (diceHistoryPanel.style.display === 'flex') {
                 diceHistoryPanel.style.display = 'none';
                 return;
             }
@@ -2303,7 +2337,7 @@ html
             const rolls = fichas[currentFichaId].diceRolls;
             diceHistoryList.innerHTML = rolls.map(roll => `
                 <div class="dice-history-item">
-                    Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong>
+                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
                     <span class="timestamp">${roll.timestamp}</span>
                 </div>
             `).join('');
@@ -2330,7 +2364,7 @@ html
             botao.classList.add('button-clicked');
             setTimeout(() => {
                 botao.classList.remove('button-clicked');
-            }, 150); // Duração do "flash"
+            }, 150); 
         }
 
         // --- SEÇÕES COLAPSÁVEIS ---
@@ -2399,6 +2433,66 @@ html
             buttonElement.addEventListener('touchcancel', stopAction);
         }
 
+        // --- TOOLTIP CUSTOMIZADO PARA ATRIBUTOS ---
+        function showCustomTooltip(targetElement) {
+            const tooltipText = targetElement.getAttribute('title');
+            if (!tooltipText || !customTooltipElement) return;
+
+            customTooltipElement.innerHTML = tooltipText;
+            const rect = targetElement.getBoundingClientRect();
+            
+            // Posicionamento do tooltip
+            let top = rect.bottom + window.scrollY + 5; // Abaixo do elemento
+            let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2); // Centralizado
+
+            // Ajustar se sair da tela
+            if (left < 0) left = 5;
+            if (left + customTooltipElement.offsetWidth > window.innerWidth) {
+                left = window.innerWidth - customTooltipElement.offsetWidth - 5;
+            }
+            if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
+                top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; // Acima se não couber abaixo
+            }
+
+
+            customTooltipElement.style.top = `${top}px`;
+            customTooltipElement.style.left = `${left}px`;
+            customTooltipElement.classList.add('visible');
+        }
+
+        function hideCustomTooltip() {
+            if (customTooltipElement) {
+                customTooltipElement.classList.remove('visible');
+            }
+        }
+
+        function setupAttributeTooltips() {
+            const attributeLabels = [
+                document.querySelector('label[for="forca"]'),
+                document.querySelector('label[for="destreza"]'),
+                document.querySelector('label[for="agilidade"]'),
+                document.querySelector('label[for="constituicao"]'),
+                document.querySelector('label[for="inteligencia"]')
+            ];
+
+            attributeLabels.forEach(label => {
+                if (label) {
+                    label.addEventListener('mouseenter', (event) => {
+                        clearTimeout(tooltipTimeoutId); // Limpa timeout anterior, se houver
+                        tooltipTimeoutId = setTimeout(() => {
+                            showCustomTooltip(event.target);
+                        }, 3000); // 3 segundos
+                    });
+
+                    label.addEventListener('mouseleave', () => {
+                        clearTimeout(tooltipTimeoutId);
+                        hideCustomTooltip();
+                    });
+                }
+            });
+        }
+
+
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container'); 
              if (diceContainer) { 
@@ -2428,11 +2522,9 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            // Adicionar feedback visual aos botões principais
             document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
-            // Adicionar funcionalidade de colapso às seções
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
                 header.addEventListener('click', () => {
                     const sectionId = header.parentElement.id;
@@ -2441,6 +2533,7 @@ html
                     }
                 });
             });
+            setupAttributeTooltips(); // Configura os tooltips dos atributos
         });
 
     </script>
