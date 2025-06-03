@@ -54,7 +54,7 @@ html
             background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s;
+            transition: font-family 0.3s; /* Add transition for font changes */
         }
         body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
@@ -74,7 +74,7 @@ html
         }
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
-        section h2 { text-align: center; font-family: 'MedievalSharp', serif;}
+        section h2 { text-align: center; font-family: 'MedievalSharp', serif;} /* Titles specific font */
         body.dark-mode section { background: #1e1e1e; border-color: #444; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
@@ -154,10 +154,10 @@ html
             padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
             width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
             font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
-            font-family: 'MedievalSharp', serif;
+            font-family: 'MedievalSharp', serif; /* Specific font */
         }
         body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
-        #nivel.aura-azul { animation: pulsar-aura 2s 10; }
+        #nivel.aura-azul { animation: pulsar-aura 5s 1; } /* Duração da aura do nível aumentada */
         .expandable-textarea {
             height: 100px; width: 100%; background: #fff; border: 2px solid #b8860b;
             border-radius: 6px; padding: 10px; font-size: 0.9rem; transition: height 0.3s ease;
@@ -167,7 +167,7 @@ html
         
         /* --- ESTILOS DO DADO --- */
         #dice-container {
-            position: absolute; top: 20px; right: 20px; width: auto;
+            position: absolute; top: 20px; right: 20px; width: auto; 
             text-align: center;
             font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
             perspective: 800px; 
@@ -206,17 +206,15 @@ html
         body.dark-mode #dice-result { color: #e0e0e0; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        #dice-roll.critical-failure { animation: aura-vermelha 2s infinite; }
-        #dice-roll.critical-success { animation: aura-verde 2s infinite; }
+        #dice-roll.critical-failure { animation: aura-vermelha 0.5s 4; } /* Animação mais curta e repetida */
+        #dice-roll.critical-success { animation: aura-verde 0.5s 4; } /* Animação mais curta e repetida */
         @keyframes aura-vermelha {
-            0% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000 !important; }
-            50% { box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000, 0 0 25px #ff0000 !important; }
-            100% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000 !important; }
+            0%, 100% { box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000 !important; }
+            50% { box-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000, 0 0 40px #ff0000 !important; }
         }
         @keyframes aura-verde {
-            0% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00 !important; }
-            50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00, 0 0 25px #00ff00 !important; }
-            100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00 !important; }
+            0%, 100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00 !important; }
+            50% { box-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00 !important; }
         }
         
         #change-dice-type-btn {
@@ -266,111 +264,91 @@ html
         @keyframes particle-trail {
             0% { opacity: 1; transform: scale(1) translateY(0px); }
             50% { opacity: 0.7; }
-            100% { opacity: 0; transform: scale(0.3) translateY(40px); }
+            100% { opacity: 0; transform: scale(0.3) translateY(40px); } 
         }
         /* --- FIM ESTILOS FOGOS DE ARTIFÍCIO --- */
 
         /* --- ESTILOS HISTÓRICO DE DADOS --- */
         #dice-history-trigger {
-            position: absolute; /* Relativo ao #ficha-container */
-            top: 50%;
-            right: -30px; /* Puxa para fora da borda da ficha */
-            transform: translateY(-50%) rotate(-90deg);
-            transform-origin: bottom right; /* Ajusta o ponto de rotação para alinhar com a borda */
-            background-color: #a0522d;
-            color: white;
+            position: fixed;
+            top: calc(50% + 70px); /* Abaixo do botão de anotações */
+            right: 10px;
+            transform: translateY(-50%);
             padding: 10px 15px;
+            background: #a0522d;
+            color: white;
             border: 2px solid #b8860b;
-            border-bottom: none; 
-            border-right: none; /* Para parecer grudado */
-            border-radius: 8px 8px 0 0;
-            cursor: pointer;
-            z-index: 5; /* Abaixo do dice-container e anotações, mas acima da ficha */
+            border-right: none; /* Para parecer grudado na borda */
+            border-radius: 6px 0 0 6px; /* Arredonda cantos da esquerda */
             font-family: 'MedievalSharp', serif;
-            white-space: nowrap;
-            transition: right 0.3s ease; /* Anima o 'right' para o hover */
-        }
-        #dice-history-trigger:hover {
-            right: -15px; /* Expande um pouco mais para indicar interatividade */
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 1000; /* Mesmo z-index do botão de anotações */
+            writing-mode: vertical-rl; /* Escreve o texto na vertical */
+            text-orientation: mixed;
         }
         body.dark-mode #dice-history-trigger { background-color: #555; border-color: #444;}
 
         #dice-history-panel {
             display: none; 
-            position: absolute; /* Relativo ao #ficha-container */
-            top: calc(50% - 200px); /* Centraliza verticalmente baseado na altura do painel */
-            right: -330px; /* Fora da ficha, à direita do gatilho (300px largura + 30px espaço) */
-            width: 300px; 
-            height: 400px;
-            background: #f0e6d2; 
-            border: 2px solid #b8860b; 
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: fixed; 
+            right: 50px; /* Ajustar para ficar ao lado do gatilho */
+            top: calc(50% + 70px); /* Mesmo top do gatilho */
+            transform: translateY(-50%);
+            width: 400px; 
+            height: 400px; 
+            background: #fff; 
+            border: 2px solid #b8860b;
+            border-radius: 6px; 
             padding: 15px; 
-            z-index: 1005; /* Acima do trigger e ficha */
-            flex-direction: column; /* Para organizar conteúdo interno */
+            font-size: 0.9rem; 
+            z-index: 1001; /* Acima do gatilho */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
         }
-        body.dark-mode #dice-history-panel { background: #1e1e1e; border-color: #444; }
+        body.dark-mode #dice-history-panel { background: #333; color: #e0e0e0; border-color: #555;}
+
         #dice-history-panel h2 {
             font-family: 'MedievalSharp', serif; font-size: 1.5rem; text-align: center;
             color: #a0522d; margin-bottom: 10px;
         }
-        #dice-history-filter-buttons {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 10px;
-        }
-        #dice-history-filter-buttons button {
-            padding: 3px 6px;
-            font-size: 0.8rem;
-        }
+        body.dark-mode #dice-history-panel h2 { color: #c58c5a;}
+
         #dice-history-list {
-            flex-grow: 1; /* Para ocupar espaço restante */
+            flex-grow: 1; /* Ocupa o espaço restante */
             overflow-y: auto;
-            background: #fff;
+            background: #f9f2e7;
             border: 1px solid #b8860b;
-            border-radius: 6px;
-            padding: 10px;
+            border-radius: 4px;
+            padding: 8px;
             margin-bottom: 10px;
         }
-        body.dark-mode #dice-history-list { background: #333; border-color: #555; }
+        body.dark-mode #dice-history-list { background: #2a2a2a; border-color: #555; }
         .dice-history-item {
-            padding: 6px;
-            border-bottom: 1px dashed #ccc;
+            padding: 6px 4px;
+            border-bottom: 1px dashed #d2b48c;
             font-size: 0.9rem;
         }
-        body.dark-mode .dice-history-item { border-bottom-color: #444; }
+        body.dark-mode .dice-history-item { border-bottom-color: #4a3c2a; }
         .dice-history-item:last-child { border-bottom: none; }
-        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; }
+        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; float: right; }
         body.dark-mode .dice-history-item .timestamp { color: #aaa; }
 
-        .dice-history-buttons-footer {
-            display: flex;
-            justify-content: space-between; /* Espaça os botões */
-            margin-top: auto; /* Empurra para o final da caixa */
-        }
+        .dice-history-buttons { display: flex; justify-content: space-between; margin-top: auto;}
         #fechar-historico-btn, #limpar-historico-btn {
-            padding: 8px 15px; 
-            font-size: 1rem; 
-            /* background: #a52a2a;  mantido */
-            /* color: #fff; mantido */
-            /* border: none; mantido */
-            /* border-radius: 6px; mantido */
-            /* font-family: 'MedievalSharp', serif; mantido */
-            /* cursor: pointer; mantido */
-            /* transition: transform 0.2s ease; mantido */
+            padding: 8px 15px; font-size: 0.9rem; flex-basis: 48%;
         }
-        #limpar-historico-btn { background: #800000; } /* Cor diferente para limpar */
-        #limpar-historico-btn:hover { background: #600000; }
-        body.dark-mode #limpar-historico-btn { background: #400000; }
-        body.dark-mode #limpar-historico-btn:hover { background: #500000; }
-
+        #limpar-historico-btn { background-color: #800000; }
+        #limpar-historico-btn:hover { background-color: #a00000; }
+        body.dark-mode #limpar-historico-btn { background-color: #400000;}
+        body.dark-mode #limpar-historico-btn:hover { background-color: #600000;}
         /* --- FIM ESTILOS HISTÓRICO DE DADOS --- */
 
         #notification {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px;
             border-radius: 8px; font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); display: none; z-index: 2000;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); display: none; z-index: 2000; 
             background: rgba(0, 0, 0, 0.7); transition: opacity 0.3s ease;
         }
         #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
@@ -469,15 +447,18 @@ html
         .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px; }
         .inventory-slot input[type="number"] { width: 60px; }
         #anotacoes-btn {
-            position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 20px;
-            background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
+            position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 15px; /* Ajustado padding */
+            background: #f0e6d2; border: 2px solid #b8860b; border-left: none; /* Para parecer grudado */
+            border-radius: 0 6px 6px 0; /* Arredonda cantos da direita */
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease; z-index: 1000;
+            writing-mode: vertical-rl; text-orientation: mixed;
         }
-        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; }
+        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; border-color: #444;}
         #anotacoes-btn:hover { background: #a0522d; color: #fff; }
         #anotacoes-textarea {
-            display: none; position: fixed; left: 60px; top: 50%; transform: translateY(-50%);
+            display: none; position: fixed; left: 50px; /* Ajustado para ficar ao lado do botão */
+            top: 50%; transform: translateY(-50%);
             width: 400px; height: 400px; background: #fff; border: 2px solid #b8860b;
             border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; z-index: 1001;
         }
@@ -517,22 +498,18 @@ html
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
             #dice-options-menu { top: 35px; /* Ajuste para telas menores */ }
 
-             #dice-history-trigger {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-                right: -25px; /* Ajuste para mobile */
-                transform: translateY(-50%) rotate(-90deg); /* Sem translateX no mobile */
+            #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
+            #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
+
+            #dice-history-trigger {
+                padding: 8px 10px; font-size: 0.9rem;
+                top: calc(50% + 120px); /* Mais para baixo em telas menores */
             }
-            #dice-history-trigger:hover {
-                right: -10px; /* Ajuste hover mobile */
+            #dice-history-panel { 
+                right: 40px; width: calc(100vw - 60px); height: 300px;
+                top: calc(50% + 120px);
             }
-            #dice-history-panel {
-                width: calc(100% - 40px); /* Mais responsivo */
-                height: 300px;
-                top: calc(50% - 150px);
-                right: auto; left: 20px; /* Posiciona à esquerda em telas pequenas */
-            }
-            #dice-history-list { max-height: calc(100% - 110px); } /* Ajuste para mobile */
+            #dice-history-list { max-height: calc(300px - 90px); } 
 
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
@@ -939,22 +916,14 @@ html
     <div id="fireworks-container"></div>
     <!-- Gatilho e Painel para Histórico de Dados -->
     <div id="dice-history-trigger">Histórico de Dados</div>
-    <div id="dice-history-panel" style="display: flex; flex-direction: column;"> <!-- Adicionado flex-direction -->
+    <div id="dice-history-panel" style="display:none;"> <!-- Inicialmente escondido -->
         <h2>Histórico de Rolagens</h2>
-        <div id="dice-history-filter-buttons">
-            <button data-filter-dice="all" class="botao">Todos</button>
-            <button data-filter-dice="D20" class="botao">D20</button>
-            <button data-filter-dice="D12" class="botao">D12</button>
-            <button data-filter-dice="D6" class="botao">D6</button>
-            <button data-filter-dice="D4" class="botao">D4</button>
-            <button data-filter-dice="D3" class="botao">D3</button>
-        </div>
         <div id="dice-history-list">
             <!-- As rolagens serão inseridas aqui pelo JavaScript -->
         </div>
-        <div class="dice-history-buttons-footer"> <!-- Novo container para botões -->
-            <button id="limpar-historico-btn">Limpar</button>
-            <button id="fechar-historico-btn">Fechar</button>
+        <div class="dice-history-buttons">
+            <button id="limpar-historico-btn" class="botao">Limpar Histórico</button>
+            <button id="fechar-historico-btn" class="botao">Fechar Caixa</button>
         </div>
     </div>
     <script>
@@ -1031,9 +1000,8 @@ html
             diceHistoryTrigger = document.getElementById('dice-history-trigger'), 
             diceHistoryPanel = document.getElementById('dice-history-panel'), 
             diceHistoryList = document.getElementById('dice-history-list'), 
-            diceHistoryFilterButtons = document.getElementById('dice-history-filter-buttons'), // Novo
-            limparHistoricoBtn = document.getElementById('limpar-historico-btn'), // Novo
-            fecharHistoricoBtn = document.getElementById('fechar-historico-btn'); 
+            fecharHistoricoBtn = document.getElementById('fechar-historico-btn'),
+            limparHistoricoBtn = document.getElementById('limpar-historico-btn'); // Novo
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
@@ -1045,7 +1013,6 @@ html
         let isDiceRolling = false;
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
-        let currentDiceHistoryFilter = "all"; // Novo para filtro do histórico
 
         // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
@@ -1374,7 +1341,7 @@ html
                 void p.offsetWidth;
 
                 p.style.transform = `translate(${targetX - xBase}px, ${targetYFinal - yBase}px) scale(0.5)`;
-
+                
                 setTimeout(() => {
                     if (p && p.parentNode) p.remove(); 
                 }, duracao * 1000 + 200); 
@@ -1417,7 +1384,7 @@ html
             pontosVantagemSpan.textContent = getPontosVantagem();
             if (nivel > nivelAnterior) { 
                 nivelSpan.classList.add("aura-azul"); 
-                setTimeout(() => nivelSpan.classList.remove("aura-azul"), 20000); 
+                setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000); // Reduzido para 5s
                 showNotification(`Parabéns! Você alcançou o Nível ${nivel}!`, "critical-success"); 
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6)); 
             }
@@ -1886,11 +1853,23 @@ html
             });
         });
 
+        // Fechar o menu de dados se clicar fora dele
         document.addEventListener('click', (event) => {
             if (diceOptionsMenu.style.display === 'flex' && 
                 !diceOptionsMenu.contains(event.target) && 
                 event.target !== changeDiceTypeBtn) {
                 diceOptionsMenu.style.display = 'none';
+            }
+            // Fechar painel de histórico e anotações se clicar fora deles
+            if (diceHistoryPanel.style.display === 'block' && 
+                !diceHistoryPanel.contains(event.target) && 
+                event.target !== diceHistoryTrigger) {
+                diceHistoryPanel.style.display = 'none';
+            }
+            if (anotacoesTextarea.style.display === 'block' && 
+                !anotacoesTextarea.contains(event.target) && 
+                event.target !== anotacoesBtn) {
+                anotacoesTextarea.style.display = 'none';
             }
         });
 
@@ -2025,9 +2004,13 @@ html
         });
 
 
-        anotacoesBtn.onclick = () => { anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; };
-        document.addEventListener('click', (event) => { if (anotacoesTextarea.style.display === "block" && !anotacoesTextarea.contains(event.target) && !anotacoesBtn.contains(event.target)) anotacoesTextarea.style.display = 'none'; });
-        anotacoesTextarea.oninput = salvarDados;
+        anotacoesBtn.onclick = () => { 
+            anotacoesTextarea.style.display = anotacoesTextarea.style.display === "block" ? "none" : "block"; 
+            // Esconder o painel de histórico se estiver aberto
+            if (diceHistoryPanel.style.display === 'block') {
+                diceHistoryPanel.style.display = 'none';
+            }
+        };
 
         adicionarMagiaBtn.onclick = () => {
              if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
@@ -2251,16 +2234,22 @@ html
         
         // --- LÓGICA HISTÓRICO DE DADOS ---
         diceHistoryTrigger.addEventListener('click', () => {
+            if (diceHistoryPanel.style.display === 'block') {
+                diceHistoryPanel.style.display = 'none';
+                return;
+            }
+            // Esconder anotações se estiverem abertas
+            if (anotacoesTextarea.style.display === 'block') {
+                anotacoesTextarea.style.display = 'none';
+            }
+
             senhaGmTitulo.textContent = "Acessar Histórico de Dados";
-            abrirModalSenha(null, () => { // Passa a função de abrir o painel como callback
-                abrirPainelHistoricoDados(currentDiceHistoryFilter);
-                fecharModal('senha-gm-modal'); 
-            });
             document.getElementById("senha-gm-modal").style.display = "flex"; 
             document.getElementById("senha-gm-input").value = "";
+            document.getElementById("senha-gm-input").focus();
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                 if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                    abrirPainelHistoricoDados(currentDiceHistoryFilter);
+                    abrirPainelHistoricoDados();
                     fecharModal("senha-gm-modal");
                 } else { 
                     alert("Senha do GM incorreta!"); 
@@ -2270,64 +2259,37 @@ html
         });
 
 
-        function abrirPainelHistoricoDados(filterType = "all") {
-            currentDiceHistoryFilter = filterType; // Atualiza o filtro corrente
-            if (!fichas[currentFichaId] || !fichas[currentFichaId].diceRolls) {
+        function abrirPainelHistoricoDados() {
+            diceHistoryPanel.style.display = 'flex'; // Usa flex para alinhar botões no final
+            if (!fichas[currentFichaId] || !fichas[currentFichaId].diceRolls || fichas[currentFichaId].diceRolls.length === 0) {
                 diceHistoryList.innerHTML = '<div class="dice-history-item">Nenhuma rolagem registrada.</div>';
-                diceHistoryPanel.style.display = 'flex'; // Usa flex para o layout interno
                 return;
             }
 
-            let rolls = fichas[currentFichaId].diceRolls;
-            if (filterType !== "all") {
-                rolls = rolls.filter(roll => roll.type === filterType);
-            }
-
-            if (rolls.length === 0) {
-                diceHistoryList.innerHTML = `<div class="dice-history-item">Nenhuma rolagem de ${filterType === "all" ? "" : filterType + " "}registrada.</div>`;
-            } else {
-                diceHistoryList.innerHTML = rolls.map(roll => `
-                    <div class="dice-history-item">
-                        Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong>
-                        <span class="timestamp">${roll.timestamp}</span>
-                    </div>
-                `).join('');
-            }
-            diceHistoryPanel.style.display = 'flex'; // Usa flex para o layout interno
+            const rolls = fichas[currentFichaId].diceRolls;
+            diceHistoryList.innerHTML = rolls.map(roll => `
+                <div class="dice-history-item">
+                    Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong>
+                    <span class="timestamp">${roll.timestamp}</span>
+                </div>
+            `).join('');
         }
-        
-        diceHistoryFilterButtons.addEventListener('click', (event) => {
-            if (event.target.tagName === 'BUTTON') {
-                const filter = event.target.dataset.filterDice;
-                abrirPainelHistoricoDados(filter); // Reabre/atualiza o painel com o novo filtro
-            }
-        });
-
-        limparHistoricoBtn.addEventListener('click', () => {
-            if (confirm("Tem certeza que deseja limpar todo o histórico de rolagens desta ficha? Esta ação não pode ser desfeita.")) {
-                if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].diceRolls = [];
-                    salvarDados();
-                    abrirPainelHistoricoDados(currentDiceHistoryFilter); // Atualiza a exibição do painel (que estará vazio)
-                    showNotification("Histórico de rolagens limpo.", "normal-result");
-                }
-            }
-        });
-
 
         fecharHistoricoBtn.addEventListener('click', () => {
             diceHistoryPanel.style.display = 'none';
         });
-        // --- FIM LÓGICA HISTÓRICO DE DADOS ---
 
-
-        document.addEventListener('click', function(event) {
-            if (diceOptionsMenu.style.display === 'flex' && 
-                !diceOptionsMenu.contains(event.target) && 
-                event.target !== changeDiceTypeBtn) {
-                diceOptionsMenu.style.display = 'none';
+        limparHistoricoBtn.addEventListener('click', () => {
+            if (confirm("Tem certeza que deseja limpar todo o histórico de rolagens desta ficha?")) {
+                if (fichas[currentFichaId]) {
+                    fichas[currentFichaId].diceRolls = [];
+                    salvarDados();
+                    abrirPainelHistoricoDados(); // Reabre para mostrar que foi limpo
+                    showNotification("Histórico de rolagens limpo!", "save-success");
+                }
             }
         });
+        // --- FIM LÓGICA HISTÓRICO DE DADOS ---
         
         function setupHoldButtonEvents(buttonElement, actionFunction) {
             if (!buttonElement) return;
