@@ -2310,20 +2310,8 @@ html
             if (anotacoesTextarea.style.display === 'block') {
                 anotacoesTextarea.style.display = 'none';
             }
-
-            senhaGmTitulo.textContent = "Acessar Histórico de Dados";
-            document.getElementById("senha-gm-modal").style.display = "flex"; 
-            document.getElementById("senha-gm-input").value = "";
-            document.getElementById("senha-gm-input").focus();
-            document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                    abrirPainelHistoricoDados();
-                    fecharModal("senha-gm-modal");
-                } else { 
-                    alert("Senha do GM incorreta!"); 
-                    fecharModal("senha-gm-modal"); 
-                }
-            };
+            // MODIFIED: Directly open the panel
+            abrirPainelHistoricoDados();
         });
 
 
@@ -2348,14 +2336,25 @@ html
         });
 
         limparHistoricoBtn.addEventListener('click', () => {
-            if (confirm("Tem certeza que deseja limpar todo o histórico de rolagens desta ficha?")) {
-                if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].diceRolls = [];
-                    salvarDados();
-                    abrirPainelHistoricoDados(); 
-                    showNotification("Histórico de rolagens limpo!", "save-success");
+            // MODIFIED: Require GM password to clear history
+            senhaGmTitulo.textContent = "Permissão do GM para Limpar Histórico";
+            document.getElementById("senha-gm-modal").style.display = "flex"; 
+            document.getElementById("senha-gm-input").value = "";
+            document.getElementById("senha-gm-input").focus();
+            document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                    if (fichas[currentFichaId]) {
+                        fichas[currentFichaId].diceRolls = [];
+                        salvarDados();
+                        abrirPainelHistoricoDados(); // Refresh the panel view
+                        showNotification("Histórico de rolagens limpo!", "save-success");
+                    }
+                    fecharModal("senha-gm-modal");
+                } else { 
+                    alert("Senha do GM incorreta!"); 
+                    fecharModal("senha-gm-modal"); 
                 }
-            }
+            };
         });
         
         // --- FUNÇÃO PARA FEEDBACK VISUAL DE BOTÕES ---
