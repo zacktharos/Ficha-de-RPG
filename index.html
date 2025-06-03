@@ -1,4 +1,3 @@
-html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -179,7 +178,7 @@ html
         }
         body.dark-mode #dice-roll { background: #1e1e1e; border-color: #444; }
         #dice-roll::before { content: "⚅"; font-size: 1.5rem; position: absolute; top: 5px; right: 5px; color: #a0522d; }
-        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; } /* Kept but unused by JS roll */
+        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; }
         body.dark-mode #dice-result { color: #e0e0e0; }
         @keyframes blink { 50% { opacity: 0; } }
         #dice-roll.critical-failure { animation: aura-vermelha 2s infinite; }
@@ -364,7 +363,7 @@ html
         <div id="dice-container">
             <label>Role seu dado:</label>
             <div id="dice-roll">-</div>
-            <div id="dice-result"></div> <!-- This div is kept for structure but not actively updated by JS roll -->
+            <div id="dice-result"></div>
         </div>
         <div id="ficha-content">
             <section id="informacoes-basicas">
@@ -1453,45 +1452,18 @@ html
 
         diceRoll.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(diceRoll);
-
-            diceRoll.classList.remove("critical-failure", "critical-success");
-            diceResult.style.display = "none"; // Esconde o resultado estático
-
-            let animationInterval;
-            const animationDuration = 1000; // Duração da animação em ms
-            const changeInterval = 75;   // Intervalo de mudança de número em ms
-            
-            // Inicia animação de rolagem
-            animationInterval = setInterval(() => {
-                diceRoll.textContent = Math.floor(Math.random() * 20) + 1;
-            }, changeInterval);
-
-            // Para a animação e mostra o resultado final
+            diceRoll.textContent = "Rolling..."; diceResult.style.display = "none"; diceRoll.classList.remove("critical-failure", "critical-success");
             setTimeout(() => {
-                clearInterval(animationInterval);
-
                 const roll = Math.floor(Math.random() * 20) + 1;
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
-                diceRoll.textContent = roll; // Mostra o resultado final no dado
-
+                diceRoll.textContent = roll;
                 let notificationClass = "normal-result";
                 let notificationMsg = `${fichaNome} rolou: ${roll}`;
-
-                if (roll === 1) { 
-                    diceRoll.classList.add("critical-failure"); 
-                    notificationClass = "critical-failure"; 
-                    notificationMsg = `${fichaNome} - FALHA CRÍTICA!`; 
-                } else if (roll === 20) { 
-                    diceRoll.classList.add("critical-success"); 
-                    notificationClass = "critical-success"; 
-                    notificationMsg = `${fichaNome} - SUCESSO CRÍTICO!`; 
-                }
-                // Oculta diceResult pois a notificação já mostra o valor
-                // diceResult.textContent = `Resultado: ${roll}`;
-                // diceResult.style.display = "block"; 
-                
+                if (roll === 1) { diceRoll.classList.add("critical-failure"); notificationClass = "critical-failure"; notificationMsg = `${fichaNome} - FALHA CRÍTICA!`; }
+                else if (roll === 20) { diceRoll.classList.add("critical-success"); notificationClass = "critical-success"; notificationMsg = `${fichaNome} - SUCESSO CRÍTICO!`; }
+                else { diceResult.textContent = `Resultado: ${roll}`; diceResult.style.display = "block"; } 
                 showNotification(notificationMsg, notificationClass);
-            }, animationDuration);
+            }, 1000);
         };
 
         vantagensDesvantagensBtn.onclick = () => {
