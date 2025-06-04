@@ -15,7 +15,7 @@ html
         }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0e6d2;
+            background-color: #f0e6d2; /* Cor padrão modo claro */
             color: #000;
             display: flex;
             min-height: 100vh;
@@ -28,7 +28,7 @@ html
             transition: background 0.3s, color 0.3s, font-family 0.3s;
         }
         body.dark-mode {
-            background-color: #121212 !important;
+            background-color: #121212 !important; /* Cor padrão modo escuro */
             color: #e0e0e0;
         }
         #fichas-sidebar {
@@ -57,12 +57,16 @@ html
         #add-ficha-btn span { font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; }
         #add-ficha-btn:hover { background: #a0522d; transform: translateY(-5px); }
         #ficha-container {
-            background: rgba(240, 230, 210, 0.95); padding: 30px; border-radius: 12px;
+            background: #f0e6d2; /* Cor padrão interna modo claro - igual ao body */
+            padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s;
+            transition: font-family 0.3s, background-color 0.3s; /* Adicionado background-color à transição */
         }
-        body.dark-mode #ficha-container { background: rgba(30, 30, 30, 0.95); color: #e0e0e0; }
+        body.dark-mode #ficha-container {
+            background: #121212; /* Cor padrão interna modo escuro - igual ao body dark */
+            color: #e0e0e0;
+        }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
         @keyframes pulsar-aura {
             0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
@@ -72,6 +76,9 @@ html
         h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
             text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
+        }
+        body.dark-mode h1#nome-personagem-titulo { /* Cor do título no modo escuro */
+             color: #c58c5a;
         }
         @keyframes raios {
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
@@ -98,7 +105,7 @@ html
         body.dark-mode section { background: #1e1e1e; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
-        input[type="text"], input[type="number"], textarea, select { /* Adicionado select aqui */
+        input[type="text"], input[type="number"], textarea, select { 
             padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
             margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
             background: #fff; color: #000;
@@ -119,10 +126,10 @@ html
             margin: 0;
         }
 
-        body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea, body.dark-mode select { /* Adicionado select aqui */
+        body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea, body.dark-mode select { 
             background: #333; color: #e0e0e0; border-color: #555;
         }
-        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { /* Adicionado select aqui */
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { 
             border-color: #a0522d; outline: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         input[readonly], span[readonly] { background: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed; }
@@ -183,10 +190,10 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn { /* Adicionado #customizacao-btn */
+        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn { 
             background-color: #800000; 
         }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover { /* Adicionado #customizacao-btn:hover */
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover { 
             background: #a0522d; transform: translateY(-2px);
         }
         #gm-mode-btn.gm-active { background-color: #006400; } 
@@ -244,7 +251,6 @@ html
         }
         body.dark-mode #dice-roll { border-color: #444; }
 
-        /* Animações de dado */
         #dice-roll.is-rolling { animation: rollTheDie 1s ease-out forwards; }
         #dice-roll.is-rolling-fast { animation: rollTheDieFast 0.5s ease-out forwards; }
         #dice-roll.is-rolling-jump { animation: rollTheDieJump 1.2s cubic-bezier(0.5, -0.5, 0.5, 1.5) forwards; }
@@ -416,8 +422,9 @@ html
         }
         #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
         #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
-        #notification.normal-result, #notification.save-success { animation: blink 1s infinite; }
-        #notification.save-success { background: rgba(0, 200, 0, 0.8); }
+        #notification.normal-result /* , #notification.save-success - Removido save-success para não piscar */ { animation: blink 1s infinite; }
+        #notification.save-success { background: rgba(0, 200, 0, 0.8); } /* Mantém a cor, mas não pisca mais */
+
         #character-image-container {
             position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
             border: 2px solid #b8860b; border-radius: 8px; display: flex; align-items: center;
@@ -437,7 +444,7 @@ html
         body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
         .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
         body.dark-mode .modal-content h3 { color: #e0e0e0; }
-        .modal-content input, .modal-content select { /* 'select' já estava, mas reforçando a intenção */
+        .modal-content input, .modal-content select { 
             width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; 
         }
         body.dark-mode .modal-content input, body.dark-mode .modal-content select { background: #333; color: #e0e0e0; border-color: #555; }
@@ -450,15 +457,14 @@ html
         .modal-content .cancel-btn { background: #a52a2a; }
         .modal-content .cancel-btn:hover { background: #8b0000; }
 
-        /* Estilos para o novo modal de customização */
         #customizacao-modal .modal-content {
-            width: 550px; /* Aumentar um pouco a largura */
+            width: 550px; 
             max-height: 90vh;
             overflow-y: auto;
-            text-align: left; /* Alinhar conteúdo à esquerda */
+            text-align: left; 
         }
         #customizacao-modal .modal-content h3 {
-            text-align: center; /* Centralizar título principal */
+            text-align: center; 
             font-size: 1.8rem;
             color: #a0522d;
         }
@@ -492,7 +498,7 @@ html
         #customizacao-modal .input-group input[type="color"], 
         #customizacao-modal .input-group input[type="file"],
         #customizacao-modal .input-group select,
-        #customizacao-modal .input-group input[type="number"] { /* Adicionado number para largura da borda */
+        #customizacao-modal .input-group input[type="number"] { 
             width: 100%;
             box-sizing: border-box;
         }
@@ -503,7 +509,7 @@ html
             font-weight: normal;
         }
         #customizacao-modal .radio-group input[type="radio"] {
-           width: auto; /* Reset width for radio */
+           width: auto; 
            margin-right: 5px;
         }
         #customizacao-modal .custom-dice-texture-controls {
@@ -513,9 +519,8 @@ html
             margin-bottom: 15px;
         }
         #customizacao-modal .custom-dice-texture-controls button {
-            flex-shrink: 0; /* Evitar que o botão encolha */
+            flex-shrink: 0; 
         }
-        /* --- Fim dos estilos para o novo modal --- */
 
 
         #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
@@ -665,11 +670,11 @@ html
             #ficha-container { padding: 15px; }
             h1#nome-personagem-titulo { font-size: 2rem; }
             section h2 { font-size: 1.2rem; }
-            input, textarea, select { font-size: 0.9rem; } /* Adicionado select */
+            input, textarea, select { font-size: 0.9rem; } 
             .atributos-container, .vida-magia-vigor { flex-direction: column; }
             .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
-            .botoes-container, .theme-buttons-container { flex-wrap: wrap; } /* Aplicado a theme-buttons-container também */
-            .theme-option { margin-bottom: 5px;}
+            .botoes-container, .theme-buttons-container { flex-wrap: wrap; } 
+            
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
@@ -686,13 +691,11 @@ html
                 right: 40px; width: calc(100vw - 60px); max-height: 300px;
                 top: calc(50% + 120px);
             }
-            #customizacao-modal .modal-content { /* Ajuste para telas menores */
+            #customizacao-modal .modal-content { 
                  width: 90%; 
             }
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
-        
-        /* .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; } - Este pode não ser mais necessário se for apenas um input color normal */
 
     </style>
 </head>
@@ -1071,14 +1074,14 @@ html
             <h3>Painel de Customização</h3>
 
             <fieldset>
-                <legend>Aparência da Página</legend>
+                <legend>Aparência da Página e Ficha</legend>
                 <div class="input-group">
-                    <label for="background-color-input">Cor de Fundo da Página:</label>
+                    <label for="background-color-input">Cor de Fundo (Página e Interior da Ficha):</label>
                     <input type="color" id="background-color-input" value="#f0e6d2">
                 </div>
                 <div class="input-group">
                     <label for="font-selector">Fonte Principal da Ficha:</label>
-                    <select id="font-selector" class="botao" title="Fonte Principal" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; ">
+                    <select id="font-selector" title="Fonte Principal" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; padding: 10px; border-radius: 6px; ">
                         <option value="'Inter', sans-serif">Padrão (Inter)</option>
                         <option value="'MedievalSharp', cursive">Medieval</option>
                         <option value="'Times New Roman', Times, serif">Times New Roman</option>
@@ -1091,7 +1094,7 @@ html
             </fieldset>
 
             <fieldset>
-                <legend>Plano de Fundo da Ficha (Imagem)</legend>
+                <legend>Plano de Fundo da Ficha (Imagem de fundo apenas da Página)</legend>
                 <div class="input-group">
                     <label for="background-image-input">Selecionar Imagem:</label>
                     <input type="file" id="background-image-input" accept="image/*">
@@ -1101,8 +1104,8 @@ html
                     <label><input type="radio" name="background-size" value="100% 100%"> Estender (Rolável)</label>
                     <label><input type="radio" name="background-size" value="auto"> Tamanho Normal (Rolável)</label>
                 </div>
-                <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar Imagem</button>
-                <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
+                <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar Imagem de Fundo da Página</button>
+                <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem de Fundo da Página</button>
             </fieldset>
 
             <fieldset>
@@ -1148,7 +1151,7 @@ html
                 </div>
                 <div class="input-group">
                      <label for="dice-animation-selector">Animação do Dado ao Rolar:</label>
-                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; ">
+                     <select id="dice-animation-selector" title="Animação do Dado" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; padding: 10px; border-radius: 6px;">
                         <option value="padrao">Animação Padrão</option>
                         <option value="rapido">Giro Rápido</option>
                         <option value="salto">Salto e Queda</option>
@@ -1199,7 +1202,7 @@ html
             { nivel: 0, xp: 0, pd: 25, ph: 8 }, { nivel: 1, xp: 10, pd: 31, ph: 9 }, { nivel: 2, xp: 30, pd: 37, ph: 10 }, { nivel: 3, xp: 60, pd: 43, ph: 11 }, { nivel: 4, xp: 100, pd: 49, ph: 12 }, { nivel: 5, xp: 150, pd: 55, ph: 13 }, { nivel: 6, xp: 210, pd: 61, ph: 14 }, { nivel: 7, xp: 280, pd: 67, ph: 15 }, { nivel: 8, xp: 360, pd: 73, ph: 16 }, { nivel: 9, xp: 450, pd: 79, ph: 17 }, { nivel: 10, xp: 550, pd: 85, ph: 18 }, { nivel: 11, xp: 670, pd: 91, ph: 19 }, { nivel: 12, xp: 810, pd: 97, ph: 20 }, { nivel: 13, xp: 970, pd: 103, ph: 21 }, { nivel: 14, xp: 1150, pd: 109, ph: 22 }, { nivel: 15, xp: 1350, pd: 115, ph: 23 }, { nivel: 16, xp: 1570, pd: 121, ph: 24 }, { nivel: 17, xp: 1810, pd: 127, ph: 25 }, { nivel: 18, xp: 2070, pd: 133, ph: 26 }, { nivel: 19, xp: 2350, pd: 139, ph: 27 }, { nivel: 20, xp: 2650, pd: 145, ph: 28 }, { nivel: 21, xp: 2980, pd: 148, ph: 29 }, { nivel: 22, xp: 3340, pd: 151, ph: 30 }, { nivel: 23, xp: 3730, pd: 154, ph: 31 }, { nivel: 24, xp: 4150, pd: 157, ph: 32 }, { nivel: 25, xp: 4600, pd: 160, ph: 33 }, { nivel: 26, xp: 5080, pd: 163, ph: 34 }, { nivel: 27, xp: 5590, pd: 166, ph: 35 }, { nivel: 28, xp: 6130, pd: 169, ph: 36 }, { nivel: 29, xp: 8000, pd: 219, ph: 37 }, { nivel: 30, xp: 10000, pd: 319, ph: 38 }
         ];
 
-        // Cache DOM Elements
+        // Cache DOM Elements (IDs devem ser consistentes com o HTML)
         const nomePersonagemInput = document.getElementById("nome-personagem"), descricaoPersonagemInput = document.getElementById("descricao-personagem"),
             forcaInput = document.getElementById("forca"), destrezaInput = document.getElementById("destreza"), agilidadeInput = document.getElementById("agilidade"),
             inteligenciaInput = document.getElementById("inteligencia"), constituicaoInput = document.getElementById("constituicao"),
@@ -1235,21 +1238,22 @@ html
             racaDescricaoInput = document.getElementById("raca-descricao"), luaBtn = document.getElementById("lua-btn"), solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
-            // Elementos para o NOVO MODAL DE CUSTOMIZAÇÃO (os IDs originais são mantidos e os elementos movidos)
+            
             customizacaoBtn = document.getElementById("customizacao-btn"),
             customizacaoModal = document.getElementById("customizacao-modal"),
-            backgroundImageInput = document.getElementById("background-image-input"), // ID já existe, será movido
-            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"),    // ID já existe, será movido
-            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"),// ID já existe, será movido
-            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"),// ID já existe, será movido
-            diceTextureInput = document.getElementById("dice-texture-input"),          // ID já existe, será movido
-            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), // ID já existe, será movido
-            diceAnimationSelector = document.getElementById("dice-animation-selector"),  // ID já existe, será movido
-            backgroundColorInput = document.getElementById('background-color-input'),      // ID já existe, será movido
-            fontSelector = document.getElementById('font-selector'),                   // ID já existe, será movido
-            diceColorInput = document.getElementById('dice-color-input'),              // ID já existe, será movido
-            diceNumberColorInput = document.getElementById('dice-number-color-input'), // ID já existe, será movido
-            // ---
+            // Os IDs dentro do modal de customização são os mesmos de antes, eles só foram movidos para lá no HTML
+            backgroundImageInput = document.getElementById("background-image-input"), 
+            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"),    
+            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"),
+            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"),
+            diceTextureInput = document.getElementById("dice-texture-input"),          
+            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
+            diceAnimationSelector = document.getElementById("dice-animation-selector"),  
+            backgroundColorInput = document.getElementById('background-color-input'),     
+            fontSelector = document.getElementById('font-selector'),                   
+            diceColorInput = document.getElementById('dice-color-input'),              
+            diceNumberColorInput = document.getElementById('dice-number-color-input'), 
+            
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo"),
@@ -1268,7 +1272,7 @@ html
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
         let currentActionIntervalId = null; 
         const REPEAT_DELAY_MS = 75; 
-        const XP_UNLOCK_DURATION_MS = 20000; // Definido explicitamente aqui.
+        const XP_UNLOCK_DURATION_MS = 20000; 
         let xpUnlockTimerId = null;
         let isXpUnlocked = false; 
         let isDiceRolling = false;
@@ -1312,10 +1316,10 @@ html
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                     backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
-                    backgroundColor: '#f0e6d2', 
+                    backgroundColor: null, // Padrão agora é gerenciado pelo CSS e tema
                     fontFamily: "'Inter', sans-serif",
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
-                    diceColor: '#f0e6d2', diceNumberColor: '#000000', texturaDado: null, animacaoDado: 'padrao', 
+                    diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao', 
                     diceRolls: [],
                     collapsedSections: {},
                     gmOverrides: {},
@@ -1398,7 +1402,7 @@ html
             const nomeFicha = document.getElementById("nome-ficha-input").value.trim();
             if (!nomeFicha) return alert("Por favor, dê um nome à ficha!");
             const novaFichaId = generateLocalId();
-            const novaFicha = {
+            const novaFicha = { // Valores padrão para uma nova ficha
                 nomeFicha, nomePersonagem: "", descricaoPersonagem: "", forca: "0", destreza: "0", agilidade: "0",
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
@@ -1408,14 +1412,15 @@ html
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
-                backgroundColor: '#f0e6d2',
+                backgroundColor: null, // Será o padrão do tema
                 fontFamily: "'Inter', sans-serif", 
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
-                diceColor: '#f0e6d2', diceNumberColor: '#000000', texturaDado: null, animacaoDado: 'padrao',
+                diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao',
                 diceRolls: [],
                 collapsedSections: {},
                 gmOverrides: {},
-                corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px'
+                corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
+                darkMode: document.body.classList.contains('dark-mode') // Pega o tema atual da página
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1441,14 +1446,23 @@ html
                 alert("Erro crítico: Não foi possível carregar a ficha " + fichaId);
                 return;
             }
-            if (!ficha.diceRolls) ficha.diceRolls = [];
-            if (!ficha.collapsedSections) ficha.collapsedSections = {};
-            if (!ficha.gmOverrides) ficha.gmOverrides = {}; 
-            if (!ficha.corBordaSecao) ficha.corBordaSecao = '#b8860b'; 
-            if (!ficha.estiloBordaSecao) ficha.estiloBordaSecao = 'solid';
-            if (!ficha.larguraBordaSecao) ficha.larguraBordaSecao = '2px';
+            // Garante que todas as propriedades de customização existam
+            if (ficha.diceRolls === undefined) ficha.diceRolls = [];
+            if (ficha.collapsedSections === undefined) ficha.collapsedSections = {};
+            if (ficha.gmOverrides === undefined) ficha.gmOverrides = {}; 
+            if (ficha.corBordaSecao === undefined) ficha.corBordaSecao = '#b8860b'; 
+            if (ficha.estiloBordaSecao === undefined) ficha.estiloBordaSecao = 'solid';
+            if (ficha.larguraBordaSecao === undefined) ficha.larguraBordaSecao = '2px';
             if (ficha.texturaDado === undefined) ficha.texturaDado = null; 
-            if (!ficha.animacaoDado) ficha.animacaoDado = 'padrao';
+            if (ficha.animacaoDado === undefined) ficha.animacaoDado = 'padrao';
+            if (ficha.fontFamily === undefined) ficha.fontFamily = "'Inter', sans-serif";
+            if (ficha.backgroundColor === undefined) ficha.backgroundColor = null; 
+            if (ficha.diceColor === undefined) ficha.diceColor = null;
+            if (ficha.diceNumberColor === undefined) ficha.diceNumberColor = null;
+            if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
+            if (ficha.backgroundSize === undefined) ficha.backgroundSize = 'cover';
+            if (ficha.backgroundAttachment === undefined) ficha.backgroundAttachment = 'scroll';
+            if (ficha.darkMode === undefined) ficha.darkMode = false;
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1492,6 +1506,7 @@ html
             magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
+            document.body.classList.toggle("dark-mode", ficha.darkMode === true); // Aplicar dark mode antes de atualizarNivel e outras customizações visuais
             atualizarNivel(); 
             
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
@@ -1510,7 +1525,7 @@ html
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
             aplicarEstadoColapsoSecoes(ficha.collapsedSections);
-            document.body.classList.toggle("dark-mode", ficha.darkMode === true);
+            
             document.body.classList.toggle("gm-mode-active", isGmModeActive); 
             gmModeBtn.classList.toggle("gm-active", isGmModeActive);
             gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
@@ -1561,17 +1576,16 @@ html
             fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {}; 
 
-
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
-            fichaAtual.backgroundColor = backgroundColorInput.value; // Sempre salva o valor do input
+            fichaAtual.backgroundColor = backgroundColorInput.value;
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
             
             fichaAtual.diceColor = diceColorInput.value; 
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            fichaAtual.texturaDado = fichaAtual.texturaDado; // Já atualizado por aplicarTexturaDado
+            fichaAtual.texturaDado = fichaAtual.texturaDado; 
             fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
             vidaAtual = parseInt(vidaAtualInput.value);
@@ -1586,9 +1600,9 @@ html
             fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
             fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
 
-
             saveFichasToStorage(fichas);
-            showNotification("Salvo Localmente!", "save-success");
+            // A linha abaixo foi comentada para remover o aviso de salvamento automático constante.
+            // showNotification("Salvo Localmente!", "save-success"); 
         }
 
         function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ?? 0; }
@@ -1958,14 +1972,27 @@ html
                 if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].diceRolls = [];
                     fichas[currentFichaId].collapsedSections = {};
+                    // Resetar para os padrões definidos no CSS, ou seja, `null` na ficha para usar o CSS
+                    fichas[currentFichaId].backgroundColor = null;
                     fichas[currentFichaId].corBordaSecao = '#b8860b'; 
                     fichas[currentFichaId].estiloBordaSecao = 'solid';
                     fichas[currentFichaId].larguraBordaSecao = '2px';
                     fichas[currentFichaId].texturaDado = null; 
                     fichas[currentFichaId].animacaoDado = 'padrao'; 
+                    fichas[currentFichaId].diceColor = null;
+                    fichas[currentFichaId].diceNumberColor = null;
+                    fichas[currentFichaId].fontFamily = "'Inter', sans-serif";
+                    fichas[currentFichaId].backgroundImage = null;
+                    fichas[currentFichaId].backgroundSize = 'cover';
+                    fichas[currentFichaId].backgroundAttachment = 'scroll';
+
                 }
+                aplicarCorDeFundoInicial(fichas[currentFichaId] || { darkMode: document.body.classList.contains('dark-mode') });
                 aplicarEstilosFichaInicial(fichas[currentFichaId] || {}); 
                 aplicarCustomizacoesDadoInicial(fichas[currentFichaId] || {});
+                aplicarFonteInicial(fichas[currentFichaId] || {});
+                aplicarCoresDadoInicial(fichas[currentFichaId] || { darkMode: document.body.classList.contains('dark-mode') });
+                aplicarPlanoDeFundoInicial(fichas[currentFichaId] || {});
                 aplicarEstadoColapsoSecoes({});
                 
                 atualizarNivel(); 
@@ -2338,7 +2365,7 @@ html
                 } else {
                     racasPanel.style.display = "none";
                 }
-            } else { 
+            } else if (vantagensDesvantagensPanel.style.display === "block") { // Certifica que é para vantagens/desvantagens
                 if (tempDesvantagensSelecionadas.length > 3) {
                      alert("Você pode ter no máximo 3 desvantagens!");
                      fecharModal("salvar-vantagens-modal");
@@ -2520,8 +2547,8 @@ html
         classesBtn.onclick = () => { classesPanel.style.display = "block"; };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
 
-        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); };
-        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); };
+        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); aplicarCorDeFundoInicial(fichas[currentFichaId]); aplicarCoresDadoInicial(fichas[currentFichaId]);};
+        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); aplicarCorDeFundoInicial(fichas[currentFichaId]); aplicarCoresDadoInicial(fichas[currentFichaId]);};
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
 
@@ -2530,7 +2557,6 @@ html
             setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
         
-        // Funções para o NOVO MODAL de Customização
         customizacaoBtn.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) {
                 return abrirModalSenha(customizacaoBtn, () => {
@@ -2542,8 +2568,10 @@ html
         
         function abrirModalCustomizacao() {
             const ficha = fichas[currentFichaId];
-            // Carregar valores atuais para os campos no modal de customização
-            backgroundColorInput.value = ficha.backgroundColor || (ficha.darkMode ? '#121212' : '#f0e6d2');
+            const defaultLight = '#f0e6d2';
+            const defaultDark = '#121212';
+            
+            backgroundColorInput.value = ficha.backgroundColor || (ficha.darkMode ? defaultDark : defaultLight);
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
             
             const bgSize = ficha?.backgroundSize || 'cover';
@@ -2551,7 +2579,7 @@ html
             radioOptions.forEach(radio => {
                 radio.checked = (radio.value === bgSize);
             });
-            // O input de arquivo não pode ter valor pré-definido por segurança.
+            backgroundImageInput.value = ""; // Limpar para evitar exibir nome do arquivo anterior
             
             corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
             estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
@@ -2560,18 +2588,13 @@ html
             diceColorInput.value = ficha.diceColor || (ficha.darkMode ? '#1e1e1e' : '#f0e6d2');
             diceNumberColorInput.value = ficha.diceNumberColor || (ficha.darkMode ? '#e0e0e0' : '#000000');
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
-            // A textura do dado já é gerenciada pela função aplicarTexturaDado.
+            diceTextureInput.value = ""; // Limpar para evitar exibir nome do arquivo anterior
 
             customizacaoModal.style.display = "flex";
         }
-
-
-        // As funções aplicarPlanoDeFundo, excluirPlanoDeFundo, aplicarEstilosFicha
-        // já devem funcionar, pois os elementos mantêm seus IDs.
-        // Só precisamos garantir que os inputs corretos sejam lidos dentro delas.
         
         function aplicarPlanoDeFundo() {
-            const file = backgroundImageInput.files[0]; // Input dentro do modal de customização
+            const file = backgroundImageInput.files[0]; 
             const selectedSizeOption = document.querySelector('#customizacao-modal input[name="background-size"]:checked');
             const selectedSize = selectedSizeOption.value;
             
@@ -2587,7 +2610,13 @@ html
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
                     document.body.style.backgroundSize = selectedSize;
                     document.body.style.backgroundAttachment = attachment;
+                    if (fichas[currentFichaId]) {
+                         fichas[currentFichaId].backgroundImage = imageUrl;
+                         fichas[currentFichaId].backgroundSize = selectedSize;
+                         fichas[currentFichaId].backgroundAttachment = attachment;
+                    }
                     salvarDados(); 
+                    showNotification("Imagem de fundo da página aplicada!", "save-success");
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
@@ -2598,14 +2627,14 @@ html
                     fichas[currentFichaId].backgroundAttachment = attachment;
                 }
                 salvarDados();
+                showNotification("Configurações do plano de fundo da página atualizadas!", "save-success");
             } else {
-                alert("Nenhuma imagem selecionada e nenhuma imagem de fundo existente para aplicar novo tamanho.");
+                alert("Nenhuma imagem selecionada para aplicar como plano de fundo da página.");
             }
-            showNotification("Plano de fundo atualizado!", "save-success");
         }
 
         function excluirPlanoDeFundo() {
-            if (confirm("Remover imagem de fundo?")) {
+            if (confirm("Remover imagem de fundo da página?")) {
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll'; 
                 if (fichas[currentFichaId]) {
@@ -2614,7 +2643,7 @@ html
                      fichas[currentFichaId].backgroundAttachment = 'scroll';
                 }
                 salvarDados();
-                showNotification("Plano de fundo removido!", "save-success");
+                showNotification("Imagem de fundo da página removida!", "save-success");
             }
         }
 
@@ -2631,24 +2660,25 @@ html
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll';
             }
-            // Os radio buttons são atualizados quando o modal de customização é aberto.
         }
         
         backgroundColorInput.addEventListener('input', (event) => {
             document.body.style.backgroundColor = event.target.value;
+            fichaContainer.style.backgroundColor = event.target.value; // Aplica também ao container
             salvarDados();
         });
         
         function aplicarCorDeFundoInicial(ficha) {
-            const defaultColorLight = '#f0e6d2'; 
-            const defaultColorDark = '#121212'; 
+            const defaultLight = '#f0e6d2'; 
+            const defaultDark = '#121212'; 
 
-            let bgColorToApply = ficha?.darkMode ? defaultColorDark : defaultColorLight;
-            if (ficha?.backgroundColor) {
+            let bgColorToApply = ficha.darkMode ? defaultDark : defaultLight;
+            if (ficha?.backgroundColor) { // Se o usuário já tiver definido uma cor, usa ela
                 bgColorToApply = ficha.backgroundColor;
             }
             
             document.body.style.backgroundColor = bgColorToApply;
+            fichaContainer.style.backgroundColor = bgColorToApply; // Aplica também ao container
             backgroundColorInput.value = bgColorToApply;
         }
         
@@ -2967,6 +2997,7 @@ html
             document.documentElement.style.setProperty('--largura-borda-secao', ficha.larguraBordaSecao || '2px');
             
             // Os inputs são atualizados quando o modal de customização é aberto.
+            // Não é mais necessário atualizar aqui, pois `abrirModalCustomizacao` fará isso.
         }
         
         diceTextureInput.addEventListener('change', (event) => {
@@ -2994,6 +3025,7 @@ html
             } else {
                 diceRoll.style.backgroundImage = 'none';
                 if (ficha) ficha.texturaDado = null;
+                 diceTextureInput.value = ""; // Limpa o input de arquivo se a textura for removida
             }
             if (ficha) salvarDados();
             showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
@@ -3018,7 +3050,8 @@ html
             } else {
                 diceRoll.style.backgroundImage = 'none';
             }
-            // Os inputs são atualizados quando o modal de customização é aberto.
+             // O valor do select de animação é carregado na função `abrirModalCustomizacao` 
+             // e já está sendo salvo/carregado corretamente pela `salvarDados` e `carregarFicha`
         }
 
 
