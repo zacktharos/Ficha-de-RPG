@@ -153,10 +153,12 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha { background-color: #800000; }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover {
+        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
             background: #a0522d; transform: translateY(-2px);
         }
+        #gm-mode-btn.gm-active { background-color: #006400; } /* Verde para GM ativo */
+
         .icon-btn {
             padding: 10px; width: 44px; height: 44px;
             font-size: 1.2rem; line-height: 1; text-align: center;
@@ -497,6 +499,22 @@ html
 
         .lock-icon { margin-left: 5px; cursor: help; }
         
+        .gm-edit-icon {
+            font-size: 0.8rem;
+            margin-left: 5px;
+            cursor: pointer;
+            display: none; /* Oculto por padrão */
+            color: #007bff; /* Cor azul para o ícone */
+        }
+        body.gm-mode-active .gm-edit-icon {
+            display: inline; /* Visível quando o modo GM está ativo */
+        }
+        body.dark-mode .gm-edit-icon {
+            color: #61dafb;
+        }
+        .gm-edit-icon:hover {
+            text-shadow: 0 0 3px currentColor;
+        }
         /* Estilo para o tooltip customizado */
         #custom-tooltip {
             position: absolute;
@@ -561,7 +579,7 @@ html
         .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
     </style>
 </head>
-<body>
+<body class=""> <!-- A classe gm-mode-active será adicionada aqui -->
     <div id="fichas-sidebar">
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
@@ -605,7 +623,7 @@ html
                             <h3>Vida</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vida Total: </span>
-                                <span id="vida-total" readonly>50</span>
+                                <span id="vida-total">50</span> <span class="gm-edit-icon" data-target-id="vida-total" data-label="Vida Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vida Atual: </span>
@@ -621,7 +639,7 @@ html
                             <h3>Magia</h3>
                             <div class="valor-total medieval-box">
                                 <span>Magia Total: </span>
-                                <span id="magia-total" readonly>20</span>
+                                <span id="magia-total">20</span> <span class="gm-edit-icon" data-target-id="magia-total" data-label="Magia Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Magia Atual: </span>
@@ -637,7 +655,7 @@ html
                             <h3>Vigor</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vigor Total: </span>
-                                <span id="vigor-total" readonly>10</span>
+                                <span id="vigor-total">10</span> <span class="gm-edit-icon" data-target-id="vigor-total" data-label="Vigor Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vigor Atual: </span>
@@ -681,27 +699,27 @@ html
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
-                                <span id="ataque" readonly>0</span>
+                                <span id="ataque">0</span> <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
-                                <span id="ataque-magico" readonly>0</span>
+                                <span id="ataque-magico">0</span> <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
-                                <span id="acerto" readonly>0</span>
+                                <span id="acerto">0</span> <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
-                                <span id="esquiva" readonly>0</span>
+                                <span id="esquiva">0</span> <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
-                                <span id="rdf" readonly>0</span>
+                                <span id="rdf">0</span> <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
-                                <span id="rdm" readonly>0</span>
+                                <span id="rdm">0</span> <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
                             </div>
                         </div>
                     </div>
@@ -739,7 +757,7 @@ html
                 <div class="section-content">
                     <div class="flex gap-20">
                         <div style="width:50%">
-                            <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg):</label>
+                            <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg <span class="gm-edit-icon" data-target-id="capacidade-carga" data-label="Capacidade Carga">✏️</span>):</label>
                             <div id="inventario-slots">
                                 <div class="inventory-slot"><input type="text" placeholder="Item 1" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight" title="Peso em kg"></div>
                                 <div class="inventory-slot"><input type="text" placeholder="Item 2" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight"></div>
@@ -791,13 +809,13 @@ html
                 <div class="section-content">
                     <div class="locomotion-container">
                         <div class="locomotion-item">
-                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida" readonly>25</span>
+                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span> <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo" readonly>1</span>
+                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span> <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo" readonly>3</span>
+                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span> <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
                         </div>
                     </div>
                 </div>
@@ -810,15 +828,15 @@ html
                             <label for="experiencia">Experiência: <span id="xp-lock-icon" class="lock-icon">🔒</span></label>
                             <input type="number" id="experiencia" value="0" min="0">
                             <label>Pontos de Habilidade (PD):</label>
-                            <span id="pontos-habilidade" readonly>25</span>
+                            <span id="pontos-habilidade">25</span> <span class="gm-edit-icon" data-target-id="pontos-habilidade" data-label="Pontos Habilidade">✏️</span>
                             <label>Pontos de Vantagem (PH):</label>
-                            <span id="pontos-vantagem" readonly>8</span>
+                            <span id="pontos-vantagem">8</span> <span class="gm-edit-icon" data-target-id="pontos-vantagem" data-label="Pontos Vantagem">✏️</span>
                         </div>
                         <div></div>
                     </div>
                     <div id="nivel-container">
                         <label>Nível:</label>
-                        <span id="nivel">0</span>
+                        <span id="nivel">0</span> <span class="gm-edit-icon" data-target-id="nivel" data-label="Nível">✏️</span>
                     </div>
                 </div>
             </section>
@@ -834,7 +852,9 @@ html
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
-                <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button> </div>
+                <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
+                <button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button> 
+            </div>
 
             <div class="theme-color-container">
                 <button id="lua-btn" class="botao icon-btn">🌙</button>
@@ -992,6 +1012,7 @@ html
             desvantagensSelecionadas = [], tempVantagensSelecionadas = [], tempDesvantagensSelecionadas = [],
             racaSelecionada = null, tempRacaSelecionada = null, vidaTotal, vidaAtual, magiaTotal, magiaAtual,
             vigorTotal, vigorAtual, previousValues = new Map();
+        let isGmModeActive = false; // Novo: estado do modo GM
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas." }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas." }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance." }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão." }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc." }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc." }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão." }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão." }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte." }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir." }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados." }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida." }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc." }
@@ -1017,7 +1038,7 @@ html
             armaEsquerdaAtaqueInput = document.getElementById("arma-esquerda-ataque"), armaEsquerdaAtaqueMagicoInput = document.getElementById("arma-esquerda-ataque-magico"),
             resetPontosButton = document.getElementById("reset-pontos"), recomecarButton = document.getElementById("recomecar"),
             bloquearFichaButton = document.getElementById("bloquear-ficha"), experienciaInput = document.getElementById("experiencia"),
-            xpLockIcon = document.getElementById("xp-lock-icon"), // Novo
+            xpLockIcon = document.getElementById("xp-lock-icon"), 
             nivelSpan = document.getElementById("nivel"), pontosHabilidadeSpan = document.getElementById("pontos-habilidade"),
             pontosVantagemSpan = document.getElementById("pontos-vantagem"), velocidadeCorridaSpan = document.getElementById("velocidade-corrida"),
             alturaPuloSpan = document.getElementById("altura-pulo"), distanciaPuloSpan = document.getElementById("distancia-pulo"),
@@ -1059,7 +1080,8 @@ html
             diceHistoryList = document.getElementById('dice-history-list'), 
             fecharHistoricoBtn = document.getElementById('fechar-historico-btn'),
             limparHistoricoBtn = document.getElementById('limpar-historico-btn'),
-            customTooltipElement = document.getElementById('custom-tooltip');
+            customTooltipElement = document.getElementById('custom-tooltip'),
+            gmModeBtn = document.getElementById('gm-mode-btn'); // Novo: Botão Modo GM
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
@@ -1067,11 +1089,10 @@ html
         const REPEAT_DELAY_MS = 75; 
         let xpUnlockTimerId = null;
         let isXpUnlocked = false; 
-        const XP_UNLOCK_DURATION_MS = 20000; 
         let isDiceRolling = false;
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
-        let tooltipTimeoutId = null; // Para o tooltip customizado
+        let tooltipTimeoutId = null; 
 
         // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
@@ -1115,7 +1136,8 @@ html
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                     diceColor: '#f0e6d2', diceNumberColor: '#000000',
                     diceRolls: [],
-                    collapsedSections: {} 
+                    collapsedSections: {},
+                    gmOverrides: {} // Novo: Para valores definidos pelo GM
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1139,16 +1161,44 @@ html
 
 
         function atualizarAbasFichas() {
-            const sidebar = document.getElementById("fichas-sidebar"), addBtn = document.getElementById("add-ficha-btn");
-            while (sidebar.children.length > 1 && sidebar.firstChild !== addBtn) {
-                 sidebar.removeChild(sidebar.firstChild);
+            const sidebar = document.getElementById("fichas-sidebar");
+            const addBtn = document.getElementById("add-ficha-btn");
+            
+            // Remove todas as abas exceto o botão de adicionar
+            while (sidebar.firstChild && sidebar.firstChild !== addBtn) {
+                sidebar.removeChild(sidebar.firstChild);
             }
 
+            // Garante que a ficha matriz exista no objeto fichas
+            if (!fichas[FICHA_MATRIZ_ID]) {
+                criarFichaMatriz(); // Se não existir por algum motivo, cria.
+            }
+
+            // Adiciona a Ficha Matriz primeiro
+            const matrizTab = document.createElement("div");
+            matrizTab.className = "ficha-tab";
+            const matrizSpan = document.createElement("span");
+            matrizSpan.textContent = fichas[FICHA_MATRIZ_ID].nomeFicha || "Matriz";
+            matrizTab.appendChild(matrizSpan);
+            matrizTab.dataset.fichaId = FICHA_MATRIZ_ID;
+            if (FICHA_MATRIZ_ID === currentFichaId) matrizTab.classList.add("active");
+            matrizTab.onclick = () => {
+                currentFichaId = FICHA_MATRIZ_ID;
+                saveCurrentFichaIdToStorage(currentFichaId);
+                carregarFicha(FICHA_MATRIZ_ID);
+                atualizarAbasFichas();
+            };
+            sidebar.insertBefore(matrizTab, addBtn);
+
+            // Adiciona as outras fichas
             for (let fichaId in fichas) {
                 if (fichaId !== FICHA_MATRIZ_ID) { 
-                    const tab = document.createElement("div"); tab.className = "ficha-tab";
-                    const span = document.createElement("span"); span.textContent = fichas[fichaId].nomeFicha || "Sem Nome";
-                    tab.appendChild(span); tab.dataset.fichaId = fichaId;
+                    const tab = document.createElement("div"); 
+                    tab.className = "ficha-tab";
+                    const span = document.createElement("span"); 
+                    span.textContent = fichas[fichaId].nomeFicha || "Sem Nome";
+                    tab.appendChild(span); 
+                    tab.dataset.fichaId = fichaId;
                     if (fichaId === currentFichaId) tab.classList.add("active");
                     tab.onclick = () => {
                         currentFichaId = fichaId;
@@ -1158,22 +1208,6 @@ html
                     };
                     sidebar.insertBefore(tab, addBtn);
                 }
-            }
-            if (currentFichaId === FICHA_MATRIZ_ID || Object.keys(fichas).length === 1) {
-                 const matrizTabExists = Array.from(sidebar.children).some(child => child.dataset && child.dataset.fichaId === FICHA_MATRIZ_ID);
-                 if (!matrizTabExists && fichas[FICHA_MATRIZ_ID]) {
-                    const tab = document.createElement("div"); tab.className = "ficha-tab";
-                    const span = document.createElement("span"); span.textContent = fichas[FICHA_MATRIZ_ID].nomeFicha || "Matriz";
-                    tab.appendChild(span); tab.dataset.fichaId = FICHA_MATRIZ_ID;
-                    if (FICHA_MATRIZ_ID === currentFichaId) tab.classList.add("active");
-                     tab.onclick = () => {
-                        currentFichaId = FICHA_MATRIZ_ID;
-                        saveCurrentFichaIdToStorage(currentFichaId);
-                        carregarFicha(FICHA_MATRIZ_ID);
-                        atualizarAbasFichas();
-                    };
-                    sidebar.insertBefore(tab, addBtn);
-                 }
             }
         }
 
@@ -1200,7 +1234,8 @@ html
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                 diceColor: '#f0e6d2', diceNumberColor: '#000000',
                 diceRolls: [],
-                collapsedSections: {} 
+                collapsedSections: {},
+                gmOverrides: {} // Novo
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1228,6 +1263,7 @@ html
             }
             if (!ficha.diceRolls) ficha.diceRolls = [];
             if (!ficha.collapsedSections) ficha.collapsedSections = {};
+            if (!ficha.gmOverrides) ficha.gmOverrides = {}; // Novo
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1235,7 +1271,7 @@ html
             inteligenciaInput.value = ficha.inteligencia || "0"; constituicaoInput.value = ficha.constituicao || "0"; experienciaInput.value = ficha.experiencia || "0";
             armaDireitaNomeInput.value = ficha.armaDireitaNome || ""; armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0"; armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
             armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || ""; armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0"; armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
-            velocidadeCorridaSpan.textContent = ficha.velocidadeCorrida || "25"; alturaPuloSpan.textContent = ficha.alturaPulo || "1"; distanciaPuloSpan.textContent = ficha.distanciaPulo || "3";
+            // Os spans de locomoção serão definidos por calcularAtributos que respeita overrides
             isFichaLocked = ficha.isLocked || false; fichaPassword = ficha.password || null; isFichaUnlocked = false;
             vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
             desvantagensSelecionadas = ficha.desvantagens ? ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
@@ -1263,25 +1299,21 @@ html
             experiencia = parseInt(experienciaInput.value) || 0;
             
             experienciaInput.readOnly = true; 
-            xpLockIcon.textContent = '🔒'; // Estado inicial do cadeado
+            xpLockIcon.textContent = '🔒'; 
             isXpUnlocked = false; 
             if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId); 
 
-            vidaAtual = ficha.vidaAtual !== undefined ? ficha.vidaAtual : (parseInt(document.getElementById("vida-total").textContent) || 50);
-            magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : (parseInt(document.getElementById("magia-total").textContent) || 20);
-            vigorAtual = ficha.vigorAtual !== undefined ? ficha.vigorAtual : (parseFloat(document.getElementById("vigor-total").textContent) || 10);
-
-            atualizarNivel(); 
+            vidaAtual = ficha.vidaAtual !== undefined ? ficha.vidaAtual : 50;
+            magiaAtual = ficha.magiaAtual !== undefined ? ficha.magiaAtual : 20;
+            vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
-            document.getElementById("vida-atual").textContent = Math.min(vidaAtual, vidaTotal);
-            document.getElementById("magia-atual").textContent = Math.min(magiaAtual, magiaTotal);
-            document.getElementById("vigor-atual").textContent = Math.min(vigorAtual, vigorTotal).toFixed(1);
+            // atualizarNivel e calcularAtributos definirão os totais e atuais baseados nos overrides e cálculos.
+            atualizarNivel(); // Isso chamará calcularAtributos internamente ou implicitamente por atualizar PH/PD
             
-            vidaAtual = Math.min(vidaAtual, vidaTotal);
-            magiaAtual = Math.min(magiaAtual, magiaTotal);
-            vigorAtual = Math.min(vigorAtual, vigorTotal);
+            // Aplicar GM Overrides explicitamente se `calcularAtributos` e `atualizarNivel` não cobrirem todos os spans com override.
+            // Já está feito dentro de calcularAtributos e atualizarNivel agora.
 
-            pontosVantagemSpan.textContent = getPontosVantagem();
+            pontosVantagemSpan.textContent = getPontosVantagem(); // Atualizado
             previousValues.clear(); 
             document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
                 previousValues.set(input, input.value); 
@@ -1291,8 +1323,11 @@ html
             aplicarCorDeFundoInicial(ficha);   
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
-            aplicarEstadoColapsoSecoes(ficha.collapsedSections); // Novo
+            aplicarEstadoColapsoSecoes(ficha.collapsedSections);
             document.body.classList.toggle("dark-mode", ficha.darkMode === true);
+            document.body.classList.toggle("gm-mode-active", isGmModeActive); // Atualiza o estado visual do modo GM
+            gmModeBtn.classList.toggle("gm-active", isGmModeActive);
+            gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
         }
 
         function atualizarBotaoBloquear() {
@@ -1326,9 +1361,8 @@ html
             fichaAtual.magiasHabilidades = magias.join("\n");
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
-            fichaAtual.velocidadeCorrida = velocidadeCorridaSpan.textContent;
-            fichaAtual.alturaPulo = alturaPuloSpan.textContent;
-            fichaAtual.distanciaPulo = distanciaPuloSpan.textContent;
+            // Locomoção não é salva diretamente, pois seus spans são atualizados por calcularAtributos (que usa overrides)
+            // Se o GM overrida, será salvo em gmOverrides.
             fichaAtual.isLocked = isFichaLocked;
             fichaAtual.password = fichaPassword;
             fichaAtual.imagem = characterImage.src.startsWith('data:image') ? characterImage.src : null;
@@ -1339,7 +1373,8 @@ html
             fichaAtual.racaDescricao = racaDescricaoInput.value;
             fichaAtual.racaSelecionada = racaSelecionada; 
             fichaAtual.diceRolls = fichaAtual.diceRolls || []; 
-            fichaAtual.collapsedSections = fichaAtual.collapsedSections || {}; // Salvar estado de colapso
+            fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
+            fichaAtual.gmOverrides = fichaAtual.gmOverrides || {}; // Salva os overrides do GM
 
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
@@ -1442,31 +1477,66 @@ html
         // --- FIM FUNÇÕES DOS FOGOS DE ARTIFÍCIO ---
 
         function atualizarNivel() {
-            nivelAnterior = nivel; nivel = calcularNivel(experiencia); nivelSpan.textContent = nivel;
+            const ficha = fichas[currentFichaId];
+            experiencia = parseInt(experienciaInput.value) || 0;
+            nivelAnterior = nivel; 
+
+            // Usar override do GM para Nível, se existir
+            nivel = ficha?.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : calcularNivel(experiencia);
+            nivelSpan.textContent = nivel;
+            
             const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
-            pontosHabilidadeTotal = nivelInfo.pd;
-            pontosVantagemSpan.textContent = getPontosVantagem();
-            if (nivel > nivelAnterior) { 
+            
+            // Usar override do GM para Pontos de Habilidade, se existir, senão usa o do nível
+            pontosHabilidadeTotal = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ? 
+                                      parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
+
+            // Atualizar o span de pontos de habilidade (total - usados)
+            // Não se subtrai 'pontosHabilidadeUsados' se o total é um override do GM. Assume-se que o override JÁ É o valor final disponível.
+            // No entanto, para manter a consistência com a lógica anterior, onde PD = Total e o span mostra PD (Total) - Usados.
+            // O override de "pontos-habilidade" no span deve ser o valor que o GM quer que *apareça* como disponível.
+            const phDisplay = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ?
+                               parseInt(ficha.gmOverrides['pontos-habilidade']) :
+                               (pontosHabilidadeTotal - pontosHabilidadeUsados);
+            pontosHabilidadeSpan.textContent = phDisplay;
+
+
+            // Atualiza o span de pontos de vantagem
+            pontosVantagemSpan.textContent = getPontosVantagem(); // getPontosVantagem agora usará o 'nivel' (que pode ser overriden)
+
+
+            if (nivel > nivelAnterior && ficha?.gmOverrides?.nivel === undefined) { // Só anima se o nível aumentou por XP, não por override
                 nivelSpan.classList.add("aura-azul"); 
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000); 
                 showNotification(`Parabéns! Você alcançou o Nível ${nivel}!`, "critical-success"); 
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6)); 
             }
-            gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; fichaContainer.classList.toggle("aura-azul", nivel >= 30);
-            calcularAtributos();
+            gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; 
+            fichaContainer.classList.toggle("aura-azul", nivel >= 30 && ficha?.gmOverrides?.nivel === undefined);
+
+            calcularAtributos(); // Recalcular atributos, pois o nível afeta vida, e PH/PD foram atualizados
         }
 
 
         function getPontosVantagem() {
-            let ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
-            vantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
-            if (racaSelecionada) { const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) ph -= raca.custo; }
-            return ph;
+            const ficha = fichas[currentFichaId];
+            // Se existe um override do GM para o span de pontos de vantagem, retorna ele
+            if (ficha?.gmOverrides?.['pontos-vantagem'] !== undefined) {
+                return parseInt(ficha.gmOverrides['pontos-vantagem']);
+            }
+
+            // Senão, calcula normalmente. O 'nivel' global já pode ser um override.
+            let phBaseDoNivel = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
+            
+            vantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) phBaseDoNivel -= vantagem.custo; });
+            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) phBaseDoNivel += desvantagem.ganho; });
+            if (racaSelecionada) { const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) phBaseDoNivel -= raca.custo; }
+            return phBaseDoNivel;
         }
 
-        function calcularPontosVantagemTemp() {
-            let ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
+
+        function calcularPontosVantagemTemp() { // Usado no painel de vantagens/desvantagens
+            let ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph; // PH base do nível atual (pode ser overriden)
             tempVantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
             tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
             if (tempRacaSelecionada) { const raca = racasData.find(r => r.nome === tempRacaSelecionada); if (raca) ph -= raca.custo; }
@@ -1482,6 +1552,8 @@ html
 
 
         function calcularAtributos() {
+            const ficha = fichas[currentFichaId];
+
             let currentForca = parseInt(forcaInput.value) || 0;
             let currentDestreza = parseInt(destrezaInput.value) || 0;
             let currentAgilidade = parseInt(agilidadeInput.value) || 0;
@@ -1489,10 +1561,15 @@ html
             let currentConstituicao = parseInt(constituicaoInput.value) || 0;
 
             let totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
-
-            if (totalPontosAtuais > pontosHabilidadeTotal) {
+            
+            // 'pontosHabilidadeTotal' já pode ser um override do GM via atualizarNivel.
+            // O span 'pontos-habilidade' reflete o disponível (Total - Usados) ou o override direto do span.
+            // Aqui, verificamos se os pontos *usados* excedem o total *calculado a partir do nível* (ou do override do *nível*).
+            // Se 'pontos-habilidade' (o span) tem override, esta checagem é menos relevante, pois o GM definiu o que aparece.
+            const pdCalculadoDisponivel = pontosHabilidadeTotal; 
+            
+            if (totalPontosAtuais > pdCalculadoDisponivel && ficha?.gmOverrides?.['pontos-habilidade'] === undefined) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
-                
                 forcaInput.value = previousValues.get(forcaInput) || "0";
                 destrezaInput.value = previousValues.get(destrezaInput) || "0";
                 agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
@@ -1514,30 +1591,29 @@ html
             previousValues.set(constituicaoInput, constituicaoInput.value);
 
             pontosHabilidadeUsados = totalPontosAtuais; 
-            pontosHabilidadeSpan.textContent = pontosHabilidadeTotal - pontosHabilidadeUsados;
+            // O span é atualizado em atualizarNivel(), que já considera overrides para 'pontos-habilidade'
+            // Se não houver override para o span, ele mostrará (pontosHabilidadeTotal - pontosHabilidadeUsados)
 
-            let ataque = currentForca + Math.floor(currentDestreza / 5);
-            let acerto = Math.floor(currentDestreza / 3) + Math.floor(currentAgilidade / 10);
-            let esquiva = Math.floor(currentAgilidade / 3);
-            let rdf = Math.floor(currentForca / 5);
-            let rdm = Math.floor(currentInteligencia / 5);
-            let ataqueMagico = currentInteligencia;
-            let magiaBase = 20 + 3 * currentConstituicao;
-            let vigorBase = 10 + 0.4 * currentConstituicao;
-            vidaBase = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel;
-            if (currentInteligencia >= 10) magiaBase += currentConstituicao * Math.floor(currentInteligencia / 10);
+            // --- Cálculos base dos atributos derivados ---
+            let calcAtaque = currentForca + Math.floor(currentDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
+            let calcAtaqueMagico = currentInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+            let calcAcerto = Math.floor(currentDestreza / 3) + Math.floor(currentAgilidade / 10);
+            let calcEsquiva = Math.floor(currentAgilidade / 3);
+            let calcRdf = Math.floor(currentForca / 5);
+            let calcRdm = Math.floor(currentInteligencia / 5);
 
-            ataque += (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
-            ataqueMagico += (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
-
+            // --- Aplica penalidade de sobrecarga (se não houver override de capacidade de carga) ---
             const capacidadeBase = 5;
             const bonusForcaCarga = Math.floor(currentForca / 5);
-            const capacidadeCarga = capacidadeBase + bonusForcaCarga;
-            if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCarga;
-
+            const capacidadeCargaCalculada = capacidadeBase + bonusForcaCarga;
+            const capacidadeCargaFinal = ficha?.gmOverrides?.['capacidade-carga'] !== undefined ?
+                                        parseInt(ficha.gmOverrides['capacidade-carga']) :
+                                        capacidadeCargaCalculada;
+            if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCargaFinal;
+            
             const pesoTotalAtual = parseFloat(pesoTotalSpan.textContent) || 0;
             let penalidadeEsquivaAcerto = 0;
-            const sobrecarga = pesoTotalAtual - capacidadeCarga;
+            const sobrecarga = pesoTotalAtual - capacidadeCargaFinal;
 
             if (sobrecarga > 0) {
                 penalidadeEsquivaAcerto = -1; 
@@ -1545,48 +1621,52 @@ html
                 if (sobrecargaAdicional > 0) {
                     penalidadeEsquivaAcerto -= Math.ceil(sobrecargaAdicional / 3);
                 }
-            }
-
-            acerto += penalidadeEsquivaAcerto;
-            esquiva += penalidadeEsquivaAcerto;
-
-            if (pesoTotalSpan && capacidadeCargaSpan) {
-                if (sobrecarga > 0) {
-                    pesoTotalSpan.style.color = 'red';
-                    capacidadeCargaSpan.style.color = 'red';
-                } else {
-                    pesoTotalSpan.style.color = ''; 
-                    capacidadeCargaSpan.style.color = ''; 
+                calcAcerto += penalidadeEsquivaAcerto;
+                calcEsquiva += penalidadeEsquivaAcerto;
+                if (pesoTotalSpan && capacidadeCargaSpan) {
+                    pesoTotalSpan.style.color = 'red'; capacidadeCargaSpan.style.color = 'red';
+                }
+            } else {
+                if (pesoTotalSpan && capacidadeCargaSpan) {
+                    pesoTotalSpan.style.color = ''; capacidadeCargaSpan.style.color = '';
                 }
             }
 
+            // --- Atualiza Spans de Atributos Derivados (respeitando overrides) ---
+            ataqueSpan.textContent = ficha?.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : calcAtaque;
+            ataqueMagicoSpan.textContent = ficha?.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : calcAtaqueMagico;
+            acertoSpan.textContent = ficha?.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : calcAcerto;
+            esquivaSpan.textContent = ficha?.gmOverrides?.esquiva !== undefined ? ficha.gmOverrides.esquiva : calcEsquiva;
+            rdfSpan.textContent = ficha?.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : calcRdf;
+            rdmSpan.textContent = ficha?.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : calcRdm;
 
-            const velocidadeBase = 25 + Math.floor(currentAgilidade / 3) * 3;
-            const alturaPuloBase = 1 + Math.floor(currentForca / 10);
-            const distanciaPuloBase = 3 + 3 * Math.min(Math.floor(currentForca / 5), Math.floor(currentAgilidade / 5));
+            // --- Cálculos base para Locomoção ---
+            const velCorridaBase = 25 + Math.floor(currentAgilidade / 3) * 3;
+            const altPuloBase = 1 + Math.floor(currentForca / 10);
+            const distPuloBase = 3 + 3 * Math.min(Math.floor(currentForca / 5), Math.floor(currentAgilidade / 5));
             let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0;
             let bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0;
             let bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
 
-            velocidadeCorridaSpan.textContent = velocidadeBase + bonusVelocidade;
-            alturaPuloSpan.textContent = alturaPuloBase + bonusAlturaPulo;
-            distanciaPuloSpan.textContent = distanciaPuloBase + bonusDistanciaPulo;
-            ataqueSpan.textContent = ataque;
-            ataqueMagicoSpan.textContent = ataqueMagico;
-            acertoSpan.textContent = acerto;
-            esquivaSpan.textContent = esquiva;
-            rdfSpan.textContent = rdf;
-            rdmSpan.textContent = rdm;
+            velocidadeCorridaSpan.textContent = ficha?.gmOverrides?.['velocidade-corrida'] !== undefined ? ficha.gmOverrides['velocidade-corrida'] : (velCorridaBase + bonusVelocidade);
+            alturaPuloSpan.textContent = ficha?.gmOverrides?.['altura-pulo'] !== undefined ? ficha.gmOverrides['altura-pulo'] : (altPuloBase + bonusAlturaPulo);
+            distanciaPuloSpan.textContent = ficha?.gmOverrides?.['distancia-pulo'] !== undefined ? ficha.gmOverrides['distancia-pulo'] : (distPuloBase + bonusDistanciaPulo);
             
-            vidaTotal = Math.ceil(vidaBase);
-            magiaTotal = Math.ceil(magiaBase);
-            vigorTotal = parseFloat(vigorBase.toFixed(1));
+            // --- Cálculos base para Vida, Magia, Vigor ---
+            let vidaBaseCalculada = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel; // nível já pode ser overriden
+            let magiaBaseCalculada = 20 + 3 * currentConstituicao;
+            if (currentInteligencia >= 10) magiaBaseCalculada += currentConstituicao * Math.floor(currentInteligencia / 10);
+            let vigorBaseCalculado = 10 + 0.4 * currentConstituicao;
+
+            vidaTotal = ficha?.gmOverrides?.['vida-total'] !== undefined ? parseInt(ficha.gmOverrides['vida-total']) : Math.ceil(vidaBaseCalculada);
+            magiaTotal = ficha?.gmOverrides?.['magia-total'] !== undefined ? parseInt(ficha.gmOverrides['magia-total']) : Math.ceil(magiaBaseCalculada);
+            vigorTotal = ficha?.gmOverrides?.['vigor-total'] !== undefined ? parseFloat(ficha.gmOverrides['vigor-total']) : parseFloat(vigorBaseCalculado.toFixed(1));
 
             document.getElementById("vida-total").textContent = vidaTotal;
             document.getElementById("magia-total").textContent = magiaTotal;
             document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
 
-            vidaAtual = Math.min(vidaAtual, vidaTotal);
+            vidaAtual = Math.min(vidaAtual, vidaTotal); // Ajusta se o total diminuiu
             magiaAtual = Math.min(magiaAtual, magiaTotal);
             vigorAtual = Math.min(vigorAtual, vigorTotal);
 
@@ -1594,18 +1674,17 @@ html
             document.getElementById("magia-atual").textContent = magiaAtual;
             document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
-            const regeneracaoVida = (0.2 * currentConstituicao).toFixed(1);
-            const regeneracaoMagia = (0.8 * currentConstituicao).toFixed(1);
-            const regeneracaoVigor = (0.4 * currentConstituicao).toFixed(1);
-            document.getElementById("regeneracao-vida").textContent = regeneracaoVida;
-            document.getElementById("regeneracao-magia").textContent = regeneracaoMagia;
-            document.getElementById("regeneracao-vigor").textContent = regeneracaoVigor;
+            // Regeneração (não costuma ter override, mas poderia)
+            document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
+            document.getElementById("regeneracao-magia").textContent = (0.8 * currentConstituicao).toFixed(1);
+            document.getElementById("regeneracao-vigor").textContent = (0.4 * currentConstituicao).toFixed(1);
 
-            const atributosSpans = [{ span: ataqueSpan, valor: ataque }, { span: ataqueMagicoSpan, valor: ataqueMagico }, { span: acertoSpan, valor: acerto }, { span: esquivaSpan, valor: esquiva }, { span: rdfSpan, valor: rdf }, { span: rdmSpan, valor: rdm }];
-            atributosSpans.forEach(a => a.span.classList.remove("atributo-fogo"));
-            const maxAtributo = atributosSpans.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: 0 });
+            const atributosSpansList = [{ span: ataqueSpan, valor: parseFloat(ataqueSpan.textContent) || 0 }, { span: ataqueMagicoSpan, valor: parseFloat(ataqueMagicoSpan.textContent) || 0 }, { span: acertoSpan, valor: parseFloat(acertoSpan.textContent) || 0 }, { span: esquivaSpan, valor: parseFloat(esquivaSpan.textContent) || 0 }, { span: rdfSpan, valor: parseFloat(rdfSpan.textContent) || 0 }, { span: rdmSpan, valor: parseFloat(rdmSpan.textContent) || 0 }];
+            atributosSpansList.forEach(a => a.span.classList.remove("atributo-fogo"));
+            const maxAtributo = atributosSpansList.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: -Infinity });
             if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
         }
+
 
         function resetarPontos() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
@@ -1614,9 +1693,13 @@ html
             document.getElementById("senha-gm-input").value = "";
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                 if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                    atributosInputs.forEach(input => input.value = 0); pontosHabilidadeUsados = 0; pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                    velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
-                    calcularAtributos(); pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal");
+                    atributosInputs.forEach(input => input.value = 0); 
+                    pontosHabilidadeUsados = 0; 
+                    // Os overrides não são limpos aqui intencionalmente
+                    atualizarNivel(); // Recalcula PD com base no nível (que pode ter override), e PH (que também pode)
+                                     // Também chama calcularAtributos()
+                    salvarDados(); 
+                    fecharModal("senha-gm-modal");
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
             };
         }
@@ -1624,24 +1707,22 @@ html
         function recomecarFicha() {
              if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(recomecarButton);
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
+                if (fichas[currentFichaId]) { // Limpa os overrides do GM
+                    fichas[currentFichaId].gmOverrides = {};
+                }
+
                 atributosInputs.forEach(input => input.value = 0);
                 experienciaInput.value = "0";
                 experiencia = 0;
-                nivel = 0;
+                nivel = 0; // Resetar o nível global
                 
                 experienciaInput.readOnly = true; 
                 xpLockIcon.textContent = '🔒';
                 isXpUnlocked = false;
                 if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId);
                 
-                const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
-                pontosHabilidadeTotal = nivelInfo.pd;
                 pontosHabilidadeUsados = 0;
-                nivelSpan.textContent = nivel;
-                pontosHabilidadeSpan.textContent = pontosHabilidadeTotal;
-                vidaBase = 50; 
 
-                velocidadeCorridaSpan.textContent = "25"; alturaPuloSpan.textContent = "1"; distanciaPuloSpan.textContent = "3";
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = "";
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
@@ -1653,20 +1734,21 @@ html
                 
                 if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].diceRolls = [];
-                    fichas[currentFichaId].collapsedSections = {}; // Resetar seções colapsadas
+                    fichas[currentFichaId].collapsedSections = {};
                 }
-                aplicarEstadoColapsoSecoes({}); // Aplica o reset visualmente
+                aplicarEstadoColapsoSecoes({});
 
-                calcularAtributos(); 
-
-                vidaAtual = vidaTotal;
+                // Primeiro atualizarNivel para resetar nível, PH e PD baseados em XP=0 (e sem overrides)
+                atualizarNivel(); // Isto chamará calcularAtributos()
+                // Depois garantir que os valores de Vida/Magia/Vigor atuais sejam os totais (já tratados por calcularAtributos se o override foi limpo)
+                
+                vidaAtual = vidaTotal; // vidaTotal será o padrão de ficha nova
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
                 document.getElementById("vida-atual").textContent = vidaAtual;
                 document.getElementById("magia-atual").textContent = magiaAtual;
                 document.getElementById("vigor-atual").textContent = vigorAtual.toFixed(1);
 
-                pontosVantagemSpan.textContent = getPontosVantagem();
                 salvarDados();
             }
         }
@@ -1763,16 +1845,18 @@ html
                 }
 
                 if (atributosInputs.includes(inputTarget)) {
-                    calcularAtributos(); 
+                    // Não mais precisa do previousValues.get aqui se a lógica de pontos está correta
+                    // calcularAtributos() vai validar e reverter se necessário
+                    calcularAtributos();
                 } else if (inputTarget.id.includes("arma")) {
-                    previousValues.set(inputTarget, inputTarget.value);
+                    // previousValues.set(inputTarget, inputTarget.value);
                     calcularAtributos(); 
                 } else if (inputTarget.classList.contains('inventory-weight')) {
-                    previousValues.set(inputTarget, inputTarget.value);
+                    // previousValues.set(inputTarget, inputTarget.value);
                     calcularPesoTotal(); 
                     calcularAtributos(); 
                 } else {
-                    previousValues.set(inputTarget, inputTarget.value);
+                    // previousValues.set(inputTarget, inputTarget.value);
                 }
                 salvarDados();
             });
@@ -1794,6 +1878,9 @@ html
         experienciaInput.addEventListener('input', (event) => {
             if (!experienciaInput.readOnly) { 
                 experiencia = parseInt(event.target.value) || 0;
+                 if (fichas[currentFichaId] && fichas[currentFichaId].gmOverrides) { // Se editou XP, talvez o GM queira limpar override de nível
+                    delete fichas[currentFichaId].gmOverrides.nivel;
+                }
                 atualizarNivel(); 
                 salvarDados(); 
             } else {
@@ -1805,7 +1892,7 @@ html
         function confirmarDesbloqueioExperiencia() {
             if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                 experienciaInput.readOnly = false;
-                xpLockIcon.textContent = '🔓'; // Cadeado aberto
+                xpLockIcon.textContent = '🔓'; 
                 isXpUnlocked = true; 
                 experienciaInput.focus(); 
                 showNotification("Campo de experiência desbloqueado por 20 segundos.", "normal-result");
@@ -1813,7 +1900,7 @@ html
                 if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId);
                 xpUnlockTimerId = setTimeout(() => {
                     experienciaInput.readOnly = true;
-                    xpLockIcon.textContent = '🔒'; // Cadeado fechado
+                    xpLockIcon.textContent = '🔒'; 
                     isXpUnlocked = false; 
                     alert("Tempo para editar experiência expirou. Insira a senha novamente se precisar.");
                     if (fichas[currentFichaId]) { 
@@ -1895,7 +1982,7 @@ html
                         result: roll,
                         timestamp: timestamp
                     });
-                    if (fichas[currentFichaId].diceRolls.length > 100) { // Limita o histórico a 100 rolagens
+                    if (fichas[currentFichaId].diceRolls.length > 100) { 
                         fichas[currentFichaId].diceRolls.pop();
                     }
                     salvarDados(); 
@@ -1922,23 +2009,17 @@ html
             });
         });
 
-        // --- LÓGICA PARA FECHAR MENUS/PAINÉIS AO CLICAR FORA ---
         document.addEventListener('click', function(event) {
-            // Fechar menu de dados
             if (diceOptionsMenu.style.display === 'flex' && 
                 !diceOptionsMenu.contains(event.target) && 
                 event.target !== changeDiceTypeBtn) {
                 diceOptionsMenu.style.display = 'none';
             }
-
-            // Fechar painel de anotações
             if (anotacoesTextarea.style.display === 'block' &&
                 !anotacoesTextarea.contains(event.target) &&
                 event.target !== anotacoesBtn) {
                 anotacoesTextarea.style.display = 'none';
             }
-
-            // Fechar painel de histórico de dados
             if (diceHistoryPanel.style.display === 'flex' &&
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
@@ -1972,7 +2053,7 @@ html
                         racaDescricaoInput.value = raca.vantagens.join("\n\n");
                         pontosVantagemSpan.textContent = getPontosVantagem();
                         racasPanel.style.display = "none";
-                        calcularAtributos();
+                        atualizarNivel(); // Nível pode mudar PH, que afeta atributos
                         salvarDados();
                     } else if (raca){
                         alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
@@ -1997,9 +2078,9 @@ html
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = "";
                 vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
                 desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
-                pontosVantagemSpan.textContent = getPontosVantagem();
+                //pontosVantagemSpan.textContent = getPontosVantagem(); // Atualizado por atualizarNivel
                 vantagensDesvantagensPanel.style.display = "none";
-                calcularAtributos(); 
+                atualizarNivel(); 
                 salvarDados();
             }
             fecharModal("salvar-vantagens-modal");
@@ -2042,8 +2123,10 @@ html
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v); Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
-                        pontosVantagemSpan.textContent = getPontosVantagem();
-                        fecharModal("senha-gm-modal"); calcularAtributos(); salvarDados();
+                        // pontosVantagemSpan.textContent = getPontosVantagem(); // Será atualizado por atualizarNivel
+                        fecharModal("senha-gm-modal"); 
+                        atualizarNivel(); // Recalcula tudo incluindo PH
+                        salvarDados();
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
             }
@@ -2056,8 +2139,10 @@ html
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d); Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
-                        pontosVantagemSpan.textContent = getPontosVantagem();
-                        fecharModal("senha-gm-modal"); calcularAtributos(); salvarDados();
+                        // pontosVantagemSpan.textContent = getPontosVantagem();
+                        fecharModal("senha-gm-modal"); 
+                        atualizarNivel();
+                        salvarDados();
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
             }
@@ -2131,7 +2216,9 @@ html
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaSelecionada = null; tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
-                        pontosVantagemSpan.textContent = getPontosVantagem(); salvarDados(); fecharModal("senha-gm-modal"); calcularAtributos();
+                        // pontosVantagemSpan.textContent = getPontosVantagem(); 
+                        salvarDados(); fecharModal("senha-gm-modal"); 
+                        atualizarNivel(); // Para recalcular PH e atributos
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
             }
@@ -2310,7 +2397,6 @@ html
             if (anotacoesTextarea.style.display === 'block') {
                 anotacoesTextarea.style.display = 'none';
             }
-            // MODIFIED: Directly open the panel
             abrirPainelHistoricoDados();
         });
 
@@ -2336,7 +2422,6 @@ html
         });
 
         limparHistoricoBtn.addEventListener('click', () => {
-            // MODIFIED: Require GM password to clear history
             senhaGmTitulo.textContent = "Permissão do GM para Limpar Histórico";
             document.getElementById("senha-gm-modal").style.display = "flex"; 
             document.getElementById("senha-gm-input").value = "";
@@ -2346,7 +2431,7 @@ html
                     if (fichas[currentFichaId]) {
                         fichas[currentFichaId].diceRolls = [];
                         salvarDados();
-                        abrirPainelHistoricoDados(); // Refresh the panel view
+                        abrirPainelHistoricoDados(); 
                         showNotification("Histórico de rolagens limpo!", "save-success");
                     }
                     fecharModal("senha-gm-modal");
@@ -2357,7 +2442,6 @@ html
             };
         });
         
-        // --- FUNÇÃO PARA FEEDBACK VISUAL DE BOTÕES ---
         function aplicarFeedbackBotao(botao) {
             if (!botao) return;
             botao.classList.add('button-clicked');
@@ -2366,7 +2450,6 @@ html
             }, 150); 
         }
 
-        // --- SEÇÕES COLAPSÁVEIS ---
         function aplicarEstadoColapsoSecoes(collapsedSections) {
             document.querySelectorAll('#ficha-content section').forEach(section => {
                 const sectionId = section.id;
@@ -2432,7 +2515,6 @@ html
             buttonElement.addEventListener('touchcancel', stopAction);
         }
 
-        // --- TOOLTIP CUSTOMIZADO PARA ATRIBUTOS ---
         function showCustomTooltip(targetElement) {
             const tooltipText = targetElement.getAttribute('title');
             if (!tooltipText || !customTooltipElement) return;
@@ -2440,17 +2522,15 @@ html
             customTooltipElement.innerHTML = tooltipText;
             const rect = targetElement.getBoundingClientRect();
             
-            // Posicionamento do tooltip
-            let top = rect.bottom + window.scrollY + 5; // Abaixo do elemento
-            let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2); // Centralizado
+            let top = rect.bottom + window.scrollY + 5; 
+            let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
 
-            // Ajustar se sair da tela
             if (left < 0) left = 5;
             if (left + customTooltipElement.offsetWidth > window.innerWidth) {
                 left = window.innerWidth - customTooltipElement.offsetWidth - 5;
             }
             if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
-                top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; // Acima se não couber abaixo
+                top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; 
             }
 
 
@@ -2477,10 +2557,10 @@ html
             attributeLabels.forEach(label => {
                 if (label) {
                     label.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutId); // Limpa timeout anterior, se houver
+                        clearTimeout(tooltipTimeoutId); 
                         tooltipTimeoutId = setTimeout(() => {
                             showCustomTooltip(event.target);
-                        }, 3000); // 3 segundos
+                        }, 3000); 
                     });
 
                     label.addEventListener('mouseleave', () => {
@@ -2490,7 +2570,76 @@ html
                 }
             });
         }
+        
+        // --- MODO MESTRE (GM) ---
+        gmModeBtn.addEventListener('click', () => {
+            if (isGmModeActive) {
+                isGmModeActive = false;
+                document.body.classList.remove('gm-mode-active');
+                gmModeBtn.classList.remove('gm-active');
+                gmModeBtn.textContent = "Modo Mestre GM 👑";
+                showNotification("Modo Mestre desativado.", "normal-result");
+            } else {
+                senhaGmTitulo.textContent = "Ativar Modo Mestre";
+                document.getElementById("senha-gm-modal").style.display = "flex";
+                document.getElementById("senha-gm-input").value = "";
+                document.getElementById("senha-gm-input").focus();
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
+                        isGmModeActive = true;
+                        document.body.classList.add('gm-mode-active');
+                        gmModeBtn.classList.add('gm-active');
+                        gmModeBtn.textContent = "Modo Mestre Ativo 👑";
+                        fecharModal("senha-gm-modal");
+                        showNotification("Modo Mestre ativado!", "critical-success");
+                    } else {
+                        alert("Senha do Mestre incorreta!");
+                        fecharModal("senha-gm-modal");
+                    }
+                };
+            }
+        });
 
+        function handleGmEdit(event) {
+            if (!isGmModeActive) return;
+            const targetIcon = event.target;
+            if (!targetIcon.classList.contains('gm-edit-icon')) return;
+
+            const targetId = targetIcon.dataset.targetId;
+            const fieldLabel = targetIcon.dataset.label || targetId;
+            const currentElement = document.getElementById(targetId);
+            
+            if (!currentElement) return;
+            const currentValue = currentElement.textContent;
+
+            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValue);
+
+            if (newValueString !== null) { // Se o usuário não clicou em "Cancelar"
+                const newValue = parseFloat(newValueString); // Tenta converter para número
+                if (!isNaN(newValue) || typeof newValueString === 'string') { // Aceita número ou string (para nomes)
+                    
+                    if (!fichas[currentFichaId].gmOverrides) {
+                        fichas[currentFichaId].gmOverrides = {};
+                    }
+                    // Guarda o valor como string se não for número ou se for para IDs específicos que são strings
+                    fichas[currentFichaId].gmOverrides[targetId] = isNaN(newValue) && !['nome-personagem-titulo'].includes(targetId) ? newValueString : (isNaN(newValue) ? newValueString : newValue);
+                    
+                    salvarDados();
+                    // Forçar atualização de todos os cálculos
+                    // Se o campo é parte dos atributos principais de cálculo (Constituição, Nível, etc.), chamar calcularAtributos ou atualizarNivel.
+                    // Por agora, chamaremos ambos para garantir, mas isso pode ser otimizado.
+                    atualizarNivel(); // Recalcula Nível, PH, PD e chama calcularAtributos
+                    // calcularAtributos(); // Já é chamado por atualizarNivel. Redundante se for só atributo.
+
+                    showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
+                } else {
+                    alert("Valor inválido.");
+                }
+            }
+        }
+        // Adicionar listener ao contêiner da ficha para delegação de eventos nos ícones de edição
+        fichaContainer.addEventListener('click', handleGmEdit);
+        // --- FIM MODO MESTRE (GM) ---
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container'); 
@@ -2532,9 +2681,51 @@ html
                     }
                 });
             });
-            setupAttributeTooltips(); // Configura os tooltips dos atributos
+            setupAttributeTooltips(); 
         });
 
     </script>
 </body>
 </html>
+```
+
+**Resumo das Mudanças:**
+
+1.  **CSS Adicional (para ícones de edição GM):**
+    *   Adicionado estilo para `.gm-edit-icon` para que fiquem ocultos por padrão e visíveis quando a classe `gm-mode-active` for aplicada ao `<body>`.
+
+2.  **HTML:**
+    *   Adicionado um novo botão: `<button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button>`.
+    *   Ícones `✏️` (`<span class="gm-edit-icon" data-target-id="ID_DO_SPAN_ALVO" data-label="Nome do Campo">✏️</span>`) foram adicionados ao lado dos `<span>`s que exibem valores calculados/protegidos (como `vida-total`, `ataque`, `nivel`, `pontos-habilidade`, `pontos-vantagem`, `velocidade-corrida`, `capacidade-carga`, etc.). O `data-target-id` é o ID do `span` cujo `textContent` será editado.
+
+3.  **JavaScript:**
+    *   **`isGmModeActive`:** Nova variável global para rastrear o estado do Modo Mestre.
+    *   **`criarFichaMatriz()` e `criarNovaFicha()`:** Adicionado `gmOverrides: {}` à estrutura da ficha.
+    *   **`atualizarAbasFichas()`:** Modificada para sempre exibir a "Ficha Matriz" primeiro na barra lateral, antes das outras fichas e do botão de adicionar.
+    *   **`gmModeBtn` Event Listener:** Controla a ativação/desativação do Modo Mestre:
+        *   Pede a `senhaMatriz` para ativar.
+        *   Alterna a classe `gm-mode-active` no `<body>` e o estilo/texto do botão.
+    *   **`handleGmEdit(event)`:** Nova função para lidar com cliques nos ícones de edição:
+        *   Verifica se o Modo Mestre está ativo.
+        *   Pede um novo valor ao GM via `prompt()`.
+        *   Armazena o novo valor em `fichas[currentFichaId].gmOverrides[targetId]`.
+        *   Chama `salvarDados()` e `atualizarNivel()` (que por sua vez chama `calcularAtributos()`) para refletir a mudança.
+    *   **`carregarFicha()`:**
+        *   Garante que `ficha.gmOverrides` exista.
+        *   Ao final, ajusta o estado visual do botão "Modo Mestre" e a classe no body.
+    *   **`calcularAtributos()`:** Modificada extensivamente para:
+        *   Consultar `ficha.gmOverrides` para `ataque`, `ataque-magico`, `acerto`, `esquiva`, `rdf`, `rdm`, `vida-total`, `magia-total`, `vigor-total`, `velocidade-corrida`, `altura-pulo`, `distancia-pulo`, `capacidade-carga`. Se um override existir, ele é usado; caso contrário, o valor é calculado.
+    *   **`atualizarNivel()`:** Modificada para:
+        *   Usar `ficha.gmOverrides.nivel` se existir para definir o `nivel`.
+        *   Usar `ficha.gmOverrides['pontos-habilidade']` se existir para o valor base de Pontos de Habilidade Disponíveis (que é exibido no span).
+        *   Usar `ficha.gmOverrides['pontos-vantagem']` se existir ao chamar `getPontosVantagem`.
+        *   A animação de "subiu de nível" só ocorre se o nível mudar por XP, e não por um override do GM.
+    *   **`getPontosVantagem()`:** Modificado para:
+        *   Primeiro, verificar se há um override direto para o span `pontos-vantagem`. Se sim, retorna esse valor.
+        *   Caso contrário, calcula os pontos de vantagem com base no `nivel` atual (que já pode ser um valor de override) e nas vantagens/desvantagens/raça.
+    *   **`recomecarFicha()`:** Agora limpa `fichas[currentFichaId].gmOverrides = {};`.
+    *   **`resetarPontos()`:** Não limpa `gmOverrides` intencionalmente (o GM pode querer manter esses valores). Apenas reseta os atributos base.
+    *   **`salvarDados()`:** Adicionado `fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};` para garantir que é salvo.
+    *   O listener de clique para os ícones de edição GM é adicionado ao `fichaContainer` usando delegação de eventos.
+
+Agora, a Ficha Matriz estará sempre visível, e o Modo Mestre permitirá editar campos que antes eram apenas calculados, dando mais controle ao GM!
