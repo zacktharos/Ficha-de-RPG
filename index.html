@@ -25,7 +25,7 @@ html
             background-size: cover;
             background-position: center;
             background-attachment: scroll;
-            transition: background 0.3s, color 0.3s, font-family 0.3s;
+            transition: background-color 0.3s, color 0.3s, font-family 0.3s;
         }
         body.dark-mode {
             background-color: #121212 !important; /* Cor padrão modo escuro */
@@ -57,14 +57,14 @@ html
         #add-ficha-btn span { font-family: 'MedievalSharp', serif; color: #000; font-size: 0.9rem; }
         #add-ficha-btn:hover { background: #a0522d; transform: translateY(-5px); }
         #ficha-container {
-            background: #f0e6d2; /* Cor padrão interna modo claro - igual ao body */
+            background: #f0e6d2; 
             padding: 30px; border-radius: 12px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s; /* Adicionado background-color à transição */
+            transition: font-family 0.3s, background-color 0.3s;
         }
         body.dark-mode #ficha-container {
-            background: #121212; /* Cor padrão interna modo escuro - igual ao body dark */
+            background: #121212; 
             color: #e0e0e0;
         }
         #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
@@ -77,7 +77,7 @@ html
             font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
             text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
         }
-        body.dark-mode h1#nome-personagem-titulo { /* Cor do título no modo escuro */
+        body.dark-mode h1#nome-personagem-titulo { 
              color: #c58c5a;
         }
         @keyframes raios {
@@ -88,11 +88,15 @@ html
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
         section { 
-            background: #f0e6d2; 
+            background: #f0e6d2; /* Default light mode section background */
             border-width: var(--largura-borda-secao);
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px; 
+            transition: background-color 0.3s;
+        }
+        body.dark-mode section { 
+            background: #1e1e1e; /* Default dark mode section background */
         }
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
@@ -102,7 +106,6 @@ html
         section .section-content.collapsed { display: none; }
         section h2 .collapse-icon.collapsed { transform: rotate(-90deg); }
 
-        body.dark-mode section { background: #1e1e1e; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
         input[type="text"], input[type="number"], textarea, select { 
@@ -1080,7 +1083,7 @@ html
                     <input type="color" id="background-color-input" value="#f0e6d2">
                 </div>
                 <div class="input-group">
-                    <label for="ficha-internal-background-color-input">Cor de Fundo (Interior da Ficha):</label>
+                    <label for="ficha-internal-background-color-input">Cor de Fundo (Interior da Ficha e Seções):</label>
                     <input type="color" id="ficha-internal-background-color-input" value="#f0e6d2">
                 </div>
                 <div class="input-group">
@@ -1253,7 +1256,7 @@ html
             removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
             diceAnimationSelector = document.getElementById("dice-animation-selector"),  
             backgroundColorInput = document.getElementById('background-color-input'),     
-            fichaInternalBackgroundColorInput = document.getElementById('ficha-internal-background-color-input'), // Novo input cacheado
+            fichaInternalBackgroundColorInput = document.getElementById('ficha-internal-background-color-input'),
             fontSelector = document.getElementById('font-selector'),                   
             diceColorInput = document.getElementById('dice-color-input'),              
             diceNumberColorInput = document.getElementById('dice-number-color-input'), 
@@ -1321,7 +1324,7 @@ html
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                     backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                     backgroundColor: null, 
-                    fichaInternalBackgroundColor: null, // Nova propriedade
+                    fichaInternalBackgroundColor: null, 
                     fontFamily: "'Inter', sans-serif",
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                     diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao', 
@@ -1418,7 +1421,7 @@ html
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                 backgroundColor: null,
-                fichaInternalBackgroundColor: null, // Nova propriedade
+                fichaInternalBackgroundColor: null, 
                 fontFamily: "'Inter', sans-serif", 
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                 diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao',
@@ -1463,7 +1466,7 @@ html
             if (ficha.animacaoDado === undefined) ficha.animacaoDado = 'padrao';
             if (ficha.fontFamily === undefined) ficha.fontFamily = "'Inter', sans-serif";
             if (ficha.backgroundColor === undefined) ficha.backgroundColor = null; 
-            if (ficha.fichaInternalBackgroundColor === undefined) ficha.fichaInternalBackgroundColor = null; // Nova propriedade
+            if (ficha.fichaInternalBackgroundColor === undefined) ficha.fichaInternalBackgroundColor = null; 
             if (ficha.diceColor === undefined) ficha.diceColor = null;
             if (ficha.diceNumberColor === undefined) ficha.diceNumberColor = null;
             if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
@@ -1527,7 +1530,7 @@ html
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarEstilosFichaInicial(ficha); 
-            aplicarCorDeFundoInicial(ficha); // Isso vai cuidar do body e chamar a de dentro
+            aplicarCorDeFundoInicial(ficha); 
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
@@ -1586,8 +1589,8 @@ html
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
-            fichaAtual.backgroundColor = backgroundColorInput.value; // Cor da página (body)
-            fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value; // Cor interna da ficha
+            fichaAtual.backgroundColor = backgroundColorInput.value; 
+            fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value; 
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
             
@@ -1979,7 +1982,7 @@ html
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
                 currentFichaObject.backgroundColor = null;
-                currentFichaObject.fichaInternalBackgroundColor = null; // Reset internal background
+                currentFichaObject.fichaInternalBackgroundColor = null; 
                 currentFichaObject.corBordaSecao = '#b8860b'; 
                 currentFichaObject.estiloBordaSecao = 'solid';
                 currentFichaObject.larguraBordaSecao = '2px';
@@ -2552,8 +2555,18 @@ html
         classesBtn.onclick = () => { classesPanel.style.display = "block"; };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
 
-        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); aplicarCorDeFundoInicial(fichas[currentFichaId]); aplicarCoresDadoInicial(fichas[currentFichaId]);};
-        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); aplicarCorDeFundoInicial(fichas[currentFichaId]); aplicarCoresDadoInicial(fichas[currentFichaId]);};
+        luaBtn.onclick = () => { 
+            document.body.classList.add("dark-mode"); 
+            salvarDados(); 
+            aplicarCorDeFundoInicial(fichas[currentFichaId]); // Atualiza cores do body, ficha e seções
+            aplicarCoresDadoInicial(fichas[currentFichaId]);
+        };
+        solBtn.onclick = () => { 
+            document.body.classList.remove("dark-mode"); 
+            salvarDados(); 
+            aplicarCorDeFundoInicial(fichas[currentFichaId]); // Atualiza cores do body, ficha e seções
+            aplicarCoresDadoInicial(fichas[currentFichaId]);
+        };
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
 
@@ -2573,11 +2586,24 @@ html
         
         function abrirModalCustomizacao() {
             const ficha = fichas[currentFichaId];
-            const defaultLight = '#f0e6d2';
-            const defaultDark = '#121212';
+            const defaultLightPage = '#f0e6d2';
+            const defaultDarkPage = '#121212';
+            const defaultLightInternal = '#f0e6d2';
+            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
+            const defaultDarkInternalSection = '#1e1e1e'; // For sections in dark mode
+
+
+            backgroundColorInput.value = ficha.backgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage);
             
-            backgroundColorInput.value = ficha.backgroundColor || (ficha.darkMode ? defaultDark : defaultLight);
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (ficha.darkMode ? defaultDark : defaultLight); // Carregar valor do novo input
+            let initialInternalColor;
+            if (ficha.fichaInternalBackgroundColor) {
+                initialInternalColor = ficha.fichaInternalBackgroundColor;
+            } else {
+                initialInternalColor = document.body.classList.contains('dark-mode') ? defaultDarkInternalContainer : defaultLightInternal;
+            }
+            fichaInternalBackgroundColorInput.value = initialInternalColor;
+
+
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
             
             const bgSize = ficha?.backgroundSize || 'cover';
@@ -2591,8 +2617,8 @@ html
             estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
             larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
             
-            diceColorInput.value = ficha.diceColor || (ficha.darkMode ? '#1e1e1e' : '#f0e6d2');
-            diceNumberColorInput.value = ficha.diceNumberColor || (ficha.darkMode ? '#e0e0e0' : '#000000');
+            diceColorInput.value = ficha.diceColor || (document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#f0e6d2');
+            diceNumberColorInput.value = ficha.diceNumberColor || (document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#000000');
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
             diceTextureInput.value = ""; 
 
@@ -2670,44 +2696,63 @@ html
         
         backgroundColorInput.addEventListener('input', (event) => {
             document.body.style.backgroundColor = event.target.value;
-            // Não mais define fichaContainer.style.backgroundColor aqui
             salvarDados();
         });
 
         fichaInternalBackgroundColorInput.addEventListener('input', (event) => {
-            fichaContainer.style.backgroundColor = event.target.value;
+            const newColor = event.target.value;
+            fichaContainer.style.backgroundColor = newColor;
+            document.querySelectorAll('#ficha-container section').forEach(sec => {
+                sec.style.backgroundColor = newColor;
+            });
             salvarDados();
         });
         
         function aplicarCorDeFundoInicial(ficha) {
-            const defaultLight = '#f0e6d2'; 
-            const defaultDark = '#121212'; 
+            const defaultLightPage = '#f0e6d2'; 
+            const defaultDarkPage = '#121212'; 
 
-            // Aplicar cor do Body (página)
-            let bodyBgColorToApply = ficha.darkMode ? defaultDark : defaultLight;
+            let bodyBgColorToApply = document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage;
             if (ficha?.backgroundColor) {
                 bodyBgColorToApply = ficha.backgroundColor;
             }
             document.body.style.backgroundColor = bodyBgColorToApply;
-            backgroundColorInput.value = bodyBgColorToApply;
+            if (backgroundColorInput) backgroundColorInput.value = bodyBgColorToApply;
 
-            // Aplicar cor interna da Ficha
             aplicarCorDeFundoInternoFichaInicial(ficha);
         }
 
         function aplicarCorDeFundoInternoFichaInicial(ficha) {
             const defaultInternalLight = '#f0e6d2'; 
-            const defaultInternalDark = '#121212';  
+            const defaultInternalDarkContainer = '#121212';
+            const defaultInternalDarkSection = '#1e1e1e';  
 
-            let internalBgColorToApply = ficha.darkMode ? defaultInternalDark : defaultInternalLight;
+            let internalContainerBgToApply;
+            let internalSectionBgToApply;
+
             if (ficha?.fichaInternalBackgroundColor) {
-                internalBgColorToApply = ficha.fichaInternalBackgroundColor;
+                internalContainerBgToApply = ficha.fichaInternalBackgroundColor;
+                internalSectionBgToApply = ficha.fichaInternalBackgroundColor;
+            } else {
+                if (document.body.classList.contains('dark-mode')) {
+                    internalContainerBgToApply = defaultInternalDarkContainer;
+                    internalSectionBgToApply = defaultInternalDarkSection;
+                } else {
+                    internalContainerBgToApply = defaultInternalLight;
+                    internalSectionBgToApply = defaultInternalLight;
+                }
             }
-            fichaContainer.style.backgroundColor = internalBgColorToApply;
-            if (fichaInternalBackgroundColorInput) { // Verifica se o input existe no DOM
-                fichaInternalBackgroundColorInput.value = internalBgColorToApply;
+
+            fichaContainer.style.backgroundColor = internalContainerBgToApply;
+            document.querySelectorAll('#ficha-container section').forEach(sec => {
+                sec.style.backgroundColor = internalSectionBgToApply;
+            });
+
+            if (fichaInternalBackgroundColorInput) { 
+                fichaInternalBackgroundColorInput.value = ficha?.fichaInternalBackgroundColor || internalContainerBgToApply;
             }
         }
+
 
         fontSelector.addEventListener('change', (event) => {
             const selectedFont = event.target.value;
@@ -2735,8 +2780,8 @@ html
         });
 
         function aplicarCoresDadoInicial(ficha) {
-            const defaultDiceColor = ficha?.darkMode ? '#1e1e1e' : '#f0e6d2';
-            const defaultDiceNumberColor = ficha?.darkMode ? '#e0e0e0' : '#000000';
+            const defaultDiceColor = document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#f0e6d2';
+            const defaultDiceNumberColor = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#000000';
 
             const diceBg = ficha?.diceColor || defaultDiceColor;
             const diceNumCol = ficha?.diceNumberColor || defaultDiceNumberColor;
@@ -2744,8 +2789,8 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            diceColorInput.value = diceBg;
-            diceNumberColorInput.value = diceNumCol;
+            if(diceColorInput) diceColorInput.value = diceBg;
+            if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
         diceHistoryTrigger.addEventListener('click', () => {
@@ -3068,12 +3113,14 @@ html
              showNotification("Animação do dado alterada!", "save-success");
         }
 
-        function aplicarCustomizacoesDadoInicial(ficha) {
+               function aplicarCustomizacoesDadoInicial(ficha) {
             if (ficha.texturaDado) {
                 diceRoll.style.backgroundImage = `url('${ficha.texturaDado}')`;
             } else {
                 diceRoll.style.backgroundImage = 'none';
             }
+             // O valor do select de animação é carregado na função `abrirModalCustomizacao` 
+             // e já está sendo salvo/carregado corretamente pela `salvarDados` e `carregarFicha`
         }
 
 
