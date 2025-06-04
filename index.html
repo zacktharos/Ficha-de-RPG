@@ -183,8 +183,8 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #estilos-ficha-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #plano-fundo-btn:hover, #estilos-ficha-btn:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
+        #reset-pontos, #recomecar, #bloquear-ficha, #customizacao-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #customizacao-btn:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
             background: #a0522d; transform: translateY(-2px);
         }
         #gm-mode-btn.gm-active { background-color: #006400; } 
@@ -195,7 +195,7 @@ html
         }
         #lua-btn { background-color: #333; color: #eee; }
         #sol-btn { background-color: #ffdd00; color: #333; }
-        #cor-fundo-visual-btn { /* Will be styled dynamically by JS */ }
+
         #nivel-container { text-align: center; margin-top: 10px; }
         #nivel {
             padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
@@ -432,6 +432,7 @@ html
         .modal-content {
             background: #f0e6d2; padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 300px; text-align: center;
+            position: relative; /* Para o botão de fechar absoluto */
         }
         body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
         .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
@@ -543,8 +544,6 @@ html
         body.dark-mode .raca-item { background: #333; border-color: #555; }
         body.dark-mode .raca-item p { color: #e0e0e0; }
         .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .theme-option { position: relative; }
-        #cor-fundo-visual-btn { cursor: pointer; }
 
         .lock-icon { margin-left: 5px; cursor: help; }
         
@@ -590,6 +589,129 @@ html
             opacity: 1;
         }
 
+        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
+        #background-modal, #estilos-ficha-modal { display: none; } 
+        #background-modal .modal-content, #estilos-ficha-modal .modal-content { width: 400px; text-align: left; }
+        #background-modal .modal-content label, #estilos-ficha-modal .modal-content label { display: block; margin-bottom: 5px; }
+        #background-modal .modal-content input[type="file"], #estilos-ficha-modal .modal-content input[type="file"] { margin-bottom: 10px; }
+        #background-modal .modal-content .radio-group, #estilos-ficha-modal .modal-content .input-group { margin-bottom: 15px; }
+        #background-modal .modal-content .radio-group label, #estilos-ficha-modal .modal-content .input-group label { display: inline-block; margin-right: 10px; }
+        .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
+
+
+        /* Painel de Customização */
+        #customizacao-panel { display: none; /* Inicialmente oculto */ }
+        #customizacao-panel .modal-content {
+            width: 480px; 
+            max-height: 85vh;
+            overflow-y: auto;
+            text-align: left; 
+        }
+        #customizacao-panel .config-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--cor-borda-secao, #b8860b);
+        }
+        #customizacao-panel .config-section:last-child { border-bottom: none; }
+        #customizacao-panel .config-section h3 {
+            font-family: 'MedievalSharp', serif;
+            color: #a0522d;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        body.dark-mode #customizacao-panel .config-section h3 { color: #c58c5a; }
+
+        #customizacao-panel .config-item {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        #customizacao-panel .config-item label {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+         #customizacao-panel .config-item select,
+         #customizacao-panel .config-item .botao { /* Botões como "Plano de Fundo", "Estilos Ficha", "Remover Textura" */
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            background-color: #e6cca7;
+            color: #3a2800;
+            border: 1px solid #b8860b;
+            border-radius: 4px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        body.dark-mode #customizacao-panel .config-item select,
+        body.dark-mode #customizacao-panel .config-item .botao {
+            background-color: #3a2f1e;
+            color: #f0e6d2;
+            border-color: #5c4b35;
+        }
+         #customizacao-panel .config-item select:hover,
+         #customizacao-panel .config-item .botao:hover {
+            background-color: #d2b48c;
+        }
+        body.dark-mode #customizacao-panel .config-item select:hover,
+        body.dark-mode #customizacao-panel .config-item .botao:hover {
+            background-color: #4a3c2a;
+        }
+
+
+        #customizacao-panel .input-trigger-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+         #customizacao-panel .input-trigger-group label {
+            flex-grow: 1;
+            margin-bottom: 0; /* Reset margin for inline alignment */
+        }
+
+        .visual-trigger-btn { /* Para 🎨, 🖼️, # */
+            padding: 8px;
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
+            border: 1px solid #b8860b;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #e6cca7;
+            color: #3a2800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        body.dark-mode .visual-trigger-btn {
+            background-color: #3a2f1e;
+            color: #f0e6d2;
+            border-color: #5c4b35;
+        }
+         .visual-trigger-btn:hover { background-color: #d2b48c; }
+        body.dark-mode  .visual-trigger-btn:hover { background-color: #4a3c2a; }
+        
+        .hidden-input-visual {
+            visibility: hidden; width: 0; height: 0; padding:0; margin:0; border:none;
+        }
+        
+        #fechar-customizacao-panel-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #a52a2a;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1.1rem;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        #fechar-customizacao-panel-btn:hover { background: #8b0000; }
 
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -601,7 +723,6 @@ html
             .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
             .botoes-container { flex-wrap: wrap; }
             .theme-color-container { flex-wrap: wrap; justify-content: space-around;}
-            .theme-option { margin-bottom: 5px;}
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
@@ -618,16 +739,8 @@ html
                 right: 40px; width: calc(100vw - 60px); max-height: 300px;
                 top: calc(50% + 120px);
             }
+            #customizacao-panel .modal-content { width: 90%; }
         }
-        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
-        #background-modal, #estilos-ficha-modal { display: none; } /* Inicialmente oculto */
-        #background-modal .modal-content, #estilos-ficha-modal .modal-content { width: 400px; text-align: left; }
-        #background-modal .modal-content label, #estilos-ficha-modal .modal-content label { display: block; margin-bottom: 5px; }
-        #background-modal .modal-content input[type="file"], #estilos-ficha-modal .modal-content input[type="file"] { margin-bottom: 10px; }
-        #background-modal .modal-content .radio-group, #estilos-ficha-modal .modal-content .input-group { margin-bottom: 15px; }
-        #background-modal .modal-content .radio-group label, #estilos-ficha-modal .modal-content .input-group label { display: inline-block; margin-right: 10px; }
-        .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
-
     </style>
 </head>
 <body class=""> 
@@ -902,53 +1015,16 @@ html
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
-                <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
-                 <button id="estilos-ficha-btn" class="botao">Estilos da Ficha 🎨</button>
                 <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
                 <button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button> 
             </div>
-
+            
             <div class="theme-color-container">
-                <button id="lua-btn" class="botao icon-btn">🌙</button>
-                <button id="sol-btn" class="botao icon-btn">☀️</button>
-                <div class="theme-option">
-                    <label for="background-color-input" id="cor-fundo-visual-btn" class="botao icon-btn" title="Cor de Fundo" style="cursor: pointer;">🎨</label>
-                    <input type="color" id="background-color-input" style="visibility: hidden; width: 0; height: 0; padding:0; margin:0; border:none;">
-                </div>
-                <div class="theme-option">
-                    <select id="font-selector" class="botao" title="Fonte Principal" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif;">
-                        <option value="'Inter', sans-serif">Padrão (Inter)</option>
-                        <option value="'MedievalSharp', cursive">Medieval</option>
-                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
-                        <option value="'Arial', Helvetica, sans-serif">Arial</option>
-                        <option value="'Courier New', Courier, monospace">Courier New</option>
-                        <option value="'Georgia', serif">Georgia</option>
-                        <option value="'Verdana', Geneva, sans-serif">Verdana</option>
-                    </select>
-                </div>
-                <div class="theme-option"> <!-- Cor do Dado -->
-                    <label for="dice-color-input" class="botao icon-btn" id="dice-color-input-visual" title="Cor do Dado" style="cursor: pointer;">🎲</label>
-                    <input type="color" id="dice-color-input" style="visibility: hidden; width: 0; height: 0;">
-                </div>
-                 <div class="theme-option"> <!-- Cor do Número do Dado -->
-                    <label for="dice-number-color-input" class="botao icon-btn" id="dice-number-color-input-visual" title="Cor Número Dado" style="cursor: pointer;">#</label>
-                    <input type="color" id="dice-number-color-input" style="visibility: hidden; width: 0; height: 0;">
-                </div>
-                <div class="theme-option"> <!-- Textura do Dado -->
-                    <label for="dice-texture-input" class="botao icon-btn" id="dice-texture-input-visual" title="Textura do Dado (100x100px)" style="cursor: pointer;">🖼️</label>
-                    <input type="file" id="dice-texture-input" accept="image/*" style="display:none;">
-                </div>
-                <div class="theme-option"> <!-- Animação do Dado -->
-                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif;">
-                        <option value="padrao">Animação Padrão</option>
-                        <option value="rapido">Giro Rápido</option>
-                        <option value="salto">Salto e Queda</option>
-                    </select>
-                </div>
-                 <div class="theme-option">
-                    <button id="remove-dice-texture-btn" class="botao icon-btn" title="Remover Textura do Dado" style="background-color:#cc0000;">🗑️</button>
-                </div>
+                <button id="lua-btn" class="botao icon-btn" title="Modo Noturno">🌙</button>
+                <button id="sol-btn" class="botao icon-btn" title="Modo Claro">☀️</button>
+                <button id="customizacao-btn" class="botao" title="Abrir painel de customização">Customização ⚙️</button>
             </div>
+
         </div>
     </div>
     <button id="anotacoes-btn">Anotações</button>
@@ -1051,7 +1127,6 @@ html
             <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
         </div>
     </div>
-    <!-- Modal de Estilos da Ficha -->
     <div id="estilos-ficha-modal" class="modal">
         <div class="modal-content">
             <h3>Estilos da Ficha</h3>
@@ -1078,6 +1153,85 @@ html
             <button class="cancel-btn" onclick="fecharModal('estilos-ficha-modal')">Cancelar</button>
         </div>
     </div>
+
+    <!-- Painel de Customização -->
+    <div id="customizacao-panel" class="modal">
+        <div class="modal-content">
+            <h2>Configurações de Aparência</h2>
+            <button id="fechar-customizacao-panel-btn" title="Fechar Painel de Customização">X</button>
+
+            <div class="config-section">
+                <h3>Aparência Geral</h3>
+                <div class="config-item">
+                    <div class="input-trigger-group">
+                        <label for="background-color-input">Cor de Fundo (Página):</label>
+                        <button id="background-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor de Fundo da Página">🎨</button>
+                        <input type="color" id="background-color-input" class="hidden-input-visual">
+                    </div>
+                </div>
+                <div class="config-item">
+                    <label for="font-selector">Fonte Principal da Ficha:</label>
+                    <select id="font-selector" title="Fonte Principal" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif; width:100%;">
+                        <option value="'Inter', sans-serif">Padrão (Inter)</option>
+                        <option value="'MedievalSharp', cursive">Medieval</option>
+                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                        <option value="'Arial', Helvetica, sans-serif">Arial</option>
+                        <option value="'Courier New', Courier, monospace">Courier New</option>
+                        <option value="'Georgia', serif">Georgia</option>
+                        <option value="'Verdana', Geneva, sans-serif">Verdana</option>
+                    </select>
+                </div>
+                <div class="config-item">
+                     <button id="plano-fundo-btn" class="botao">Plano de Fundo (Imagem)</button>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>Estilo da Ficha</h3>
+                 <div class="config-item">
+                    <button id="estilos-ficha-btn" class="botao">Estilos da Ficha (Bordas)</button>
+                </div>
+            </div>
+
+            <div class="config-section">
+                <h3>Configurações do Dado</h3>
+                <div class="config-item">
+                     <div class="input-trigger-group">
+                        <label for="dice-color-input">Cor do Dado:</label>
+                        <button id="dice-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor do Dado">🎲</button>
+                        <input type="color" id="dice-color-input" class="hidden-input-visual">
+                    </div>
+                </div>
+                <div class="config-item">
+                    <div class="input-trigger-group">
+                        <label for="dice-number-color-input">Cor do Número do Dado:</label>
+                        <button id="dice-number-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor do Número do Dado">#</button>
+                        <input type="color" id="dice-number-color-input" class="hidden-input-visual">
+                    </div>
+                </div>
+                <div class="config-item">
+                    <div class="input-trigger-group">
+                        <label for="dice-texture-input">Textura do Dado (100x100px):</label>
+                        <button id="dice-texture-input-trigger" class="visual-trigger-btn" title="Carregar Textura do Dado">🖼️</button>
+                        <input type="file" id="dice-texture-input" accept="image/*" class="hidden-input-visual" style="display:none;">
+                    </div>
+                </div>
+                <div class="config-item">
+                    <button id="remove-dice-texture-btn" class="botao" title="Remover Textura do Dado" style="background-color:#cc0000;">Remover Textura do Dado</button>
+                </div>
+                <div class="config-item">
+                    <label for="dice-animation-selector">Animação do Dado:</label>
+                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif; width:100%;">
+                        <option value="padrao">Animação Padrão</option>
+                        <option value="rapido">Giro Rápido</option>
+                        <option value="salto">Salto e Queda</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div id="fireworks-container"></div>
     <div id="dice-history-trigger">Histórico de Dados</div>
     <div id="dice-history-panel"> 
@@ -1152,26 +1306,37 @@ html
             racaDescricaoInput = document.getElementById("raca-descricao"), luaBtn = document.getElementById("lua-btn"), solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
-            planoFundoBtn = document.getElementById("plano-fundo-btn"), estilosFichaBtn = document.getElementById("estilos-ficha-btn"), 
+            
+            // Elementos de customização que foram movidos ou seus substitutos
+            planoFundoBtn = document.getElementById("plano-fundo-btn"), 
+            estilosFichaBtn = document.getElementById("estilos-ficha-btn"), 
+            backgroundColorInput = document.getElementById('background-color-input'),
+            fontSelector = document.getElementById('font-selector'),
+            diceColorInput = document.getElementById('dice-color-input'),
+            diceNumberColorInput = document.getElementById('dice-number-color-input'),
+            diceTextureInput = document.getElementById("dice-texture-input"), 
+            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
+            diceAnimationSelector = document.getElementById("dice-animation-selector"), 
+
+            // Novos elementos para o painel de customização
+            customizacaoBtn = document.getElementById('customizacao-btn'),
+            customizacaoPanel = document.getElementById('customizacao-panel'),
+            fecharCustomizacaoPanelBtn = document.getElementById('fechar-customizacao-panel-btn'),
+            backgroundColorInputTrigger = document.getElementById('background-color-input-trigger'),
+            diceColorInputTrigger = document.getElementById('dice-color-input-trigger'),
+            diceNumberColorInputTrigger = document.getElementById('dice-number-color-input-trigger'),
+            diceTextureInputTrigger = document.getElementById('dice-texture-input-trigger'),
+
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
             estilosFichaModal = document.getElementById("estilos-ficha-modal"), 
             corBordaSecaoInput = document.getElementById("cor-borda-secao-input"), 
             estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"), 
             larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"), 
-            diceTextureInput = document.getElementById("dice-texture-input"), 
-            diceTextureVisualBtn = document.getElementById("dice-texture-input-visual"), 
-            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
-            diceAnimationSelector = document.getElementById("dice-animation-selector"), 
-            backgroundColorInput = document.getElementById('background-color-input'), 
-            backgroundColorButtonVisual = document.getElementById('cor-fundo-visual-btn'), 
-            fontSelector = document.getElementById('font-selector'), 
+            
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo"),
-            diceColorInput = document.getElementById('dice-color-input'),
-            diceColorVisualBtn = document.getElementById('dice-color-input-visual'), 
-            diceNumberColorInput = document.getElementById('dice-number-color-input'),
-            diceNumberColorVisualBtn = document.getElementById('dice-number-color-input-visual'),
+            
             diceHistoryTrigger = document.getElementById('dice-history-trigger'), 
             diceHistoryPanel = document.getElementById('dice-history-panel'), 
             diceHistoryList = document.getElementById('dice-history-list'), 
@@ -1365,7 +1530,7 @@ html
             if (!ficha.corBordaSecao) ficha.corBordaSecao = '#b8860b'; 
             if (!ficha.estiloBordaSecao) ficha.estiloBordaSecao = 'solid';
             if (!ficha.larguraBordaSecao) ficha.larguraBordaSecao = '2px';
-            if (ficha.texturaDado === undefined) ficha.texturaDado = null; // Correção importante
+            if (ficha.texturaDado === undefined) ficha.texturaDado = null; 
             if (!ficha.animacaoDado) ficha.animacaoDado = 'padrao';
 
 
@@ -1483,13 +1648,13 @@ html
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
-            fichaAtual.backgroundColor = document.body.style.backgroundColor;
+            fichaAtual.backgroundColor = backgroundColorInput.value; // Salva do input, não do estilo do body direto
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector ? fontSelector.value : "'Inter', sans-serif";
             
             fichaAtual.diceColor = diceColorInput.value; 
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            fichaAtual.texturaDado = fichas[currentFichaId].texturaDado; // Garantir que pegue o valor atual de texturaDado da ficha
+            fichaAtual.texturaDado = fichas[currentFichaId].texturaDado; 
             fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
             vidaAtual = parseInt(vidaAtualInput.value);
@@ -1809,13 +1974,9 @@ html
             magiaAtualInput.max = magiaTotal;
             vigorAtualInput.max = vigorTotal;
             
-            // Aqui, não redefina vidaAtual, magiaAtual, vigorAtual com base no valor dos inputs.
-            // Eles já foram definidos em carregarFicha ou pelas ações do usuário.
-            // Apenas garanta que não excedam o novo total.
             vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
             magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
             vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
-            // Atualize as variáveis globais para consistência, se necessário (mas os inputs são a fonte agora para edição direta)
             vidaAtual = parseInt(vidaAtualInput.value);
             magiaAtual = parseInt(magiaAtualInput.value);
             vigorAtual = parseFloat(vigorAtualInput.value);
@@ -1879,14 +2040,14 @@ html
                 if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].diceRolls = [];
                     fichas[currentFichaId].collapsedSections = {};
-                    fichas[currentFichaId].corBordaSecao = '#b8860b'; // Reset estilos de borda
+                    fichas[currentFichaId].corBordaSecao = '#b8860b'; 
                     fichas[currentFichaId].estiloBordaSecao = 'solid';
                     fichas[currentFichaId].larguraBordaSecao = '2px';
-                    fichas[currentFichaId].texturaDado = null; // Reset textura do dado
-                    fichas[currentFichaId].animacaoDado = 'padrao'; // Reset animação do dado
+                    fichas[currentFichaId].texturaDado = null; 
+                    fichas[currentFichaId].animacaoDado = 'padrao'; 
                 }
-                aplicarEstilosFichaInicial(fichas[currentFichaId]); // Aplicar reset visualmente
-                aplicarCustomizacoesDadoInicial(fichas[currentFichaId]); // Aplicar reset visualmente
+                aplicarEstilosFichaInicial(fichas[currentFichaId]); 
+                aplicarCustomizacoesDadoInicial(fichas[currentFichaId]); 
                 aplicarEstadoColapsoSecoes({});
                 
                 atualizarNivel(); 
@@ -2095,7 +2256,7 @@ html
                         fichas[currentFichaId].experiencia = experienciaInput.value; 
                         saveFichasToStorage(fichas); 
                     }
-                }, XP_UNLOCK_DURATION_MS);
+                }, 20000); // 20 segundos
                 fecharModal("senha-gm-modal");
             } else {
                 alert("Senha do GM incorreta!");
@@ -2223,6 +2384,12 @@ html
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
                 diceHistoryPanel.style.display = 'none';
+            }
+             // Fechar painel de customização se clicar fora
+            if (customizacaoPanel.style.display === 'flex' &&
+                !customizacaoPanel.contains(event.target) &&
+                event.target !== customizacaoBtn) {
+                customizacaoPanel.style.display = 'none';
             }
         });
 
@@ -2441,17 +2608,35 @@ html
         classesBtn.onclick = () => { classesPanel.style.display = "block"; };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
 
-        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); };
-        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); };
+        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); aplicarCorDeFundoInicial(fichas[currentFichaId]); salvarDados(); };
+        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); aplicarCorDeFundoInicial(fichas[currentFichaId]); salvarDados(); };
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
+
+        // Controle do painel de customização
+        if(customizacaoBtn && customizacaoPanel && fecharCustomizacaoPanelBtn){
+            customizacaoBtn.addEventListener('click', () => {
+                customizacaoPanel.style.display = 'flex';
+            });
+            fecharCustomizacaoPanelBtn.addEventListener('click', () => {
+                customizacaoPanel.style.display = 'none';
+            });
+        }
+
 
         function showNotification(message, type) {
             notification.textContent = message; notification.className = type; notification.style.display = "block";
             setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
 
-        planoFundoBtn.onclick = () => { backgroundModal.style.display = "flex"; };
+        if (planoFundoBtn) {
+            planoFundoBtn.onclick = () => { 
+                 if (isFichaLocked && !isFichaUnlocked) {
+                    return abrirModalSenha(planoFundoBtn, () => { backgroundModal.style.display = "flex"; });
+                 }
+                backgroundModal.style.display = "flex"; 
+            };
+        }
         function aplicarPlanoDeFundo() {
             const file = backgroundImageInput.files[0];
             const selectedSizeOption = document.querySelector('input[name="background-size"]:checked');
@@ -2474,10 +2659,9 @@ html
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
-                 // Se nenhuma nova imagem for selecionada, mas já existe uma, apenas aplica o size/attachment
                 document.body.style.backgroundSize = selectedSize;
                 document.body.style.backgroundAttachment = attachment;
-                if (fichas[currentFichaId]) { // Atualiza a ficha
+                if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].backgroundSize = selectedSize;
                     fichas[currentFichaId].backgroundAttachment = attachment;
                 }
@@ -2494,8 +2678,8 @@ html
                 document.body.style.backgroundAttachment = 'scroll'; 
                 if (fichas[currentFichaId]) {
                      fichas[currentFichaId].backgroundImage = null;
-                     fichas[currentFichaId].backgroundSize = 'cover'; // Reset ao padrão
-                     fichas[currentFichaId].backgroundAttachment = 'scroll'; // Reset ao padrão
+                     fichas[currentFichaId].backgroundSize = 'cover'; 
+                     fichas[currentFichaId].backgroundAttachment = 'scroll'; 
                 }
                 salvarDados();
                 fecharModal('background-modal');
@@ -2523,27 +2707,40 @@ html
             });
         }
 
-        if (backgroundColorButtonVisual && backgroundColorInput) {
-            backgroundColorButtonVisual.addEventListener('click', () => backgroundColorInput.click());
+        if (backgroundColorInputTrigger && backgroundColorInput) {
+            backgroundColorInputTrigger.addEventListener('click', () => backgroundColorInput.click());
             backgroundColorInput.addEventListener('input', (event) => {
                 document.body.style.backgroundColor = event.target.value;
-                backgroundColorButtonVisual.style.backgroundColor = event.target.value; 
+                backgroundColorInputTrigger.style.backgroundColor = event.target.value; 
+                backgroundColorInputTrigger.style.color = kontrast(event.target.value); 
                 salvarDados();
             });
         }
         
         function aplicarCorDeFundoInicial(ficha) {
+            const isDarkMode = ficha?.darkMode ?? document.body.classList.contains("dark-mode");
             const defaultColorLight = '#f0e6d2'; 
             const defaultColorDark = '#121212'; 
 
-            let bgColorToApply = ficha?.darkMode ? defaultColorDark : defaultColorLight;
-            if (ficha?.backgroundColor) {
-                bgColorToApply = ficha.backgroundColor;
+            let bgColorToApply = isDarkMode ? defaultColorDark : defaultColorLight;
+            if (ficha?.backgroundColor) { // Prioriza a cor salva se existir
+                 if (isDarkMode && (ficha.backgroundColor === defaultColorLight || ficha.backgroundColor === '#f0e6d2')) {
+                     // Se está em dark mode mas a cor salva é a light padrão, usa a dark padrão
+                     bgColorToApply = defaultColorDark;
+                 } else if (!isDarkMode && (ficha.backgroundColor === defaultColorDark || ficha.backgroundColor === '#121212')) {
+                     // Se está em light mode mas a cor salva é a dark padrão, usa a light padrão
+                      bgColorToApply = defaultColorLight;
+                 } else {
+                     bgColorToApply = ficha.backgroundColor;
+                 }
             }
             
             document.body.style.backgroundColor = bgColorToApply;
             if (backgroundColorInput) backgroundColorInput.value = bgColorToApply;
-            if (backgroundColorButtonVisual) backgroundColorButtonVisual.style.backgroundColor = bgColorToApply;
+            if (backgroundColorInputTrigger) {
+                backgroundColorInputTrigger.style.backgroundColor = bgColorToApply;
+                backgroundColorInputTrigger.style.color = kontrast(bgColorToApply);
+            }
         }
         
         if (fontSelector) {
@@ -2563,29 +2760,14 @@ html
             if (fontSelector) fontSelector.value = bodyFont;
         }
 
-        if (diceColorVisualBtn && diceColorInput) {
-            diceColorVisualBtn.addEventListener('click', () => diceColorInput.click());
-            diceColorInput.addEventListener('input', (event) => {
-                diceRoll.style.setProperty('--dice-bg-color', event.target.value);
-                diceColorVisualBtn.style.backgroundColor = event.target.value; 
-                salvarDados();
-            });
-        }
-
-        if (diceNumberColorVisualBtn && diceNumberColorInput) {
-            diceNumberColorVisualBtn.addEventListener('click', () => diceNumberColorInput.click());
-            diceNumberColorInput.addEventListener('input', (event) => {
-                diceRoll.style.setProperty('--dice-number-color', event.target.value);
-                diceNumberColorVisualBtn.style.color = event.target.value; 
-                diceNumberColorVisualBtn.style.backgroundColor = kontrast(event.target.value) === 'black' ? 'white' : 'black';
-                salvarDados();
-            });
-        }
         function kontrast(hexcolor){
+            if (!hexcolor) return 'black'; // Fallback
             if (hexcolor.slice(0, 1) === '#') { hexcolor = hexcolor.slice(1); }
             if (hexcolor.length === 3) {
                 hexcolor = hexcolor.split('').map(function (hex) { return hex + hex; }).join('');
             }
+            if (hexcolor.length !== 6) return 'black'; // Invalid hex
+            
             var r = parseInt(hexcolor.substr(0,2),16);
             var g = parseInt(hexcolor.substr(2,2),16);
             var b = parseInt(hexcolor.substr(4,2),16);
@@ -2594,9 +2776,30 @@ html
         }
 
 
+        if (diceColorInputTrigger && diceColorInput) {
+            diceColorInputTrigger.addEventListener('click', () => diceColorInput.click());
+            diceColorInput.addEventListener('input', (event) => {
+                diceRoll.style.setProperty('--dice-bg-color', event.target.value);
+                diceColorInputTrigger.style.backgroundColor = event.target.value; 
+                diceColorInputTrigger.style.color = kontrast(event.target.value);
+                salvarDados();
+            });
+        }
+
+        if (diceNumberColorInputTrigger && diceNumberColorInput) {
+            diceNumberColorInputTrigger.addEventListener('click', () => diceNumberColorInput.click());
+            diceNumberColorInput.addEventListener('input', (event) => {
+                diceRoll.style.setProperty('--dice-number-color', event.target.value);
+                diceNumberColorInputTrigger.style.backgroundColor = event.target.value; 
+                diceNumberColorInputTrigger.style.color = kontrast(event.target.value);
+                salvarDados();
+            });
+        }
+        
         function aplicarCoresDadoInicial(ficha) {
-            const defaultDiceColor = ficha?.darkMode ? '#1e1e1e' : '#f0e6d2';
-            const defaultDiceNumberColor = ficha?.darkMode ? '#e0e0e0' : '#000000';
+            const isDarkMode = ficha?.darkMode ?? document.body.classList.contains("dark-mode");
+            const defaultDiceColor = isDarkMode ? '#1e1e1e' : '#f0e6d2';
+            const defaultDiceNumberColor = isDarkMode ? '#e0e0e0' : '#000000';
 
             const diceBg = ficha?.diceColor || defaultDiceColor;
             const diceNumCol = ficha?.diceNumberColor || defaultDiceNumberColor;
@@ -2605,14 +2808,18 @@ html
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
             if (diceColorInput) diceColorInput.value = diceBg;
-            if (diceColorVisualBtn) diceColorVisualBtn.style.backgroundColor = diceBg;
+            if (diceColorInputTrigger) {
+                diceColorInputTrigger.style.backgroundColor = diceBg;
+                diceColorInputTrigger.style.color = kontrast(diceBg);
+            }
 
             if (diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
-            if (diceNumberColorVisualBtn) {
-                diceNumberColorVisualBtn.style.color = diceNumCol;
-                diceNumberColorVisualBtn.style.backgroundColor = kontrast(diceNumCol) === 'black' ? 'white' : 'black';
+            if (diceNumberColorInputTrigger) {
+                diceNumberColorInputTrigger.style.backgroundColor = diceNumCol; // Cor de fundo do botão = cor do número
+                diceNumberColorInputTrigger.style.color = kontrast(diceNumCol);  // Cor do texto do botão contrastante
             }
         }
+
         
         diceHistoryTrigger.addEventListener('click', () => {
             if (diceHistoryPanel.style.display === 'flex') {
@@ -2866,18 +3073,20 @@ html
         }
         fichaContainer.addEventListener('click', handleGmEdit);
         
-        estilosFichaBtn.addEventListener('click', () => {
-            if (isFichaLocked && !isFichaUnlocked) {
-                return abrirModalSenha(estilosFichaBtn, abrirModalEstilosFicha);
-            }
-            abrirModalEstilosFicha();
-        });
+        if(estilosFichaBtn){
+            estilosFichaBtn.addEventListener('click', () => {
+                if (isFichaLocked && !isFichaUnlocked) {
+                    return abrirModalSenha(estilosFichaBtn, abrirModalEstilosFicha);
+                }
+                abrirModalEstilosFicha();
+            });
+        }
 
         function abrirModalEstilosFicha() {
             const ficha = fichas[currentFichaId];
             corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
             estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
-            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2; // Garante que seja número
+            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2; 
             estilosFichaModal.style.display = "flex";
         }
 
@@ -2910,8 +3119,8 @@ html
             larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
         }
 
-        if (diceTextureVisualBtn) { 
-            diceTextureVisualBtn.addEventListener('click', () => diceTextureInput.click());
+        if (diceTextureInputTrigger) { 
+            diceTextureInputTrigger.addEventListener('click', () => diceTextureInput.click());
         }
         diceTextureInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
@@ -2986,7 +3195,7 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn').forEach(btn => {
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .visual-trigger-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
