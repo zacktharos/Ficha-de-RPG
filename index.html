@@ -8,9 +8,14 @@ html
     <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --cor-borda-secao: #b8860b; 
+            --estilo-borda-secao: solid; 
+            --largura-borda-secao: 2px; 
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0e6d2; /* Cor de pergaminho padrão */
+            background-color: #f0e6d2;
             color: #000;
             display: flex;
             min-height: 100vh;
@@ -19,11 +24,11 @@ html
             background-image: none;
             background-size: cover;
             background-position: center;
-            background-attachment: scroll; /* Padrão para não quebrar outras opções */
+            background-attachment: scroll;
             transition: background 0.3s, color 0.3s, font-family 0.3s;
         }
         body.dark-mode {
-            background-color: #121212 !important; /* Garante que o fundo seja sempre escuro */
+            background-color: #121212 !important;
             color: #e0e0e0;
         }
         #fichas-sidebar {
@@ -75,7 +80,13 @@ html
         }
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
-        section { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 15px; margin-bottom: 20px; }
+        section { 
+            background: #f0e6d2; 
+            border-width: var(--largura-borda-secao);
+            border-style: var(--estilo-borda-secao);
+            border-color: var(--cor-borda-secao);
+            border-radius: 8px; padding: 15px; margin-bottom: 20px; 
+        }
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
             display: flex; align-items: center; justify-content: center;
@@ -84,7 +95,7 @@ html
         section .section-content.collapsed { display: none; }
         section h2 .collapse-icon.collapsed { transform: rotate(-90deg); }
 
-        body.dark-mode section { background: #1e1e1e; border-color: #444; }
+        body.dark-mode section { background: #1e1e1e; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
         input[type="text"], input[type="number"], textarea {
@@ -92,20 +103,19 @@ html
             margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
             background: #fff; color: #000;
         }
-        /* Estilo específico para inputs de vida/magia/vigor atual */
         .recurso-atual-input {
-            width: 70px !important; /* Largura menor, um pouco mais que antes para o valor e setas */
+            width: 70px !important; 
             text-align: center;
             font-family: 'MedievalSharp', serif;
             font-size: 1.1rem;
-            padding: 5px 2px; /* Ajuste de padding */
-            margin: 0 3px !important; /* Ajustar margem */
-            -moz-appearance: textfield; /* Firefox para remover setas padrão */
+            padding: 5px 2px; 
+            margin: 0 3px !important; 
+            -moz-appearance: textfield; 
             box-sizing: border-box;
         }
         .recurso-atual-input::-webkit-outer-spin-button,
         .recurso-atual-input::-webkit-inner-spin-button {
-            -webkit-appearance: none; /* Chrome, Safari, Edge, Opera para remover setas padrão */
+            -webkit-appearance: none; 
             margin: 0;
         }
 
@@ -146,7 +156,7 @@ html
         .atributo-container.vigor::before { content: "⚡"; }
         .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; margin: 5px 0; text-align: center; }
         body.dark-mode .medieval-box { background: #1e1e1e; border-color: #444; }
-        .valor-atual.medieval-box { display: flex; align-items: center; justify-content: center; } /* Alinhar itens na caixa de valor atual */
+        .valor-atual.medieval-box { display: flex; align-items: center; justify-content: center; } 
 
         .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px; }
         body.dark-mode .regeneracao { color: #aaa; }
@@ -173,11 +183,11 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
+        #reset-pontos, #recomecar, #bloquear-ficha, #plano-fundo-btn, #estilos-ficha-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #plano-fundo-btn:hover, #estilos-ficha-btn:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
             background: #a0522d; transform: translateY(-2px);
         }
-        #gm-mode-btn.gm-active { background-color: #006400; } /* Verde para GM ativo */
+        #gm-mode-btn.gm-active { background-color: #006400; } 
 
         .icon-btn {
             padding: 10px; width: 44px; height: 44px;
@@ -225,12 +235,19 @@ html
             cursor: pointer;
             margin: 0; 
             position: relative; 
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s, background-image 0.3s;
             font-family: 'MedievalSharp', serif;
             transform-style: preserve-3d; 
+            background-size: cover; 
+            background-position: center; 
         }
         body.dark-mode #dice-roll { border-color: #444; }
+
+        /* Animações de dado */
         #dice-roll.is-rolling { animation: rollTheDie 1s ease-out forwards; }
+        #dice-roll.is-rolling-fast { animation: rollTheDieFast 0.5s ease-out forwards; }
+        #dice-roll.is-rolling-jump { animation: rollTheDieJump 1.2s cubic-bezier(0.5, -0.5, 0.5, 1.5) forwards; }
+
         @keyframes rollTheDie {
             0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); box-shadow: 0 0 5px #b8860b; }
             25% { transform: rotateX(360deg) rotateY(-270deg) rotateZ(180deg) scale(1.1) translateX(-10px) translateY(5px); box-shadow: 0 0 10px #a0522d, 0 0 15px #FFD700; }
@@ -238,6 +255,18 @@ html
             75% { transform: rotateX(270deg) rotateY(-180deg) rotateZ(270deg) scale(1.05) translateX(-5px) translateY(8px); box-shadow: 0 0 10px #FFD700, 0 0 15px #a0522d; }
             100% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1); box-shadow: 0 0 5px #b8860b; }
         }
+        @keyframes rollTheDieFast {
+            0% { transform: rotateZ(0deg) scale(1); }
+            100% { transform: rotateZ(720deg) scale(1); }
+        }
+        @keyframes rollTheDieJump {
+            0% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(180deg) scale(1.2); }
+            50% { transform: translateY(0) rotate(360deg) scale(1); }
+            75% { transform: translateY(-15px) rotate(540deg) scale(1.1); }
+            100% { transform: translateY(0) rotate(720deg) scale(1); }
+        }
+        
         #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; }
         body.dark-mode #dice-result { color: #e0e0e0; }
         @keyframes blink { 50% { opacity: 0; } }
@@ -327,7 +356,7 @@ html
             top: calc(50% + 70px); 
             transform: translateY(-50%);
             width: 400px; 
-            max-height: 400px; /* Max height to prevent overflow */
+            max-height: 400px; 
             background: #fff; 
             border: 2px solid #b8860b;
             border-radius: 6px; 
@@ -335,14 +364,14 @@ html
             font-size: 0.9rem; 
             z-index: 1001; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: none; /* Starts hidden */
+            display: none; 
             flex-direction: column;
         }
         body.dark-mode #dice-history-panel { background: #333; color: #e0e0e0; border-color: #555;}
 
         #dice-history-panel h2 {
             font-family: 'MedievalSharp', serif; font-size: 1.5rem; text-align: center;
-            color: #a0522d; margin-bottom: 10px; flex-shrink: 0; /* Prevent shrinking */
+            color: #a0522d; margin-bottom: 10px; flex-shrink: 0; 
         }
         body.dark-mode #dice-history-panel h2 { color: #c58c5a;}
 
@@ -360,9 +389,9 @@ html
             padding: 6px 4px;
             border-bottom: 1px dashed #d2b48c;
             font-size: 0.9rem;
-            display: flex; /* For better alignment of timestamp */
-            justify-content: space-between; /* For better alignment of timestamp */
-            align-items: center; /* For better alignment of timestamp */
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
         body.dark-mode .dice-history-item { border-bottom-color: #4a3c2a; }
         .dice-history-item:last-child { border-bottom: none; }
@@ -407,8 +436,8 @@ html
         body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
         .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
         body.dark-mode .modal-content h3 { color: #e0e0e0; }
-        .modal-content input { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
-        body.dark-mode .modal-content input { background: #333; color: #e0e0e0; border-color: #555; }
+        .modal-content input, .modal-content select { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+        body.dark-mode .modal-content input, body.dark-mode .modal-content select { background: #333; color: #e0e0e0; border-color: #555; }
         .modal-content button {
             padding: 10px 20px; border: none; border-radius: 6px; font-family: 'MedievalSharp', serif;
             color: #fff; cursor: pointer; margin: 0 5px;
@@ -513,7 +542,7 @@ html
         .raca-item p { font-size: 1rem; color: #000; }
         body.dark-mode .raca-item { background: #333; border-color: #555; }
         body.dark-mode .raca-item p { color: #e0e0e0; }
-        .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; }
+        .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; flex-wrap: wrap; }
         .theme-option { position: relative; }
         #cor-fundo-visual-btn { cursor: pointer; }
 
@@ -523,11 +552,11 @@ html
             font-size: 0.8rem;
             margin-left: 5px;
             cursor: pointer;
-            display: none; /* Oculto por padrão */
-            color: #007bff; /* Cor azul para o ícone */
+            display: none; 
+            color: #007bff; 
         }
         body.gm-mode-active .gm-edit-icon {
-            display: inline; /* Visível quando o modo GM está ativo */
+            display: inline; 
         }
         body.dark-mode .gm-edit-icon {
             color: #61dafb;
@@ -535,7 +564,6 @@ html
         .gm-edit-icon:hover {
             text-shadow: 0 0 3px currentColor;
         }
-        /* Estilo para o tooltip customizado */
         #custom-tooltip {
             position: absolute;
             visibility: hidden;
@@ -544,12 +572,12 @@ html
             padding: 8px 12px;
             border-radius: 5px;
             font-size: 0.85rem;
-            z-index: 2000; /* Acima de outros elementos */
-            pointer-events: none; /* Para não interferir com o mouse */
+            z-index: 2000; 
+            pointer-events: none; 
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 250px; /* Para evitar que fique muito largo */
+            max-width: 250px; 
             text-align: left;
         }
         body.dark-mode #custom-tooltip {
@@ -571,18 +599,20 @@ html
             input, textarea { font-size: 0.9rem; }
             .atributos-container, .vida-magia-vigor { flex-direction: column; }
             .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
-            .botoes-container, .theme-color-container { flex-direction: row; flex-wrap: wrap; }
-             #dice-container { width: auto; /* Ajuste para telas menores */ }
+            .botoes-container { flex-wrap: wrap; }
+            .theme-color-container { flex-wrap: wrap; justify-content: space-around;}
+            .theme-option { margin-bottom: 5px;}
+             #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
-            #dice-options-menu { top: 35px; /* Ajuste para telas menores */ }
+            #dice-options-menu { top: 35px; }
 
             #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
 
             #dice-history-trigger {
                 padding: 8px 10px; font-size: 0.9rem;
-                top: calc(50% + 120px); /* Mais para baixo em telas menores */
+                top: calc(50% + 120px); 
             }
             #dice-history-panel { 
                 right: 40px; width: calc(100vw - 60px); max-height: 300px;
@@ -590,16 +620,17 @@ html
             }
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
-        #background-modal { display: none; }
-        #background-modal .modal-content { width: 400px; text-align: left; }
-        #background-modal .modal-content label { display: block; margin-bottom: 5px; }
-        #background-modal .modal-content input[type="file"] { margin-bottom: 10px; }
-        #background-modal .modal-content .radio-group { margin-bottom: 15px; }
-        #background-modal .modal-content .radio-group label { display: inline-block; margin-right: 10px; }
+        #background-modal, #estilos-ficha-modal { display: none; } /* Inicialmente oculto */
+        #background-modal .modal-content, #estilos-ficha-modal .modal-content { width: 400px; text-align: left; }
+        #background-modal .modal-content label, #estilos-ficha-modal .modal-content label { display: block; margin-bottom: 5px; }
+        #background-modal .modal-content input[type="file"], #estilos-ficha-modal .modal-content input[type="file"] { margin-bottom: 10px; }
+        #background-modal .modal-content .radio-group, #estilos-ficha-modal .modal-content .input-group { margin-bottom: 15px; }
+        #background-modal .modal-content .radio-group label, #estilos-ficha-modal .modal-content .input-group label { display: inline-block; margin-right: 10px; }
         .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
+
     </style>
 </head>
-<body class=""> <!-- A classe gm-mode-active será adicionada aqui -->
+<body class=""> 
     <div id="fichas-sidebar">
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
@@ -872,6 +903,7 @@ html
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
                 <button id="plano-fundo-btn" class="botao">Plano de fundo</button>
+                 <button id="estilos-ficha-btn" class="botao">Estilos da Ficha 🎨</button>
                 <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
                 <button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button> 
             </div>
@@ -894,13 +926,27 @@ html
                         <option value="'Verdana', Geneva, sans-serif">Verdana</option>
                     </select>
                 </div>
-                <div class="theme-option">
+                <div class="theme-option"> <!-- Cor do Dado -->
                     <label for="dice-color-input" class="botao icon-btn" id="dice-color-input-visual" title="Cor do Dado" style="cursor: pointer;">🎲</label>
                     <input type="color" id="dice-color-input" style="visibility: hidden; width: 0; height: 0;">
                 </div>
-                <div class="theme-option">
+                 <div class="theme-option"> <!-- Cor do Número do Dado -->
                     <label for="dice-number-color-input" class="botao icon-btn" id="dice-number-color-input-visual" title="Cor Número Dado" style="cursor: pointer;">#</label>
                     <input type="color" id="dice-number-color-input" style="visibility: hidden; width: 0; height: 0;">
+                </div>
+                <div class="theme-option"> <!-- Textura do Dado -->
+                    <label for="dice-texture-input" class="botao icon-btn" id="dice-texture-input-visual" title="Textura do Dado (100x100px)" style="cursor: pointer;">🖼️</label>
+                    <input type="file" id="dice-texture-input" accept="image/*" style="display:none;">
+                </div>
+                <div class="theme-option"> <!-- Animação do Dado -->
+                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif;">
+                        <option value="padrao">Animação Padrão</option>
+                        <option value="rapido">Giro Rápido</option>
+                        <option value="salto">Salto e Queda</option>
+                    </select>
+                </div>
+                 <div class="theme-option">
+                    <button id="remove-dice-texture-btn" class="botao icon-btn" title="Remover Textura do Dado" style="background-color:#cc0000;">🗑️</button>
                 </div>
             </div>
         </div>
@@ -1005,21 +1051,44 @@ html
             <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
         </div>
     </div>
-    <!-- Contêiner para os Fogos de Artifício -->
+    <!-- Modal de Estilos da Ficha -->
+    <div id="estilos-ficha-modal" class="modal">
+        <div class="modal-content">
+            <h3>Estilos da Ficha</h3>
+            <div class="input-group">
+                <label for="cor-borda-secao-input">Cor da Borda das Seções:</label>
+                <input type="color" id="cor-borda-secao-input" value="#b8860b">
+            </div>
+            <div class="input-group">
+                <label for="estilo-borda-secao-select">Estilo da Borda das Seções:</label>
+                <select id="estilo-borda-secao-select">
+                    <option value="solid">Sólida</option>
+                    <option value="dashed">Tracejada</option>
+                    <option value="dotted">Pontilhada</option>
+                    <option value="double">Dupla</option>
+                    <option value="groove">Groove</option>
+                    <option value="ridge">Ridge</option>
+                </select>
+            </div>
+             <div class="input-group">
+                <label for="largura-borda-secao-input">Largura da Borda (px):</label>
+                <input type="number" id="largura-borda-secao-input" min="0" max="10" value="2">
+            </div>
+            <button class="confirm-btn" onclick="aplicarEstilosFicha()">Aplicar Estilos</button>
+            <button class="cancel-btn" onclick="fecharModal('estilos-ficha-modal')">Cancelar</button>
+        </div>
+    </div>
     <div id="fireworks-container"></div>
-    <!-- Gatilho e Painel para Histórico de Dados -->
     <div id="dice-history-trigger">Histórico de Dados</div>
     <div id="dice-history-panel"> 
         <h2>Histórico de Rolagens</h2>
         <div id="dice-history-list">
-            <!-- Os itens do histórico serão inseridos aqui pelo JavaScript -->
         </div>
         <div class="dice-history-buttons">
             <button id="limpar-historico-btn" class="botao">Limpar Histórico</button>
             <button id="fechar-historico-btn" class="botao">Fechar Caixa</button>
         </div>
     </div>
-    <!-- Tooltip Customizado -->
     <div id="custom-tooltip"></div>
 
     <script>
@@ -1083,8 +1152,16 @@ html
             racaDescricaoInput = document.getElementById("raca-descricao"), luaBtn = document.getElementById("lua-btn"), solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
-            planoFundoBtn = document.getElementById("plano-fundo-btn"),
+            planoFundoBtn = document.getElementById("plano-fundo-btn"), estilosFichaBtn = document.getElementById("estilos-ficha-btn"), 
             backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
+            estilosFichaModal = document.getElementById("estilos-ficha-modal"), 
+            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"), 
+            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"), 
+            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"), 
+            diceTextureInput = document.getElementById("dice-texture-input"), 
+            diceTextureVisualBtn = document.getElementById("dice-texture-input-visual"), 
+            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
+            diceAnimationSelector = document.getElementById("dice-animation-selector"), 
             backgroundColorInput = document.getElementById('background-color-input'), 
             backgroundColorButtonVisual = document.getElementById('cor-fundo-visual-btn'), 
             fontSelector = document.getElementById('font-selector'), 
@@ -1102,7 +1179,6 @@ html
             limparHistoricoBtn = document.getElementById('limpar-historico-btn'),
             customTooltipElement = document.getElementById('custom-tooltip'),
             gmModeBtn = document.getElementById('gm-mode-btn'),
-            // NOVOS SELETORES PARA INPUTS DE RECURSOS
             vidaAtualInput = document.getElementById('vida-atual-input'),
             magiaAtualInput = document.getElementById('magia-atual-input'),
             vigorAtualInput = document.getElementById('vigor-atual-input');
@@ -1118,7 +1194,6 @@ html
         let fireworksContainerRef; 
         let tooltipTimeoutId = null; 
 
-        // --- LocalStorage Helper Functions ---
         function getFichasFromStorage() {
             const fichasJSON = localStorage.getItem(RGP_FICHAS_KEY);
             return fichasJSON ? JSON.parse(fichasJSON) : {};
@@ -1139,7 +1214,6 @@ html
         function generateLocalId() {
             return `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         }
-        // --- End LocalStorage Helper Functions ---
 
 
         function criarFichaMatriz() {
@@ -1155,14 +1229,15 @@ html
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
-                    backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', /* Novo */
+                    backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                     backgroundColor: '#f0e6d2', 
                     fontFamily: "'Inter', sans-serif",
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
-                    diceColor: '#f0e6d2', diceNumberColor: '#000000',
+                    diceColor: '#f0e6d2', diceNumberColor: '#000000', texturaDado: null, animacaoDado: 'padrao', 
                     diceRolls: [],
                     collapsedSections: {},
-                    gmOverrides: {} 
+                    gmOverrides: {},
+                    corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px' 
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1250,14 +1325,15 @@ html
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
-                backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', /* Novo */
+                backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                 backgroundColor: '#f0e6d2',
                 fontFamily: "'Inter', sans-serif", 
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
-                diceColor: '#f0e6d2', diceNumberColor: '#000000',
+                diceColor: '#f0e6d2', diceNumberColor: '#000000', texturaDado: null, animacaoDado: 'padrao',
                 diceRolls: [],
                 collapsedSections: {},
-                gmOverrides: {} 
+                gmOverrides: {},
+                corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px'
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1286,6 +1362,11 @@ html
             if (!ficha.diceRolls) ficha.diceRolls = [];
             if (!ficha.collapsedSections) ficha.collapsedSections = {};
             if (!ficha.gmOverrides) ficha.gmOverrides = {}; 
+            if (!ficha.corBordaSecao) ficha.corBordaSecao = '#b8860b'; 
+            if (!ficha.estiloBordaSecao) ficha.estiloBordaSecao = 'solid';
+            if (!ficha.larguraBordaSecao) ficha.larguraBordaSecao = '2px';
+            if (ficha.texturaDado === undefined) ficha.texturaDado = null; // Correção importante
+            if (!ficha.animacaoDado) ficha.animacaoDado = 'padrao';
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1325,16 +1406,13 @@ html
             isXpUnlocked = false; 
             if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId); 
             
-            // Inicializa variáveis JS com os valores da ficha ou padrões.
-            // Estes valores serão atualizados pelos inputs agora.
             vidaAtual = ficha.vidaAtual !== undefined ? parseInt(ficha.vidaAtual) : 50;
             magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
-            atualizarNivel(); // Chamará calcularAtributos
-            // Após calcularAtributos, os totais (vidaTotal, etc.) estarão definidos.
-            // Os inputs atuais serão definidos dentro de calcularAtributos ou aqui:
-            vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); // Garante que não exceda o total ao carregar
+            atualizarNivel(); 
+            
+            vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
             magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
             vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
 
@@ -1344,9 +1422,11 @@ html
             });
             
             aplicarPlanoDeFundoInicial(ficha); 
+            aplicarEstilosFichaInicial(ficha); 
             aplicarCorDeFundoInicial(ficha);   
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
+            aplicarCustomizacoesDadoInicial(ficha); 
             aplicarEstadoColapsoSecoes(ficha.collapsedSections);
             document.body.classList.toggle("dark-mode", ficha.darkMode === true);
             document.body.classList.toggle("gm-mode-active", isGmModeActive); 
@@ -1402,15 +1482,16 @@ html
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
-            fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; // Salva o attachment
+            fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
             fichaAtual.backgroundColor = document.body.style.backgroundColor;
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector ? fontSelector.value : "'Inter', sans-serif";
             
             fichaAtual.diceColor = diceColorInput.value; 
-            fichaAtual.diceNumberColor = diceNumberColorInput.value; 
+            fichaAtual.diceNumberColor = diceNumberColorInput.value;
+            fichaAtual.texturaDado = fichas[currentFichaId].texturaDado; // Garantir que pegue o valor atual de texturaDado da ficha
+            fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
-            // Atualiza as variáveis globais com os valores dos inputs antes de salvar
             vidaAtual = parseInt(vidaAtualInput.value);
             magiaAtual = parseInt(magiaAtualInput.value);
             vigorAtual = parseFloat(vigorAtualInput.value);
@@ -1419,13 +1500,17 @@ html
             fichaAtual.magiaAtual = magiaAtual;
             fichaAtual.vigorAtual = vigorAtual;
 
+            fichaAtual.corBordaSecao = corBordaSecaoInput.value;
+            fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
+            fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
+
+
             saveFichasToStorage(fichas);
             showNotification("Salvo Localmente!", "save-success");
         }
 
         function calcularNivel(exp) { return nivelData.findLast(data => exp >= data.xp)?.nivel ?? 0; }
 
-        // --- FUNÇÕES DOS FOGOS DE ARTIFÍCIO ---
         function criarParticulaFogos(x, y, cor, tipo) {
             const particula = document.createElement('div');
             particula.className = 'firework-particle'; 
@@ -1502,8 +1587,7 @@ html
                 setTimeout(dispararFogoDeArtificioIndividual, Math.random() * 1000 + (i * 150)); 
             }
         }
-        // --- FIM FUNÇÕES DOS FOGOS DE ARTIFÍCIO ---
-
+        
         function atualizarNivel() {
             const ficha = fichas[currentFichaId];
             experiencia = parseInt(experienciaInput.value) || 0;
@@ -1561,7 +1645,6 @@ html
             return ph;
         }
 
-        // FUNÇÕES DE RECURSOS ATUALIZADAS PARA USAR INPUTS
         function aumentarVida() { 
             let val = parseInt(vidaAtualInput.value);
             if (val < vidaTotal) { 
@@ -1722,20 +1805,20 @@ html
             document.getElementById("magia-total").textContent = magiaTotal;
             document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
             
-            // Atualiza max dos inputs de recurso atuais
             vidaAtualInput.max = vidaTotal;
             magiaAtualInput.max = magiaTotal;
             vigorAtualInput.max = vigorTotal;
-
-            // Ajusta os valores atuais se eles excederem os novos totais
-            // e atualiza as variáveis globais e os inputs.
-            vidaAtual = Math.min(parseInt(vidaAtualInput.value), vidaTotal);
-            magiaAtual = Math.min(parseInt(magiaAtualInput.value), magiaTotal);
-            vigorAtual = Math.min(parseFloat(vigorAtualInput.value), vigorTotal);
-
-            vidaAtualInput.value = vidaAtual;
-            magiaAtualInput.value = magiaAtual;
-            vigorAtualInput.value = vigorAtual.toFixed(1);
+            
+            // Aqui, não redefina vidaAtual, magiaAtual, vigorAtual com base no valor dos inputs.
+            // Eles já foram definidos em carregarFicha ou pelas ações do usuário.
+            // Apenas garanta que não excedam o novo total.
+            vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
+            magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
+            vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
+            // Atualize as variáveis globais para consistência, se necessário (mas os inputs são a fonte agora para edição direta)
+            vidaAtual = parseInt(vidaAtualInput.value);
+            magiaAtual = parseInt(magiaAtualInput.value);
+            vigorAtual = parseFloat(vigorAtualInput.value);
 
 
             document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
@@ -1796,15 +1879,22 @@ html
                 if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].diceRolls = [];
                     fichas[currentFichaId].collapsedSections = {};
+                    fichas[currentFichaId].corBordaSecao = '#b8860b'; // Reset estilos de borda
+                    fichas[currentFichaId].estiloBordaSecao = 'solid';
+                    fichas[currentFichaId].larguraBordaSecao = '2px';
+                    fichas[currentFichaId].texturaDado = null; // Reset textura do dado
+                    fichas[currentFichaId].animacaoDado = 'padrao'; // Reset animação do dado
                 }
+                aplicarEstilosFichaInicial(fichas[currentFichaId]); // Aplicar reset visualmente
+                aplicarCustomizacoesDadoInicial(fichas[currentFichaId]); // Aplicar reset visualmente
                 aplicarEstadoColapsoSecoes({});
                 
-                atualizarNivel(); // Recalcula tudo, incluindo vidaTotal, etc.
-                                 // E define os inputs atuais com base nos totais
+                atualizarNivel(); 
+                                 
                 vidaAtualInput.value = vidaTotal; 
                 magiaAtualInput.value = magiaTotal;
                 vigorAtualInput.value = vigorTotal.toFixed(1);
-                vidaAtual = vidaTotal; // Sincroniza variáveis globais
+                vidaAtual = vidaTotal; 
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
 
@@ -1916,7 +2006,6 @@ html
         });
         nomePersonagemInput.oninput = salvarDados;
 
-        // Event listeners para os inputs de recursos atuais
         [vidaAtualInput, magiaAtualInput, vigorAtualInput].forEach(input => {
             input.addEventListener('input', (event) => {
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
@@ -1934,7 +2023,7 @@ html
                     maxVal = vidaTotal;
                     if (value > maxVal) value = maxVal;
                     if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = vidaAtual; // Volta ao valor anterior se NaN
+                    if (isNaN(value)) value = vidaAtual; 
                     vidaAtual = value;
                     event.target.value = vidaAtual;
                 } else if (event.target === magiaAtualInput) {
@@ -2042,26 +2131,39 @@ html
                 return;
             }
             isDiceRolling = true;
-            diceRoll.textContent = "..."; 
-            diceRoll.classList.add("is-rolling");
-            diceRoll.classList.remove("critical-failure", "critical-success");
+            diceRoll.textContent = "...";
+            
+            diceRoll.classList.remove('is-rolling', 'is-rolling-fast', 'is-rolling-jump', 'critical-failure', 'critical-success');
             diceResult.style.display = "none";
 
+            const animacaoSelecionada = fichas[currentFichaId]?.animacaoDado || 'padrao';
+            let classeAnimacao = 'is-rolling'; 
+            let duracaoAnimacao = 1000;
+
+            if (animacaoSelecionada === 'rapido') {
+                classeAnimacao = 'is-rolling-fast';
+                duracaoAnimacao = 500;
+            } else if (animacaoSelecionada === 'salto') {
+                classeAnimacao = 'is-rolling-jump';
+                duracaoAnimacao = 1200;
+            }
+            diceRoll.classList.add(classeAnimacao);
+
             setTimeout(() => {
-                const roll = Math.floor(Math.random() * currentDiceMax) + 1; 
+                const roll = Math.floor(Math.random() * currentDiceMax) + 1;
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
                 
-                diceRoll.classList.remove("is-rolling"); 
-                diceRoll.textContent = roll; 
+                diceRoll.classList.remove(classeAnimacao); 
+                diceRoll.textContent = roll;
 
                 let notificationClass = "normal-result";
-                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`; 
+                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
 
-                if (roll === 1) { 
+                if (roll === 1) {
                     diceRoll.classList.add("critical-failure");
                     notificationClass = "critical-failure";
                     notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
-                } else if (roll === currentDiceMax) { 
+                } else if (roll === currentDiceMax) {
                     diceRoll.classList.add("critical-success");
                     notificationClass = "critical-success";
                     notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
@@ -2085,9 +2187,8 @@ html
                     }
                     salvarDados(); 
                 }
-
-                isDiceRolling = false; 
-            }, 1000); 
+                isDiceRolling = false;
+            }, duracaoAnimacao);
         };
         
         changeDiceTypeBtn.addEventListener('click', (event) => {
@@ -2149,7 +2250,6 @@ html
                         racaSelecionada = tempRacaSelecionada;
                         racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
                         racaDescricaoInput.value = raca.vantagens.join("\n\n");
-                        // pontosVantagemSpan.textContent = getPontosVantagem(); // Será feito por atualizarNivel
                         racasPanel.style.display = "none";
                         atualizarNivel(); 
                         salvarDados();
@@ -2357,9 +2457,9 @@ html
             const selectedSizeOption = document.querySelector('input[name="background-size"]:checked');
             const selectedSize = selectedSizeOption.value;
             
-            let attachment = 'scroll'; // Padrão para "Estender" e "Tamanho Normal"
+            let attachment = 'scroll'; 
             if (selectedSize === 'cover') {
-                attachment = 'fixed'; // Apenas "Preencher Tela (Fixo)" usa fixed
+                attachment = 'fixed'; 
             }
 
             if (file) {
@@ -2377,6 +2477,10 @@ html
                  // Se nenhuma nova imagem for selecionada, mas já existe uma, apenas aplica o size/attachment
                 document.body.style.backgroundSize = selectedSize;
                 document.body.style.backgroundAttachment = attachment;
+                if (fichas[currentFichaId]) { // Atualiza a ficha
+                    fichas[currentFichaId].backgroundSize = selectedSize;
+                    fichas[currentFichaId].backgroundAttachment = attachment;
+                }
                 salvarDados();
                 fecharModal('background-modal');
             } else {
@@ -2387,7 +2491,12 @@ html
         function excluirPlanoDeFundo() {
             if (confirm("Remover imagem de fundo?")) {
                 document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundAttachment = 'scroll'; // Reset ao padrão
+                document.body.style.backgroundAttachment = 'scroll'; 
+                if (fichas[currentFichaId]) {
+                     fichas[currentFichaId].backgroundImage = null;
+                     fichas[currentFichaId].backgroundSize = 'cover'; // Reset ao padrão
+                     fichas[currentFichaId].backgroundAttachment = 'scroll'; // Reset ao padrão
+                }
                 salvarDados();
                 fecharModal('background-modal');
             }
@@ -2396,7 +2505,7 @@ html
         function aplicarPlanoDeFundoInicial(ficha) {
             const bgImage = ficha?.backgroundImage;
             const bgSize = ficha?.backgroundSize || 'cover';
-            const bgAttachment = ficha?.backgroundAttachment || (bgSize === 'cover' ? 'fixed' : 'scroll'); // Define 'fixed' se 'cover' e nenhum attachment salvo
+            const bgAttachment = ficha?.backgroundAttachment || (bgSize === 'cover' ? 'fixed' : 'scroll'); 
             
             if (bgImage) {
                 document.body.style.backgroundImage = `url('${bgImage}')`;
@@ -2406,7 +2515,6 @@ html
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll';
             }
-             // Atualizar os radios no modal para refletir o estado carregado
             const radioOptions = document.querySelectorAll('input[name="background-size"]');
             radioOptions.forEach(radio => {
                 if (radio.value === bgSize) {
@@ -2610,16 +2718,15 @@ html
             let isActionActive = false;
 
             const startAction = (event) => {
-                // Prevenir comportamento padrão apenas se não for um clique já tratado por 'click'
-                // if (event.type === 'touchstart') { // Não precisa mais disso se onclick foi removido dos botões
-                // event.preventDefault(); // Comentar/Remover se causar problemas no mobile
-                // }
+                 if (event.type === 'touchstart' && event.cancelable) { 
+                     event.preventDefault(); 
+                }
                 
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     abrirModalSenha(buttonElement); 
                     return;
                 }
-                if (isActionActive) return; // Previne múltiplos intervalos
+                if (isActionActive) return;
                 isActionActive = true;
 
                 actionFunction(); 
@@ -2636,11 +2743,8 @@ html
 
             buttonElement.addEventListener('mousedown', startAction);
             buttonElement.addEventListener('mouseup', stopAction);
-            buttonElement.addEventListener('mouseleave', stopAction); // Para o caso do mouse sair do botão ainda pressionado
-            buttonElement.addEventListener('touchstart', (e) => {
-                // e.preventDefault(); // Manter para evitar zoom ou scroll indesejado no toque. Testar!
-                startAction(e);
-            }, { passive: false }); // `passive: false` é importante para `preventDefault` em touchstart funcionar
+            buttonElement.addEventListener('mouseleave', stopAction); 
+            buttonElement.addEventListener('touchstart', startAction, { passive: false }); 
             buttonElement.addEventListener('touchend', stopAction);
             buttonElement.addEventListener('touchcancel', stopAction);
         }
@@ -2662,7 +2766,6 @@ html
             if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
                 top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; 
             }
-
 
             customTooltipElement.style.top = `${top}px`;
             customTooltipElement.style.left = `${left}px`;
@@ -2701,7 +2804,6 @@ html
             });
         }
         
-        // --- MODO MESTRE (GM) ---
         gmModeBtn.addEventListener('click', () => {
             if (isGmModeActive) {
                 isGmModeActive = false;
@@ -2763,7 +2865,104 @@ html
             }
         }
         fichaContainer.addEventListener('click', handleGmEdit);
-        // --- FIM MODO MESTRE (GM) ---
+        
+        estilosFichaBtn.addEventListener('click', () => {
+            if (isFichaLocked && !isFichaUnlocked) {
+                return abrirModalSenha(estilosFichaBtn, abrirModalEstilosFicha);
+            }
+            abrirModalEstilosFicha();
+        });
+
+        function abrirModalEstilosFicha() {
+            const ficha = fichas[currentFichaId];
+            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
+            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
+            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2; // Garante que seja número
+            estilosFichaModal.style.display = "flex";
+        }
+
+        function aplicarEstilosFicha() {
+            const novaCorBorda = corBordaSecaoInput.value;
+            const novoEstiloBorda = estiloBordaSecaoSelect.value;
+            const novaLarguraBorda = larguraBordaSecaoInput.value + 'px';
+
+            document.documentElement.style.setProperty('--cor-borda-secao', novaCorBorda);
+            document.documentElement.style.setProperty('--estilo-borda-secao', novoEstiloBorda);
+            document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
+
+            if (fichas[currentFichaId]) {
+                fichas[currentFichaId].corBordaSecao = novaCorBorda;
+                fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
+                fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
+            }
+            salvarDados();
+            fecharModal('estilos-ficha-modal');
+            showNotification("Estilos de borda aplicados!", "save-success");
+        }
+        
+        function aplicarEstilosFichaInicial(ficha) {
+            document.documentElement.style.setProperty('--cor-borda-secao', ficha.corBordaSecao || '#b8860b');
+            document.documentElement.style.setProperty('--estilo-borda-secao', ficha.estiloBordaSecao || 'solid');
+            document.documentElement.style.setProperty('--largura-borda-secao', ficha.larguraBordaSecao || '2px');
+            
+            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
+            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
+            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
+        }
+
+        if (diceTextureVisualBtn) { 
+            diceTextureVisualBtn.addEventListener('click', () => diceTextureInput.click());
+        }
+        diceTextureInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    aplicarTexturaDado(e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        removeDiceTextureBtn.addEventListener('click', () => {
+            if (confirm("Remover textura do dado?")) {
+                aplicarTexturaDado(null);
+            }
+        });
+        
+        function aplicarTexturaDado(imageDataUrl) {
+            const ficha = fichas[currentFichaId];
+            if (imageDataUrl) {
+                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`;
+                if (ficha) ficha.texturaDado = imageDataUrl;
+            } else {
+                diceRoll.style.backgroundImage = 'none';
+                if (ficha) ficha.texturaDado = null;
+            }
+            if (ficha) salvarDados();
+        }
+
+        diceAnimationSelector.addEventListener('change', () => {
+            aplicarAnimacaoDado(diceAnimationSelector.value);
+        });
+
+        function aplicarAnimacaoDado(animacao) {
+            const ficha = fichas[currentFichaId];
+            if (ficha) {
+                ficha.animacaoDado = animacao;
+                salvarDados();
+            }
+        }
+
+        function aplicarCustomizacoesDadoInicial(ficha) {
+            if (ficha.texturaDado) {
+                diceRoll.style.backgroundImage = `url('${ficha.texturaDado}')`;
+            } else {
+                diceRoll.style.backgroundImage = 'none';
+            }
+            diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
+        }
+
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container'); 
@@ -2771,25 +2970,15 @@ html
                 currentX = diceContainer.offsetLeft;
                 currentY = diceContainer.offsetTop;
             }
-            // Remove os onclick dos botões, pois agora são tratados por setupHoldButtonEvents
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
             const btnAumentarVida = document.getElementById('btn-aumentar-vida');
             const btnDiminuirMagia = document.getElementById('btn-diminuir-magia');
             const btnAumentarMagia = document.getElementById('btn-aumentar-magia');
             const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
-
-            if(btnDiminuirVida) btnDiminuirVida.onclick = null;
-            if(btnAumentarVida) btnAumentarVida.onclick = null;
-            if(btnDiminuirMagia) btnDiminuirMagia.onclick = null;
-            if(btnAumentarMagia) btnAumentarMagia.onclick = null;
-            if(btnDiminuirVigor) btnDiminuirVigor.onclick = null;
-            if(btnAumentarVigor) btnAumentarVigor.onclick = null;
             
-            carregarFichas(); // Carrega as fichas primeiro
+            carregarFichas(); 
 
-            // Configura os botões de recurso DEPOIS de carregarFichas,
-            // para que vidaTotal, etc., estejam corretamente inicializados.
             setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
             setupHoldButtonEvents(btnAumentarVida, aumentarVida);
             setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia);
