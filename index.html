@@ -88,12 +88,14 @@ html
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
         section { 
+            /* background: #f0e6d2; */ /* Managed by JS for override */
             border-width: var(--largura-borda-secao);
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px; 
             transition: background-color 0.3s;
         }
+        /* body.dark-mode section no longer needed here as JS will handle it */
 
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
@@ -143,9 +145,8 @@ html
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
         .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
-        .atributo-destaque > div { display: flex; align-items: center; gap: 5px; } /* Wrapper for value, dice, edit */
-        .atributo-destaque span:not(.attribute-roll-trigger):not(.gm-edit-icon) { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
-        body.dark-mode .atributo-destaque span:not(.attribute-roll-trigger):not(.gm-edit-icon) { color: #e0e0e0; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
+        body.dark-mode .atributo-destaque span { color: #e0e0e0; }
         .atributo-fogo { animation: fogo 1.5s infinite; }
         @keyframes fogo {
             0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
@@ -224,20 +225,9 @@ html
         #dice-container {
             position: absolute; top: 20px; right: 20px; width: auto; 
             text-align: center;
-            font-family: 'MedievalSharp', serif; cursor: move; z-index: 1000; /* Higher z-index */ user-select: none;
+            font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
             perspective: 800px; 
-            transition: top 0.5s ease-out, left 0.5s ease-out, transform 0.5s ease-out; /* For animation */
         }
-        #dice-container.centered-roll {
-            position: fixed !important; /* Override absolute positioning */
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) scale(1.2) !important; /* Center and slightly enlarge */
-            right: auto !important; /* Override if it was set by dragging */
-            bottom: auto !important;
-            box-shadow: 0 0 20px 10px rgba(0,0,0,0.3); /* Add a bit of shadow for focus */
-        }
-
         #dice-container label { font-size: 1.2rem; color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
         body.dark-mode #dice-container label { color: #e0e0e0; }
         #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.5rem; }
@@ -312,12 +302,12 @@ html
             display: none;
             position: absolute;
             top: 40px; 
-            /* right: 0;  Removed to allow dynamic positioning */
+            right: 0; 
             background-color: #f0e6d2;
             border: 1px solid #b8860b;
             border-radius: 4px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            z-index: 1100; /* Higher than dice container when normal */
+            z-index: 110; 
             padding: 5px;
             flex-direction: column; 
             gap: 5px;
@@ -335,41 +325,6 @@ html
         .dice-option-btn:hover { background-color: #d2b48c; }
         body.dark-mode .dice-option-btn { background-color: #3a2f1e; color: #f0e6d2; border-color: #5c4b35; }
         body.dark-mode .dice-option-btn:hover { background-color: #4a3c2a; }
-
-        .attribute-roll-trigger {
-            cursor: pointer;
-            font-size: 1.1rem; /* Default size, can be overridden */
-            padding: 0 5px;
-            user-select: none;
-        }
-        .attribute-roll-trigger.small-dice {
-            font-size: 0.9rem; /* Smaller dice for calculated/locomotion attributes */
-        }
-
-        #ficha-content .atributo, 
-        #ficha-content .atributo-destaque,
-        #ficha-content .locomotion-item {
-            display: flex;
-            align-items: center; /* Align label, input/value, and dice */
-            justify-content: space-between; /* Push label and value/input apart */
-        }
-        #ficha-content .atributo label,
-        #ficha-content .atributo-destaque label,
-        #ficha-content .locomotion-item label {
-             margin-bottom: 0; /* Remove bottom margin for better alignment */
-             margin-right: 10px; /* Space between label and input/value */
-        }
-        #ficha-content .atributo input[type="number"] {
-            flex-grow: 1; /* Allow input to take available space */
-            margin-right: 5px; /* Space before dice icon */
-        }
-        #ficha-content .atributo-destaque > div, /* Wrapper for value, dice, edit */
-        #ficha-content .locomotion-item > div:last-child { /* Assuming last div in locomotion for value and icons */
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
 
         #fireworks-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -469,8 +424,8 @@ html
         }
         #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
         #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
-        #notification.normal-result { animation: blink 1s infinite; }
-        #notification.save-success { background: rgba(0, 200, 0, 0.8); } 
+        #notification.normal-result /* , #notification.save-success - Removido save-success para não piscar */ { animation: blink 1s infinite; }
+        #notification.save-success { background: rgba(0, 200, 0, 0.8); } /* Mantém a cor, mas não pisca mais */
 
         #character-image-container {
             position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
@@ -619,10 +574,9 @@ html
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
         .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; }
-        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; justify-content: space-between; /* Adjusted */ }
-        .locomotion-item label { font-weight: bold; color: #FFD700; margin-right: 5px; }
-        .locomotion-item > div { display: flex; align-items: center; gap: 5px;} /* Wrapper for emoji, value, dice, edit */
-        .locomotion-item span:not(.attribute-roll-trigger):not(.gm-edit-icon) { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; font-weight: bold; }
+        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .locomotion-item label { font-weight: bold; color: #FFD700; }
+        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; margin-left: 5px; font-weight: bold; }
         #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513; }
         .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto; }
         body.dark-mode .list-display { background: #333; border-color: #555; }
@@ -673,7 +627,7 @@ html
         
         .gm-edit-icon {
             font-size: 0.8rem;
-            /* margin-left: 5px; */ /* Now part of a gapped flex container */
+            margin-left: 5px;
             cursor: pointer;
             display: none; 
             color: #007bff; 
@@ -845,78 +799,49 @@ html
                         <div class="atributos-coluna">
                             <div class="atributo">
                                 <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
-                                <input type="number" id="forca" value="0" min="0" class="flex-grow">
-                                <span class="attribute-roll-trigger ml-2" data-attribute-id="forca" data-attribute-name="Força" title="Rolar Força">🎲</span>
+                                <input type="number" id="forca" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
-                                <input type="number" id="destreza" value="0" min="0" class="flex-grow">
-                                <span class="attribute-roll-trigger ml-2" data-attribute-id="destreza" data-attribute-name="Destreza" title="Rolar Destreza">🎲</span>
+                                <input type="number" id="destreza" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
-                                <input type="number" id="agilidade" value="0" min="0" class="flex-grow">
-                                <span class="attribute-roll-trigger ml-2" data-attribute-id="agilidade" data-attribute-name="Agilidade" title="Rolar Agilidade">🎲</span>
+                                <input type="number" id="agilidade" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
-                                <input type="number" id="constituicao" value="0" min="0" class="flex-grow">
-                                <span class="attribute-roll-trigger ml-2" data-attribute-id="constituicao" data-attribute-name="Constituição" title="Rolar Constituição">🎲</span>
+                                <input type="number" id="constituicao" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
-                                <input type="number" id="inteligencia" value="0" min="0" class="flex-grow">
-                                <span class="attribute-roll-trigger ml-2" data-attribute-id="inteligencia" data-attribute-name="Inteligência" title="Rolar Inteligência">🎲</span>
+                                <input type="number" id="inteligencia" value="0" min="0">
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
-                                <div>
-                                    <span id="ataque">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="ataque" data-attribute-name="Ataque" title="Rolar Ataque">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
-                                </div>
+                                <span id="ataque">0</span> <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
-                                <div>
-                                    <span id="ataque-magico">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="ataque-magico" data-attribute-name="Ataque Mágico" title="Rolar Ataque Mágico">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
-                                </div>
+                                <span id="ataque-magico">0</span> <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
-                                <div>
-                                    <span id="acerto">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="acerto" data-attribute-name="Acerto" title="Rolar Acerto">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
-                                </div>
+                                <span id="acerto">0</span> <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
-                                <div>
-                                    <span id="esquiva">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="esquiva" data-attribute-name="Esquiva" title="Rolar Esquiva">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
-                                </div>
+                                <span id="esquiva">0</span> <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
-                                <div>
-                                    <span id="rdf">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="rdf" data-attribute-name="RDF" title="Rolar RDF">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
-                                </div>
+                                <span id="rdf">0</span> <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
-                                <div>
-                                    <span id="rdm">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="rdm" data-attribute-name="RDM" title="Rolar RDM">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
-                                </div>
+                                <span id="rdm">0</span> <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
                             </div>
                         </div>
                     </div>
@@ -971,7 +896,16 @@ html
                         <div style="width:50%">
                             <label>Magias e Habilidades:</label>
                             <div id="magias-list" class="magias-container">
-                                <!-- Magias serão adicionadas aqui dinamicamente pelo JS -->
+                                <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 2" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 4" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 5" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 6" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 7" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 8" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 9" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
                             </div>
                             <button id="adicionar-magia-btn">Adicionar Magia</button>
                         </div>
@@ -997,28 +931,13 @@ html
                 <div class="section-content">
                     <div class="locomotion-container">
                         <div class="locomotion-item">
-                            <label>Velocidade de Corrida (km/h):</label>
-                            <div>
-                                <span>🏃‍♂️</span><span id="velocidade-corrida">25</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="velocidade-corrida" data-attribute-name="Velocidade Corrida" data-fixed-dice="D6" title="Rolar Velocidade de Corrida">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
-                            </div>
+                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span> <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Altura do Pulo (m):</label>
-                            <div>
-                                <span>⬆️</span><span id="altura-pulo">1</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="altura-pulo" data-attribute-name="Altura do Pulo" data-fixed-dice="D6" title="Rolar Altura do Pulo">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
-                            </div>
+                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span> <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Distância do Pulo (m):</label>
-                            <div>
-                                <span>➡️</span><span id="distancia-pulo">3</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="distancia-pulo" data-attribute-name="Distância do Pulo" data-fixed-dice="D6" title="Rolar Distância do Pulo">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
-                            </div>
+                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span> <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
                         </div>
                     </div>
                 </div>
@@ -1366,8 +1285,6 @@ html
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
         let tooltipTimeoutId = null; 
-        let originalDiceContainerState = { top: '', left: '', right: '', transform: '', position: ''}; // For resetting dice position
-        let attributeRollData = null; // Stores context for attribute rolls
 
         function getFichasFromStorage() {
             const fichasJSON = localStorage.getItem(RGP_FICHAS_KEY);
@@ -1399,8 +1316,7 @@ html
                     forca: "0", destreza: "0", agilidade: "0", inteligencia: "0", constituicao: "0", experiencia: "0",
                     armaDireitaNome: "", armaDireitaAtaque: "0", armaDireitaAtaqueMagico: "0",
                     armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                    vantagens: "", magiasHabilidades: [], // Changed to array
-                    desvantagens: "",
+                    vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
                     inventario: Array(10).fill({ item: "", peso: "0" }),
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
@@ -1497,8 +1413,7 @@ html
                 nomeFicha, nomePersonagem: "", descricaoPersonagem: "", forca: "0", destreza: "0", agilidade: "0",
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                vantagens: "", magiasHabilidades: [], // Changed to array
-                desvantagens: "",
+                vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
                 inventario: Array(10).fill({ item: "", peso: "0" }),
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
@@ -1556,10 +1471,7 @@ html
             if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
             if (ficha.backgroundSize === undefined) ficha.backgroundSize = 'cover';
             if (ficha.backgroundAttachment === undefined) ficha.backgroundAttachment = 'scroll';
-            if (ficha.darkMode === undefined) ficha.darkMode = false;
-            if (!Array.isArray(ficha.magiasHabilidades)) { // Ensure magiasHabilidades is an array
-                 ficha.magiasHabilidades = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n").map(m => ({nome: m, descricao: "", custo: ""})) : [];
-            }
+            if (ficha.darkMode === undefined) ficha.darkMode = false; // Default to light mode if not set
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1584,8 +1496,9 @@ html
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal(); 
 
-            renderizarMagiasHabilidades(ficha.magiasHabilidades || []); // Changed
-
+            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
+            magiasList.innerHTML = "";
+            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; input.addEventListener('input', salvarDados); magiasList.appendChild(input); });
             anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
             if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none"; }
 
@@ -1603,7 +1516,7 @@ html
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
             document.body.classList.toggle("dark-mode", ficha.darkMode === true); 
-            aplicarEstilosDeFundoVisuais(); 
+            aplicarEstilosDeFundoVisuais(); // Centralized function to apply all background styles
 
             atualizarNivel(); 
             
@@ -1618,6 +1531,7 @@ html
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarEstilosFichaInicial(ficha); 
+            // aplicarCorDeFundoInicial and aplicarCorDeFundoInternoFichaInicial are now handled by aplicarEstilosDeFundoVisuais
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
@@ -1637,14 +1551,7 @@ html
             if (!currentFichaId || !fichas[currentFichaId] || (isFichaLocked && !isFichaUnlocked)) return;
 
             const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
-            const magiasArray = [];
-            magiasList.querySelectorAll('.magia-item-container').forEach(item => {
-                magiasArray.push({
-                    nome: item.querySelector('.magia-nome')?.value || "",
-                    descricao: item.querySelector('.magia-descricao')?.value || "",
-                    custo: item.querySelector('.magia-custo')?.value || ""
-                });
-            });
+            const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
             
             const fichaAtual = fichas[currentFichaId];
 
@@ -1663,7 +1570,7 @@ html
             fichaAtual.armaEsquerdaAtaque = armaEsquerdaAtaqueInput.value;
             fichaAtual.armaEsquerdaAtaqueMagico = armaEsquerdaAtaqueMagicoInput.value;
             fichaAtual.vantagens = vantagensSelecionadas.join("\n");
-            fichaAtual.magiasHabilidades = magiasArray; // Changed to array
+            fichaAtual.magiasHabilidades = magias.join("\n");
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
             
@@ -1684,6 +1591,7 @@ html
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
             
+            // Store custom colors as they are from the picker
             if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
             if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
 
@@ -2068,16 +1976,14 @@ html
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = "";
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-                
-                renderizarMagiasHabilidades([]); // Limpa magias
-                
+                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); }
                 const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
                 characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; racaSelecionada = null;
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
                 classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                 
                 const currentFichaObject = fichas[currentFichaId] || {};
-                currentFichaObject.darkMode = document.body.classList.contains('dark-mode');
+                currentFichaObject.darkMode = document.body.classList.contains('dark-mode'); // Preserve current theme or reset to default if preferred
 
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
@@ -2094,14 +2000,12 @@ html
                 currentFichaObject.backgroundImage = null;
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
-                currentFichaObject.magiasHabilidades = [];
 
-
-                aplicarEstilosDeFundoVisuais(); 
+                aplicarEstilosDeFundoVisuais(); // Apply correct backgrounds based on theme and null custom colors
                 aplicarEstilosFichaInicial(currentFichaObject); 
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
-                aplicarCoresDadoInicial(currentFichaObject); 
+                aplicarCoresDadoInicial(currentFichaObject); // This will also respect current dark/light mode
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstadoColapsoSecoes({});
                 
@@ -2114,7 +2018,7 @@ html
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
 
-                salvarDados(); 
+                salvarDados(); // Salvar todas as propriedades resetadas
             }
         }
 
@@ -2335,53 +2239,20 @@ html
                 atualizarAbasFichas();
             }
         };
-        // Store initial position of dice container for reset after animation
-        let diceContainerOriginalTop = '';
-        let diceContainerOriginalRight = '';
-        let diceContainerOriginalLeft = ''; // For cases where 'right' might not be initially set
+        let isDragging = false, currentX = 0, currentY = 0, initialX, initialY;
+        
+        diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
+        document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
+        document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} };
 
-        diceContainer.onmousedown = e => { 
-            if (diceContainer.classList.contains('centered-roll')) return; // Prevent dragging while centered
-            isDragging = true; 
-            initialX = e.clientX - (diceContainer.style.left ? parseFloat(diceContainer.style.left) : (window.innerWidth - diceContainer.offsetLeft - diceContainer.offsetWidth)); // Handle if left is not set
-            initialY = e.clientY - diceContainer.offsetTop; 
-            diceContainer.style.cursor = "grabbing"; 
-        };
-        document.onmousemove = e => { 
-            if (isDragging && !diceContainer.classList.contains('centered-roll')) { 
-                e.preventDefault(); 
-                currentX = e.clientX - initialX; 
-                currentY = e.clientY - initialY; 
-                diceContainer.style.left = `${currentX}px`; 
-                diceContainer.style.top = `${currentY}px`; 
-                diceContainer.style.right = "auto";  // Important when moving from right-aligned
-            } 
-        };
-        document.onmouseup = () => { 
-            if(isDragging) {
-                isDragging = false; 
-                diceContainer.style.cursor = "move";
-            } 
-        };
-
-        function iniciarRolagemComAnimacao() {
-            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(diceRoll);
+        diceRoll.onclick = () => {
+            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked)) {
+                if (isFichaLocked && !isFichaUnlocked) abrirModalSenha(diceRoll);
                 return;
             }
             isDiceRolling = true;
             diceRoll.textContent = "...";
             
-            // Save original position if not already centered
-            if (!diceContainer.classList.contains('centered-roll')) {
-                diceContainerOriginalTop = diceContainer.style.top || (diceContainer.offsetTop + "px");
-                diceContainerOriginalRight = diceContainer.style.right || (window.innerWidth - diceContainer.offsetLeft - diceContainer.offsetWidth + "px");
-                diceContainerOriginalLeft = diceContainer.style.left || (diceContainer.offsetLeft + "px");
-                originalDiceContainerState.position = diceContainer.style.position || 'absolute';
-                originalDiceContainerState.transform = diceContainer.style.transform || '';
-            }
-            
-            diceContainer.classList.add('centered-roll');
             diceRoll.classList.remove('is-rolling', 'is-rolling-fast', 'is-rolling-jump', 'critical-failure', 'critical-success');
             diceResult.style.display = "none";
 
@@ -2406,104 +2277,43 @@ html
                 diceRoll.textContent = roll;
 
                 let notificationClass = "normal-result";
-                let notificationMsg = "";
+                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
 
-                if (attributeRollData) {
-                    let attributeValueElement = document.getElementById(attributeRollData.id);
-                    let attributeValue = 0;
-                    if (attributeValueElement) {
-                        if (attributeValueElement.tagName === 'INPUT' || attributeValueElement.tagName === 'TEXTAREA') {
-                            attributeValue = parseInt(attributeValueElement.value) || 0;
-                        } else { // Assuming SPAN for calculated attributes
-                            attributeValue = parseInt(attributeValueElement.textContent) || 0;
-                        }
-                    }
-
-                    const sumResult = roll + attributeValue;
-                    notificationMsg = `${attributeRollData.name}: ${sumResult} (Dado D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-
-                    if (roll === 1) {
-                        diceRoll.classList.add("critical-failure"); // Aura for the die itself
-                        notificationClass = "critical-failure"; // For the floating notification
-                        notificationMsg = `FALHA CRÍTICA! ${attributeRollData.name}: ${sumResult} (Dado D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-                    } else if (roll === currentDiceMax) {
-                        diceRoll.classList.add("critical-success"); // Aura for the die
-                        notificationClass = "critical-success"; // For floating notification
-                        notificationMsg = `SUCESSO CRÍTICO! ${attributeRollData.name}: ${sumResult} (Dado D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-                    }
-                    if(fichas[currentFichaId]) {
-                         fichas[currentFichaId].diceRolls.unshift({ 
-                            type: `D${currentDiceMax} (${attributeRollData.name})`, result: roll, sum: sumResult, 
-                            timestamp: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                        });
-                    }
-
-                } else { // Standard roll from main dice
-                    notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
-                    if (roll === 1) {
-                        diceRoll.classList.add("critical-failure");
-                        notificationClass = "critical-failure";
-                        notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
-                    } else if (roll === currentDiceMax) {
-                        diceRoll.classList.add("critical-success");
-                        notificationClass = "critical-success";
-                        notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
-                    }
-                     if(fichas[currentFichaId]) {
-                        fichas[currentFichaId].diceRolls.unshift({ 
-                            type: `D${currentDiceMax}`, result: roll,
-                            timestamp: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
-                        });
-                    }
+                if (roll === 1) {
+                    diceRoll.classList.add("critical-failure");
+                    notificationClass = "critical-failure";
+                    notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
+                } else if (roll === currentDiceMax) {
+                    diceRoll.classList.add("critical-success");
+                    notificationClass = "critical-success";
+                    notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
                 }
-                
                 showNotification(notificationMsg, notificationClass);
                 
-                if (fichas[currentFichaId] && fichas[currentFichaId].diceRolls?.length > 100) { 
-                    fichas[currentFichaId].diceRolls.pop();
+                if (fichas[currentFichaId]) {
+                    const now = new Date();
+                    const timestamp = now.toLocaleString('pt-BR', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric', 
+                        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                    });
+                    fichas[currentFichaId].diceRolls = fichas[currentFichaId].diceRolls || [];
+                    fichas[currentFichaId].diceRolls.unshift({ 
+                        type: `D${currentDiceMax}`,
+                        result: roll,
+                        timestamp: timestamp
+                    });
+                    if (fichas[currentFichaId].diceRolls.length > 100) { 
+                        fichas[currentFichaId].diceRolls.pop();
+                    }
+                    salvarDados(); 
                 }
-                salvarDados();
-                
-                // Wait for a bit before resetting position, so user sees result on centered die
-                setTimeout(() => {
-                    resetarPosicaoDado();
-                    isDiceRolling = false;
-                    attributeRollData = null; // Clear context after everything
-                }, 1500);
-
+                isDiceRolling = false;
             }, duracaoAnimacao);
-        }
-
-                function resetarPosicaoDado() {
-            diceContainer.classList.remove('centered-roll');
-            // Restore explicit styles if they were set by drag, otherwise allow CSS to take over
-            diceContainer.style.top = originalDiceContainerState.top || ''; 
-            diceContainer.style.left = originalDiceContainerState.left || '';
-            diceContainer.style.right = originalDiceContainerState.left ? 'auto' : (originalDiceContainerState.right || '');
-            diceContainer.style.position = originalDiceContainerState.position || '';
-            diceContainer.style.transform = originalDiceContainerState.transform || '';
-            diceRoll.classList.remove("critical-failure", "critical-success");
-        }
-
-        // This is the original dice roll, now it simply calls the animation version
-        diceRoll.onclick = () => {
-            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(diceRoll);
-                return;
-            }
-            // Ensure no attribute context if clicking main die directly
-            attributeRollData = null; 
-            iniciarRolagemComAnimacao(); // Call the animation sequence
         };
         
         changeDiceTypeBtn.addEventListener('click', (event) => {
             event.stopPropagation(); 
             if (isDiceRolling) return;
-            // Position menu near the main dice change button if it's a normal click
-            const rect = changeDiceTypeBtn.getBoundingClientRect();
-            diceOptionsMenu.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-            diceOptionsMenu.style.left = (rect.left + window.scrollX - (diceOptionsMenu.offsetWidth / 2) + (rect.width / 2)) + 'px';
-            diceOptionsMenu.style.right = 'auto'; // Ensure left positioning takes precedence
             diceOptionsMenu.style.display = diceOptionsMenu.style.display === 'flex' ? 'none' : 'flex';
         });
 
@@ -2515,51 +2325,14 @@ html
                 diceOptionsMenu.style.display = 'none';
                 diceRoll.textContent = '-'; 
                 diceRoll.classList.remove("critical-failure", "critical-success");
-
-                // If an attribute roll was pending, start the dice roll now
-                if (attributeRollData) {
-                    iniciarRolagemComAnimacao();
-                }
-            });
-        });
-
-        document.querySelectorAll('.attribute-roll-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                    if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(trigger);
-                    return;
-                }
-
-                attributeRollData = {
-                    id: trigger.dataset.attributeId,
-                    name: trigger.dataset.attributeName
-                };
-                
-                const fixedDice = trigger.dataset.fixedDice;
-                if (fixedDice) { // For locomotion, D6 is fixed
-                    currentDiceMax = parseInt(fixedDice.substring(1)); // e.g., "D6" -> 6
-                    changeDiceTypeBtn.textContent = fixedDice;
-                    diceOptionsMenu.style.display = 'none'; // Ensure menu is hidden
-                    iniciarRolagemComAnimacao();
-                } else { // For other attributes, show the options menu near the trigger
-                    const rect = trigger.getBoundingClientRect();
-                    diceOptionsMenu.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-                    diceOptionsMenu.style.left = (rect.left + window.scrollX - (diceOptionsMenu.offsetWidth / 2) + (rect.width / 2)) + 'px';
-                    diceOptionsMenu.style.right = 'auto'; // Ensure left positioning takes precedence
-                    diceOptionsMenu.style.display = 'flex';
-                }
             });
         });
 
         document.addEventListener('click', function(event) {
-            // Close dice options menu if clicking outside of it or its triggers
-            const isDiceOptionClick = diceOptionsMenu.contains(event.target);
-            const isDiceTriggerClick = event.target.classList.contains('attribute-roll-trigger') || event.target === changeDiceTypeBtn;
-
-            if (diceOptionsMenu.style.display === 'flex' && !isDiceOptionClick && !isDiceTriggerClick) {
+            if (diceOptionsMenu.style.display === 'flex' && 
+                !diceOptionsMenu.contains(event.target) && 
+                event.target !== changeDiceTypeBtn) {
                 diceOptionsMenu.style.display = 'none';
-                if(!isDiceRolling) attributeRollData = null; // Clear context if menu is closed without selection and no roll active
             }
             if (anotacoesTextarea.style.display === 'block' &&
                 !anotacoesTextarea.contains(event.target) &&
@@ -2575,7 +2348,7 @@ html
 
 
         vantagensDesvantagensBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(vantagensDesvantagensBtn);
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(vantagensDesvantagensBtn);
             tempVantagensSelecionadas = [...vantagensSelecionadas]; tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
             vantagensDesvantagensPanel.style.display = "block"; document.getElementById("salvar-vantagens-btn").style.display = "none"; atualizarVantagensDesvantagensPanel();
         };
@@ -2635,9 +2408,7 @@ html
         function atualizarVantagensDesvantagensPanel() {
             vantagensList.innerHTML = "<h3>Vantagens</h3>"; desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
             vantagensData.forEach(v => {
-                const div = document.createElement("div"); div.className = "vantagem-item"; 
-                div.textContent = `${v.nome} - Custo: ${v.custo} PH`;
-                div.title = v.descricao; // Add description as a tooltip
+                const div = document.createElement("div"); div.className = "vantagem-item"; div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`;
                 if (tempVantagensSelecionadas.includes(v.nome)) div.classList.add("comprada");
                 div.onclick = () => {
                     if (vantagensSelecionadas.includes(v.nome)) alert("Vantagem salva só pode ser removida com permissão do GM.");
@@ -2650,9 +2421,7 @@ html
                 }; vantagensList.appendChild(div);
             });
             desvantagensData.forEach(d => {
-                const div = document.createElement("div"); div.className = "desvantagem-item"; 
-                div.textContent = `${d.nome} - Ganho: ${d.ganho} PH`;
-                div.title = d.descricao; // Add description as a tooltip
+                const div = document.createElement("div"); div.className = "desvantagem-item"; div.textContent = `${d.nome} - Ganho: ${d.ganho} PH - ${d.descricao}`;
                 if (tempDesvantagensSelecionadas.includes(d.nome)) div.classList.add("comprada");
                 div.onclick = () => {
                     if (desvantagensSelecionadas.includes(d.nome)) alert("Desvantagem salva só pode ser removida com permissão do GM.");
@@ -2665,7 +2434,7 @@ html
         }
 
         function removerVantagem(v) {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Vantagem";
             if (confirm(`Deseja remover a vantagem "${v}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
@@ -2680,7 +2449,7 @@ html
             }
         }
         function removerDesvantagem(d) {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Desvantagem";
             if (confirm(`Deseja remover a desvantagem "${d}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
@@ -2715,73 +2484,15 @@ html
                 diceHistoryPanel.style.display = 'none';
             }
         };
-        
-        function renderizarMagiasHabilidades(magias) {
-            magiasList.innerHTML = ''; // Limpar a lista existente
-            const magiasParaRenderizar = Array.isArray(magias) ? magias : [];
-            if (magiasParaRenderizar.length === 0) { // Garantir pelo menos 10 slots se vazia
-                for(let i = 0; i < 10; i++) magiasParaRenderizar.push({nome: "", descricao: "", custo: ""});
-            }
-            magiasParaRenderizar.forEach((magia, index) => adicionarSlotMagia(magia, index));
-        }
-        
-        function adicionarSlotMagia(magia = {nome: "", descricao: "", custo: ""}, index = -1) {
-            const magiaItemContainer = document.createElement('div');
-            magiaItemContainer.className = 'magia-item-container mb-4 p-2 border border-gray-300 rounded';
-        
-            const nomeInput = document.createElement('input');
-            nomeInput.type = 'text';
-            nomeInput.className = 'magia-nome block w-full p-2 border rounded mb-1';
-            nomeInput.placeholder = `Magia/Habilidade ${index === -1 ? magiasList.children.length + 1 : index + 1}`;
-            nomeInput.value = magia.nome;
-            nomeInput.addEventListener('input', salvarDados);
-            nomeInput.title = magia.descricao; // Para tooltip simples via title
-        
-            const descricaoTextarea = document.createElement('textarea');
-            descricaoTextarea.className = 'magia-descricao block w-full p-2 border rounded mb-1 text-sm';
-            descricaoTextarea.placeholder = 'Descrição (efeitos, duração, etc.)';
-            descricaoTextarea.value = magia.descricao;
-            descricaoTextarea.rows = 2;
-            descricaoTextarea.addEventListener('input', (e) => {
-                nomeInput.title = e.target.value; // Update tooltip on nomeInput as well
-                salvarDados();
-            });
-        
-            const custoInput = document.createElement('input');
-            custoInput.type = 'text';
-            custoInput.className = 'magia-custo block w-full p-2 border rounded mb-1 text-sm';
-            custoInput.placeholder = 'Custo (ex: 5 PM, 1 Ação)';
-            custoInput.value = magia.custo;
-            custoInput.addEventListener('input', salvarDados);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'botao botao-excluir-magia text-xs px-2 py-1 bg-red-700 hover:bg-red-800';
-            deleteBtn.onclick = () => {
-                if (confirm("Tem certeza que deseja excluir esta magia/habilidade?")) {
-                    magiaItemContainer.remove();
-                    salvarDados();
-                }
-            };
-        
-            magiaItemContainer.appendChild(nomeInput);
-            magiaItemContainer.appendChild(descricaoTextarea);
-            magiaItemContainer.appendChild(custoInput);
-            magiaItemContainer.appendChild(deleteBtn);
-            magiasList.appendChild(magiaItemContainer);
-        }
 
         adicionarMagiaBtn.onclick = () => {
-             if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(adicionarMagiaBtn);
-            if (magiasList.querySelectorAll('.magia-item-container').length < 20) {
-                 adicionarSlotMagia();
-                 salvarDados(); 
-            }
+             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
+            if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); salvarDados(); }
             else alert("Limite de 20 magias/habilidades!");
         };
 
 
-        racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
+        racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
         fecharRacasBtn.onclick = () => { racasPanel.style.display = "none"; };
 
         function atualizarRacasPanel() {
@@ -2790,7 +2501,7 @@ html
                 div.innerHTML = `<h3>${r.nome}</h3><p>${r.descricao}</p><p><strong>Vantagens:</strong></p><ul>${r.vantagens.map(v => `<li>${v}</li>`).join("")}</ul>`;
                 if (tempRacaSelecionada === r.nome) div.classList.add("comprada");
                 div.onclick = () => {
-                    if (racaSelecionada && racaSelecionada !== r.nome && !isGmModeActive) alert("Raça salva só pode ser alterada com permissão do GM.");
+                    if (racaSelecionada && racaSelecionada !== r.nome) alert("Raça salva só pode ser alterada com permissão do GM.");
                     else if (tempRacaSelecionada === r.nome) { tempRacaSelecionada = null; }
                     else {
                         let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo || 0) : 0);
@@ -2814,12 +2525,12 @@ html
 
         function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex"; }
         function excluirRacaSelecionadaModal() {
-            fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Excluir Raça";
             if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaSelecionada = null; tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                         salvarDados(); fecharModal("senha-gm-modal"); 
                         atualizarNivel();
@@ -2828,17 +2539,17 @@ html
             }
         }
         function editarRacaSelecionadaModal() {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(); fecharModal('raca-opcoes-modal');
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(); fecharModal('raca-opcoes-modal');
             document.getElementById("editar-raca-modal").style.display = "flex"; document.getElementById("editar-raca-nome").value = racaNomeSpan.textContent;
             document.getElementById("editar-raca-descricao").value = racaDescricaoInput.value;
         }
         function salvarEdicaoRaca() {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Editar Raça";
             if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value;
                         racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
                         fecharModal('editar-raca-modal'); salvarDados(); fecharModal("senha-gm-modal");
@@ -2869,11 +2580,11 @@ html
 
         function showNotification(message, type) {
             notification.textContent = message; notification.className = type; notification.style.display = "block";
-            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 3000); // Increased duration for roll results
+            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
         
         customizacaoBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) {
+            if (isFichaLocked && !isFichaUnlocked) {
                 return abrirModalSenha(customizacaoBtn, () => {
                     abrirModalCustomizacao();
                 });
@@ -2882,18 +2593,15 @@ html
         };
         
         function abrirModalCustomizacao() {
-            const ficha = fichas[currentFichaId] || {};
+            const ficha = fichas[currentFichaId] || {}; // Use an empty object if ficha is null
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-             // For dark mode, if fichaInternalBackgroundColor isn't set, we fall back to specific dark defaults
-            const defaultDarkInternal = fichas[currentFichaId]?.darkMode ? 
-                (fichas[currentFichaId]?.fichaInternalBackgroundColor || '#121212') : 
-                (fichas[currentFichaId]?.fichaInternalBackgroundColor || '#1e1e1e');
+            const defaultDarkInternal = document.body.classList.contains('dark-mode') ? '#121212' : '#1e1e1e'; // More specific dark section color
 
-
-            backgroundColorInput.value = ficha.backgroundColor || defaultLightPage; // Always show stored or light default
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal; // Always show stored or light default
+            backgroundColorInput.value = ficha.backgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage);
+            
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkInternal : defaultLightInternal);
 
 
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
@@ -2909,9 +2617,8 @@ html
             estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
             larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
             
-            const isCurrentlyDark = document.body.classList.contains('dark-mode');
-            diceColorInput.value = ficha.diceColor || (isCurrentlyDark ? '#1e1e1e' : '#f0e6d2');
-            diceNumberColorInput.value = ficha.diceNumberColor || (isCurrentlyDark ? '#e0e0e0' : '#000000');
+            diceColorInput.value = ficha.diceColor || (document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#f0e6d2');
+            diceNumberColorInput.value = ficha.diceNumberColor || (document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#000000');
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
             diceTextureInput.value = ""; 
 
@@ -2988,18 +2695,24 @@ html
         }
 
         function aplicarEstilosDeFundoVisuais() {
-            const ficha = fichas[currentFichaId] || {};
+            const ficha = fichas[currentFichaId] || {}; // Fallback to empty object if ficha is null
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternalContainer = '#121212';
-            const defaultDarkInternalSection = '#1e1e1e';
+            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
+            const defaultDarkInternalSection = '#1e1e1e';   // For sections in dark mode
 
             // Body background
-            document.body.style.backgroundColor = isDarkModeActive ? defaultDarkPage : (ficha.backgroundColor || defaultLightPage);
-            
+            if (isDarkModeActive) {
+                document.body.style.backgroundColor = defaultDarkPage;
+            } else {
+                document.body.style.backgroundColor = ficha.backgroundColor || defaultLightPage;
+            }
+            // Ensure the input in the modal shows the stored/default light color
+            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
+
             // Ficha Container & Sections background
             let finalInternalContainerColor;
             let finalInternalSectionColor;
@@ -3016,10 +2729,10 @@ html
             document.querySelectorAll('#ficha-container section').forEach(sec => {
                 sec.style.backgroundColor = finalInternalSectionColor;
             });
-
-            // Inputs in modal always reflect the *stored* light/custom value, not the dark mode override
-            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
-            if (fichaInternalBackgroundColorInput) fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+             // Ensure the input in the modal shows the stored/default light color for internal
+            if (fichaInternalBackgroundColorInput) {
+                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+            }
         }
         
         backgroundColorInput.addEventListener('input', (event) => {
@@ -3073,8 +2786,8 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            if(diceColorInput) diceColorInput.value = ficha.diceColor || (isDarkMode ? defaultDarkPage : defaultLightPage); // Use light default for picker if unset
-            if(diceNumberColorInput) diceNumberColorInput.value = ficha.diceNumberColor || (isDarkMode ? '#e0e0e0' : '#000000');
+            if(diceColorInput) diceColorInput.value = diceBg; // Set picker to current visual or stored
+            if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
         diceHistoryTrigger.addEventListener('click', () => {
@@ -3097,14 +2810,12 @@ html
             }
 
             const rolls = fichas[currentFichaId].diceRolls;
-            diceHistoryList.innerHTML = rolls.map(roll => {
-                let sumText = roll.sum !== undefined ? `, Total: <strong>${roll.sum}</strong>` : '';
-                return `
+            diceHistoryList.innerHTML = rolls.map(roll => `
                 <div class="dice-history-item">
-                    <span>${roll.type}, Resultado: <strong>${roll.result}</strong>${sumText}</span>
+                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
                     <span class="timestamp">${roll.timestamp}</span>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
         fecharHistoricoBtn.addEventListener('click', () => {
@@ -3117,7 +2828,7 @@ html
             document.getElementById("senha-gm-input").value = "";
             document.getElementById("senha-gm-input").focus();
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                     if (fichas[currentFichaId]) {
                         fichas[currentFichaId].diceRolls = [];
                         salvarDados();
@@ -3187,7 +2898,7 @@ html
                      event.preventDefault(); 
                 }
                 
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID && !isGmModeActive) {
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     abrirModalSenha(buttonElement); 
                     return;
                 }
@@ -3200,7 +2911,7 @@ html
             };
 
             const stopAction = () => {
-                if (!isActionActive) return;
+                                if (!isActionActive) return;
                 clearInterval(currentActionIntervalId);
                 currentActionIntervalId = null;
                 isActionActive = false;
@@ -3251,40 +2962,21 @@ html
                 document.querySelector('label[for="constituicao"]'),
                 document.querySelector('label[for="inteligencia"]')
             ];
-             const attributeDiceTriggers = document.querySelectorAll('.attribute-roll-trigger');
-
 
             attributeLabels.forEach(label => {
                 if (label) {
-                    let tooltipTimeoutIdLabel;
                     label.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutIdLabel); 
-                        tooltipTimeoutIdLabel = setTimeout(() => {
+                        clearTimeout(tooltipTimeoutId); 
+                        tooltipTimeoutId = setTimeout(() => {
                             showCustomTooltip(event.target);
-                        }, 2000); 
+                        }, 3000); 
                     });
 
                     label.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutIdLabel);
+                        clearTimeout(tooltipTimeoutId);
                         hideCustomTooltip();
                     });
                 }
-            });
-
-            attributeDiceTriggers.forEach(trigger => {
-                 if(trigger.title) { // Only if title exists, to not override other potential tooltips
-                    let tooltipTimeoutIdTrigger;
-                    trigger.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutIdTrigger);
-                        tooltipTimeoutIdTrigger = setTimeout(() => {
-                           showCustomTooltip(event.target);
-                        }, 1500);
-                    });
-                    trigger.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutIdTrigger);
-                        hideCustomTooltip();
-                    });
-                 }
             });
         }
         
@@ -3432,25 +3124,10 @@ html
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container'); 
-             if (diceContainer) { // Store initial static position for the dice container
-                originalDiceContainerState.top = diceContainer.style.top || (diceContainer.offsetTop + "px");
-                originalDiceContainerState.right = diceContainer.style.right || (window.innerWidth - diceContainer.offsetLeft - diceContainer.offsetWidth + "px");
-                originalDiceContainerState.left = diceContainer.style.left || 'auto';
-                originalDiceContainerState.transform = diceContainer.style.transform || '';
-                originalDiceContainerState.position = diceContainer.style.position || 'absolute';
-
-                // If 'right' is not explicitly set (e.g., for the initial state), calculate and store it based on offsetLeft
-                // This makes reset logic more robust.
-                if (!diceContainer.style.right) {
-                     originalDiceContainerState.right = (window.innerWidth - diceContainer.offsetLeft - diceContainer.offsetWidth) + "px";
-                }
-                 if (!diceContainer.style.top) {
-                    originalDiceContainerState.top = (diceContainer.offsetTop) + "px";
-                }
-
-
+             if (diceContainer) { 
+                currentX = diceContainer.offsetLeft;
+                currentY = diceContainer.offsetTop;
             }
-
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
             const btnAumentarVida = document.getElementById('btn-aumentar-vida');
             const btnDiminuirMagia = document.getElementById('btn-diminuir-magia');
