@@ -98,7 +98,7 @@ html
         body.dark-mode section { background: #1e1e1e; }
         label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
         body.dark-mode label { color: #e0e0e0; }
-        input[type="text"], input[type="number"], textarea {
+        input[type="text"], input[type="number"], textarea, select { /* Adicionado select aqui */
             padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
             margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
             background: #fff; color: #000;
@@ -119,10 +119,10 @@ html
             margin: 0;
         }
 
-        body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea {
+        body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea, body.dark-mode select { /* Adicionado select aqui */
             background: #333; color: #e0e0e0; border-color: #555;
         }
-        input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus { /* Adicionado select aqui */
             border-color: #a0522d; outline: none; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         input[readonly], span[readonly] { background: #e8e8e8; border: 1px solid #ccc; cursor: not-allowed; }
@@ -183,8 +183,10 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #customizacao-btn, #excluir-ficha, #gm-mode-btn { background-color: #800000; }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #customizacao-btn:hover, #excluir-ficha:hover, #gm-mode-btn:hover {
+        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn { /* Adicionado #customizacao-btn */
+            background-color: #800000; 
+        }
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover { /* Adicionado #customizacao-btn:hover */
             background: #a0522d; transform: translateY(-2px);
         }
         #gm-mode-btn.gm-active { background-color: #006400; } 
@@ -195,7 +197,6 @@ html
         }
         #lua-btn { background-color: #333; color: #eee; }
         #sol-btn { background-color: #ffdd00; color: #333; }
-
         #nivel-container { text-align: center; margin-top: 10px; }
         #nivel {
             padding: 10px; background: #f0e6d2; border: 3px solid #000; border-radius: 50%;
@@ -432,12 +433,13 @@ html
         .modal-content {
             background: #f0e6d2; padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 300px; text-align: center;
-            position: relative; /* Para o botão de fechar absoluto */
         }
         body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
         .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
         body.dark-mode .modal-content h3 { color: #e0e0e0; }
-        .modal-content input, .modal-content select { width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+        .modal-content input, .modal-content select { /* 'select' já estava, mas reforçando a intenção */
+            width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; 
+        }
         body.dark-mode .modal-content input, body.dark-mode .modal-content select { background: #333; color: #e0e0e0; border-color: #555; }
         .modal-content button {
             padding: 10px 20px; border: none; border-radius: 6px; font-family: 'MedievalSharp', serif;
@@ -447,6 +449,75 @@ html
         .modal-content .confirm-btn:hover { background: #a0522d; }
         .modal-content .cancel-btn { background: #a52a2a; }
         .modal-content .cancel-btn:hover { background: #8b0000; }
+
+        /* Estilos para o novo modal de customização */
+        #customizacao-modal .modal-content {
+            width: 550px; /* Aumentar um pouco a largura */
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: left; /* Alinhar conteúdo à esquerda */
+        }
+        #customizacao-modal .modal-content h3 {
+            text-align: center; /* Centralizar título principal */
+            font-size: 1.8rem;
+            color: #a0522d;
+        }
+        body.dark-mode #customizacao-modal .modal-content h3 { color: #c58c5a;}
+
+        #customizacao-modal fieldset {
+            border: 1px solid #b8860b;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        body.dark-mode #customizacao-modal fieldset { border-color: #555; }
+
+        #customizacao-modal legend {
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.3rem;
+            color: #800000;
+            padding: 0 10px;
+            font-weight: bold;
+        }
+        body.dark-mode #customizacao-modal legend { color: #d2b48c;}
+        
+        #customizacao-modal .input-group {
+            margin-bottom: 15px;
+        }
+        #customizacao-modal .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+        }
+        #customizacao-modal .input-group input[type="color"], 
+        #customizacao-modal .input-group input[type="file"],
+        #customizacao-modal .input-group select,
+        #customizacao-modal .input-group input[type="number"] { /* Adicionado number para largura da borda */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #customizacao-modal .radio-group label {
+            display: inline-block;
+            margin-right: 15px;
+            font-weight: normal;
+        }
+        #customizacao-modal .radio-group input[type="radio"] {
+           width: auto; /* Reset width for radio */
+           margin-right: 5px;
+        }
+        #customizacao-modal .custom-dice-texture-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        #customizacao-modal .custom-dice-texture-controls button {
+            flex-shrink: 0; /* Evitar que o botão encolha */
+        }
+        /* --- Fim dos estilos para o novo modal --- */
+
+
         #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
             padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
@@ -543,8 +614,8 @@ html
         .raca-item p { font-size: 1rem; color: #000; }
         body.dark-mode .raca-item { background: #333; border-color: #555; }
         body.dark-mode .raca-item p { color: #e0e0e0; }
-        .theme-color-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; flex-wrap: wrap; }
-
+        .theme-buttons-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; flex-wrap: wrap; }
+       
         .lock-icon { margin-left: 5px; cursor: help; }
         
         .gm-edit-icon {
@@ -589,140 +660,16 @@ html
             opacity: 1;
         }
 
-        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
-        #background-modal, #estilos-ficha-modal { display: none; } 
-        #background-modal .modal-content, #estilos-ficha-modal .modal-content { width: 400px; text-align: left; }
-        #background-modal .modal-content label, #estilos-ficha-modal .modal-content label { display: block; margin-bottom: 5px; }
-        #background-modal .modal-content input[type="file"], #estilos-ficha-modal .modal-content input[type="file"] { margin-bottom: 10px; }
-        #background-modal .modal-content .radio-group, #estilos-ficha-modal .modal-content .input-group { margin-bottom: 15px; }
-        #background-modal .modal-content .radio-group label, #estilos-ficha-modal .modal-content .input-group label { display: inline-block; margin-right: 10px; }
-        .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; }
-
-
-        /* Painel de Customização */
-        #customizacao-panel { display: none; /* Inicialmente oculto */ }
-        #customizacao-panel .modal-content {
-            width: 480px; 
-            max-height: 85vh;
-            overflow-y: auto;
-            text-align: left; 
-        }
-        #customizacao-panel .config-section {
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--cor-borda-secao, #b8860b);
-        }
-        #customizacao-panel .config-section:last-child { border-bottom: none; }
-        #customizacao-panel .config-section h3 {
-            font-family: 'MedievalSharp', serif;
-            color: #a0522d;
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-        body.dark-mode #customizacao-panel .config-section h3 { color: #c58c5a; }
-
-        #customizacao-panel .config-item {
-            margin-bottom: 15px;
-            display: flex;
-            flex-direction: column;
-        }
-        #customizacao-panel .config-item label {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-         #customizacao-panel .config-item select,
-         #customizacao-panel .config-item .botao { /* Botões como "Plano de Fundo", "Estilos Ficha", "Remover Textura" */
-            width: 100%;
-            padding: 10px 15px;
-            font-size: 0.9rem;
-            background-color: #e6cca7;
-            color: #3a2800;
-            border: 1px solid #b8860b;
-            border-radius: 4px;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        body.dark-mode #customizacao-panel .config-item select,
-        body.dark-mode #customizacao-panel .config-item .botao {
-            background-color: #3a2f1e;
-            color: #f0e6d2;
-            border-color: #5c4b35;
-        }
-         #customizacao-panel .config-item select:hover,
-         #customizacao-panel .config-item .botao:hover {
-            background-color: #d2b48c;
-        }
-        body.dark-mode #customizacao-panel .config-item select:hover,
-        body.dark-mode #customizacao-panel .config-item .botao:hover {
-            background-color: #4a3c2a;
-        }
-
-
-        #customizacao-panel .input-trigger-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-         #customizacao-panel .input-trigger-group label {
-            flex-grow: 1;
-            margin-bottom: 0; /* Reset margin for inline alignment */
-        }
-
-        .visual-trigger-btn { /* Para 🎨, 🖼️, # */
-            padding: 8px;
-            width: 44px;
-            height: 44px;
-            font-size: 1.2rem;
-            border: 1px solid #b8860b;
-            border-radius: 6px;
-            cursor: pointer;
-            background-color: #e6cca7;
-            color: #3a2800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        body.dark-mode .visual-trigger-btn {
-            background-color: #3a2f1e;
-            color: #f0e6d2;
-            border-color: #5c4b35;
-        }
-         .visual-trigger-btn:hover { background-color: #d2b48c; }
-        body.dark-mode  .visual-trigger-btn:hover { background-color: #4a3c2a; }
-        
-        .hidden-input-visual {
-            visibility: hidden; width: 0; height: 0; padding:0; margin:0; border:none;
-        }
-        
-        #fechar-customizacao-panel-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #a52a2a;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            font-size: 1.1rem;
-            line-height: 30px;
-            text-align: center;
-            cursor: pointer;
-            z-index: 10;
-        }
-        #fechar-customizacao-panel-btn:hover { background: #8b0000; }
-
         @media (max-width: 768px) {
             body { padding: 10px; }
             #ficha-container { padding: 15px; }
             h1#nome-personagem-titulo { font-size: 2rem; }
             section h2 { font-size: 1.2rem; }
-            input, textarea { font-size: 0.9rem; }
+            input, textarea, select { font-size: 0.9rem; } /* Adicionado select */
             .atributos-container, .vida-magia-vigor { flex-direction: column; }
             .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
-            .botoes-container { flex-wrap: wrap; }
-            .theme-color-container { flex-wrap: wrap; justify-content: space-around;}
+            .botoes-container, .theme-buttons-container { flex-wrap: wrap; } /* Aplicado a theme-buttons-container também */
+            .theme-option { margin-bottom: 5px;}
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
@@ -739,8 +686,14 @@ html
                 right: 40px; width: calc(100vw - 60px); max-height: 300px;
                 top: calc(50% + 120px);
             }
-            #customizacao-panel .modal-content { width: 90%; }
+            #customizacao-modal .modal-content { /* Ajuste para telas menores */
+                 width: 90%; 
+            }
         }
+        #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
+        
+        /* .color-option { width: 24px; height: 24px; border-radius: 50%; cursor: pointer; border: 1px solid #ccc; } - Este pode não ser mais necessário se for apenas um input color normal */
+
     </style>
 </head>
 <body class=""> 
@@ -1015,16 +968,15 @@ html
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
                 <button id="bloquear-ficha" class="botao botao-bloquear">Bloquear Ficha</button>
+                <button id="customizacao-btn" class="botao">Customização 🎨</button> 
                 <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
                 <button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button> 
             </div>
-            
-            <div class="theme-color-container">
+
+            <div class="theme-buttons-container">
                 <button id="lua-btn" class="botao icon-btn" title="Modo Noturno">🌙</button>
                 <button id="sol-btn" class="botao icon-btn" title="Modo Claro">☀️</button>
-                <button id="customizacao-btn" class="botao" title="Abrir painel de customização">Customização ⚙️</button>
             </div>
-
         </div>
     </div>
     <button id="anotacoes-btn">Anotações</button>
@@ -1112,66 +1064,21 @@ html
         </div>
     </div>
     <div id="notification"></div>
-    <div id="background-modal" class="modal">
-        <div class="modal-content">
-            <h3>Plano de Fundo</h3>
-            <label for="background-image-input">Selecionar Imagem:</label>
-            <input type="file" id="background-image-input" accept="image/*">
-            <div class="radio-group">
-                <label><input type="radio" name="background-size" value="cover" checked>Preencher Tela (Fixo)</label>
-                <label><input type="radio" name="background-size" value="100% 100%">Estender (Rolável)</label>
-                <label><input type="radio" name="background-size" value="auto">Tamanho Normal (Rolável)</label>
-            </div>
-            <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar</button>
-            <button class="cancel-btn" onclick="fecharModal('background-modal')">Cancelar</button>
-            <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
-        </div>
-    </div>
-    <div id="estilos-ficha-modal" class="modal">
-        <div class="modal-content">
-            <h3>Estilos da Ficha</h3>
-            <div class="input-group">
-                <label for="cor-borda-secao-input">Cor da Borda das Seções:</label>
-                <input type="color" id="cor-borda-secao-input" value="#b8860b">
-            </div>
-            <div class="input-group">
-                <label for="estilo-borda-secao-select">Estilo da Borda das Seções:</label>
-                <select id="estilo-borda-secao-select">
-                    <option value="solid">Sólida</option>
-                    <option value="dashed">Tracejada</option>
-                    <option value="dotted">Pontilhada</option>
-                    <option value="double">Dupla</option>
-                    <option value="groove">Groove</option>
-                    <option value="ridge">Ridge</option>
-                </select>
-            </div>
-             <div class="input-group">
-                <label for="largura-borda-secao-input">Largura da Borda (px):</label>
-                <input type="number" id="largura-borda-secao-input" min="0" max="10" value="2">
-            </div>
-            <button class="confirm-btn" onclick="aplicarEstilosFicha()">Aplicar Estilos</button>
-            <button class="cancel-btn" onclick="fecharModal('estilos-ficha-modal')">Cancelar</button>
-        </div>
-    </div>
 
-    <!-- Painel de Customização -->
-    <div id="customizacao-panel" class="modal">
+    <!-- MODAL DE CUSTOMIZAÇÃO GERAL -->
+    <div id="customizacao-modal" class="modal">
         <div class="modal-content">
-            <h2>Configurações de Aparência</h2>
-            <button id="fechar-customizacao-panel-btn" title="Fechar Painel de Customização">X</button>
+            <h3>Painel de Customização</h3>
 
-            <div class="config-section">
-                <h3>Aparência Geral</h3>
-                <div class="config-item">
-                    <div class="input-trigger-group">
-                        <label for="background-color-input">Cor de Fundo (Página):</label>
-                        <button id="background-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor de Fundo da Página">🎨</button>
-                        <input type="color" id="background-color-input" class="hidden-input-visual">
-                    </div>
+            <fieldset>
+                <legend>Aparência da Página</legend>
+                <div class="input-group">
+                    <label for="background-color-input">Cor de Fundo da Página:</label>
+                    <input type="color" id="background-color-input" value="#f0e6d2">
                 </div>
-                <div class="config-item">
+                <div class="input-group">
                     <label for="font-selector">Fonte Principal da Ficha:</label>
-                    <select id="font-selector" title="Fonte Principal" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif; width:100%;">
+                    <select id="font-selector" class="botao" title="Fonte Principal" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; ">
                         <option value="'Inter', sans-serif">Padrão (Inter)</option>
                         <option value="'MedievalSharp', cursive">Medieval</option>
                         <option value="'Times New Roman', Times, serif">Times New Roman</option>
@@ -1181,53 +1088,75 @@ html
                         <option value="'Verdana', Geneva, sans-serif">Verdana</option>
                     </select>
                 </div>
-                <div class="config-item">
-                     <button id="plano-fundo-btn" class="botao">Plano de Fundo (Imagem)</button>
-                </div>
-            </div>
+            </fieldset>
 
-            <div class="config-section">
-                <h3>Estilo da Ficha</h3>
-                 <div class="config-item">
-                    <button id="estilos-ficha-btn" class="botao">Estilos da Ficha (Bordas)</button>
+            <fieldset>
+                <legend>Plano de Fundo da Ficha (Imagem)</legend>
+                <div class="input-group">
+                    <label for="background-image-input">Selecionar Imagem:</label>
+                    <input type="file" id="background-image-input" accept="image/*">
                 </div>
-            </div>
+                <div class="radio-group input-group">
+                    <label><input type="radio" name="background-size" value="cover" checked> Preencher Tela (Fixo)</label>
+                    <label><input type="radio" name="background-size" value="100% 100%"> Estender (Rolável)</label>
+                    <label><input type="radio" name="background-size" value="auto"> Tamanho Normal (Rolável)</label>
+                </div>
+                <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar Imagem</button>
+                <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem</button>
+            </fieldset>
 
-            <div class="config-section">
-                <h3>Configurações do Dado</h3>
-                <div class="config-item">
-                     <div class="input-trigger-group">
-                        <label for="dice-color-input">Cor do Dado:</label>
-                        <button id="dice-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor do Dado">🎲</button>
-                        <input type="color" id="dice-color-input" class="hidden-input-visual">
+            <fieldset>
+                <legend>Estilos das Seções da Ficha</legend>
+                <div class="input-group">
+                    <label for="cor-borda-secao-input">Cor da Borda das Seções:</label>
+                    <input type="color" id="cor-borda-secao-input" value="#b8860b">
+                </div>
+                <div class="input-group">
+                    <label for="estilo-borda-secao-select">Estilo da Borda das Seções:</label>
+                    <select id="estilo-borda-secao-select">
+                        <option value="solid">Sólida</option>
+                        <option value="dashed">Tracejada</option>
+                        <option value="dotted">Pontilhada</option>
+                        <option value="double">Dupla</option>
+                        <option value="groove">Groove</option>
+                        <option value="ridge">Ridge</option>
+                    </select>
+                </div>
+                 <div class="input-group">
+                    <label for="largura-borda-secao-input">Largura da Borda (px):</label>
+                    <input type="number" id="largura-borda-secao-input" min="0" max="10" value="2">
+                </div>
+                <button class="confirm-btn" onclick="aplicarEstilosFicha()">Aplicar Estilos de Seção</button>
+            </fieldset>
+
+            <fieldset>
+                <legend>Customização do Dado</legend>
+                <div class="input-group">
+                    <label for="dice-color-input">Cor de Fundo do Dado:</label>
+                    <input type="color" id="dice-color-input" value="#f0e6d2">
+                </div>
+                 <div class="input-group">
+                    <label for="dice-number-color-input">Cor do Número no Dado:</label>
+                    <input type="color" id="dice-number-color-input" value="#000000">
+                </div>
+                <div class="input-group custom-dice-texture-controls">
+                    <div style="flex-grow: 1;">
+                        <label for="dice-texture-input">Textura do Dado (Imagem 100x100px):</label>
+                        <input type="file" id="dice-texture-input" accept="image/*">
                     </div>
+                    <button id="remove-dice-texture-btn" class="botao icon-btn" title="Remover Textura do Dado" style="background-color:#cc0000; padding: 10px;">🗑️</button>
                 </div>
-                <div class="config-item">
-                    <div class="input-trigger-group">
-                        <label for="dice-number-color-input">Cor do Número do Dado:</label>
-                        <button id="dice-number-color-input-trigger" class="visual-trigger-btn" title="Escolher Cor do Número do Dado">#</button>
-                        <input type="color" id="dice-number-color-input" class="hidden-input-visual">
-                    </div>
-                </div>
-                <div class="config-item">
-                    <div class="input-trigger-group">
-                        <label for="dice-texture-input">Textura do Dado (100x100px):</label>
-                        <button id="dice-texture-input-trigger" class="visual-trigger-btn" title="Carregar Textura do Dado">🖼️</button>
-                        <input type="file" id="dice-texture-input" accept="image/*" class="hidden-input-visual" style="display:none;">
-                    </div>
-                </div>
-                <div class="config-item">
-                    <button id="remove-dice-texture-btn" class="botao" title="Remover Textura do Dado" style="background-color:#cc0000;">Remover Textura do Dado</button>
-                </div>
-                <div class="config-item">
-                    <label for="dice-animation-selector">Animação do Dado:</label>
-                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="padding: 10px 15px; height: 44px; background-color: #800000; color:white; border:none; border-radius:6px; font-family:'MedievalSharp', serif; width:100%;">
+                <div class="input-group">
+                     <label for="dice-animation-selector">Animação do Dado ao Rolar:</label>
+                     <select id="dice-animation-selector" class="botao" title="Animação do Dado" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; ">
                         <option value="padrao">Animação Padrão</option>
                         <option value="rapido">Giro Rápido</option>
                         <option value="salto">Salto e Queda</option>
                     </select>
                 </div>
-            </div>
+            </fieldset>
+            
+            <button class="cancel-btn" onclick="fecharModal('customizacao-modal')" style="margin-top: 20px; width: calc(100% - 10px);">Fechar Customização</button>
         </div>
     </div>
 
@@ -1261,7 +1190,7 @@ html
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas." }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas." }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance." }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão." }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc." }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc." }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão." }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão." }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte." }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir." }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados." }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida." }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc." }
         ];
         const desvantagensData = [
-            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico." }, { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade, dificultando interações sociais." }, { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool que afeta suas decisões." }, { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas, pouco se importa com fama ou riqueza." }, { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." }, { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos." }, { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo literal e acredita que todos estão sérios." }, { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." }, { nome: "Covardia (+2)", ganho: 2, descricao: "Extremo cuidado com bem-estar físico e dificuldade em assumir riscos." }, { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você a todo momento (filhos, parentes, etc.)." }, { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e atacar freneticamente (ativado por dano, insulto ou aleatório)." }, { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." }, { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." }, { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." }, { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em nível alarmante." }, { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal." }, { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo, não segue planos que não sejam seus." }, { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
+            { nome: "Fobia (+2)", ganho: 2, descricao: "Medo irracional de algo específico." }, { nome: "Má Fama (+2)", ganho: 2, descricao: "Mal visto pela sociedade, dificultando interações sociais." }, { nome: "Alcoolismo (+2)", ganho: 2, descricao: "Dependência de álcool que afeta suas decisões." }, { nome: "Altruísmo (+2)", ganho: 2, descricao: "Se sacrifica por outras pessoas, poco se importa com fama ou riqueza." }, { nome: "Avareza (+2)", ganho: 2, descricao: "Preocupação permanente na conservação de riquezas." }, { nome: "Bullying (+3)", ganho: 3, descricao: "Gosta de caçoar, agredir, denegrir, difamar e apontar defeitos." }, { nome: "Circunspeção (+2)", ganho: 2, descricao: "Não entende piadas, entende tudo literal e acredita que todos estão sérios." }, { nome: "Compulsões (+3)", ganho: 3, descricao: "Hábito ou vício que toma boa parte dos seus recursos e tempo." }, { nome: "Covardia (+2)", ganho: 2, descricao: "Extremo cuidado com bem-estar físico e dificuldade em assumir riscos." }, { nome: "Dependentes (+4)", ganho: 4, descricao: "Alguém depende de você a todo momento (filhos, parentes, etc.)." }, { nome: "Fúria (+2)", ganho: 2, descricao: "Tendência a perder o controle e atacar freneticamente (ativado por dano, insulto ou aleatório)." }, { nome: "Honestidade (+3)", ganho: 3, descricao: "Não consegue mentir ou omitir, sempre fala a verdade e desmascara mentiras." }, { nome: "Impulsividade (+2)", ganho: 2, descricao: "Sempre age sem pensar." }, { nome: "Luxúria (+2)", ganho: 2, descricao: "Desejo incontrolável por romance." }, { nome: "Magnetismo Sobrenatural (+2)", ganho: 2, descricao: "Coisas estranhas acontecem com seu personagem em nível alarmante." }, { nome: "No Limite (+4)", ganho: 4, descricao: "Assume riscos extremamente irracionais diante de perigo mortal." }, { nome: "Teimosia (+1)", ganho: 1, descricao: "Quer sempre fazer as coisas do seu modo, não segue planos que não sejam seus." }, { nome: "Amnésia (+2)", ganho: 2, descricao: "Em certos momentos, não consegue lembrar de coisas importantes." }
         ];
         let racasData = [
             { nome: "Humano (3)", custo: 3, descricao: "Versáteis, ambiciosos, mestres em adaptação.", vantagens: ["Explorador Nato: Cavalo superior, equipamentos, mapa detalhado.", "Mestre das Profissões: Escolha (Ferreiro Lendário, Costureiro Arcano, Arquiteto Visionário) com benefícios únicos.", "Rede de Influência: Aliado influente (guildas, mercadores, líderes) com acesso a informações ou ajuda.", "Determinação Inabalável: Uma vez/dia, ignore uma desvantagem (exaustão, ferimento, magia) por um curto período."] }, { nome: "Elfo (4)", custo: 4, descricao: "Sábios, mágicos, conectados à natureza.", vantagens: ["Sabedoria Ancestral: Domina área (arcana, história, natureza), decifra itens antigos, aprende 1 língua extra.", "Visão Élfica Suprema: Enxerga 10m escuro, detecta magias fracas 20m, percebe intenções hostis (teste 19+).", "Escudo Mágico: Resistência inata a um tipo de efeito mágico hostil (dano ou duração -50%)."] }, { nome: "Anão (4)", custo: 4, descricao: "Resilientes, habilidosos, ligados à terra.", vantagens: ["Fortitude Indomável: Trabalha 3 dias sem descanso, recupera vida/energia 2x mais rápido em rocha/subterrâneo.", "Artesão: Escolha (Mestre Minerador, Forjador de Lendas, Joalheiro Divino) com impacto massivo.", "Senhor das Profundezas: Nunca se perde subterrâneo, detecta armadilhas, sente vibrações (prever emboscada/colapso)."] }, { nome: "Orc (3)", custo: 3, descricao: "Guerreiros ferozes, líderes pela força.", vantagens: ["Lenda entre Guerreiros: Inspira temor/respeito, alianças marciais, acesso missões épicas; inimigos menores fogem (teste 16+).", "Resiliência Brutal: Luta sem penalidades com ferimentos graves, só cai com PV 0, regenera ferimentos leves fora de combate.", "Domínio da Intimidação: Força inimigos a render/recuar com grito (1x/encontro, afeta grupos), bônus massivo negociações (força/medo).", "Fúria Ancestral: Fúria 2x/dia (dobra força/resistência por curto período)."] }, { nome: "Meio Animal (Selvagem) (4)", custo: 4, descricao: "Instinto primal com astúcia.", vantagens: ["Sentidos Predatórios: Escolha (visão, olfato, audição) aguçado; rastreia km, detecta invisíveis, evita surpresa (teste 12+).", "Senhor dos Terrenos: Adapta-se a 1 ambiente (floresta, deserto, pântano), ignora efeitos negativos, bônus movimento/furtividade (+1).", "Frenesi Instintivo: 1x/dia, velocidade sobrenatural (2x movimento), ataques adicionais, percepção pré-monitória (10 min)."] }
@@ -1306,37 +1235,24 @@ html
             racaDescricaoInput = document.getElementById("raca-descricao"), luaBtn = document.getElementById("lua-btn"), solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
-            
-            // Elementos de customização que foram movidos ou seus substitutos
-            planoFundoBtn = document.getElementById("plano-fundo-btn"), 
-            estilosFichaBtn = document.getElementById("estilos-ficha-btn"), 
-            backgroundColorInput = document.getElementById('background-color-input'),
-            fontSelector = document.getElementById('font-selector'),
-            diceColorInput = document.getElementById('dice-color-input'),
-            diceNumberColorInput = document.getElementById('dice-number-color-input'),
-            diceTextureInput = document.getElementById("dice-texture-input"), 
-            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), 
-            diceAnimationSelector = document.getElementById("dice-animation-selector"), 
-
-            // Novos elementos para o painel de customização
-            customizacaoBtn = document.getElementById('customizacao-btn'),
-            customizacaoPanel = document.getElementById('customizacao-panel'),
-            fecharCustomizacaoPanelBtn = document.getElementById('fechar-customizacao-panel-btn'),
-            backgroundColorInputTrigger = document.getElementById('background-color-input-trigger'),
-            diceColorInputTrigger = document.getElementById('dice-color-input-trigger'),
-            diceNumberColorInputTrigger = document.getElementById('dice-number-color-input-trigger'),
-            diceTextureInputTrigger = document.getElementById('dice-texture-input-trigger'),
-
-            backgroundImageInput = document.getElementById("background-image-input"), backgroundModal = document.getElementById("background-modal"),
-            estilosFichaModal = document.getElementById("estilos-ficha-modal"), 
-            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"), 
-            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"), 
-            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"), 
-            
+            // Elementos para o NOVO MODAL DE CUSTOMIZAÇÃO (os IDs originais são mantidos e os elementos movidos)
+            customizacaoBtn = document.getElementById("customizacao-btn"),
+            customizacaoModal = document.getElementById("customizacao-modal"),
+            backgroundImageInput = document.getElementById("background-image-input"), // ID já existe, será movido
+            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"),    // ID já existe, será movido
+            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"),// ID já existe, será movido
+            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"),// ID já existe, será movido
+            diceTextureInput = document.getElementById("dice-texture-input"),          // ID já existe, será movido
+            removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"), // ID já existe, será movido
+            diceAnimationSelector = document.getElementById("dice-animation-selector"),  // ID já existe, será movido
+            backgroundColorInput = document.getElementById('background-color-input'),      // ID já existe, será movido
+            fontSelector = document.getElementById('font-selector'),                   // ID já existe, será movido
+            diceColorInput = document.getElementById('dice-color-input'),              // ID já existe, será movido
+            diceNumberColorInput = document.getElementById('dice-number-color-input'), // ID já existe, será movido
+            // ---
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo"),
-            
             diceHistoryTrigger = document.getElementById('dice-history-trigger'), 
             diceHistoryPanel = document.getElementById('dice-history-panel'), 
             diceHistoryList = document.getElementById('dice-history-list'), 
@@ -1352,6 +1268,7 @@ html
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
         let currentActionIntervalId = null; 
         const REPEAT_DELAY_MS = 75; 
+        const XP_UNLOCK_DURATION_MS = 20000; // Definido explicitamente aqui.
         let xpUnlockTimerId = null;
         let isXpUnlocked = false; 
         let isDiceRolling = false;
@@ -1648,13 +1565,13 @@ html
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
-            fichaAtual.backgroundColor = backgroundColorInput.value; // Salva do input, não do estilo do body direto
+            fichaAtual.backgroundColor = backgroundColorInput.value; // Sempre salva o valor do input
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
-            fichaAtual.fontFamily = fontSelector ? fontSelector.value : "'Inter', sans-serif";
+            fichaAtual.fontFamily = fontSelector.value;
             
             fichaAtual.diceColor = diceColorInput.value; 
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            fichaAtual.texturaDado = fichas[currentFichaId].texturaDado; 
+            fichaAtual.texturaDado = fichaAtual.texturaDado; // Já atualizado por aplicarTexturaDado
             fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
             vidaAtual = parseInt(vidaAtualInput.value);
@@ -1977,6 +1894,7 @@ html
             vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
             magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
             vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
+
             vidaAtual = parseInt(vidaAtualInput.value);
             magiaAtual = parseInt(magiaAtualInput.value);
             vigorAtual = parseFloat(vigorAtualInput.value);
@@ -2046,8 +1964,8 @@ html
                     fichas[currentFichaId].texturaDado = null; 
                     fichas[currentFichaId].animacaoDado = 'padrao'; 
                 }
-                aplicarEstilosFichaInicial(fichas[currentFichaId]); 
-                aplicarCustomizacoesDadoInicial(fichas[currentFichaId]); 
+                aplicarEstilosFichaInicial(fichas[currentFichaId] || {}); 
+                aplicarCustomizacoesDadoInicial(fichas[currentFichaId] || {});
                 aplicarEstadoColapsoSecoes({});
                 
                 atualizarNivel(); 
@@ -2256,7 +2174,7 @@ html
                         fichas[currentFichaId].experiencia = experienciaInput.value; 
                         saveFichasToStorage(fichas); 
                     }
-                }, 20000); // 20 segundos
+                }, XP_UNLOCK_DURATION_MS);
                 fecharModal("senha-gm-modal");
             } else {
                 alert("Senha do GM incorreta!");
@@ -2384,12 +2302,6 @@ html
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
                 diceHistoryPanel.style.display = 'none';
-            }
-             // Fechar painel de customização se clicar fora
-            if (customizacaoPanel.style.display === 'flex' &&
-                !customizacaoPanel.contains(event.target) &&
-                event.target !== customizacaoBtn) {
-                customizacaoPanel.style.display = 'none';
             }
         });
 
@@ -2608,38 +2520,59 @@ html
         classesBtn.onclick = () => { classesPanel.style.display = "block"; };
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
 
-        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); aplicarCorDeFundoInicial(fichas[currentFichaId]); salvarDados(); };
-        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); aplicarCorDeFundoInicial(fichas[currentFichaId]); salvarDados(); };
+        luaBtn.onclick = () => { document.body.classList.add("dark-mode"); salvarDados(); };
+        solBtn.onclick = () => { document.body.classList.remove("dark-mode"); salvarDados(); };
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
-
-        // Controle do painel de customização
-        if(customizacaoBtn && customizacaoPanel && fecharCustomizacaoPanelBtn){
-            customizacaoBtn.addEventListener('click', () => {
-                customizacaoPanel.style.display = 'flex';
-            });
-            fecharCustomizacaoPanelBtn.addEventListener('click', () => {
-                customizacaoPanel.style.display = 'none';
-            });
-        }
-
 
         function showNotification(message, type) {
             notification.textContent = message; notification.className = type; notification.style.display = "block";
             setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
+        
+        // Funções para o NOVO MODAL de Customização
+        customizacaoBtn.onclick = () => {
+            if (isFichaLocked && !isFichaUnlocked) {
+                return abrirModalSenha(customizacaoBtn, () => {
+                    abrirModalCustomizacao();
+                });
+            }
+            abrirModalCustomizacao();
+        };
+        
+        function abrirModalCustomizacao() {
+            const ficha = fichas[currentFichaId];
+            // Carregar valores atuais para os campos no modal de customização
+            backgroundColorInput.value = ficha.backgroundColor || (ficha.darkMode ? '#121212' : '#f0e6d2');
+            fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
+            
+            const bgSize = ficha?.backgroundSize || 'cover';
+            const radioOptions = document.querySelectorAll('#customizacao-modal input[name="background-size"]');
+            radioOptions.forEach(radio => {
+                radio.checked = (radio.value === bgSize);
+            });
+            // O input de arquivo não pode ter valor pré-definido por segurança.
+            
+            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
+            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
+            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
+            
+            diceColorInput.value = ficha.diceColor || (ficha.darkMode ? '#1e1e1e' : '#f0e6d2');
+            diceNumberColorInput.value = ficha.diceNumberColor || (ficha.darkMode ? '#e0e0e0' : '#000000');
+            diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
+            // A textura do dado já é gerenciada pela função aplicarTexturaDado.
 
-        if (planoFundoBtn) {
-            planoFundoBtn.onclick = () => { 
-                 if (isFichaLocked && !isFichaUnlocked) {
-                    return abrirModalSenha(planoFundoBtn, () => { backgroundModal.style.display = "flex"; });
-                 }
-                backgroundModal.style.display = "flex"; 
-            };
+            customizacaoModal.style.display = "flex";
         }
+
+
+        // As funções aplicarPlanoDeFundo, excluirPlanoDeFundo, aplicarEstilosFicha
+        // já devem funcionar, pois os elementos mantêm seus IDs.
+        // Só precisamos garantir que os inputs corretos sejam lidos dentro delas.
+        
         function aplicarPlanoDeFundo() {
-            const file = backgroundImageInput.files[0];
-            const selectedSizeOption = document.querySelector('input[name="background-size"]:checked');
+            const file = backgroundImageInput.files[0]; // Input dentro do modal de customização
+            const selectedSizeOption = document.querySelector('#customizacao-modal input[name="background-size"]:checked');
             const selectedSize = selectedSizeOption.value;
             
             let attachment = 'scroll'; 
@@ -2654,8 +2587,7 @@ html
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
                     document.body.style.backgroundSize = selectedSize;
                     document.body.style.backgroundAttachment = attachment;
-                    salvarDados();
-                    fecharModal('background-modal');
+                    salvarDados(); 
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
@@ -2666,10 +2598,10 @@ html
                     fichas[currentFichaId].backgroundAttachment = attachment;
                 }
                 salvarDados();
-                fecharModal('background-modal');
             } else {
                 alert("Nenhuma imagem selecionada e nenhuma imagem de fundo existente para aplicar novo tamanho.");
             }
+            showNotification("Plano de fundo atualizado!", "save-success");
         }
 
         function excluirPlanoDeFundo() {
@@ -2679,10 +2611,10 @@ html
                 if (fichas[currentFichaId]) {
                      fichas[currentFichaId].backgroundImage = null;
                      fichas[currentFichaId].backgroundSize = 'cover'; 
-                     fichas[currentFichaId].backgroundAttachment = 'scroll'; 
+                     fichas[currentFichaId].backgroundAttachment = 'scroll';
                 }
                 salvarDados();
-                fecharModal('background-modal');
+                showNotification("Plano de fundo removido!", "save-success");
             }
         }
 
@@ -2699,107 +2631,55 @@ html
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll';
             }
-            const radioOptions = document.querySelectorAll('input[name="background-size"]');
-            radioOptions.forEach(radio => {
-                if (radio.value === bgSize) {
-                    radio.checked = true;
-                }
-            });
-        }
-
-        if (backgroundColorInputTrigger && backgroundColorInput) {
-            backgroundColorInputTrigger.addEventListener('click', () => backgroundColorInput.click());
-            backgroundColorInput.addEventListener('input', (event) => {
-                document.body.style.backgroundColor = event.target.value;
-                backgroundColorInputTrigger.style.backgroundColor = event.target.value; 
-                backgroundColorInputTrigger.style.color = kontrast(event.target.value); 
-                salvarDados();
-            });
+            // Os radio buttons são atualizados quando o modal de customização é aberto.
         }
         
+        backgroundColorInput.addEventListener('input', (event) => {
+            document.body.style.backgroundColor = event.target.value;
+            salvarDados();
+        });
+        
         function aplicarCorDeFundoInicial(ficha) {
-            const isDarkMode = ficha?.darkMode ?? document.body.classList.contains("dark-mode");
             const defaultColorLight = '#f0e6d2'; 
             const defaultColorDark = '#121212'; 
 
-            let bgColorToApply = isDarkMode ? defaultColorDark : defaultColorLight;
-            if (ficha?.backgroundColor) { // Prioriza a cor salva se existir
-                 if (isDarkMode && (ficha.backgroundColor === defaultColorLight || ficha.backgroundColor === '#f0e6d2')) {
-                     // Se está em dark mode mas a cor salva é a light padrão, usa a dark padrão
-                     bgColorToApply = defaultColorDark;
-                 } else if (!isDarkMode && (ficha.backgroundColor === defaultColorDark || ficha.backgroundColor === '#121212')) {
-                     // Se está em light mode mas a cor salva é a dark padrão, usa a light padrão
-                      bgColorToApply = defaultColorLight;
-                 } else {
-                     bgColorToApply = ficha.backgroundColor;
-                 }
+            let bgColorToApply = ficha?.darkMode ? defaultColorDark : defaultColorLight;
+            if (ficha?.backgroundColor) {
+                bgColorToApply = ficha.backgroundColor;
             }
             
             document.body.style.backgroundColor = bgColorToApply;
-            if (backgroundColorInput) backgroundColorInput.value = bgColorToApply;
-            if (backgroundColorInputTrigger) {
-                backgroundColorInputTrigger.style.backgroundColor = bgColorToApply;
-                backgroundColorInputTrigger.style.color = kontrast(bgColorToApply);
-            }
+            backgroundColorInput.value = bgColorToApply;
         }
         
-        if (fontSelector) {
-            fontSelector.addEventListener('change', (event) => {
-                const selectedFont = event.target.value;
-                document.body.style.fontFamily = selectedFont;
-                if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
-                salvarDados(); 
-            });
-        }
+        fontSelector.addEventListener('change', (event) => {
+            const selectedFont = event.target.value;
+            document.body.style.fontFamily = selectedFont;
+            if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
+            salvarDados(); 
+        });
 
         function aplicarFonteInicial(ficha) {
             const defaultFont = "'Inter', sans-serif";
             const bodyFont = ficha?.fontFamily || defaultFont;
             document.body.style.fontFamily = bodyFont;
             if (fichaContainer) fichaContainer.style.fontFamily = bodyFont;
-            if (fontSelector) fontSelector.value = bodyFont;
-        }
-
-        function kontrast(hexcolor){
-            if (!hexcolor) return 'black'; // Fallback
-            if (hexcolor.slice(0, 1) === '#') { hexcolor = hexcolor.slice(1); }
-            if (hexcolor.length === 3) {
-                hexcolor = hexcolor.split('').map(function (hex) { return hex + hex; }).join('');
-            }
-            if (hexcolor.length !== 6) return 'black'; // Invalid hex
-            
-            var r = parseInt(hexcolor.substr(0,2),16);
-            var g = parseInt(hexcolor.substr(2,2),16);
-            var b = parseInt(hexcolor.substr(4,2),16);
-            var yiq = ((r*299)+(g*587)+(b*114))/1000;
-            return (yiq >= 128) ? 'black' : 'white';
-        }
-
-
-        if (diceColorInputTrigger && diceColorInput) {
-            diceColorInputTrigger.addEventListener('click', () => diceColorInput.click());
-            diceColorInput.addEventListener('input', (event) => {
-                diceRoll.style.setProperty('--dice-bg-color', event.target.value);
-                diceColorInputTrigger.style.backgroundColor = event.target.value; 
-                diceColorInputTrigger.style.color = kontrast(event.target.value);
-                salvarDados();
-            });
-        }
-
-        if (diceNumberColorInputTrigger && diceNumberColorInput) {
-            diceNumberColorInputTrigger.addEventListener('click', () => diceNumberColorInput.click());
-            diceNumberColorInput.addEventListener('input', (event) => {
-                diceRoll.style.setProperty('--dice-number-color', event.target.value);
-                diceNumberColorInputTrigger.style.backgroundColor = event.target.value; 
-                diceNumberColorInputTrigger.style.color = kontrast(event.target.value);
-                salvarDados();
-            });
+            fontSelector.value = bodyFont;
         }
         
+        diceColorInput.addEventListener('input', (event) => {
+            diceRoll.style.setProperty('--dice-bg-color', event.target.value);
+            salvarDados();
+        });
+        
+        diceNumberColorInput.addEventListener('input', (event) => {
+            diceRoll.style.setProperty('--dice-number-color', event.target.value);
+            salvarDados();
+        });
+
         function aplicarCoresDadoInicial(ficha) {
-            const isDarkMode = ficha?.darkMode ?? document.body.classList.contains("dark-mode");
-            const defaultDiceColor = isDarkMode ? '#1e1e1e' : '#f0e6d2';
-            const defaultDiceNumberColor = isDarkMode ? '#e0e0e0' : '#000000';
+            const defaultDiceColor = ficha?.darkMode ? '#1e1e1e' : '#f0e6d2';
+            const defaultDiceNumberColor = ficha?.darkMode ? '#e0e0e0' : '#000000';
 
             const diceBg = ficha?.diceColor || defaultDiceColor;
             const diceNumCol = ficha?.diceNumberColor || defaultDiceNumberColor;
@@ -2807,19 +2687,9 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            if (diceColorInput) diceColorInput.value = diceBg;
-            if (diceColorInputTrigger) {
-                diceColorInputTrigger.style.backgroundColor = diceBg;
-                diceColorInputTrigger.style.color = kontrast(diceBg);
-            }
-
-            if (diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
-            if (diceNumberColorInputTrigger) {
-                diceNumberColorInputTrigger.style.backgroundColor = diceNumCol; // Cor de fundo do botão = cor do número
-                diceNumberColorInputTrigger.style.color = kontrast(diceNumCol);  // Cor do texto do botão contrastante
-            }
+            diceColorInput.value = diceBg;
+            diceNumberColorInput.value = diceNumCol;
         }
-
         
         diceHistoryTrigger.addEventListener('click', () => {
             if (diceHistoryPanel.style.display === 'flex') {
@@ -3073,23 +2943,6 @@ html
         }
         fichaContainer.addEventListener('click', handleGmEdit);
         
-        if(estilosFichaBtn){
-            estilosFichaBtn.addEventListener('click', () => {
-                if (isFichaLocked && !isFichaUnlocked) {
-                    return abrirModalSenha(estilosFichaBtn, abrirModalEstilosFicha);
-                }
-                abrirModalEstilosFicha();
-            });
-        }
-
-        function abrirModalEstilosFicha() {
-            const ficha = fichas[currentFichaId];
-            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
-            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
-            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2; 
-            estilosFichaModal.style.display = "flex";
-        }
-
         function aplicarEstilosFicha() {
             const novaCorBorda = corBordaSecaoInput.value;
             const novoEstiloBorda = estiloBordaSecaoSelect.value;
@@ -3105,7 +2958,6 @@ html
                 fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
             }
             salvarDados();
-            fecharModal('estilos-ficha-modal');
             showNotification("Estilos de borda aplicados!", "save-success");
         }
         
@@ -3114,14 +2966,9 @@ html
             document.documentElement.style.setProperty('--estilo-borda-secao', ficha.estiloBordaSecao || 'solid');
             document.documentElement.style.setProperty('--largura-borda-secao', ficha.larguraBordaSecao || '2px');
             
-            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
-            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
-            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
+            // Os inputs são atualizados quando o modal de customização é aberto.
         }
-
-        if (diceTextureInputTrigger) { 
-            diceTextureInputTrigger.addEventListener('click', () => diceTextureInput.click());
-        }
+        
         diceTextureInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
@@ -3149,6 +2996,7 @@ html
                 if (ficha) ficha.texturaDado = null;
             }
             if (ficha) salvarDados();
+            showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
         }
 
         diceAnimationSelector.addEventListener('change', () => {
@@ -3161,6 +3009,7 @@ html
                 ficha.animacaoDado = animacao;
                 salvarDados();
             }
+             showNotification("Animação do dado alterada!", "save-success");
         }
 
         function aplicarCustomizacoesDadoInicial(ficha) {
@@ -3169,7 +3018,7 @@ html
             } else {
                 diceRoll.style.backgroundImage = 'none';
             }
-            diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
+            // Os inputs são atualizados quando o modal de customização é aberto.
         }
 
 
@@ -3195,7 +3044,7 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .visual-trigger-btn').forEach(btn => {
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
