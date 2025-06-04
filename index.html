@@ -88,16 +88,15 @@ html
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
         section { 
-            background: #f0e6d2; /* Default light mode section background */
+            /* background: #f0e6d2; */ /* Managed by JS for override */
             border-width: var(--largura-borda-secao);
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px; 
             transition: background-color 0.3s;
         }
-        body.dark-mode section { 
-            background: #1e1e1e; /* Default dark mode section background */
-        }
+        /* body.dark-mode section no longer needed here as JS will handle it */
+
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
             display: flex; align-items: center; justify-content: center;
@@ -1472,7 +1471,7 @@ html
             if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
             if (ficha.backgroundSize === undefined) ficha.backgroundSize = 'cover';
             if (ficha.backgroundAttachment === undefined) ficha.backgroundAttachment = 'scroll';
-            if (ficha.darkMode === undefined) ficha.darkMode = false;
+            if (ficha.darkMode === undefined) ficha.darkMode = false; // Default to light mode if not set
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1517,6 +1516,8 @@ html
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
             document.body.classList.toggle("dark-mode", ficha.darkMode === true); 
+            aplicarEstilosDeFundoVisuais(); // Centralized function to apply all background styles
+
             atualizarNivel(); 
             
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
@@ -1530,7 +1531,7 @@ html
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarEstilosFichaInicial(ficha); 
-            aplicarCorDeFundoInicial(ficha); 
+            // aplicarCorDeFundoInicial and aplicarCorDeFundoInternoFichaInicial are now handled by aplicarEstilosDeFundoVisuais
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
@@ -1589,8 +1590,11 @@ html
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
-            fichaAtual.backgroundColor = backgroundColorInput.value; 
-            fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value; 
+            
+            // Store custom colors as they are from the picker
+            if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
+            if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
+
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
             
@@ -1978,7 +1982,9 @@ html
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
                 classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                 
-                const currentFichaObject = fichas[currentFichaId] || { darkMode: document.body.classList.contains('dark-mode') };
+                const currentFichaObject = fichas[currentFichaId] || {};
+                currentFichaObject.darkMode = document.body.classList.contains('dark-mode'); // Preserve current theme or reset to default if preferred
+
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
                 currentFichaObject.backgroundColor = null;
@@ -1995,11 +2001,11 @@ html
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
 
-                aplicarCorDeFundoInicial(currentFichaObject); 
+                aplicarEstilosDeFundoVisuais(); // Apply correct backgrounds based on theme and null custom colors
                 aplicarEstilosFichaInicial(currentFichaObject); 
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
-                aplicarCoresDadoInicial(currentFichaObject);
+                aplicarCoresDadoInicial(currentFichaObject); // This will also respect current dark/light mode
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstadoColapsoSecoes({});
                 
@@ -2012,7 +2018,7 @@ html
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
 
-                salvarDados();
+                salvarDados(); // Salvar todas as propriedades resetadas
             }
         }
 
@@ -2557,15 +2563,17 @@ html
 
         luaBtn.onclick = () => { 
             document.body.classList.add("dark-mode"); 
+            if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = true;
             salvarDados(); 
-            aplicarCorDeFundoInicial(fichas[currentFichaId]); // Atualiza cores do body, ficha e seções
-            aplicarCoresDadoInicial(fichas[currentFichaId]);
+            aplicarEstilosDeFundoVisuais(); 
+            aplicarCoresDadoInicial(fichas[currentFichaId] || {});
         };
         solBtn.onclick = () => { 
             document.body.classList.remove("dark-mode"); 
+            if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = false;
             salvarDados(); 
-            aplicarCorDeFundoInicial(fichas[currentFichaId]); // Atualiza cores do body, ficha e seções
-            aplicarCoresDadoInicial(fichas[currentFichaId]);
+            aplicarEstilosDeFundoVisuais();
+            aplicarCoresDadoInicial(fichas[currentFichaId] || {});
         };
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
@@ -2585,23 +2593,15 @@ html
         };
         
         function abrirModalCustomizacao() {
-            const ficha = fichas[currentFichaId];
+            const ficha = fichas[currentFichaId] || {}; // Use an empty object if ficha is null
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
-            const defaultDarkInternalSection = '#1e1e1e'; // For sections in dark mode
-
+            const defaultDarkInternal = document.body.classList.contains('dark-mode') ? '#121212' : '#1e1e1e'; // More specific dark section color
 
             backgroundColorInput.value = ficha.backgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage);
             
-            let initialInternalColor;
-            if (ficha.fichaInternalBackgroundColor) {
-                initialInternalColor = ficha.fichaInternalBackgroundColor;
-            } else {
-                initialInternalColor = document.body.classList.contains('dark-mode') ? defaultDarkInternalContainer : defaultLightInternal;
-            }
-            fichaInternalBackgroundColorInput.value = initialInternalColor;
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkInternal : defaultLightInternal);
 
 
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
@@ -2693,65 +2693,59 @@ html
                 document.body.style.backgroundAttachment = 'scroll';
             }
         }
+
+        function aplicarEstilosDeFundoVisuais() {
+            const ficha = fichas[currentFichaId] || {}; // Fallback to empty object if ficha is null
+            const isDarkModeActive = document.body.classList.contains('dark-mode');
+
+            const defaultLightPage = '#f0e6d2';
+            const defaultDarkPage = '#121212';
+            const defaultLightInternal = '#f0e6d2';
+            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
+            const defaultDarkInternalSection = '#1e1e1e';   // For sections in dark mode
+
+            // Body background
+            if (isDarkModeActive) {
+                document.body.style.backgroundColor = defaultDarkPage;
+            } else {
+                document.body.style.backgroundColor = ficha.backgroundColor || defaultLightPage;
+            }
+            // Ensure the input in the modal shows the stored/default light color
+            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
+
+            // Ficha Container & Sections background
+            let finalInternalContainerColor;
+            let finalInternalSectionColor;
+
+            if (isDarkModeActive) {
+                finalInternalContainerColor = defaultDarkInternalContainer;
+                finalInternalSectionColor = defaultDarkInternalSection;
+            } else {
+                finalInternalContainerColor = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+                finalInternalSectionColor = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+            }
+
+            fichaContainer.style.backgroundColor = finalInternalContainerColor;
+            document.querySelectorAll('#ficha-container section').forEach(sec => {
+                sec.style.backgroundColor = finalInternalSectionColor;
+            });
+             // Ensure the input in the modal shows the stored/default light color for internal
+            if (fichaInternalBackgroundColorInput) {
+                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+            }
+        }
         
         backgroundColorInput.addEventListener('input', (event) => {
-            document.body.style.backgroundColor = event.target.value;
+            if(fichas[currentFichaId]) fichas[currentFichaId].backgroundColor = event.target.value;
+            aplicarEstilosDeFundoVisuais();
             salvarDados();
         });
 
         fichaInternalBackgroundColorInput.addEventListener('input', (event) => {
-            const newColor = event.target.value;
-            fichaContainer.style.backgroundColor = newColor;
-            document.querySelectorAll('#ficha-container section').forEach(sec => {
-                sec.style.backgroundColor = newColor;
-            });
+            if(fichas[currentFichaId]) fichas[currentFichaId].fichaInternalBackgroundColor = event.target.value;
+            aplicarEstilosDeFundoVisuais();
             salvarDados();
         });
-        
-        function aplicarCorDeFundoInicial(ficha) {
-            const defaultLightPage = '#f0e6d2'; 
-            const defaultDarkPage = '#121212'; 
-
-            let bodyBgColorToApply = document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage;
-            if (ficha?.backgroundColor) {
-                bodyBgColorToApply = ficha.backgroundColor;
-            }
-            document.body.style.backgroundColor = bodyBgColorToApply;
-            if (backgroundColorInput) backgroundColorInput.value = bodyBgColorToApply;
-
-            aplicarCorDeFundoInternoFichaInicial(ficha);
-        }
-
-        function aplicarCorDeFundoInternoFichaInicial(ficha) {
-            const defaultInternalLight = '#f0e6d2'; 
-            const defaultInternalDarkContainer = '#121212';
-            const defaultInternalDarkSection = '#1e1e1e';  
-
-            let internalContainerBgToApply;
-            let internalSectionBgToApply;
-
-            if (ficha?.fichaInternalBackgroundColor) {
-                internalContainerBgToApply = ficha.fichaInternalBackgroundColor;
-                internalSectionBgToApply = ficha.fichaInternalBackgroundColor;
-            } else {
-                if (document.body.classList.contains('dark-mode')) {
-                    internalContainerBgToApply = defaultInternalDarkContainer;
-                    internalSectionBgToApply = defaultInternalDarkSection;
-                } else {
-                    internalContainerBgToApply = defaultInternalLight;
-                    internalSectionBgToApply = defaultInternalLight;
-                }
-            }
-
-            fichaContainer.style.backgroundColor = internalContainerBgToApply;
-            document.querySelectorAll('#ficha-container section').forEach(sec => {
-                sec.style.backgroundColor = internalSectionBgToApply;
-            });
-
-            if (fichaInternalBackgroundColorInput) { 
-                fichaInternalBackgroundColorInput.value = ficha?.fichaInternalBackgroundColor || internalContainerBgToApply;
-            }
-        }
 
 
         fontSelector.addEventListener('change', (event) => {
@@ -2771,17 +2765,20 @@ html
         
         diceColorInput.addEventListener('input', (event) => {
             diceRoll.style.setProperty('--dice-bg-color', event.target.value);
+            if(fichas[currentFichaId]) fichas[currentFichaId].diceColor = event.target.value;
             salvarDados();
         });
         
         diceNumberColorInput.addEventListener('input', (event) => {
             diceRoll.style.setProperty('--dice-number-color', event.target.value);
+            if(fichas[currentFichaId]) fichas[currentFichaId].diceNumberColor = event.target.value;
             salvarDados();
         });
 
         function aplicarCoresDadoInicial(ficha) {
-            const defaultDiceColor = document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#f0e6d2';
-            const defaultDiceNumberColor = document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#000000';
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const defaultDiceColor = isDarkMode ? '#1e1e1e' : '#f0e6d2';
+            const defaultDiceNumberColor = isDarkMode ? '#e0e0e0' : '#000000';
 
             const diceBg = ficha?.diceColor || defaultDiceColor;
             const diceNumCol = ficha?.diceNumberColor || defaultDiceNumberColor;
@@ -2789,7 +2786,7 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            if(diceColorInput) diceColorInput.value = diceBg;
+            if(diceColorInput) diceColorInput.value = diceBg; // Set picker to current visual or stored
             if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
@@ -2914,7 +2911,7 @@ html
             };
 
             const stopAction = () => {
-                if (!isActionActive) return;
+                                if (!isActionActive) return;
                 clearInterval(currentActionIntervalId);
                 currentActionIntervalId = null;
                 isActionActive = false;
@@ -3113,14 +3110,15 @@ html
              showNotification("Animação do dado alterada!", "save-success");
         }
 
-               function aplicarCustomizacoesDadoInicial(ficha) {
+       function aplicarCustomizacoesDadoInicial(ficha) {
             if (ficha.texturaDado) {
                 diceRoll.style.backgroundImage = `url('${ficha.texturaDado}')`;
             } else {
                 diceRoll.style.backgroundImage = 'none';
             }
-             // O valor do select de animação é carregado na função `abrirModalCustomizacao` 
-             // e já está sendo salvo/carregado corretamente pela `salvarDados` e `carregarFicha`
+            if(diceAnimationSelector && ficha.animacaoDado) {
+                 diceAnimationSelector.value = ficha.animacaoDado;
+            }
         }
 
 
