@@ -207,13 +207,22 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn {
+        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn, #save-attributes-btn /* Added save-attributes-btn here for consistency if needed */ {
             background-color: #800000;
         }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover {
+         #gm-add-points-btn { /* Style for the new GM points button */
+            background-color: #006400; /* Green color */
+        }
+        #gm-add-points-btn:hover {
+            background: #004d00; /* Darker green on hover */
+            transform: translateY(-2px);
+        }
+
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover, #save-attributes-btn:hover {
             background: #a0522d; transform: translateY(-2px);
         }
         #gm-mode-btn.gm-active { background-color: #006400; }
+
 
         .icon-btn {
             padding: 10px; width: 44px; height: 44px;
@@ -861,6 +870,9 @@ html
                             </div>
                         </div>
                     </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button id="save-attributes-btn" class="botao" style="display:none; background-color: #006400;">Salvar Atributos</button>
+                    </div>
                 </div>
             </section>
             <section id="combate">
@@ -992,6 +1004,7 @@ html
                 <button id="customizacao-btn" class="botao">Customização 🎨</button>
                 <button id="excluir-ficha" class="botao botao-excluir">Excluir Ficha</button>
                 <button id="gm-mode-btn" class="botao">Modo Mestre GM 👑</button>
+                <button id="gm-add-points-btn" class="botao" style="display:none;">+ PD/PH (GM)</button>
             </div>
 
             <div class="theme-buttons-container">
@@ -1299,11 +1312,9 @@ html
             diceNumberColorInput = document.getElementById('dice-number-color-input'),
             fichaTransparencySlider = document.getElementById('ficha-transparency-slider'),
             fichaTransparencyValueSpan = document.getElementById('ficha-transparency-value'),
-            // Renamed Glow/Shadow DOM Elements
-            shadowColorFichaInput = document.getElementById('shadow-color-ficha'), // Was glowColorFichaInput
-            shadowIntensityFichaSlider = document.getElementById('shadow-intensity-ficha-slider'), // Was glowIntensityFichaSlider
-            shadowIntensityFichaValueSpan = document.getElementById('shadow-intensity-ficha-value'), // Was glowIntensityFichaValueSpan
-
+            shadowColorFichaInput = document.getElementById('shadow-color-ficha'), 
+            shadowIntensityFichaSlider = document.getElementById('shadow-intensity-ficha-slider'), 
+            shadowIntensityFichaValueSpan = document.getElementById('shadow-intensity-ficha-value'), 
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
             senhaGmTitulo = document.getElementById("senha-gm-titulo"),
@@ -1314,6 +1325,8 @@ html
             limparHistoricoBtn = document.getElementById('limpar-historico-btn'),
             customTooltipElement = document.getElementById('custom-tooltip'),
             gmModeBtn = document.getElementById('gm-mode-btn'),
+            gmAddPointsBtn = document.getElementById('gm-add-points-btn'), // NOVO
+            saveAttributesBtn = document.getElementById('save-attributes-btn'), // NOVO
             vidaAtualInput = document.getElementById('vida-atual-input'),
             magiaAtualInput = document.getElementById('magia-atual-input'),
             vigorAtualInput = document.getElementById('vigor-atual-input');
@@ -1390,9 +1403,10 @@ html
                     collapsedSections: {},
                     gmOverrides: {},
                     corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
-                    // Shadow (Internal Glow) properties with defaults
-                    shadowColorFicha: '#000000', // Was glowColorFicha
-                    shadowIntensityFicha: 0 // Was glowIntensityFicha
+                    shadowColorFicha: '#000000', 
+                    shadowIntensityFicha: 0,
+                    areAttributesSaved: false, // NOVO
+                    savedAttributeValues: {} // NOVO
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1492,9 +1506,10 @@ html
                 gmOverrides: {},
                 corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
                 darkMode: document.body.classList.contains('dark-mode'),
-                // Shadow (Internal Glow) properties with defaults
                 shadowColorFicha: '#000000',
-                shadowIntensityFicha: 0
+                shadowIntensityFicha: 0,
+                areAttributesSaved: false, // NOVO
+                savedAttributeValues: {} // NOVO
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1540,9 +1555,10 @@ html
             ficha.backgroundSize = ficha.backgroundSize || 'cover';
             ficha.backgroundAttachment = ficha.backgroundAttachment || 'scroll';
             ficha.darkMode = ficha.darkMode === undefined ? false : ficha.darkMode;
-            // Shadow defaults (was glow)
-            ficha.shadowColorFicha = ficha.shadowColorFicha || '#000000'; // Was glowColorFicha
-            ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0; // Was glowIntensityFicha
+            ficha.shadowColorFicha = ficha.shadowColorFicha || '#000000'; 
+            ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0; 
+            ficha.areAttributesSaved = ficha.areAttributesSaved || false; // NOVO
+            ficha.savedAttributeValues = ficha.savedAttributeValues || {}; // NOVO
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || "";
@@ -1553,6 +1569,12 @@ html
             agilidadeInput.value = ficha.agilidade || "0";
             inteligenciaInput.value = ficha.inteligencia || "0";
             constituicaoInput.value = ficha.constituicao || "0";
+
+            // Atualiza previousValues para os atributos carregados
+            atributosInputs.forEach(input => {
+                previousValues.set(input, input.value);
+            });
+
 
             experienciaInput.value = ficha.experiencia || "0";
             armaDireitaNomeInput.value = ficha.armaDireitaNome || "";
@@ -1605,32 +1627,33 @@ html
 
             document.body.classList.toggle("dark-mode", ficha.darkMode === true);
 
-            atualizarNivel();
+            atualizarNivel(); // Isso também chama calcularAtributos
 
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal);
             magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
             vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
 
-            previousValues.clear();
-            atributosInputs.forEach(input => {
-                 previousValues.set(input, input.value);
-            });
+            // previousValues para campos não-atributo são setados aqui
             document.querySelectorAll('input[type="text"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao), input[type="number"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao):not(#experiencia):not(.recurso-atual-input), textarea').forEach(input => {
                 previousValues.set(input, input.value);
             });
+
 
             aplicarPlanoDeFundoInicial(ficha);
             aplicarEstilosFichaInicial(ficha);
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha);
             aplicarCustomizacoesDadoInicial(ficha);
-            aplicarEstilosDeFundoVisuais(); // This will also handle dark mode overrides for background
-            aplicarEstilosDeSombra(); // This will also handle dark mode overrides for shadow
+            aplicarEstilosDeFundoVisuais(); 
+            aplicarEstilosDeSombra(); 
             aplicarEstadoColapsoSecoes(ficha.collapsedSections);
 
             document.body.classList.toggle("gm-mode-active", isGmModeActive);
             gmModeBtn.classList.toggle("gm-active", isGmModeActive);
             gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
+            gmAddPointsBtn.style.display = isGmModeActive ? 'inline-block' : 'none'; // NOVO
+
+            checkAttributeChangesAndToggleSaveButton(); // NOVO: Checa e mostra/esconde o botão Salvar Atributos
         }
 
         function atualizarBotaoBloquear() {
@@ -1707,9 +1730,12 @@ html
             fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
             fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
 
-            // Save Shadow (was Glow) settings
             fichaAtual.shadowColorFicha = shadowColorFichaInput.value;
             fichaAtual.shadowIntensityFicha = parseInt(shadowIntensityFichaSlider.value);
+
+            fichaAtual.areAttributesSaved = fichaAtual.areAttributesSaved || false; // NOVO
+            fichaAtual.savedAttributeValues = fichaAtual.savedAttributeValues || {}; // NOVO
+
 
             saveFichasToStorage(fichas);
         }
@@ -1808,7 +1834,7 @@ html
             pontosHabilidadeTotal = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
                                       parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
 
-            pontosVantagemSpan.textContent = getPontosVantagem();
+            pontosVantagemSpan.textContent = getPontosVantagem(); // PH Total disponível
 
             if (nivel > nivelAnterior && ficha.gmOverrides?.nivel === undefined) {
                 nivelSpan.classList.add("aura-azul");
@@ -1818,9 +1844,8 @@ html
             }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none";
 
-            // Manage aura-azul on fichaContainer:
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined && !isDarkModeActive) { // Only show aura if not in dark mode (as dark mode overrides shadows)
+             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined && !isDarkModeActive) { 
                 fichaContainer.classList.add("aura-azul");
             } else {
                 fichaContainer.classList.remove("aura-azul");
@@ -1830,7 +1855,7 @@ html
         }
 
 
-        function getPontosVantagem() {
+        function getPontosVantagem() { // Retorna PH Total disponível
             const ficha = fichas[currentFichaId];
             if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
@@ -1841,31 +1866,17 @@ html
             } else {
                 phBase = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
             }
-
-            vantagensSelecionadas.forEach(vNome => {
-                const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) phBase -= vantagem.custo;
-            });
-            desvantagensSelecionadas.forEach(dNome => {
-                const desvantagem = desvantagensData.find(desv => desv.nome === dNome); if (desvantagem) phBase += desvantagem.ganho;
-            });
-            if (racaSelecionada) {
-                const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) phBase -= raca.custo;
-            }
+            // Não subtrai os custos aqui, esta função é para PH total.
+            // O cálculo de PH restante é feito em calcularPontosVantagemTemp ou similar.
             return phBase;
         }
 
 
-        function calcularPontosVantagemTemp() {
+        function calcularPontosVantagemTemp() { // Retorna PH restante após aplicar tempVantagens/Desvantagens/Raca
             const ficha = fichas[currentFichaId];
             if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
-            let ph;
-
-            if (ficha.gmOverrides?.['pontos-vantagem'] !== undefined) {
-                ph = parseInt(ficha.gmOverrides['pontos-vantagem']);
-            } else {
-                ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
-            }
+            let ph = getPontosVantagem(); // Pega o PH total disponível
 
             tempVantagensSelecionadas.forEach(vNome => {
                 const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) ph -= vantagem.custo;
@@ -1942,29 +1953,49 @@ html
             atributosInputs.forEach(input => {
                  pdGastosPeloJogador += parseInt(input.value) || 0;
             });
+            
+            // Se os atributos foram salvos, os PDs já gastos (e salvos) não contam contra o total atual,
+            // apenas os PDs *adicionais* gastos desde o save.
+            let pdBaseConsideradosGastos = 0;
+            if (ficha.areAttributesSaved && ficha.savedAttributeValues) {
+                for (const attrId in ficha.savedAttributeValues) {
+                    pdBaseConsideradosGastos += parseInt(ficha.savedAttributeValues[attrId]) || 0;
+                }
+            }
+            
+            const pdGastosNestaEdicao = pdGastosPeloJogador - pdBaseConsideradosGastos;
+
 
             const pdTotalDisponivel = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
                                  parseInt(ficha.gmOverrides['pontos-habilidade']) :
                                  (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
+            
+            // PDs restantes = PD Total - (PDs já salvos + PDs gastos agora acima dos salvos)
+            // Ou, mais simples: PD Total - PDs totais nos inputs
+            // A validação de "não gastar mais que o disponível"
+            const pdDisponiveisParaGastar = pdTotalDisponivel - pdBaseConsideradosGastos;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
-                alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos.");
 
+            if (pdGastosNestaEdicao > pdDisponiveisParaGastar && ficha.gmOverrides?.['pontos-habilidade'] === undefined && !isGmModeActive) {
+                alert("Pontos de habilidade insuficientes para esta distribuição! Os valores dos atributos serão revertidos para o estado anterior a esta edição.");
                 atributosInputs.forEach(input => {
-                    input.value = previousValues.get(input) || "0";
+                    input.value = previousValues.get(input) || (ficha.savedAttributeValues ? (ficha.savedAttributeValues[input.id] || "0") : "0") ;
                 });
-
+                // Recalcular pdGastosPeloJogador com os valores revertidos
                 pdGastosPeloJogador = 0;
                 atributosInputs.forEach(input => {
                     pdGastosPeloJogador += parseInt(input.value) || 0;
                 });
             }
-            pontosHabilidadeUsados = pdGastosPeloJogador;
+            
+            pontosHabilidadeUsados = pdGastosPeloJogador; // Total de PDs colocados nos inputs
             pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
 
-            atributosInputs.forEach(input => {
-                previousValues.set(input, input.value);
-            });
+
+            // Atualiza previousValues APENAS se a distribuição for válida ou se o GM estiver ativo
+            // (para refletir o estado atual que será a base da próxima edição)
+            // Ou melhor, previousValues é sempre o valor no FOCO.
+            // A reversão acima já usa previousValues. Não precisa mudar aqui.
 
             let currentForca = parseInt(forcaInput.value) || 0;
             let currentDestreza = parseInt(destrezaInput.value) || 0;
@@ -2072,13 +2103,17 @@ html
                     if (ficha) {
                         atributosInputs.forEach(input => {
                             input.value = 0;
-                            ficha[input.id] = "0";
+                            ficha[input.id] = "0"; // Salva "0" na ficha
+                            previousValues.set(input, "0"); // Atualiza previousValues para o estado resetado
                         });
+                        ficha.areAttributesSaved = false; // NOVO
+                        ficha.savedAttributeValues = {}; // NOVO
                     }
                     pontosHabilidadeUsados = 0;
-                    atualizarNivel();
+                    atualizarNivel(); // Isso chama calcularAtributos
                     salvarDados();
                     fecharModal("senha-gm-modal");
+                    checkAttributeChangesAndToggleSaveButton(); // NOVO
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
             };
         }
@@ -2092,7 +2127,10 @@ html
                     atributosInputs.forEach(input => {
                         ficha[input.id] = "0";
                         input.value = "0";
+                        previousValues.set(input, "0"); // Atualiza previousValues
                     });
+                    ficha.areAttributesSaved = false; // NOVO
+                    ficha.savedAttributeValues = {}; // NOVO
                 }
 
                 experienciaInput.value = "0";
@@ -2134,21 +2172,19 @@ html
                 currentFichaObject.backgroundImage = null;
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
-                // Reset Shadow (was Glow) on recomecar
                 currentFichaObject.shadowColorFicha = '#000000';
                 currentFichaObject.shadowIntensityFicha = 0;
 
-                // Apply visual resets
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstilosFichaInicial(currentFichaObject);
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
                 aplicarCoresDadoInicial(currentFichaObject);
                 aplicarEstilosDeFundoVisuais();
-                aplicarEstilosDeSombra(); // Renamed
+                aplicarEstilosDeSombra(); 
                 aplicarEstadoColapsoSecoes({});
 
-                atualizarNivel();
+                atualizarNivel(); // Chama calcularAtributos
 
                 vidaAtualInput.value = vidaTotal;
                 magiaAtualInput.value = magiaTotal;
@@ -2160,13 +2196,13 @@ html
                 if (customizacaoModal.style.display === "flex") {
                     if(fichaTransparencySlider) fichaTransparencySlider.value = 100;
                     if(fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = "100";
-                    // Reset shadow controls in modal
                     if(shadowColorFichaInput) shadowColorFichaInput.value = '#000000';
                     if(shadowIntensityFichaSlider) shadowIntensityFichaSlider.value = 0;
                     if(shadowIntensityFichaValueSpan) shadowIntensityFichaValueSpan.textContent = "0";
                 }
 
                 salvarDados();
+                checkAttributeChangesAndToggleSaveButton(); // NOVO
             }
         }
 
@@ -2245,7 +2281,7 @@ html
 
             if (inputElement && inputElement.tagName === 'INPUT' && previousValues.has(inputElement)) {
                  inputElement.value = previousValues.get(inputElement) || inputElement.defaultValue || "";
-                 if (atributosInputs.includes(inputElement)) {
+                 if (atributosInputs.includes(inputElement)) { // Se for um atributo, recalcular
                     calcularAtributos();
                 }
             }
@@ -2256,7 +2292,15 @@ html
 
         document.querySelectorAll('input[type="text"],input[type="number"]:not(#experiencia):not(.recurso-atual-input),textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
-                 previousValues.set(event.target, event.target.value);
+                 // Salva o valor ANTES da edição apenas se não for um atributo primário
+                 // ou se os atributos não estiverem salvos (para permitir a lógica de PDs)
+                if (!atributosInputs.includes(event.target) || (fichas[currentFichaId] && !fichas[currentFichaId].areAttributesSaved) || isGmModeActive) {
+                    previousValues.set(event.target, event.target.value);
+                } else if (atributosInputs.includes(event.target) && fichas[currentFichaId] && fichas[currentFichaId].areAttributesSaved) {
+                    // Se os atributos estão salvos, o previousValue para eles é o valor salvo
+                    previousValues.set(event.target, fichas[currentFichaId].savedAttributeValues[event.target.id] || event.target.value);
+                }
+
             });
             input.addEventListener("input", (event) => {
                 const inputTarget = event.target;
@@ -2265,9 +2309,23 @@ html
                     abrirModalSenha(inputTarget);
                     return;
                 }
+                const ficha = fichas[currentFichaId];
 
                 if (atributosInputs.includes(inputTarget)) {
-                    calcularAtributos();
+                     if (ficha && ficha.areAttributesSaved && !isGmModeActive) {
+                        const effectivelySavedValue = ficha.savedAttributeValues[inputTarget.id] !== undefined ?
+                                                    parseInt(ficha.savedAttributeValues[inputTarget.id]) : 0;
+                        const currentValue = parseInt(inputTarget.value) || 0;
+                        if (currentValue < effectivelySavedValue) {
+                            alert("Atributos salvos não podem ser diminuídos. Apenas o Mestre pode reverter ou diminuir.");
+                            inputTarget.value = effectivelySavedValue;
+                        }
+                    }
+                    calcularAtributos(); // Valida PDs e recalcula tudo
+                    if (ficha && !isGmModeActive) { // Só mostra/esconde o botão se não for o GM
+                        checkAttributeChangesAndToggleSaveButton();
+                    }
+
                 } else if (inputTarget.id.includes("arma")) {
                     calcularAtributos();
                 } else if (inputTarget.classList.contains('inventory-weight')) {
@@ -2722,8 +2780,8 @@ html
             aplicarEstilosDeSombra();
             aplicarEstilosFichaInicial(fichas[currentFichaId] || {});
             aplicarCoresDadoInicial(fichas[currentFichaId] || {});
-            if (nivel >= 30 && fichas[currentFichaId]?.gmOverrides?.nivel === undefined) { // Re-evaluate aura for dark mode
-                 fichaContainer.classList.remove("aura-azul"); // Aura might conflict visually or be less visible, remove for dark mode
+            if (nivel >= 30 && fichas[currentFichaId]?.gmOverrides?.nivel === undefined) { 
+                 fichaContainer.classList.remove("aura-azul"); 
             }
         };
         solBtn.onclick = () => {
@@ -2734,7 +2792,7 @@ html
             aplicarEstilosDeSombra();
             aplicarEstilosFichaInicial(fichas[currentFichaId] || {});
             aplicarCoresDadoInicial(fichas[currentFichaId] || {});
-            if (nivel >= 30 && fichas[currentFichaId]?.gmOverrides?.nivel === undefined) { // Re-evaluate aura for light mode
+            if (nivel >= 30 && fichas[currentFichaId]?.gmOverrides?.nivel === undefined) { 
                  fichaContainer.classList.add("aura-azul");
             }
         };
@@ -2761,11 +2819,10 @@ html
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternalSection = isDarkModeActive ? '#1e1e1e' : '#333'; // Use dark mode actual if active
+            const defaultDarkInternalSection = isDarkModeActive ? '#1e1e1e' : '#333'; 
 
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
-            // fichaInternalBackgroundColorInput should reflect the user's saved choice, not the dark mode override
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal; // Default to light mode base for the input
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal; 
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
 
             const bgSize = ficha?.backgroundSize || 'cover';
@@ -2787,7 +2844,6 @@ html
             fichaTransparencySlider.value = currentTransparency;
             fichaTransparencyValueSpan.textContent = currentTransparency;
 
-            // Initialize Shadow controls
             shadowColorFichaInput.value = ficha.shadowColorFicha || '#000000';
             shadowIntensityFichaSlider.value = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             shadowIntensityFichaValueSpan.textContent = shadowIntensityFichaSlider.value;
@@ -2864,7 +2920,6 @@ html
             const ficha = fichas[currentFichaId] || {};
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
-            // Page Background Color
             const defaultLightPageBg = '#f0e6d2';
             const defaultDarkPageBg = '#121212';
             document.body.style.backgroundColor = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
@@ -2884,17 +2939,15 @@ html
             if (isDarkModeActive) {
                 baseFichaContainerColorHex = fichaContainerDefaultDark;
                 baseSectionColorHex = sectionDefaultDark;
-                 // Ensure text color is appropriate for dark mode container
                 fichaContainer.style.color = '#e0e0e0';
                  document.querySelectorAll('#ficha-container section label, #ficha-container section h2, #ficha-container section span:not(.gm-edit-icon):not(#nivel):not(#pontos-habilidade):not(#pontos-vantagem)').forEach(el => el.style.color = '#e0e0e0');
-                 document.querySelectorAll('#ficha-container .atributo-destaque label').forEach(el => el.style.color = '#c58c5a'); // Dark mode accent for these labels
+                 document.querySelectorAll('#ficha-container .atributo-destaque label').forEach(el => el.style.color = '#c58c5a'); 
             } else {
                 baseFichaContainerColorHex = ficha.fichaInternalBackgroundColor || fichaContainerDefaultLight;
                 baseSectionColorHex = ficha.fichaInternalBackgroundColor || sectionDefaultLight;
-                // Reset to light mode colors
                 fichaContainer.style.color = '#000';
-                document.querySelectorAll('#ficha-container section label, #ficha-container section h2, #ficha-container section span:not(.gm-edit-icon):not(#nivel):not(#pontos-habilidade):not(#pontos-vantagem)').forEach(el => el.style.color = ''); // Rely on CSS
-                document.querySelectorAll('#ficha-container .atributo-destaque label').forEach(el => el.style.color = '#a0522d'); // Light mode accent
+                document.querySelectorAll('#ficha-container section label, #ficha-container section h2, #ficha-container section span:not(.gm-edit-icon):not(#nivel):not(#pontos-habilidade):not(#pontos-vantagem)').forEach(el => el.style.color = ''); 
+                document.querySelectorAll('#ficha-container .atributo-destaque label').forEach(el => el.style.color = '#a0522d'); 
 
             }
 
@@ -2907,8 +2960,8 @@ html
 
             document.querySelectorAll('#ficha-container section, #ficha-container .atributos-coluna-destaque, #ficha-container .medieval-box, #ficha-container .atributo-container').forEach(el => {
                  const baseColorForElement = (el.matches('.atributos-coluna-destaque') || el.matches('.medieval-box') || el.matches('.atributo-container'))
-                                            ? (isDarkModeActive ? (el.matches('.medieval-box') ? '#1e1e1e' : '#333') : (el.matches('.medieval-box') ? '#f0e6d2' : '#fff')) // Specific dark/light for these
-                                            : baseSectionColorHex; // General sections use baseSectionColorHex
+                                            ? (isDarkModeActive ? (el.matches('.medieval-box') ? '#1e1e1e' : '#333') : (el.matches('.medieval-box') ? '#f0e6d2' : '#fff')) 
+                                            : baseSectionColorHex; 
 
                 const rgbEl = hexToRgb(baseColorForElement);
                 if (rgbEl) {
@@ -3004,46 +3057,42 @@ html
             if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
 
-        // --- SOMBRA (was GLOW) FUNCTIONS ---
         function aplicarEstilosDeSombra() {
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
-            // Ficha/Section Sombra (Internal)
-            let fichaInternalShadowString = 'transparent 0 0 0 0 inset'; // Default no-op shadow
-            let sectionInternalShadowString = 'none'; // Default no-op shadow for sections
+            let fichaInternalShadowString = 'transparent 0 0 0 0 inset'; 
+            let sectionInternalShadowString = 'none'; 
 
-            if (!isDarkModeActive) { // Only apply custom shadow if NOT in dark mode
+            if (!isDarkModeActive) { 
                 const intensityFicha = ficha.shadowIntensityFicha || 0;
                 const colorFicha = ficha.shadowColorFicha || '#000000';
 
                 if (intensityFicha > 0) {
-                    const internalBlurPx = intensityFicha * 0.5; // Max 50px
-                    const internalSpreadPx = intensityFicha * 0.2; // Max 20px
+                    const internalBlurPx = intensityFicha * 0.5; 
+                    const internalSpreadPx = intensityFicha * 0.2; 
                     const commonInsetShadow = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
                     fichaInternalShadowString = commonInsetShadow;
                     sectionInternalShadowString = commonInsetShadow;
                 }
             }
-            // If dark mode IS active, the defaults (no shadow) will be used for custom shadow.
-
-            document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalShadowString); // Still uses --ficha-internal-glow var name
+            
+            document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalShadowString); 
 
             document.querySelectorAll('#ficha-container section').forEach(sec => {
                 if (isDarkModeActive) {
-                    sec.style.boxShadow = 'none'; // No custom inset shadow for sections in dark mode
+                    sec.style.boxShadow = 'none'; 
                 } else {
-                    sec.style.boxShadow = sectionInternalShadowString; // Apply custom shadow
+                    sec.style.boxShadow = sectionInternalShadowString; 
                 }
             });
             
-            // Handle Nivel 30+ Aura for Ficha Container
             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
                 if (isDarkModeActive) {
-                    fichaContainer.classList.remove("aura-azul"); // No aura in dark mode
+                    fichaContainer.classList.remove("aura-azul"); 
                 } else {
-                    fichaContainer.classList.add("aura-azul"); // Aura in light mode
+                    fichaContainer.classList.add("aura-azul"); 
                 }
             } else {
                 fichaContainer.classList.remove("aura-azul");
@@ -3051,12 +3100,11 @@ html
         }
 
 
-        function restaurarSombraPadrao() { // Renamed from restaurarBrilhoPadrao
+        function restaurarSombraPadrao() { 
             if (fichas[currentFichaId]) {
                 fichas[currentFichaId].shadowColorFicha = '#000000';
                 fichas[currentFichaId].shadowIntensityFicha = 0;
             }
-            // Update modal controls
             shadowColorFichaInput.value = '#000000';
             shadowIntensityFichaSlider.value = 0;
             shadowIntensityFichaValueSpan.textContent = '0';
@@ -3066,7 +3114,6 @@ html
             showNotification("Sombra restaurada para o padrão!", "save-success");
         }
 
-        // Event Listeners for Shadow Controls
         shadowColorFichaInput.addEventListener('input', (event) => {
             if (fichas[currentFichaId]) fichas[currentFichaId].shadowColorFicha = event.target.value;
             aplicarEstilosDeSombra();
@@ -3079,8 +3126,7 @@ html
             aplicarEstilosDeSombra();
             salvarDados();
         });
-        // --- END SOMBRA FUNCTIONS ---
-
+        
 
         diceHistoryTrigger.addEventListener('click', () => {
             if (diceHistoryPanel.style.display === 'flex') {
@@ -3278,7 +3324,12 @@ html
                 document.body.classList.remove('gm-mode-active');
                 gmModeBtn.classList.remove('gm-active');
                 gmModeBtn.textContent = "Modo Mestre GM 👑";
+                gmAddPointsBtn.style.display = 'none'; // NOVO: Ocultar botão de pontos GM
                 showNotification("Modo Mestre desativado.", "normal-result");
+                // Ao sair do modo GM, verificar se o botão "Salvar Atributos" deve aparecer
+                if (fichas[currentFichaId]) {
+                     checkAttributeChangesAndToggleSaveButton();
+                }
             } else {
                 senhaGmTitulo.textContent = "Ativar Modo Mestre";
                 document.getElementById("senha-gm-modal").style.display = "flex";
@@ -3290,6 +3341,8 @@ html
                         document.body.classList.add('gm-mode-active');
                         gmModeBtn.classList.add('gm-active');
                         gmModeBtn.textContent = "Modo Mestre Ativo 👑";
+                        gmAddPointsBtn.style.display = 'inline-block'; // NOVO: Mostrar botão de pontos GM
+                        saveAttributesBtn.style.display = 'none'; // NOVO: GM não precisa do botão salvar atributos do usuário
                         fecharModal("senha-gm-modal");
                         showNotification("Modo Mestre ativado!", "critical-success");
                     } else {
@@ -3299,6 +3352,116 @@ html
                 };
             }
         });
+
+        // NOVO: Event listener para o botão de adicionar/definir pontos PD/PH do GM
+        gmAddPointsBtn.addEventListener('click', () => {
+            if (!isGmModeActive || !fichas[currentFichaId]) return;
+
+            const ficha = fichas[currentFichaId];
+            if (!ficha.gmOverrides) {
+                ficha.gmOverrides = {};
+            }
+            
+            const nivelInfoBase = nivelData.find(data => data.nivel === nivel) || nivelData[0];
+
+            const currentPDBase = nivelInfoBase.pd;
+            const currentPHBase = nivelInfoBase.ph;
+
+
+            const currentPDOverridden = ficha.gmOverrides['pontos-habilidade'] !== undefined ?
+                                      parseInt(ficha.gmOverrides['pontos-habilidade']) : currentPDBase;
+
+            const currentPHOverridden = ficha.gmOverrides['pontos-vantagem'] !== undefined ?
+                                      parseInt(ficha.gmOverrides['pontos-vantagem']) : currentPHBase;
+
+
+            const newPDStr = prompt(`Definir total de Pontos de Habilidade (PD) para (atual: ${currentPDOverridden}, padrão do nível: ${currentPDBase}):\nDeixe em branco ou 'reset' para usar o padrão do nível.`, currentPDOverridden);
+            if (newPDStr !== null) {
+                if (newPDStr === "" || newPDStr.toLowerCase() === "reset") {
+                    delete ficha.gmOverrides['pontos-habilidade'];
+                    showNotification(`Total de Pontos de Habilidade (PD) resetado para o padrão do nível (${currentPDBase}).`, "save-success");
+                } else {
+                    const newPD = parseInt(newPDStr);
+                    if (!isNaN(newPD) && newPD >= 0) {
+                        ficha.gmOverrides['pontos-habilidade'] = newPD;
+                        showNotification(`Pontos de Habilidade (PD) definidos para ${newPD} pelo Mestre.`, "save-success");
+                    } else {
+                        alert("Valor de PD inválido.");
+                    }
+                }
+            }
+
+            const newPHStr = prompt(`Definir total de Pontos de Vantagem (PH) para (atual: ${currentPHOverridden}, padrão do nível: ${currentPHBase}):\nDeixe em branco ou 'reset' para usar o padrão do nível.`, currentPHOverridden);
+            if (newPHStr !== null) {
+                 if (newPHStr === "" || newPHStr.toLowerCase() === "reset") {
+                    delete ficha.gmOverrides['pontos-vantagem'];
+                     showNotification(`Total de Pontos de Vantagem (PH) resetado para o padrão do nível (${currentPHBase}).`, "save-success");
+                } else {
+                    const newPH = parseInt(newPHStr);
+                    if (!isNaN(newPH) && newPH >= 0) {
+                        ficha.gmOverrides['pontos-vantagem'] = newPH;
+                        showNotification(`Pontos de Vantagem (PH) definidos para ${newPH} pelo Mestre.`, "save-success");
+                    } else {
+                        alert("Valor de PH inválido.");
+                    }
+                }
+            }
+
+            salvarDados();
+            atualizarNivel(); // Recalcula e atualiza a UI com os novos totais
+        });
+
+        // NOVO: Event listener para o botão "Salvar Atributos"
+        saveAttributesBtn.addEventListener('click', () => {
+            if (!fichas[currentFichaId] || isGmModeActive || fichas[currentFichaId].areAttributesSaved) return;
+
+            const ficha = fichas[currentFichaId];
+            if (confirm("Tem certeza que deseja salvar os atributos? Após salvar, você só poderá aumentá-los (gastando PD), a menos que o Mestre permita a alteração.")) {
+                ficha.areAttributesSaved = true;
+                ficha.savedAttributeValues = {}; 
+                atributosInputs.forEach(input => {
+                    ficha.savedAttributeValues[input.id] = input.value;
+                    // previousValues.set(input, input.value); // Não precisa atualizar previousValues aqui, ele é do foco.
+                });
+                saveAttributesBtn.style.display = 'none';
+                salvarDados();
+                showNotification("Atributos salvos! Agora só podem ser aumentados.", "save-success");
+            }
+        });
+
+        // NOVO: Função para verificar mudanças nos atributos e mostrar/esconder o botão "Salvar Atributos"
+        function checkAttributeChangesAndToggleSaveButton() {
+            const ficha = fichas[currentFichaId];
+            if (!ficha || isGmModeActive) {
+                saveAttributesBtn.style.display = 'none';
+                return;
+            }
+
+            if (ficha.areAttributesSaved) {
+                saveAttributesBtn.style.display = 'none';
+                return;
+            }
+
+            let pdAtuaisNosInputs = 0;
+            atributosInputs.forEach(input => {
+                pdAtuaisNosInputs += parseInt(input.value) || 0;
+            });
+
+            let pdQueForamSalvos = 0;
+            if (ficha.savedAttributeValues && Object.keys(ficha.savedAttributeValues).length > 0) {
+                 atributosInputs.forEach(input => {
+                    pdQueForamSalvos += parseInt(ficha.savedAttributeValues[input.id]) || 0;
+                });
+            }
+            // Se não há savedAttributeValues (primeira vez ou após reset), pdQueForamSalvos é 0.
+
+            if (pdAtuaisNosInputs > pdQueForamSalvos) {
+                saveAttributesBtn.style.display = 'inline-block';
+            } else {
+                saveAttributesBtn.style.display = 'none';
+            }
+        }
+
 
         function handleGmEdit(event) {
             if (!isGmModeActive) return;
@@ -3310,6 +3473,11 @@ html
             const targetElement = document.getElementById(targetId);
 
             if (!targetElement) return;
+            
+            const ficha = fichas[currentFichaId];
+            if (!ficha) return;
+            if (!ficha.gmOverrides) ficha.gmOverrides = {};
+
 
             const isPrimaryAttributeInput = atributosInputs.some(input => input.id === targetId);
             let currentValueToEdit;
@@ -3317,47 +3485,70 @@ html
             if (isPrimaryAttributeInput) {
                 currentValueToEdit = targetElement.value;
             } else {
-                currentValueToEdit = targetElement.textContent;
+                 // Para spans, pegar o valor do override se existir, senão o textContent
+                currentValueToEdit = ficha.gmOverrides[targetId] !== undefined ? ficha.gmOverrides[targetId] : targetElement.textContent;
             }
 
-            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValueToEdit);
+            const newValueString = prompt(`Editar "${fieldLabel}" (GM):`, currentValueToEdit);
 
             if (newValueString !== null) {
                 let newValue = newValueString;
                 const numericFields = ['vida-total', 'magia-total', 'vigor-total', 'ataque', 'ataque-magico', 'acerto', 'esquiva', 'rdf', 'rdm', 'velocidade-corrida', 'altura-pulo', 'distancia-pulo', 'pontos-habilidade', 'pontos-vantagem', 'nivel', 'capacidade-carga', 'forca', 'destreza', 'agilidade', 'constituicao', 'inteligencia'];
 
                 if (numericFields.includes(targetId)) {
-                    const parsedNum = parseFloat(newValueString);
-                    if (!isNaN(parsedNum)) {
-                        newValue = parsedNum;
+                    if (newValueString === "" || newValueString.toLowerCase() === "reset") {
+                        // Se resetar, remove o override
+                        delete ficha.gmOverrides[targetId];
+                        if (isPrimaryAttributeInput) { // Para atributos primários, resetar o valor do input para 0 ou valor base
+                            // Não faz sentido resetar atributos primários via GM edit assim, pois eles são base para cálculo de PD
+                            // O GM definiria um valor específico, ou o jogador distribuiria.
+                            // Para outros campos, resetar override faz sentido.
+                            // Se o GM quer resetar um atributo primário, ele pode apenas definir para 0.
+                            // targetElement.value = "0"; // Exemplo, mas pode não ser o desejado.
+                        }
+                        showNotification(`Override de "${fieldLabel}" removido pelo Mestre. Valor voltará ao cálculo padrão.`, "save-success");
+
                     } else {
-                         alert("Valor inválido para este campo numérico.");
-                         return;
+                        const parsedNum = parseFloat(newValueString);
+                        if (!isNaN(parsedNum)) {
+                            newValue = parsedNum;
+                        } else {
+                             alert("Valor inválido para este campo numérico.");
+                             return;
+                        }
                     }
                 }
 
-                const ficha = fichas[currentFichaId];
-                if (!ficha.gmOverrides) {
-                    ficha.gmOverrides = {};
-                }
 
                 if (isPrimaryAttributeInput) {
-                    targetElement.value = newValue;
+                    targetElement.value = newValue; // GM edita diretamente o input
+                    // Se os atributos estavam "salvos" pelo jogador, o GM atualiza esse "ponto de trava"
+                    if (ficha.areAttributesSaved && ficha.savedAttributeValues) {
+                        ficha.savedAttributeValues[targetId] = newValue.toString();
+                    }
+                     // Limpar o override de PD se o GM está editando atributos diretamente
+                    // para que os PDs sejam recalculados com base nos novos valores dos atributos
+                    // delete ficha.gmOverrides['pontos-habilidade']; 
                 } else {
-                    ficha.gmOverrides[targetId] = newValue;
+                    // Se o valor não foi resetado, salva o override.
+                    if (!(newValueString === "" || newValueString.toLowerCase() === "reset" && numericFields.includes(targetId) )) {
+                         ficha.gmOverrides[targetId] = newValue;
+                    }
                 }
 
                 salvarDados();
-                atualizarNivel(); // Recalculates attributes based on overrides
+                atualizarNivel(); // Recalculates attributes based on overrides and input values
 
-                showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
+                if (!(newValueString === "" || newValueString.toLowerCase() === "reset" && numericFields.includes(targetId) )) {
+                    showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
+                }
             }
         }
         fichaContainer.addEventListener('click', handleGmEdit);
 
         function aplicarEstilosFicha() {
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultDarkBorder = '#555'; // Example dark mode border color
+            const defaultDarkBorder = '#555'; 
             const defaultLightBorder = '#b8860b';
 
             const novaCorBordaCustom = corBordaSecaoInput.value;
@@ -3371,7 +3562,6 @@ html
             document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
 
             if (fichas[currentFichaId]) {
-                // Always save the custom choice, visual override is separate
                 fichas[currentFichaId].corBordaSecao = novaCorBordaCustom;
                 fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
                 fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
@@ -3432,7 +3622,7 @@ html
             showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
         }
 
-        diceAnimationSelector.addEventListener('change', () => {
+                diceAnimationSelector.addEventListener('change', () => {
             aplicarAnimacaoDado(diceAnimationSelector.value);
         });
 
@@ -3470,7 +3660,7 @@ html
             const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
 
-            carregarFichas();
+            carregarFichas(); // Carrega a ficha e, por consequência, chama checkAttributeChangesAndToggleSaveButton
 
             setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
             setupHoldButtonEvents(btnAumentarVida, aumentarVida);
