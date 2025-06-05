@@ -1,5 +1,4 @@
 html
- esigenomeficheiro="index.html"
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -66,7 +65,7 @@ html
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow); /* MODIFIED: Uses var for internal shadow */
             width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s, opacity 0.3s, transform 0.3s, visibility 0.3s;
+            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s;
         }
         body.dark-mode #ficha-container {
             background: #121212; /* Dark mode ficha background */
@@ -208,10 +207,10 @@ html
         }
         body.dark-mode .botao { background: #555; }
         body.dark-mode .botao:hover { background: #777; }
-        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn, #random-char-btn { /* Added #random-char-btn */
+        #reset-pontos, #recomecar, #bloquear-ficha, #excluir-ficha, #gm-mode-btn, #customizacao-btn {
             background-color: #800000;
         }
-        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover, #random-char-btn:hover { /* Added #random-char-btn:hover */
+        .botao-reset:hover, .botao-recomecar:hover, .botao-bloquear:hover, .botao-desbloquear:hover, #excluir-ficha:hover, #gm-mode-btn:hover, #customizacao-btn:hover {
             background: #a0522d; transform: translateY(-2px);
         }
         #gm-mode-btn.gm-active { background-color: #006400; }
@@ -702,42 +701,6 @@ html
         }
 
 
-        /* Random Character Generation Animations */
-        #ficha-container.generating-spin-shrink {
-            animation: spinAndShrink 1.5s forwards ease-in-out;
-            z-index: 1005; /* Ensure it's on top during animation */
-        }
-        @keyframes spinAndShrink {
-            0% { transform: scale(1) rotate(0deg); opacity: 1; }
-            40% { transform: scale(0.7) rotate(360deg); opacity: 0.7; }
-            100% { transform: scale(0) rotate(720deg); opacity: 0; visibility: hidden; }
-        }
-
-        #ficha-container.generating-reappear-glow {
-            /* Applied after spinAndShrink, when visibility is set to visible by JS */
-            opacity: 0; /* Start transparent for the glow animation */
-            animation: reappearAndGlow 0.5s forwards ease-out;
-            box-shadow: 0 0 20px 10px gold, 0 0 35px 15px yellow, 0 0 50px 25px orange; /* Intense initial glow */
-            z-index: 1005;
-        }
-        @keyframes reappearAndGlow {
-            0% { opacity: 0; transform: scale(0.8); box-shadow: 0 0 20px 10px gold, 0 0 35px 15px yellow, 0 0 50px 25px orange; }
-            100% { opacity: 0.1; transform: scale(1); box-shadow: 0 0 15px 5px gold, 0 0 25px 10px yellow; } /* Fade glow slightly as opacity starts */
-        }
-
-        #ficha-container.generating-fade-in {
-            /* Starts from the state of generating-reappear-glow */
-            animation: fadeInFullVisual 5s forwards ease-in-out;
-            z-index: 1005;
-        }
-        @keyframes fadeInFullVisual { /* Renamed to avoid conflict if any */
-            0% { opacity: 0.1; box-shadow: 0 0 15px 5px gold, 0 0 25px 10px yellow; } /* Start with faint opacity and some glow */
-            70% { opacity: 1; box-shadow: 0 0 5px 2px gold, 0 0 10px 5px rgba(255,215,0,0.5); } /* Full opacity, glow diminishes */
-            100% { opacity: 1; /* Box shadow will be reset by JS after animation to original state */ }
-        }
-        /* End Random Character Generation Animations */
-
-
         @media (max-width: 768px) {
             body { padding: 10px; }
             #ficha-container { padding: 15px; }
@@ -1043,11 +1006,6 @@ html
                 <button id="classes-btn" class="botao">Classes ⚔️</button>
             </div>
 
-            <!-- Botão "Aleatório" adicionado aqui -->
-            <div style="text-align: center; margin-bottom: 20px;">
-                <button id="random-char-btn" class="botao">Aleatório 🎲</button>
-            </div>
-
             <div class="botoes-container">
                 <button id="reset-pontos" class="botao botao-reset">Reiniciar Pontos</button>
                 <button id="recomecar" class="botao botao-recomecar">Recomeçar</button>
@@ -1155,21 +1113,6 @@ html
             <button class="cancel-btn" onclick="fecharModal('editar-raca-modal')">Cancelar</button>
         </div>
     </div>
-
-    <!-- Modal de Seleção de Arquétipo -->
-    <div id="archetype-selection-modal" class="modal">
-        <div class="modal-content">
-            <h3>Escolha o Arquétipo</h3>
-            <div style="margin-bottom: 15px;">
-                <button class="botao archetype-option-btn" data-archetype="Ataque" style="width:100%; margin-bottom:10px; background-color: #b8860b;">Ataque</button>
-                <button class="botao archetype-option-btn" data-archetype="Defesa" style="width:100%; margin-bottom:10px; background-color: #b8860b;">Defesa</button>
-                <button class="botao archetype-option-btn" data-archetype="Magia" style="width:100%; background-color: #b8860b;">Magia</button>
-            </div>
-            <button class="cancel-btn" onclick="fecharModal('archetype-selection-modal')" style="width:100%;">Cancelar</button>
-        </div>
-    </div>
-
-
     <div id="notification"></div>
 
     <!-- MODAL DE CUSTOMIZAÇÃO GERAL -->
@@ -1404,10 +1347,7 @@ html
             vigorAtualInput = document.getElementById('vigor-atual-input'),
             // New modal elements
             confirmarSalvarAtributosModal = document.getElementById("confirmar-salvar-atributos-modal"),
-            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn"),
-            // Random Character Generation Elements
-            randomCharBtn = document.getElementById('random-char-btn'),
-            archetypeSelectionModal = document.getElementById('archetype-selection-modal');
+            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn");
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
@@ -1420,7 +1360,6 @@ html
         let currentDiceMax = 20;
         let fireworksContainerRef;
         let tooltipTimeoutId = null;
-        let originalFichaBoxShadow = ""; // To store original shadow for restoration
 
         function getFichasFromStorage() {
             const fichasJSON = localStorage.getItem(RGP_FICHAS_KEY);
@@ -2374,10 +2313,7 @@ html
                 salvarDados();
             });
         });
-        nomePersonagemInput.oninput = () => {
-            salvarDados();
-            nomePersonagemTitulo.textContent = nomePersonagemInput.value || "Ficha de Personagem";
-        }; 
+        nomePersonagemInput.oninput = salvarDados; 
 
         atributosInputs.forEach(input => {
             input.addEventListener("focus", (event) => {
@@ -2924,7 +2860,7 @@ html
 
         function showNotification(message, type) {
             notification.textContent = message; notification.className = type; notification.style.display = "block";
-            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, type === "save-success" ? 2000: 3000);
+            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
 
         customizacaoBtn.onclick = () => {
@@ -3219,19 +3155,6 @@ html
                     sec.style.boxShadow = sectionInternalShadowString;
                 }
             });
-            
-            // Restore original box-shadow of ficha-container if not in special animation
-            if (!fichaContainer.classList.contains('generating-reappear-glow') && !fichaContainer.classList.contains('generating-fade-in')) {
-                 // Base shadow from CSS, potentially modified by aura-azul
-                const baseShadow = "0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow)";
-                if (fichaContainer.classList.contains("aura-azul")) {
-                    // If aura-azul is active, its animation handles the shadow.
-                    // We don't need to set it here directly, but ensure this function doesn't overwrite it.
-                } else {
-                    fichaContainer.style.boxShadow = baseShadow;
-                }
-            }
-
 
             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
                 if (isDarkModeActive) {
@@ -3660,329 +3583,6 @@ html
             }
         }
 
-        // --- Random Character Generation Logic ---
-        const firstNames = ["Aragorn", "Legolas", "Gimli", "Frodo", "Gandalf", "Elara", "Borin", "Lyra", "Kael", "Seraphina", "Roric", "Astrid", "Jareth", "Moira", "Finnian", " Isolde"];
-        const lastNames = ["Stonehand", "Swiftarrow", "Deepdelver", "Lightfoot", "The Wise", "Moonwhisper", "Ironhelm", "Shadowwalker", "Blackwood", "Silverstream", "Stormblade", "Fireheart"];
-
-        function getRandomElement(arr) {
-            if (!arr || arr.length === 0) return null;
-            return arr[Math.floor(Math.random() * arr.length)];
-        }
-
-        function generateRandomFullName() {
-            return `${getRandomElement(firstNames)} ${getRandomElement(lastNames)}`;
-        }
-
-        function generateRandomDescriptionText(raceName, archetype) {
-            const archetypesDesc = {
-                "Ataque": ["de olhar feroz e postura agressiva", "com músculos definidos e cicatrizes de batalha", "que parece sempre pronto para o combate"],
-                "Defesa": ["de constituição robusta e olhar determinado", "com uma presença imponente e protetora", "que exibe uma calma inabalável perante o perigo"],
-                "Magia": ["com olhos brilhantes que denotam sabedoria arcana", "envolto em uma aura de mistério e poder", "cujos gestos são fluidos e precisos como um encantamento"]
-            };
-            const baseDescs = [
-                `Um(a) ${raceName} ${getRandomElement(archetypesDesc[archetype] || archetypesDesc["Ataque"])}.`,
-                `Conhecido(a) por sua ${archetype === 'Ataque' ? 'bravura indomável' : archetype === 'Defesa' ? 'resistência lendária' : 'mente astuta'}, este(a) ${raceName} não teme desafios.`,
-                `Com traços típicos de sua raça, este(a) ${raceName} também carrega a marca de um(a) especialista em ${archetype.toLowerCase()}.`
-            ];
-            return getRandomElement(baseDescs);
-        }
-
-        function resetFichaForRandomGeneration() {
-            const ficha = fichas[currentFichaId];
-            if (!ficha) return;
-
-            // Reset basic info
-            nomePersonagemInput.value = "";
-            descricaoPersonagemInput.value = "";
-            nomePersonagemTitulo.textContent = "Ficha de Personagem"; // Reset title
-            characterImage.src = "";
-            characterImage.style.display = "none";
-            ficha.imagem = null;
-
-            // Reset attributes to 0
-            atributosInputs.forEach(input => input.value = "0");
-            pontosHabilidadeUsados = 0;
-
-            // Reset resources (will be recalculated based on new Constituicao)
-            vidaAtualInput.value = "0";
-            magiaAtualInput.value = "0";
-            vigorAtualInput.value = "0";
-
-            // Reset combat/armas
-            armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
-            armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-
-           // Reset XP and Level (crucial for getting base PD/PH)
-            experienciaInput.value = "0";
-            experiencia = 0;
-            nivel = 0; // Will be recalculated by atualizarNivel()
-
-            // Reset vantagens, desvantagens, raça
-            vantagensSelecionadas = [];
-            desvantagensSelecionadas = [];
-            racaSelecionada = null;
-            vantagensListDisplay.innerHTML = "";
-            desvantagensListDisplay.innerHTML = "";
-            racaNomeSpan.textContent = ""; // Clear displayed race name
-            racaDescricaoInput.value = ""; // Clear race description
-
-            // Reset classe
-            classeNomeInput.value = "";
-            classeDescricaoInput.value = "";
-
-            // Reset inventário
-            const slots = inventarioSlots.querySelectorAll(".inventory-slot");
-            slots.forEach(slot => {
-                slot.querySelector(".inventory-item").value = "";
-                slot.querySelector(".inventory-weight").value = "0";
-            });
-            calcularPesoTotal(); // Update peso total display
-
-            // Reset magias/habilidades
-            magiasList.innerHTML = ""; // Clear existing
-            for (let i = 0; i < 10; i++) { // Add back 10 empty slots
-                const input = document.createElement("input");
-                input.type = "text";
-                input.className = "magia-nome";
-                input.placeholder = `Magia/Habilidade ${i + 1}`;
-                input.addEventListener('input', salvarDados);
-                magiasList.appendChild(input);
-            }
-
-            // Reset anotações
-            anotacoesTextarea.value = "";
-
-            // Reset GM Overrides and Locked Attributes (CRITICAL for fresh generation)
-            if (ficha) {
-                ficha.gmOverrides = {};
-                ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
-            }
-
-            // Hide save attributes button as attributes are reset
-            if (salvarAtributosBtnEl) {
-                salvarAtributosBtnEl.style.display = "none";
-            }
-            
-            // This will set PD and PH to level 0 defaults and also call calcularAtributos
-            // which will in turn update resource totals (Vida, Magia, Vigor) based on 0 Constituicao initially.
-            // These will be updated again after attributes are randomly assigned.
-            atualizarNivel();
-        }
-
-
-        function generateRandomCharacter(archetype) {
-            if (!fichas[currentFichaId]) return;
-
-            resetFichaForRandomGeneration(); // Clear the slate first
-
-            const ficha = fichas[currentFichaId];
-
-            // 1. Nome e Sobrenome
-            const fullName = generateRandomFullName();
-            nomePersonagemInput.value = fullName;
-            nomePersonagemTitulo.textContent = fullName || "Ficha de Personagem";
-
-            // 2. Raça
-            const randomRaceData = getRandomElement(racasData);
-            if (randomRaceData) {
-                racaSelecionada = randomRaceData.nome;
-                racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
-                racaDescricaoInput.value = randomRaceData.vantagens.join("\n\n");
-                ficha.racaSelecionada = racaSelecionada;
-                ficha.racaNome = racaNomeSpan.textContent;
-                ficha.racaDescricao = racaDescricaoInput.value;
-            }
-            // Recalculate PH after race selection (atualizarNivel already called in reset, so getPontosVantagem will use new race)
-            let phDisponivel = getPontosVantagem();
-            pontosVantagemSpan.textContent = phDisponivel; // Update display early
-
-            // 3. Distribuição de Pontos de Atributo (PD)
-            // Nível 0 gives 25 PD. This should already be set by atualizarNivel in resetFicha.
-            let pdDisponiveis = (nivelData.find(n => n.nivel === 0)?.pd || 25);
-            const atributosBase = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
-
-            const primaryAttrs = {
-                "Ataque": ["forca", "destreza", "agilidade"],
-                "Defesa": ["constituicao", "forca"],
-                "Magia": ["inteligencia", "constituicao"]
-            };
-            const focusedAttrs = primaryAttrs[archetype] || primaryAttrs["Ataque"]; // Default to Ataque if invalid
-            
-            // Allocate a larger portion with bias (e.g., 15-18 points)
-            let pdParaFoco = Math.floor(pdDisponiveis * (Math.random() * 0.2 + 0.6)); // 60-80% of PD
-            pdDisponiveis -= pdParaFoco;
-
-            for (let i = 0; i < pdParaFoco; i++) {
-                const attrToBoost = getRandomElement(focusedAttrs);
-                atributosBase[attrToBoost]++;
-            }
-
-            // Distribute remaining PD randomly among all attributes
-            const allAttrKeys = Object.keys(atributosBase);
-            for (let i = 0; i < pdDisponiveis; i++) {
-                const attrToBoost = getRandomElement(allAttrKeys);
-                atributosBase[attrToBoost]++;
-            }
-            
-            // Update input fields for attributes
-            forcaInput.value = atributosBase.forca;
-            destrezaInput.value = atributosBase.destreza;
-            agilidadeInput.value = atributosBase.agilidade;
-            constituicaoInput.value = atributosBase.constituicao;
-            inteligenciaInput.value = atributosBase.inteligencia;
-            pontosHabilidadeUsados = Object.values(atributosBase).reduce((sum, val) => sum + val, 0);
-            pontosHabilidadeSpan.textContent = (nivelData.find(n => n.nivel === 0)?.pd || 25) - pontosHabilidadeUsados;
-
-
-            // 4. Vantagens e Desvantagens
-            // PH should be updated after race selection, now spend it
-            const maxDesvantagens = 3;
-            let numDesvantagensRandom = Math.floor(Math.random() * (maxDesvantagens - desvantagensSelecionadas.length + 1)); // 0 to (3 - current)
-
-            for (let i = 0; i < numDesvantagensRandom; i++) {
-                if (desvantagensSelecionadas.length >= maxDesvantagens) break;
-                const availableDesvantagens = desvantagensData.filter(d => !desvantagensSelecionadas.includes(d.nome));
-                if (availableDesvantagens.length === 0) break;
-                const randomDesvantagem = getRandomElement(availableDesvantagens);
-                if (randomDesvantagem) {
-                    desvantagensSelecionadas.push(randomDesvantagem.nome);
-                    phDisponivel += randomDesvantagem.ganho;
-                }
-            }
-
-            // Select advantages
-            let attempts = 0; // To prevent infinite loops
-            const maxAdvantageAttempts = vantagensData.length * 2;
-            while (attempts < maxAdvantageAttempts) {
-                const availableVantagens = vantagensData.filter(v =>
-                    !vantagensSelecionadas.includes(v.nome) &&
-                    v.custo <= phDisponivel &&
-                    (v.restricao !== "inicio" || nivel === 0) // Allow "inicio" only at level 0
-                );
-                if (availableVantagens.length === 0) break;
-
-                const randomVantagem = getRandomElement(availableVantagens);
-                if (randomVantagem) {
-                    vantagensSelecionadas.push(randomVantagem.nome);
-                    phDisponivel -= randomVantagem.custo;
-                } else {
-                    break; // No suitable advantage found
-                }
-                attempts++;
-            }
-
-            // Update UI for Vantagens/Desvantagens
-            vantagensListDisplay.innerHTML = "";
-            desvantagensListDisplay.innerHTML = "";
-            vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; /* no onclick for random gen */ vantagensListDisplay.appendChild(div); });
-            desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; /* no onclick for random gen */ desvantagensListDisplay.appendChild(div); });
-            pontosVantagemSpan.textContent = phDisponivel;
-
-
-            // 5. Descrição do Personagem
-            const raceDisplayName = racaSelecionada ? racaSelecionada.split(" (")[0] : "Desconhecido";
-            descricaoPersonagemInput.value = generateRandomDescriptionText(raceDisplayName, archetype);
-
-            // 6. Final Calculations & UI Updates
-            // `calcularAtributos` will update derived stats, resource totals based on new attributes
-            calcularAtributos();
-
-            // Set current resources to their new maximums
-            vidaAtualInput.value = vidaTotal;
-            magiaAtualInput.value = magiaTotal;
-            vigorAtualInput.value = vigorTotal.toFixed(1);
-            vidaAtual = vidaTotal;
-            magiaAtual = magiaTotal;
-            vigorAtual = vigorTotal;
-
-            // Update internal ficha object data
-            ficha.nomePersonagem = nomePersonagemInput.value;
-            ficha.descricaoPersonagem = descricaoPersonagemInput.value;
-            ficha.forca = forcaInput.value;
-            ficha.destreza = destrezaInput.value;
-            ficha.agilidade = agilidadeInput.value;
-            ficha.constituicao = constituicaoInput.value;
-            ficha.inteligencia = inteligenciaInput.value;
-            ficha.experiencia = "0"; // Already set in reset
-            ficha.vantagens = vantagensSelecionadas.join("\n");
-            ficha.desvantagens = desvantagensSelecionadas.join("\n");
-            // Inventario and Magias are already cleared and reset to empty in resetFicha
-        }
-
-
-        function startRandomGenerationAnimation(archetype) {
-            if (!fichaContainer) return;
-
-            originalFichaBoxShadow = fichaContainer.style.boxShadow || getComputedStyle(fichaContainer).boxShadow; // Store for restoration
-
-            // Phase 1: Spin & Shrink
-            fichaContainer.classList.add('generating-spin-shrink');
-            fichaContainer.style.opacity = '1'; // Ensure it's visible to start animation
-            fichaContainer.style.visibility = 'visible';
-
-
-            setTimeout(() => {
-                // Phase 2: Disappear & Generate Character Data
-                fichaContainer.style.visibility = 'hidden'; // Hide after shrink
-                generateRandomCharacter(archetype); // Generate data while hidden
-
-                setTimeout(() => {
-                    // Phase 3: Reappear with Glow
-                    fichaContainer.classList.remove('generating-spin-shrink');
-                    fichaContainer.style.visibility = 'visible'; // Make it visible for the glow
-                    fichaContainer.classList.add('generating-reappear-glow');
-                    // The reappearAndGlow animation handles initial opacity and box-shadow
-
-                    setTimeout(() => {
-                        // Phase 4: Fade-In to Full Opacity
-                        fichaContainer.classList.remove('generating-reappear-glow');
-                        fichaContainer.classList.add('generating-fade-in');
-                         // The fadeInFullVisual animation handles opacity and fades out the glow.
-                        // Box shadow will be restored at the end of this animation.
-
-                        setTimeout(() => {
-                            // Phase 5: Finalize
-                            fichaContainer.classList.remove('generating-fade-in');
-                            // Restore original box shadow or apply current theme's shadow
-                            // fichaContainer.style.boxShadow = originalFichaBoxShadow;
-                            aplicarEstilosDeSombra(); // This function correctly reapplies theme-aware shadows
-                            
-                            salvarDados(); // Save all generated data
-                            showNotification("Personagem gerado aleatoriamente!", "save-success");
-                        }, 5000); // Duration of fade-in
-                    }, 500); // Duration of reappear-glow
-                }, 500); // Brief pause after generation before reappearing
-            }, 1500); // Duration of spin-shrink
-        }
-
-
-        randomCharBtn.addEventListener('click', () => {
-            if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                return abrirModalSenha(randomCharBtn, () => {
-                     archetypeSelectionModal.style.display = "flex";
-                });
-            }
-            archetypeSelectionModal.style.display = "flex";
-        });
-
-        document.querySelectorAll('.archetype-option-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const selectedArchetype = button.dataset.archetype;
-                fecharModal('archetype-selection-modal');
-                if (selectedArchetype) {
-                    // Add a confirmation for random generation if not Matriz
-                    if (currentFichaId !== FICHA_MATRIZ_ID) {
-                        if (!confirm("Gerar um personagem aleatório irá sobrescrever os dados atuais desta ficha. Deseja continuar?")) {
-                            return;
-                        }
-                    }
-                    startRandomGenerationAnimation(selectedArchetype);
-                }
-            });
-        });
-
-        // --- End of Random Character Generation Logic ---
-
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container');
@@ -3998,8 +3598,6 @@ html
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
 
             carregarFichas();
-            originalFichaBoxShadow = fichaContainer.style.boxShadow || getComputedStyle(fichaContainer).boxShadow;
-
 
             setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
             setupHoldButtonEvents(btnAumentarVida, aumentarVida);
@@ -4008,7 +3606,7 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .archetype-option-btn').forEach(btn => { // Added .archetype-option-btn
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
