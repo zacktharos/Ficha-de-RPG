@@ -1329,7 +1329,7 @@ html
                     diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao', 
                     diceRolls: [],
                     collapsedSections: {},
-                    gmOverrides: {},
+                    gmOverrides: {}, // Garantir que gmOverrides exista
                     corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px' 
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
@@ -1426,7 +1426,7 @@ html
                 diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao',
                 diceRolls: [],
                 collapsedSections: {},
-                gmOverrides: {},
+                gmOverrides: {}, // Importante inicializar
                 corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
                 darkMode: document.body.classList.contains('dark-mode') 
             };
@@ -1455,39 +1455,55 @@ html
                 return;
             }
 
-            if (ficha.diceRolls === undefined) ficha.diceRolls = [];
-            if (ficha.collapsedSections === undefined) ficha.collapsedSections = {};
-            if (ficha.gmOverrides === undefined) ficha.gmOverrides = {}; 
-            if (ficha.corBordaSecao === undefined) ficha.corBordaSecao = '#b8860b'; 
-            if (ficha.estiloBordaSecao === undefined) ficha.estiloBordaSecao = 'solid';
-            if (ficha.larguraBordaSecao === undefined) ficha.larguraBordaSecao = '2px';
-            if (ficha.texturaDado === undefined) ficha.texturaDado = null; 
-            if (ficha.animacaoDado === undefined) ficha.animacaoDado = 'padrao';
-            if (ficha.fontFamily === undefined) ficha.fontFamily = "'Inter', sans-serif";
-            if (ficha.backgroundColor === undefined) ficha.backgroundColor = null; 
-            if (ficha.fichaInternalBackgroundColor === undefined) ficha.fichaInternalBackgroundColor = null; 
-            if (ficha.diceColor === undefined) ficha.diceColor = null;
-            if (ficha.diceNumberColor === undefined) ficha.diceNumberColor = null;
-            if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
-            if (ficha.backgroundSize === undefined) ficha.backgroundSize = 'cover';
-            if (ficha.backgroundAttachment === undefined) ficha.backgroundAttachment = 'scroll';
-            if (ficha.darkMode === undefined) ficha.darkMode = false; // Default to light mode if not set
+            // Garantir que todas as propriedades esperadas existam na ficha
+            ficha.gmOverrides = ficha.gmOverrides || {};
+            ficha.diceRolls = ficha.diceRolls || [];
+            ficha.collapsedSections = ficha.collapsedSections || {};
+            ficha.corBordaSecao = ficha.corBordaSecao || '#b8860b';
+            ficha.estiloBordaSecao = ficha.estiloBordaSecao || 'solid';
+            ficha.larguraBordaSecao = ficha.larguraBordaSecao || '2px';
+            ficha.texturaDado = ficha.texturaDado || null;
+            ficha.animacaoDado = ficha.animacaoDado || 'padrao';
+            ficha.fontFamily = ficha.fontFamily || "'Inter', sans-serif";
+            ficha.backgroundColor = ficha.backgroundColor || null;
+            ficha.fichaInternalBackgroundColor = ficha.fichaInternalBackgroundColor || null;
+            ficha.diceColor = ficha.diceColor || null;
+            ficha.diceNumberColor = ficha.diceNumberColor || null;
+            ficha.backgroundImage = ficha.backgroundImage || null;
+            ficha.backgroundSize = ficha.backgroundSize || 'cover';
+            ficha.backgroundAttachment = ficha.backgroundAttachment || 'scroll';
+            ficha.darkMode = ficha.darkMode === undefined ? false : ficha.darkMode;
 
 
-            nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
-            forcaInput.value = ficha.forca || "0"; destrezaInput.value = ficha.destreza || "0"; agilidadeInput.value = ficha.agilidade || "0";
-            inteligenciaInput.value = ficha.inteligencia || "0"; constituicaoInput.value = ficha.constituicao || "0"; experienciaInput.value = ficha.experiencia || "0";
-            armaDireitaNomeInput.value = ficha.armaDireitaNome || ""; armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0"; armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
-            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || ""; armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0"; armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+            nomePersonagemInput.value = ficha.nomePersonagem || ""; 
+            descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
             
-            isFichaLocked = ficha.isLocked || false; fichaPassword = ficha.password || null; isFichaUnlocked = false;
+            // Carregar valores dos atributos, priorizando GM overrides para exibição inicial
+            forcaInput.value = ficha.gmOverrides?.forca ?? (ficha.forca || "0");
+            destrezaInput.value = ficha.gmOverrides?.destreza ?? (ficha.destreza || "0");
+            agilidadeInput.value = ficha.gmOverrides?.agilidade ?? (ficha.agilidade || "0");
+            inteligenciaInput.value = ficha.gmOverrides?.inteligencia ?? (ficha.inteligencia || "0");
+            constituicaoInput.value = ficha.gmOverrides?.constituicao ?? (ficha.constituicao || "0");
+            
+            experienciaInput.value = ficha.experiencia || "0";
+            armaDireitaNomeInput.value = ficha.armaDireitaNome || ""; 
+            armaDireitaAtaqueInput.value = ficha.armaDireitaAtaque || "0"; 
+            armaDireitaAtaqueMagicoInput.value = ficha.armaDireitaAtaqueMagico || "0";
+            armaEsquerdaNomeInput.value = ficha.armaEsquerdaNome || ""; 
+            armaEsquerdaAtaqueInput.value = ficha.armaEsquerdaAtaque || "0"; 
+            armaEsquerdaAtaqueMagicoInput.value = ficha.armaEsquerdaAtaqueMagico || "0";
+            
+            isFichaLocked = ficha.isLocked || false; 
+            fichaPassword = ficha.password || null; 
+            isFichaUnlocked = false;
             vantagensSelecionadas = ficha.vantagens ? ficha.vantagens.split("\n").filter(v => v.trim()) : [];
             desvantagensSelecionadas = ficha.desvantagens ? ficha.desvantagens.split("\n").filter(d => d.trim()) : [];
             racaSelecionada = ficha.racaSelecionada || "";
             racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : "";
             racaDescricaoInput.value = racasData.find(r => r.nome === racaSelecionada)?.vantagens.join("\n\n") || "";
 
-            vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = "";
+            vantagensListDisplay.innerHTML = ""; 
+            desvantagensListDisplay.innerHTML = "";
             vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
             desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
 
@@ -1499,10 +1515,13 @@ html
             const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
             magiasList.innerHTML = "";
             magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; input.addEventListener('input', salvarDados); magiasList.appendChild(input); });
-            anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
+            anotacoesTextarea.value = ficha.anotacoes || ""; 
+            classeNomeInput.value = ficha.classeNome || ""; 
+            classeDescricaoInput.value = ficha.classeDescricao || "";
             if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none"; }
 
-            atualizarBotaoBloquear(); atualizarVantagensDesvantagensPanel();
+            atualizarBotaoBloquear(); 
+            atualizarVantagensDesvantagensPanel();
             atualizarRacasPanel();
             experiencia = parseInt(experienciaInput.value) || 0;
             
@@ -1516,22 +1535,28 @@ html
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
             document.body.classList.toggle("dark-mode", ficha.darkMode === true); 
-            aplicarEstilosDeFundoVisuais(); // Centralized function to apply all background styles
+            aplicarEstilosDeFundoVisuais(); 
 
-            atualizarNivel(); 
+            atualizarNivel(); // Isto chamará calcularAtributos
             
+            // Garantir que vida/magia/vigor atuais não excedam os totais recalculados
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
             magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
             vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
 
             previousValues.clear(); 
-            document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
-                previousValues.set(input, input.value); 
+            atributosInputs.forEach(input => { // Salvar apenas os valores que podem ser revertidos
+                const attrId = input.id;
+                if (ficha.gmOverrides?.[attrId] === undefined) {
+                    previousValues.set(input, input.value);
+                }
+            });
+            document.querySelectorAll('input[type="text"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao), input[type="number"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao):not(#experiencia):not(.recurso-atual-input), textarea').forEach(input => {
+                previousValues.set(input, input.value);
             });
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarEstilosFichaInicial(ficha); 
-            // aplicarCorDeFundoInicial and aplicarCorDeFundoInternoFichaInicial are now handled by aplicarEstilosDeFundoVisuais
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
@@ -1557,11 +1582,14 @@ html
 
             fichaAtual.nomePersonagem = nomePersonagemInput.value;
             fichaAtual.descricaoPersonagem = descricaoPersonagemInput.value;
-            fichaAtual.forca = forcaInput.value;
-            fichaAtual.destreza = destrezaInput.value;
-            fichaAtual.agilidade = agilidadeInput.value;
-            fichaAtual.inteligencia = inteligenciaInput.value;
-            fichaAtual.constituicao = constituicaoInput.value;
+
+            // Salvar atributos principais apenas se não houver GM override para eles
+            if (fichaAtual.gmOverrides?.forca === undefined) fichaAtual.forca = forcaInput.value;
+            if (fichaAtual.gmOverrides?.destreza === undefined) fichaAtual.destreza = destrezaInput.value;
+            if (fichaAtual.gmOverrides?.agilidade === undefined) fichaAtual.agilidade = agilidadeInput.value;
+            if (fichaAtual.gmOverrides?.inteligencia === undefined) fichaAtual.inteligencia = inteligenciaInput.value;
+            if (fichaAtual.gmOverrides?.constituicao === undefined) fichaAtual.constituicao = constituicaoInput.value;
+            
             fichaAtual.experiencia = experienciaInput.value;
             fichaAtual.armaDireitaNome = armaDireitaNomeInput.value;
             fichaAtual.armaDireitaAtaque = armaDireitaAtaqueInput.value;
@@ -1591,7 +1619,6 @@ html
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
             
-            // Store custom colors as they are from the picker
             if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
             if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
 
@@ -1600,7 +1627,7 @@ html
             
             fichaAtual.diceColor = diceColorInput.value; 
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            fichaAtual.texturaDado = fichaAtual.texturaDado; 
+            // fichaAtual.texturaDado é atualizado em aplicarTexturaDado
             fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
             vidaAtual = parseInt(vidaAtualInput.value);
@@ -1699,58 +1726,80 @@ html
         
         function atualizarNivel() {
             const ficha = fichas[currentFichaId];
+            if (!ficha) return; 
+
             experiencia = parseInt(experienciaInput.value) || 0;
             nivelAnterior = nivel; 
 
-            nivel = ficha?.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : calcularNivel(experiencia);
+            nivel = ficha.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : calcularNivel(experiencia);
             nivelSpan.textContent = nivel;
             
             const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
             
-            pontosHabilidadeTotal = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ? 
+            pontosHabilidadeTotal = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ? 
                                       parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
-
-            const phDisplay = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ?
-                               parseInt(ficha.gmOverrides['pontos-habilidade']) :
-                               (pontosHabilidadeTotal - pontosHabilidadeUsados);
-            pontosHabilidadeSpan.textContent = phDisplay;
 
             pontosVantagemSpan.textContent = getPontosVantagem();
 
-
-            if (nivel > nivelAnterior && ficha?.gmOverrides?.nivel === undefined) { 
+            if (nivel > nivelAnterior && ficha.gmOverrides?.nivel === undefined) { 
                 nivelSpan.classList.add("aura-azul"); 
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000); 
                 showNotification(`Parabéns! Você alcançou o Nível ${nivel}!`, "critical-success"); 
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6)); 
             }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; 
-            fichaContainer.classList.toggle("aura-azul", nivel >= 30 && ficha?.gmOverrides?.nivel === undefined);
+            fichaContainer.classList.toggle("aura-azul", nivel >= 30 && ficha.gmOverrides?.nivel === undefined);
 
-            calcularAtributos();
+            calcularAtributos(); // Chamada crucial para atualizar PD e outros atributos
         }
 
 
         function getPontosVantagem() {
             const ficha = fichas[currentFichaId];
-            if (ficha?.gmOverrides?.['pontos-vantagem'] !== undefined) {
-                return parseInt(ficha.gmOverrides['pontos-vantagem']);
-            }
-
-            let phBaseDoNivel = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
+            if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph; // Fallback
             
-            vantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) phBaseDoNivel -= vantagem.custo; });
-            desvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) phBaseDoNivel += desvantagem.ganho; });
-            if (racaSelecionada) { const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) phBaseDoNivel -= raca.custo; }
-            return phBaseDoNivel;
+            let phBase;
+
+            if (ficha.gmOverrides?.['pontos-vantagem'] !== undefined) {
+                phBase = parseInt(ficha.gmOverrides['pontos-vantagem']);
+            } else {
+                phBase = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
+            }
+            
+            vantagensSelecionadas.forEach(vNome => { 
+                const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) phBase -= vantagem.custo; 
+            });
+            desvantagensSelecionadas.forEach(dNome => { 
+                const desvantagem = desvantagensData.find(desv => desv.nome === dNome); if (desvantagem) phBase += desvantagem.ganho; 
+            });
+            if (racaSelecionada) { 
+                const raca = racasData.find(r => r.nome === racaSelecionada); if (raca) phBase -= raca.custo; 
+            }
+            return phBase;
         }
 
 
         function calcularPontosVantagemTemp() { 
-            let ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
-            tempVantagensSelecionadas.forEach(v => { const vantagem = vantagensData.find(d => d.nome === v); if (vantagem) ph -= vantagem.custo; });
-            tempDesvantagensSelecionadas.forEach(d => { const desvantagem = desvantagensData.find(desv => desv.nome === d); if (desvantagem) ph += desvantagem.ganho; });
-            if (tempRacaSelecionada) { const raca = racasData.find(r => r.nome === tempRacaSelecionada); if (raca) ph -= raca.custo; }
+            const ficha = fichas[currentFichaId];
+            if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph; // Fallback
+
+            let ph;
+
+            if (ficha.gmOverrides?.['pontos-vantagem'] !== undefined) {
+                ph = parseInt(ficha.gmOverrides['pontos-vantagem']); 
+            } else {
+                ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph; 
+            }
+            
+            tempVantagensSelecionadas.forEach(vNome => { 
+                const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) ph -= vantagem.custo; 
+            });
+            tempDesvantagensSelecionadas.forEach(dNome => { 
+                const desvantagem = desvantagensData.find(desv => desv.nome === dNome); if (desvantagem) ph += desvantagem.ganho; 
+            });
+            if (tempRacaSelecionada) { 
+                const raca = racasData.find(r => r.nome === tempRacaSelecionada); if (raca) ph -= raca.custo; 
+            }
             return ph;
         }
 
@@ -1809,43 +1858,75 @@ html
             } 
         }
 
-
         function calcularAtributos() {
             const ficha = fichas[currentFichaId];
+            if (!ficha) return;
 
+            // 1. Aplicar GM overrides aos inputs para garantir que os valores exibidos estão corretos.
+            atributosInputs.forEach(input => {
+                const attrId = input.id;
+                if (ficha.gmOverrides?.[attrId] !== undefined) {
+                    input.value = ficha.gmOverrides[attrId];
+                }
+                // Se não houver GM override para ESTE atributo, o valor do input (do jogador/load) permanece.
+            });
+            
+            // 2. Calcular pontosHabilidadeUsados (PD gastos pelo jogador)
+            // Somente os atributos NÃO definidos pelo GM consomem PD.
+            let pdGastosPeloJogador = 0;
+            atributosInputs.forEach(input => {
+                const attrId = input.id;
+                if (ficha.gmOverrides?.[attrId] === undefined) { // Se não há override para ESTE atributo
+                    pdGastosPeloJogador += parseInt(input.value) || 0;
+                }
+            });
+            
+            // 3. Calcular pdTotalDisponivel (considerando override do GM em 'pontos-habilidade')
+            const pdTotalDisponivel = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
+                                 parseInt(ficha.gmOverrides['pontos-habilidade']) :
+                                 (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
+
+            // 4. Validar se os PD gastos excedem o total disponível e reverter se necessário.
+            // Só reverter se o total de PD não foi definido pelo GM (evitar conflitos com override baixo de PD).
+            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
+                alert("Pontos de habilidade insuficientes! Os valores dos atributos não definidos pelo GM serão revertidos.");
+                
+                atributosInputs.forEach(input => {
+                    const attrId = input.id;
+                    // Só reverte se não for GM-overridden E se previousValues tiver um valor
+                    if (ficha.gmOverrides?.[attrId] === undefined) {
+                        input.value = previousValues.get(input) || "0"; // Reverte para o valor salvo antes da alteração que causou o estouro
+                    }
+                });
+                
+                // Recalcular pdGastosPeloJogador com valores revertidos
+                pdGastosPeloJogador = 0;
+                atributosInputs.forEach(input => {
+                    const attrId = input.id;
+                    if (ficha.gmOverrides?.[attrId] === undefined) {
+                        pdGastosPeloJogador += parseInt(input.value) || 0;
+                    }
+                });
+            }
+            pontosHabilidadeUsados = pdGastosPeloJogador; // Atualiza a variável global
+
+            // 5. Atualizar o span de PD disponíveis.
+            pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
+
+            // 6. Salvar os valores atuais dos inputs (que não são GM-overridden) em previousValues.
+            atributosInputs.forEach(input => {
+                const attrId = input.id;
+                if (ficha.gmOverrides?.[attrId] === undefined) {
+                    previousValues.set(input, input.value);
+                }
+            });
+
+            // 7. Usar os valores FINAIS dos inputs (que já refletem GM overrides) para cálculos.
             let currentForca = parseInt(forcaInput.value) || 0;
             let currentDestreza = parseInt(destrezaInput.value) || 0;
             let currentAgilidade = parseInt(agilidadeInput.value) || 0;
             let currentInteligencia = parseInt(inteligenciaInput.value) || 0;
             let currentConstituicao = parseInt(constituicaoInput.value) || 0;
-
-            let totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
-            
-            const pdCalculadoDisponivel = pontosHabilidadeTotal; 
-            
-            if (totalPontosAtuais > pdCalculadoDisponivel && ficha?.gmOverrides?.['pontos-habilidade'] === undefined) {
-                alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
-                forcaInput.value = previousValues.get(forcaInput) || "0";
-                destrezaInput.value = previousValues.get(destrezaInput) || "0";
-                agilidadeInput.value = previousValues.get(agilidadeInput) || "0";
-                inteligenciaInput.value = previousValues.get(inteligenciaInput) || "0";
-                constituicaoInput.value = previousValues.get(constituicaoInput) || "0";
-
-                currentForca = parseInt(forcaInput.value) || 0;
-                currentDestreza = parseInt(destrezaInput.value) || 0;
-                currentAgilidade = parseInt(agilidadeInput.value) || 0;
-                currentInteligencia = parseInt(inteligenciaInput.value) || 0;
-                currentConstituicao = parseInt(constituicaoInput.value) || 0;
-                totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
-            }
-            
-            previousValues.set(forcaInput, forcaInput.value);
-            previousValues.set(destrezaInput, destrezaInput.value);
-            previousValues.set(agilidadeInput, agilidadeInput.value);
-            previousValues.set(inteligenciaInput, inteligenciaInput.value);
-            previousValues.set(constituicaoInput, constituicaoInput.value);
-
-            pontosHabilidadeUsados = totalPontosAtuais; 
 
             let calcAtaque = currentForca + Math.floor(currentDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
             let calcAtaqueMagico = currentInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
@@ -1857,7 +1938,7 @@ html
             const capacidadeBase = 5;
             const bonusForcaCarga = Math.floor(currentForca / 5);
             const capacidadeCargaCalculada = capacidadeBase + bonusForcaCarga;
-            const capacidadeCargaFinal = ficha?.gmOverrides?.['capacidade-carga'] !== undefined ?
+            const capacidadeCargaFinal = ficha.gmOverrides?.['capacidade-carga'] !== undefined ?
                                         parseInt(ficha.gmOverrides['capacidade-carga']) :
                                         capacidadeCargaCalculada;
             if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCargaFinal;
@@ -1882,13 +1963,14 @@ html
                     pesoTotalSpan.style.color = ''; capacidadeCargaSpan.style.color = '';
                 }
             }
-
-            ataqueSpan.textContent = ficha?.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : calcAtaque;
-            ataqueMagicoSpan.textContent = ficha?.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : calcAtaqueMagico;
-            acertoSpan.textContent = ficha?.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : calcAcerto;
-            esquivaSpan.textContent = ficha?.gmOverrides?.esquiva !== undefined ? ficha.gmOverrides.esquiva : calcEsquiva;
-            rdfSpan.textContent = ficha?.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : calcRdf;
-            rdmSpan.textContent = ficha?.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : calcRdm;
+            
+            // 8. Atualizar spans dos atributos derivados (considerando GM overrides nesses spans também)
+            ataqueSpan.textContent = ficha.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : calcAtaque;
+            ataqueMagicoSpan.textContent = ficha.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : calcAtaqueMagico;
+            acertoSpan.textContent = ficha.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : calcAcerto;
+            esquivaSpan.textContent = ficha.gmOverrides?.esquiva !== undefined ? ficha.gmOverrides.esquiva : calcEsquiva;
+            rdfSpan.textContent = ficha.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : calcRdf;
+            rdmSpan.textContent = ficha.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : calcRdm;
 
             const velCorridaBase = 25 + Math.floor(currentAgilidade / 3) * 3;
             const altPuloBase = 1 + Math.floor(currentForca / 10);
@@ -1897,18 +1979,18 @@ html
             let bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0;
             let bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
 
-            velocidadeCorridaSpan.textContent = ficha?.gmOverrides?.['velocidade-corrida'] !== undefined ? ficha.gmOverrides['velocidade-corrida'] : (velCorridaBase + bonusVelocidade);
-            alturaPuloSpan.textContent = ficha?.gmOverrides?.['altura-pulo'] !== undefined ? ficha.gmOverrides['altura-pulo'] : (altPuloBase + bonusAlturaPulo);
-            distanciaPuloSpan.textContent = ficha?.gmOverrides?.['distancia-pulo'] !== undefined ? ficha.gmOverrides['distancia-pulo'] : (distPuloBase + bonusDistanciaPulo);
+            velocidadeCorridaSpan.textContent = ficha.gmOverrides?.['velocidade-corrida'] !== undefined ? ficha.gmOverrides['velocidade-corrida'] : (velCorridaBase + bonusVelocidade);
+            alturaPuloSpan.textContent = ficha.gmOverrides?.['altura-pulo'] !== undefined ? ficha.gmOverrides['altura-pulo'] : (altPuloBase + bonusAlturaPulo);
+            distanciaPuloSpan.textContent = ficha.gmOverrides?.['distancia-pulo'] !== undefined ? ficha.gmOverrides['distancia-pulo'] : (distPuloBase + bonusDistanciaPulo);
             
             let vidaBaseCalculada = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel;
             let magiaBaseCalculada = 20 + 3 * currentConstituicao;
             if (currentInteligencia >= 10) magiaBaseCalculada += currentConstituicao * Math.floor(currentInteligencia / 10);
             let vigorBaseCalculado = 10 + 0.4 * currentConstituicao;
 
-            vidaTotal = ficha?.gmOverrides?.['vida-total'] !== undefined ? parseInt(ficha.gmOverrides['vida-total']) : Math.ceil(vidaBaseCalculada);
-            magiaTotal = ficha?.gmOverrides?.['magia-total'] !== undefined ? parseInt(ficha.gmOverrides['magia-total']) : Math.ceil(magiaBaseCalculada);
-            vigorTotal = ficha?.gmOverrides?.['vigor-total'] !== undefined ? parseFloat(ficha.gmOverrides['vigor-total']) : parseFloat(vigorBaseCalculado.toFixed(1));
+            vidaTotal = ficha.gmOverrides?.['vida-total'] !== undefined ? parseInt(ficha.gmOverrides['vida-total']) : Math.ceil(vidaBaseCalculada);
+            magiaTotal = ficha.gmOverrides?.['magia-total'] !== undefined ? parseInt(ficha.gmOverrides['magia-total']) : Math.ceil(magiaBaseCalculada);
+            vigorTotal = ficha.gmOverrides?.['vigor-total'] !== undefined ? parseFloat(ficha.gmOverrides['vigor-total']) : parseFloat(vigorBaseCalculado.toFixed(1));
 
             document.getElementById("vida-total").textContent = vidaTotal;
             document.getElementById("magia-total").textContent = magiaTotal;
@@ -1918,14 +2000,13 @@ html
             magiaAtualInput.max = magiaTotal;
             vigorAtualInput.max = vigorTotal;
             
-            vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
-            magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
-            vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
-
-            vidaAtual = parseInt(vidaAtualInput.value);
-            magiaAtual = parseInt(magiaAtualInput.value);
-            vigorAtual = parseFloat(vigorAtualInput.value);
-
+            // Reajustar valores atuais se excederem os novos totais (após GM edit, por exemplo)
+            vidaAtual = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
+            magiaAtual = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
+            vigorAtual = Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal);
+            vidaAtualInput.value = vidaAtual;
+            magiaAtualInput.value = magiaAtual;
+            vigorAtualInput.value = vigorAtual.toFixed(1);
 
             document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
             document.getElementById("regeneracao-magia").textContent = (0.8 * currentConstituicao).toFixed(1);
@@ -1945,9 +2026,17 @@ html
             document.getElementById("senha-gm-input").value = "";
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
                 if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                    atributosInputs.forEach(input => input.value = 0); 
+                    // Limpar os overrides do GM para os atributos principais para permitir que o jogador os redistribua
+                    const ficha = fichas[currentFichaId];
+                    if (ficha) {
+                        atributosInputs.forEach(input => {
+                            input.value = 0; // Zera o input visualmente
+                            if (ficha.gmOverrides) delete ficha.gmOverrides[input.id]; // Remove o override do GM para este atributo
+                            if (ficha.hasOwnProperty(input.id)) ficha[input.id] = "0"; // Zera o valor base na ficha
+                        });
+                    }
                     pontosHabilidadeUsados = 0; 
-                    atualizarNivel();
+                    atualizarNivel(); // Recalcula tudo, incluindo PD disponíveis
                     salvarDados(); 
                     fecharModal("senha-gm-modal");
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
@@ -1958,10 +2047,16 @@ html
              if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(recomecarButton);
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
                 if (fichas[currentFichaId]) { 
+                    // Limpar todos os GM overrides ao recomeçar
                     fichas[currentFichaId].gmOverrides = {};
+                     // Resetar valores base dos atributos na ficha
+                    atributosInputs.forEach(input => {
+                        fichas[currentFichaId][input.id] = "0";
+                        input.value = "0"; // Resetar visualmente também
+                    });
                 }
 
-                atributosInputs.forEach(input => input.value = 0);
+
                 experienciaInput.value = "0";
                 experiencia = 0;
                 nivel = 0; 
@@ -1983,7 +2078,7 @@ html
                 classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                 
                 const currentFichaObject = fichas[currentFichaId] || {};
-                currentFichaObject.darkMode = document.body.classList.contains('dark-mode'); // Preserve current theme or reset to default if preferred
+                currentFichaObject.darkMode = document.body.classList.contains('dark-mode'); 
 
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
@@ -2001,24 +2096,24 @@ html
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
 
-                aplicarEstilosDeFundoVisuais(); // Apply correct backgrounds based on theme and null custom colors
+                aplicarEstilosDeFundoVisuais(); 
                 aplicarEstilosFichaInicial(currentFichaObject); 
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
-                aplicarCoresDadoInicial(currentFichaObject); // This will also respect current dark/light mode
+                aplicarCoresDadoInicial(currentFichaObject); 
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstadoColapsoSecoes({});
                 
-                atualizarNivel(); 
-                                 
-                vidaAtualInput.value = vidaTotal; 
+                atualizarNivel(); // Isso vai chamar calcularAtributos, que deve setar PD para 25 (de nivel 0)
+                                                 
+                vidaAtualInput.value = vidaTotal; // vidaTotal será recalculado por atualizarNivel/calcularAtributos
                 magiaAtualInput.value = magiaTotal;
                 vigorAtualInput.value = vigorTotal.toFixed(1);
                 vidaAtual = vidaTotal; 
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
 
-                salvarDados(); // Salvar todas as propriedades resetadas
+                salvarDados(); 
             }
         }
 
@@ -2103,28 +2198,42 @@ html
 
         document.querySelectorAll('input[type="text"],input[type="number"]:not(#experiencia):not(.recurso-atual-input),textarea').forEach(input => {
             input.addEventListener("focus", (event) => {
-                previousValues.set(event.target, event.target.value);
+                // Salvar previousValue apenas para inputs de atributo que não são GM-overridden
+                if (atributosInputs.includes(event.target)) {
+                    const attrId = event.target.id;
+                    if (fichas[currentFichaId]?.gmOverrides?.[attrId] === undefined) {
+                        previousValues.set(event.target, event.target.value);
+                    }
+                } else {
+                    previousValues.set(event.target, event.target.value);
+                }
             });
             input.addEventListener("input", (event) => {
                 const inputTarget = event.target;
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) { 
-                    inputTarget.value = previousValues.get(inputTarget) || "";
+                    const attrId = inputTarget.id;
+                    if (atributosInputs.includes(inputTarget) && fichas[currentFichaId]?.gmOverrides?.[attrId] !== undefined) {
+                        // Se for um atributo com GM override, não reverter, pois o GM pode ter mudado
+                    } else {
+                        inputTarget.value = previousValues.get(inputTarget) || inputTarget.defaultValue || "";
+                    }
                     abrirModalSenha(inputTarget);
                     return; 
                 }
-
+                
+                // Se for um atributo principal (For, Des, etc.), chamar calcularAtributos para atualizar PD e derivados
                 if (atributosInputs.includes(inputTarget)) {
-                    calcularAtributos();
-                } else if (inputTarget.id.includes("arma")) {
                     calcularAtributos(); 
-                } else if (inputTarget.classList.contains('inventory-weight')) {
+                } else if (inputTarget.id.includes("arma")) { // Se for arma, recalcular atributos que dependem de armas
+                    calcularAtributos(); 
+                } else if (inputTarget.classList.contains('inventory-weight')) { // Se for peso de item, recalcular carga
                     calcularPesoTotal(); 
-                    calcularAtributos(); 
+                    calcularAtributos(); // Para penalidades de sobrecarga
                 }
                 salvarDados();
             });
         });
-        nomePersonagemInput.oninput = salvarDados;
+        nomePersonagemInput.oninput = salvarDados; // Nome e descrição não afetam PD/PH, salvam direto
 
         [vidaAtualInput, magiaAtualInput, vigorAtualInput].forEach(input => {
             input.addEventListener('input', (event) => {
@@ -2187,7 +2296,7 @@ html
             if (!experienciaInput.readOnly) { 
                 experiencia = parseInt(event.target.value) || 0;
                  if (fichas[currentFichaId] && fichas[currentFichaId].gmOverrides) { 
-                    delete fichas[currentFichaId].gmOverrides.nivel;
+                    delete fichas[currentFichaId].gmOverrides.nivel; // Remover override de nível se XP for editado
                 }
                 atualizarNivel(); 
                 salvarDados(); 
@@ -2371,7 +2480,7 @@ html
                         racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
                         racaDescricaoInput.value = raca.vantagens.join("\n\n");
                         racasPanel.style.display = "none";
-                        atualizarNivel(); 
+                        atualizarNivel(); // Atualiza PH
                         salvarDados();
                     } else if (raca){
                         alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
@@ -2398,7 +2507,7 @@ html
                 desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
                 
                 vantagensDesvantagensPanel.style.display = "none";
-                atualizarNivel(); 
+                atualizarNivel(); // Atualiza PH
                 salvarDados();
             }
             fecharModal("salvar-vantagens-modal");
@@ -2593,15 +2702,17 @@ html
         };
         
         function abrirModalCustomizacao() {
-            const ficha = fichas[currentFichaId] || {}; // Use an empty object if ficha is null
+            const ficha = fichas[currentFichaId] || {}; 
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternal = document.body.classList.contains('dark-mode') ? '#121212' : '#1e1e1e'; // More specific dark section color
+            const defaultDarkInternalContainer = '#121212'; 
+            const defaultDarkInternalSection = '#1e1e1e';   
 
             backgroundColorInput.value = ficha.backgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage);
             
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkInternal : defaultLightInternal);
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || 
+                (document.body.classList.contains('dark-mode') ? defaultDarkInternalSection : defaultLightInternal);
 
 
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
@@ -2695,31 +2806,29 @@ html
         }
 
         function aplicarEstilosDeFundoVisuais() {
-            const ficha = fichas[currentFichaId] || {}; // Fallback to empty object if ficha is null
+            const ficha = fichas[currentFichaId] || {}; 
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
-            const defaultDarkInternalSection = '#1e1e1e';   // For sections in dark mode
+            const defaultDarkInternalContainer = '#121212'; 
+            const defaultDarkInternalSection = '#1e1e1e';  
 
-            // Body background
             if (isDarkModeActive) {
-                document.body.style.backgroundColor = defaultDarkPage;
+                document.body.style.backgroundColor = ficha.backgroundColor && !isDarkModeActive ? ficha.backgroundColor : defaultDarkPage;
             } else {
                 document.body.style.backgroundColor = ficha.backgroundColor || defaultLightPage;
             }
-            // Ensure the input in the modal shows the stored/default light color
-            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
+            
+            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
 
-            // Ficha Container & Sections background
             let finalInternalContainerColor;
             let finalInternalSectionColor;
 
             if (isDarkModeActive) {
-                finalInternalContainerColor = defaultDarkInternalContainer;
-                finalInternalSectionColor = defaultDarkInternalSection;
+                finalInternalContainerColor = ficha.fichaInternalBackgroundColor && !isDarkModeActive ? ficha.fichaInternalBackgroundColor : defaultDarkInternalContainer; // Se tiver cor custom clara, manter
+                finalInternalSectionColor = ficha.fichaInternalBackgroundColor && !isDarkModeActive ? ficha.fichaInternalBackgroundColor : defaultDarkInternalSection;   // Se tiver cor custom clara, manter
             } else {
                 finalInternalContainerColor = ficha.fichaInternalBackgroundColor || defaultLightInternal;
                 finalInternalSectionColor = ficha.fichaInternalBackgroundColor || defaultLightInternal;
@@ -2729,9 +2838,8 @@ html
             document.querySelectorAll('#ficha-container section').forEach(sec => {
                 sec.style.backgroundColor = finalInternalSectionColor;
             });
-             // Ensure the input in the modal shows the stored/default light color for internal
             if (fichaInternalBackgroundColorInput) {
-                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? defaultDarkInternalSection : defaultLightInternal);
             }
         }
         
@@ -2786,7 +2894,7 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            if(diceColorInput) diceColorInput.value = diceBg; // Set picker to current visual or stored
+            if(diceColorInput) diceColorInput.value = diceBg; 
             if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
@@ -3018,26 +3126,38 @@ html
             const currentElement = document.getElementById(targetId);
             
             if (!currentElement) return;
-            const currentValue = currentElement.textContent;
-
-            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValue);
+            let currentValueToEdit = currentElement.textContent;
+            // Para inputs (embora os gm-edit-icons geralmente estejam em spans), seria input.value
+            
+            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValueToEdit);
 
             if (newValueString !== null) { 
-                const newValue = parseFloat(newValueString); 
-                if (!isNaN(newValue) || typeof newValueString === 'string') { 
-                    
-                    if (!fichas[currentFichaId].gmOverrides) {
-                        fichas[currentFichaId].gmOverrides = {};
+                // Tenta converter para número, mas mantém como string se não for numérico ou se for campo específico de texto.
+                let newValue = newValueString; 
+                // Para campos que devem ser numéricos, tentamos a conversão.
+                const numericFields = ['vida-total', 'magia-total', 'vigor-total', 'ataque', 'ataque-magico', 'acerto', 'esquiva', 'rdf', 'rdm', 'velocidade-corrida', 'altura-pulo', 'distancia-pulo', 'pontos-habilidade', 'pontos-vantagem', 'nivel', 'capacidade-carga', 'forca', 'destreza', 'agilidade', 'constituicao', 'inteligencia'];
+                if (numericFields.includes(targetId)) {
+                    const parsedNum = parseFloat(newValueString);
+                    if (!isNaN(parsedNum)) {
+                        newValue = parsedNum;
+                    } else {
+                         alert("Valor inválido para este campo numérico.");
+                         return; // Não prossegue se o valor para um campo numérico não for um número
                     }
-                    fichas[currentFichaId].gmOverrides[targetId] = isNaN(newValue) && !['nome-personagem-titulo'].includes(targetId) ? newValueString : (isNaN(newValue) ? newValueString : newValue);
-                    
-                    salvarDados();
-                    atualizarNivel();
-
-                    showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
-                } else {
-                    alert("Valor inválido.");
                 }
+                
+                if (!fichas[currentFichaId].gmOverrides) {
+                    fichas[currentFichaId].gmOverrides = {};
+                }
+                fichas[currentFichaId].gmOverrides[targetId] = newValue;
+                
+                // Se o GM editou um atributo principal (Força, etc.), limpar o valor salvo em ficha.forca (ou similar)
+                // para que o override do GM seja a única fonte. SalvarDados já foi ajustado para isso.
+
+                salvarDados(); // Salva o override
+                atualizarNivel(); // Recalcula tudo e atualiza a UI
+
+                showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
             }
         }
         fichaContainer.addEventListener('click', handleGmEdit);
