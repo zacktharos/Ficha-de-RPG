@@ -12,6 +12,7 @@ html
             --cor-borda-secao: #b8860b; 
             --estilo-borda-secao: solid; 
             --largura-borda-secao: 2px; 
+            --ficha-internal-glow: transparent 0 0 0 0 inset; /* Default no glow */
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -25,7 +26,7 @@ html
             background-size: cover;
             background-position: center;
             background-attachment: scroll;
-            transition: background-color 0.3s, color 0.3s, font-family 0.3s;
+            transition: background-color 0.3s, color 0.3s, font-family 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
         }
         body.dark-mode {
             background-color: #121212 !important; /* Cor padrão modo escuro */
@@ -59,20 +60,26 @@ html
         #ficha-container {
             background: #f0e6d2; 
             padding: 30px; border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); width: 95%; max-width: 1200px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow); /* MODIFIED: Added var for internal glow */
+            width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s;
+            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition */
         }
         body.dark-mode #ficha-container {
             background: #121212; 
             color: #e0e0e0;
         }
-        #ficha-container.aura-azul { box-shadow: 0 0 30px 15px #00BFFF; animation: pulsar-aura 2s infinite; }
+        /* MODIFIED: Keyframes now include the CSS variable for internal glow */
         @keyframes pulsar-aura {
-            0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
-            50% { box-shadow: 0 0 30px #00BFFF, 0 0 50px #00BFFF, 0 0 60px #00BFFF; }
-            100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF; }
+            0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF, var(--ficha-internal-glow); }
+            50% { box-shadow: 0 0 30px #00BFFF, 0 0 50px #00BFFF, 0 0 60px #00BFFF, var(--ficha-internal-glow); }
+            100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF, var(--ficha-internal-glow); }
         }
+        #ficha-container.aura-azul { 
+            animation: pulsar-aura 2s infinite; 
+            /* The box-shadow is now fully handled by the animation, which includes the var */
+        }
+
         h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
             text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
@@ -88,14 +95,12 @@ html
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
         section { 
-            /* background: #f0e6d2; */ /* Managed by JS for override */
             border-width: var(--largura-borda-secao);
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px; 
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition for section glow */
         }
-        /* body.dark-mode section no longer needed here as JS will handle it */
 
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
@@ -424,8 +429,8 @@ html
         }
         #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
         #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
-        #notification.normal-result /* , #notification.save-success - Removido save-success para não piscar */ { animation: blink 1s infinite; }
-        #notification.save-success { background: rgba(0, 200, 0, 0.8); } /* Mantém a cor, mas não pisca mais */
+        #notification.normal-result { animation: blink 1s infinite; }
+        #notification.save-success { background: rgba(0, 200, 0, 0.8); }
 
         #character-image-container {
             position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
@@ -501,7 +506,7 @@ html
         #customizacao-modal .input-group input[type="file"],
         #customizacao-modal .input-group select,
         #customizacao-modal .input-group input[type="number"],
-        #customizacao-modal .input-group input[type="range"] { /* Added range for slider */
+        #customizacao-modal .input-group input[type="range"] {
             width: 100%;
             box-sizing: border-box;
         }
@@ -1109,6 +1114,29 @@ html
                 <button class="cancel-btn" onclick="restaurarOpacidadePadraoFicha()" style="width:100%;">Restaurar Opacidade Padrão (100%)</button>
             </fieldset>
 
+            <!-- NEW FIELDSET FOR GLOW -->
+            <fieldset>
+                <legend>Brilho (Glow)</legend>
+                <div class="input-group">
+                    <label for="glow-color-page">Cor do Brilho (Página/Externo):</label>
+                    <input type="color" id="glow-color-page" value="#000000">
+                </div>
+                <div class="input-group">
+                    <label for="glow-intensity-page-slider">Intensidade do Brilho (Página/Externo): <span id="glow-intensity-page-value">0</span>%</label>
+                    <input type="range" id="glow-intensity-page-slider" min="0" max="100" value="0">
+                </div>
+                <hr style="margin: 10px 0; border-color: #b8860b33;">
+                <div class="input-group">
+                    <label for="glow-color-ficha">Cor do Brilho (Ficha/Seções - Interno):</label>
+                    <input type="color" id="glow-color-ficha" value="#000000">
+                </div>
+                <div class="input-group">
+                    <label for="glow-intensity-ficha-slider">Intensidade do Brilho (Ficha/Seções - Interno): <span id="glow-intensity-ficha-value">0</span>%</label>
+                    <input type="range" id="glow-intensity-ficha-slider" min="0" max="100" value="0">
+                </div>
+                <button class="cancel-btn" onclick="restaurarBrilhoPadrao()" style="width:100%; margin-top: 10px;">Restaurar Brilho Padrão</button>
+            </fieldset>
+
             <fieldset>
                 <legend>Plano de Fundo da Ficha (Imagem de fundo apenas da Página)</legend>
                 <div class="input-group">
@@ -1269,8 +1297,15 @@ html
             fontSelector = document.getElementById('font-selector'),                   
             diceColorInput = document.getElementById('dice-color-input'),              
             diceNumberColorInput = document.getElementById('dice-number-color-input'), 
-            fichaTransparencySlider = document.getElementById('ficha-transparency-slider'), // New
-            fichaTransparencyValueSpan = document.getElementById('ficha-transparency-value'), // New
+            fichaTransparencySlider = document.getElementById('ficha-transparency-slider'), 
+            fichaTransparencyValueSpan = document.getElementById('ficha-transparency-value'),
+            // New Glow DOM Elements
+            glowColorPageInput = document.getElementById('glow-color-page'),
+            glowIntensityPageSlider = document.getElementById('glow-intensity-page-slider'),
+            glowIntensityPageValueSpan = document.getElementById('glow-intensity-page-value'),
+            glowColorFichaInput = document.getElementById('glow-color-ficha'),
+            glowIntensityFichaSlider = document.getElementById('glow-intensity-ficha-slider'),
+            glowIntensityFichaValueSpan = document.getElementById('glow-intensity-ficha-value'),
             
             confirmarSalvarBtn = document.getElementById("confirmar-salvar-btn"),
             phTempRacaSpan = document.getElementById("ph-temp-raca"),
@@ -1319,7 +1354,6 @@ html
             return `local_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         }
 
-        // Helper function to convert HEX to RGB
         function hexToRgb(hex) {
             if (!hex) return null;
             let shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -1351,14 +1385,17 @@ html
                     backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                     backgroundColor: null, 
                     fichaInternalBackgroundColor: null, 
-                    fichaTransparencyLevel: 100, // New
+                    fichaTransparencyLevel: 100, 
                     fontFamily: "'Inter', sans-serif",
                     vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                     diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao', 
                     diceRolls: [],
                     collapsedSections: {},
                     gmOverrides: {}, 
-                    corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px' 
+                    corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
+                    // New Glow properties with defaults
+                    glowColorPage: '#000000', glowIntensityPage: 0,
+                    glowColorFicha: '#000000', glowIntensityFicha: 0
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1449,7 +1486,7 @@ html
                 backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll', 
                 backgroundColor: null,
                 fichaInternalBackgroundColor: null, 
-                fichaTransparencyLevel: 100, // New
+                fichaTransparencyLevel: 100, 
                 fontFamily: "'Inter', sans-serif", 
                 vidaAtual: 50, magiaAtual: 20, vigorAtual: 10,
                 diceColor: null, diceNumberColor: null, texturaDado: null, animacaoDado: 'padrao',
@@ -1457,7 +1494,10 @@ html
                 collapsedSections: {},
                 gmOverrides: {},
                 corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
-                darkMode: document.body.classList.contains('dark-mode') 
+                darkMode: document.body.classList.contains('dark-mode'),
+                // New Glow properties with defaults
+                glowColorPage: '#000000', glowIntensityPage: 0,
+                glowColorFicha: '#000000', glowIntensityFicha: 0
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1496,13 +1536,18 @@ html
             ficha.fontFamily = ficha.fontFamily || "'Inter', sans-serif";
             ficha.backgroundColor = ficha.backgroundColor || null;
             ficha.fichaInternalBackgroundColor = ficha.fichaInternalBackgroundColor || null;
-            ficha.fichaTransparencyLevel = ficha.fichaTransparencyLevel !== undefined ? ficha.fichaTransparencyLevel : 100; // New
+            ficha.fichaTransparencyLevel = ficha.fichaTransparencyLevel !== undefined ? ficha.fichaTransparencyLevel : 100;
             ficha.diceColor = ficha.diceColor || null;
             ficha.diceNumberColor = ficha.diceNumberColor || null;
             ficha.backgroundImage = ficha.backgroundImage || null;
             ficha.backgroundSize = ficha.backgroundSize || 'cover';
             ficha.backgroundAttachment = ficha.backgroundAttachment || 'scroll';
             ficha.darkMode = ficha.darkMode === undefined ? false : ficha.darkMode;
+            // Glow defaults
+            ficha.glowColorPage = ficha.glowColorPage || '#000000';
+            ficha.glowIntensityPage = ficha.glowIntensityPage !== undefined ? ficha.glowIntensityPage : 0;
+            ficha.glowColorFicha = ficha.glowColorFicha || '#000000';
+            ficha.glowIntensityFicha = ficha.glowIntensityFicha !== undefined ? ficha.glowIntensityFicha : 0;
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; 
@@ -1564,9 +1609,8 @@ html
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
             document.body.classList.toggle("dark-mode", ficha.darkMode === true); 
-            // aplicarEstilosDeFundoVisuais is called after other initializations
             
-            atualizarNivel(); // This calls calcularAtributos
+            atualizarNivel(); 
             
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
             magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
@@ -1585,7 +1629,8 @@ html
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
-            aplicarEstilosDeFundoVisuais(); // This now includes transparency
+            aplicarEstilosDeFundoVisuais(); 
+            aplicarEstilosDeBrilhoInicial(ficha); // Apply glow styles
             aplicarEstadoColapsoSecoes(ficha.collapsedSections);
             
             document.body.classList.toggle("gm-mode-active", isGmModeActive); 
@@ -1646,7 +1691,7 @@ html
             
             if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
             if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
-            if (fichaTransparencySlider) fichaAtual.fichaTransparencyLevel = parseInt(fichaTransparencySlider.value); // Ensure it's saved
+            if (fichaTransparencySlider) fichaAtual.fichaTransparencyLevel = parseInt(fichaTransparencySlider.value);
 
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
@@ -1666,6 +1711,12 @@ html
             fichaAtual.corBordaSecao = corBordaSecaoInput.value;
             fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
             fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
+
+            // Save Glow settings
+            fichaAtual.glowColorPage = glowColorPageInput.value;
+            fichaAtual.glowIntensityPage = parseInt(glowIntensityPageSlider.value);
+            fichaAtual.glowColorFicha = glowColorFichaInput.value;
+            fichaAtual.glowIntensityFicha = parseInt(glowIntensityFichaSlider.value);
 
             saveFichasToStorage(fichas);
         }
@@ -1773,7 +1824,15 @@ html
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6)); 
             }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none"; 
-            fichaContainer.classList.toggle("aura-azul", nivel >= 30 && ficha.gmOverrides?.nivel === undefined);
+            // Manage aura-azul on fichaContainer:
+            // It's applied if nivel >= 30 AND GM override is not set AND no custom glow that might conflict.
+            // The pulsar-aura animation now includes the --ficha-internal-glow variable, so direct conflict is less likely.
+             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
+                fichaContainer.classList.add("aura-azul");
+            } else {
+                fichaContainer.classList.remove("aura-azul");
+            }
+
 
             calcularAtributos(); 
         }
@@ -2071,7 +2130,7 @@ html
                 currentFichaObject.collapsedSections = {};
                 currentFichaObject.backgroundColor = null;
                 currentFichaObject.fichaInternalBackgroundColor = null; 
-                currentFichaObject.fichaTransparencyLevel = 100; // Reset transparency
+                currentFichaObject.fichaTransparencyLevel = 100; 
                 currentFichaObject.corBordaSecao = '#b8860b'; 
                 currentFichaObject.estiloBordaSecao = 'solid';
                 currentFichaObject.larguraBordaSecao = '2px';
@@ -2083,13 +2142,19 @@ html
                 currentFichaObject.backgroundImage = null;
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
+                // Reset Glow on recomecar
+                currentFichaObject.glowColorPage = '#000000';
+                currentFichaObject.glowIntensityPage = 0;
+                currentFichaObject.glowColorFicha = '#000000';
+                currentFichaObject.glowIntensityFicha = 0;
                 
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstilosFichaInicial(currentFichaObject); 
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
                 aplicarCoresDadoInicial(currentFichaObject); 
-                aplicarEstilosDeFundoVisuais(); // Includes transparency reset
+                aplicarEstilosDeFundoVisuais(); 
+                aplicarEstilosDeBrilhoInicial(currentFichaObject); // Reset glow visuals
                 aplicarEstadoColapsoSecoes({});
                 
                 atualizarNivel(); 
@@ -2101,10 +2166,16 @@ html
                 magiaAtual = magiaTotal;
                 vigorAtual = vigorTotal;
 
-                // Update slider in modal if open
                 if (customizacaoModal.style.display === "flex") {
                     if(fichaTransparencySlider) fichaTransparencySlider.value = 100;
                     if(fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = "100";
+                    // Reset glow controls in modal
+                    if(glowColorPageInput) glowColorPageInput.value = '#000000';
+                    if(glowIntensityPageSlider) glowIntensityPageSlider.value = 0;
+                    if(glowIntensityPageValueSpan) glowIntensityPageValueSpan.textContent = "0";
+                    if(glowColorFichaInput) glowColorFichaInput.value = '#000000';
+                    if(glowIntensityFichaSlider) glowIntensityFichaSlider.value = 0;
+                    if(glowIntensityFichaValueSpan) glowIntensityFichaValueSpan.textContent = "0";
                 }
 
                 salvarDados(); 
@@ -2661,6 +2732,7 @@ html
             salvarDados(); 
             aplicarEstilosDeFundoVisuais(); 
             aplicarCoresDadoInicial(fichas[currentFichaId] || {});
+            aplicarEstilosDeBrilho(); // Re-apply glow for dark mode
         };
         solBtn.onclick = () => { 
             document.body.classList.remove("dark-mode"); 
@@ -2668,6 +2740,7 @@ html
             salvarDados(); 
             aplicarEstilosDeFundoVisuais();
             aplicarCoresDadoInicial(fichas[currentFichaId] || {});
+            aplicarEstilosDeBrilho(); // Re-apply glow for light mode
         };
         resetPontosButton.onclick = resetarPontos;
         recomecarButton.onclick = recomecarFicha;
@@ -2692,19 +2765,14 @@ html
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            // const defaultDarkInternalContainer = '#121212'; // No longer needed here due to unified default
-            const defaultDarkInternalSection = '#1e1e1e';   // Used as base for dark mode internal if custom not set
+            const defaultDarkInternalSection = '#1e1e1e';
 
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
-            
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || 
-                (isDarkModeActive ? defaultDarkInternalSection : defaultLightInternal);
-
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? defaultDarkInternalSection : defaultLightInternal);
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
             
             const bgSize = ficha?.backgroundSize || 'cover';
-            const radioOptions = document.querySelectorAll('#customizacao-modal input[name="background-size"]');
-            radioOptions.forEach(radio => {
+            document.querySelectorAll('#customizacao-modal input[name="background-size"]').forEach(radio => {
                 radio.checked = (radio.value === bgSize);
             });
             backgroundImageInput.value = ""; 
@@ -2718,10 +2786,18 @@ html
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
             diceTextureInput.value = ""; 
 
-            // Initialize transparency slider
             const currentTransparency = ficha.fichaTransparencyLevel !== undefined ? ficha.fichaTransparencyLevel : 100;
             fichaTransparencySlider.value = currentTransparency;
             fichaTransparencyValueSpan.textContent = currentTransparency;
+
+            // Initialize Glow controls
+            glowColorPageInput.value = ficha.glowColorPage || '#000000';
+            glowIntensityPageSlider.value = ficha.glowIntensityPage !== undefined ? ficha.glowIntensityPage : 0;
+            glowIntensityPageValueSpan.textContent = glowIntensityPageSlider.value;
+
+            glowColorFichaInput.value = ficha.glowColorFicha || '#000000';
+            glowIntensityFichaSlider.value = ficha.glowIntensityFicha !== undefined ? ficha.glowIntensityFicha : 0;
+            glowIntensityFichaValueSpan.textContent = glowIntensityFichaSlider.value;
 
             customizacaoModal.style.display = "flex";
         }
@@ -2730,11 +2806,7 @@ html
             const file = backgroundImageInput.files[0]; 
             const selectedSizeOption = document.querySelector('#customizacao-modal input[name="background-size"]:checked');
             const selectedSize = selectedSizeOption.value;
-            
-            let attachment = 'scroll'; 
-            if (selectedSize === 'cover') {
-                attachment = 'fixed'; 
-            }
+            let attachment = (selectedSize === 'cover') ? 'fixed' : 'scroll'; 
 
             if (file) {
                 const reader = new FileReader();
@@ -2805,7 +2877,6 @@ html
             const defaultDarkInternalContainerBg = '#121212'; 
             const defaultDarkInternalSectionBg = '#1e1e1e';  
 
-            // Page Background
             if (isDarkModeActive) {
                 document.body.style.backgroundColor = ficha.backgroundColor && !isDarkModeActive ? ficha.backgroundColor : defaultDarkPageBg;
             } else {
@@ -2813,38 +2884,27 @@ html
             }
             if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
 
-            // Ficha Container and Sections Background (with transparency)
-            let currentTransparencyPercent = (ficha && ficha.fichaTransparencyLevel !== undefined)
-                                           ? parseInt(ficha.fichaTransparencyLevel)
-                                           : 100;
+            let currentTransparencyPercent = (ficha && ficha.fichaTransparencyLevel !== undefined) ? parseInt(ficha.fichaTransparencyLevel) : 100;
             let alpha = currentTransparencyPercent / 100.0;
 
-            // Base color for ficha-container
-            let baseFichaContainerColorHex = ficha.fichaInternalBackgroundColor || 
-                                           (isDarkModeActive ? defaultDarkInternalContainerBg : defaultLightInternalBg);
+            let baseFichaContainerColorHex = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? defaultDarkInternalContainerBg : defaultLightInternalBg);
             const rgbFichaContainer = hexToRgb(baseFichaContainerColorHex);
-            let finalFichaContainerCss;
             if (rgbFichaContainer) {
-                finalFichaContainerCss = `rgba(${rgbFichaContainer.r}, ${rgbFichaContainer.g}, ${rgbFichaContainer.b}, ${alpha})`;
+                fichaContainer.style.backgroundColor = `rgba(${rgbFichaContainer.r}, ${rgbFichaContainer.g}, ${rgbFichaContainer.b}, ${alpha})`;
             } else {
                 const fallbackRgb = hexToRgb(isDarkModeActive ? defaultDarkInternalContainerBg : defaultLightInternalBg);
-                finalFichaContainerCss = fallbackRgb ? `rgba(${fallbackRgb.r}, ${fallbackRgb.g}, ${fallbackRgb.b}, ${alpha})` : baseFichaContainerColorHex;
+                fichaContainer.style.backgroundColor = fallbackRgb ? `rgba(${fallbackRgb.r}, ${fallbackRgb.g}, ${fallbackRgb.b}, ${alpha})` : baseFichaContainerColorHex;
             }
-            fichaContainer.style.backgroundColor = finalFichaContainerCss;
-
-            // Base color for sections
-            let baseSectionColorHex = ficha.fichaInternalBackgroundColor ||
-                                    (isDarkModeActive ? defaultDarkInternalSectionBg : defaultLightInternalBg);
+            
+            let baseSectionColorHex = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? defaultDarkInternalSectionBg : defaultLightInternalBg);
             const rgbSection = hexToRgb(baseSectionColorHex);
-            let finalSectionCss;
-            if (rgbSection) {
-                finalSectionCss = `rgba(${rgbSection.r}, ${rgbSection.g}, ${rgbSection.b}, ${alpha})`;
-            } else {
-                const fallbackRgb = hexToRgb(isDarkModeActive ? defaultDarkInternalSectionBg : defaultLightInternalBg);
-                finalSectionCss = fallbackRgb ? `rgba(${fallbackRgb.r}, ${fallbackRgb.g}, ${fallbackRgb.b}, ${alpha})` : baseSectionColorHex;
-            }
             document.querySelectorAll('#ficha-container section').forEach(sec => {
-                sec.style.backgroundColor = finalSectionCss;
+                if (rgbSection) {
+                    sec.style.backgroundColor = `rgba(${rgbSection.r}, ${rgbSection.g}, ${rgbSection.b}, ${alpha})`;
+                } else {
+                     const fallbackRgb = hexToRgb(isDarkModeActive ? defaultDarkInternalSectionBg : defaultLightInternalBg);
+                    sec.style.backgroundColor = fallbackRgb ? `rgba(${fallbackRgb.r}, ${fallbackRgb.g}, ${fallbackRgb.b}, ${alpha})` : baseSectionColorHex;
+                }
             });
             
             if (fichaInternalBackgroundColorInput) {
@@ -2860,24 +2920,22 @@ html
 
         fichaInternalBackgroundColorInput.addEventListener('input', (event) => {
             if(fichas[currentFichaId]) fichas[currentFichaId].fichaInternalBackgroundColor = event.target.value;
-            aplicarEstilosDeFundoVisuais(); // This will now re-apply with current transparency
+            aplicarEstilosDeFundoVisuais(); 
             salvarDados();
         });
 
-        // Event listener for the transparency slider
         if (fichaTransparencySlider) {
             fichaTransparencySlider.addEventListener('input', (event) => {
                 const level = event.target.value;
                 if (fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = level;
                 if (fichas[currentFichaId]) {
                     fichas[currentFichaId].fichaTransparencyLevel = parseInt(level);
-                    aplicarEstilosDeFundoVisuais(); // Apply visual change immediately
-                    salvarDados(); // Persist change
+                    aplicarEstilosDeFundoVisuais(); 
+                    salvarDados(); 
                 }
             });
         }
 
-        // Function to restore default opacity for the ficha
         function restaurarOpacidadePadraoFicha() {
             if (fichas[currentFichaId]) {
                 fichas[currentFichaId].fichaTransparencyLevel = 100;
@@ -2895,7 +2953,7 @@ html
             const selectedFont = event.target.value;
             document.body.style.fontFamily = selectedFont;
             if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
-            if (fichas[currentFichaId]) fichas[currentFichaId].fontFamily = selectedFont; // Save font choice
+            if (fichas[currentFichaId]) fichas[currentFichaId].fontFamily = selectedFont; 
             salvarDados(); 
         });
 
@@ -2934,6 +2992,98 @@ html
             if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
+        // --- GLOW FUNCTIONS ---
+        function aplicarEstilosDeBrilho() {
+            const ficha = fichas[currentFichaId];
+            if (!ficha) return;
+
+            // Page Glow (External)
+            const intensityPage = ficha.glowIntensityPage || 0;
+            const colorPage = ficha.glowColorPage || '#000000';
+            if (intensityPage > 0) {
+                const blurPx = intensityPage * 0.8; // Max 80px
+                const spreadPx = intensityPage * 0.3; // Max 30px
+                document.body.style.boxShadow = `0 0 ${blurPx}px ${spreadPx}px ${colorPage}`;
+            } else {
+                document.body.style.boxShadow = 'none';
+            }
+
+            // Ficha/Section Glow (Internal)
+            const intensityFicha = ficha.glowIntensityFicha || 0;
+            const colorFicha = ficha.glowColorFicha || '#000000';
+
+            let fichaInternalGlowString = 'transparent 0 0 0 0 inset'; // Default no-op shadow
+            let sectionInternalGlowString = 'none';
+
+            if (intensityFicha > 0) {
+                const internalBlurPx = intensityFicha * 0.5; // Max 50px
+                const internalSpreadPx = intensityFicha * 0.2; // Max 20px
+                const commonInsetGlow = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
+                fichaInternalGlowString = commonInsetGlow;
+                sectionInternalGlowString = commonInsetGlow;
+            }
+            
+            document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalGlowString);
+            document.querySelectorAll('#ficha-container section').forEach(sec => {
+                sec.style.boxShadow = sectionInternalGlowString;
+            });
+        }
+
+        function aplicarEstilosDeBrilhoInicial(ficha) {
+            // This function is called during carregarFicha.
+            // The actual application of styles relies on data in `ficha` object.
+            // So, just call aplicarEstilosDeBrilho which reads from the ficha object.
+            aplicarEstilosDeBrilho();
+        }
+
+        function restaurarBrilhoPadrao() {
+            if (fichas[currentFichaId]) {
+                fichas[currentFichaId].glowColorPage = '#000000';
+                fichas[currentFichaId].glowIntensityPage = 0;
+                fichas[currentFichaId].glowColorFicha = '#000000';
+                fichas[currentFichaId].glowIntensityFicha = 0;
+            }
+            // Update modal controls
+            glowColorPageInput.value = '#000000';
+            glowIntensityPageSlider.value = 0;
+            glowIntensityPageValueSpan.textContent = '0';
+            glowColorFichaInput.value = '#000000';
+            glowIntensityFichaSlider.value = 0;
+            glowIntensityFichaValueSpan.textContent = '0';
+
+            aplicarEstilosDeBrilho();
+            salvarDados();
+            showNotification("Brilho restaurado para o padrão!", "save-success");
+        }
+
+        // Event Listeners for Glow Controls
+        glowColorPageInput.addEventListener('input', (event) => {
+            if (fichas[currentFichaId]) fichas[currentFichaId].glowColorPage = event.target.value;
+            aplicarEstilosDeBrilho();
+            salvarDados();
+        });
+        glowIntensityPageSlider.addEventListener('input', (event) => {
+            const intensity = parseInt(event.target.value);
+            glowIntensityPageValueSpan.textContent = intensity;
+            if (fichas[currentFichaId]) fichas[currentFichaId].glowIntensityPage = intensity;
+            aplicarEstilosDeBrilho();
+            salvarDados();
+        });
+        glowColorFichaInput.addEventListener('input', (event) => {
+            if (fichas[currentFichaId]) fichas[currentFichaId].glowColorFicha = event.target.value;
+            aplicarEstilosDeBrilho();
+            salvarDados();
+        });
+        glowIntensityFichaSlider.addEventListener('input', (event) => {
+            const intensity = parseInt(event.target.value);
+            glowIntensityFichaValueSpan.textContent = intensity;
+            if (fichas[currentFichaId]) fichas[currentFichaId].glowIntensityFicha = intensity;
+            aplicarEstilosDeBrilho();
+            salvarDados();
+        });
+        // --- END GLOW FUNCTIONS ---
+
+
         diceHistoryTrigger.addEventListener('click', () => {
             if (diceHistoryPanel.style.display === 'flex') {
                 diceHistoryPanel.style.display = 'none';
