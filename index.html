@@ -730,7 +730,7 @@ html
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
-            #dice-options-menu { top: 35px; }
+            /* #dice-options-menu is positioned by JS, responsive CSS here might be tricky */
 
             #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
@@ -1380,7 +1380,7 @@ html
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
         let tooltipTimeoutId = null; 
-        let originalDiceContainerState = { top: '', left: '', right: '', transform: '', position: ''}; 
+        let originalDiceContainerState = { top: '', left: '', right: '', transform: '', position: '', transition: ''}; 
         let attributeRollData = null; 
         
         let diceContainerIsBeingDragged = false;
@@ -2365,35 +2365,28 @@ html
         };
        
         diceContainer.onmousedown = e => { 
-            if (e.target !== diceContainer && e.target !== diceContainer.querySelector('label')) return; // Only drag by container/label
+            if (e.target !== diceContainer && e.target !== diceContainer.querySelector('label')) return;
             if (diceContainer.classList.contains('centered-roll')) return; 
             
             diceContainerIsBeingDragged = true;
+            diceContainer.style.transition = 'none'; // Disable transition for smooth drag
             diceContainer.style.cursor = "grabbing"; 
 
             initialDragMouseX = e.clientX;
             initialDragMouseY = e.clientY;
 
-            let currentStyle = getComputedStyle(diceContainer);
-            if (currentStyle.left !== 'auto') {
-                initialDiceLeft = parseFloat(currentStyle.left);
-            } else if (currentStyle.right !== 'auto' && fichaContainer) {
-                 // Calculate left based on right if it's right-aligned within fichaContainer
-                initialDiceLeft = fichaContainer.offsetWidth - parseFloat(currentStyle.right) - diceContainer.offsetWidth;
-            } else {
-                initialDiceLeft = diceContainer.offsetLeft; // Fallback
-            }
-            initialDiceTop = parseFloat(currentStyle.top) || diceContainer.offsetTop; // Use computed top or offsetTop
+            initialDiceLeft = diceContainer.offsetLeft;
+            initialDiceTop = diceContainer.offsetTop;
         };
 
         document.onmousemove = e => { 
             if (diceContainerIsBeingDragged && !diceContainer.classList.contains('centered-roll')) { 
                 e.preventDefault(); 
-                let dx = e.clientX - initialDragMouseX;
-                let dy = e.clientY - initialDragMouseY;
+                let newLeft = initialDiceLeft + (e.clientX - initialDragMouseX);
+                let newTop = initialDiceTop + (e.clientY - initialDragMouseY);
 
-                diceContainer.style.left = `${initialDiceLeft + dx}px`;
-                diceContainer.style.top = `${initialDiceTop + dy}px`;
+                diceContainer.style.left = `${newLeft}px`;
+                diceContainer.style.top = `${newTop}px`;
                 diceContainer.style.right = "auto"; 
             } 
         };
@@ -2401,6 +2394,8 @@ html
             if(diceContainerIsBeingDragged) {
                 diceContainerIsBeingDragged = false; 
                 diceContainer.style.cursor = "move";
+                // Restore original transition
+                diceContainer.style.transition = originalDiceContainerState.transition || 'top 0.5s ease-out, left 0.5s ease-out, right 0.5s ease-out, transform 0.5s ease-out';
             } 
         };
 
@@ -2413,20 +2408,17 @@ html
             diceRoll.textContent = "...";
             
             if (!diceContainer.classList.contains('centered-roll-active')) {
-                originalDiceContainerState.top = diceContainer.style.top || (getComputedStyle(diceContainer).top);
                 const computedStyle = getComputedStyle(diceContainer);
-                if (diceContainer.style.left && diceContainer.style.left !== 'auto') {
-                    originalDiceContainerState.left = diceContainer.style.left;
-                    originalDiceContainerState.right = 'auto';
-                } else {
-                    originalDiceContainerState.left = 'auto';
-                    originalDiceContainerState.right = computedStyle.right;
-                }
                 originalDiceContainerState.position = computedStyle.position;
-                originalDiceContainerState.transform = diceContainer.style.transform;
+                originalDiceContainerState.top = diceContainer.style.top || computedStyle.top; // Prioritize inline style if dragged
+                originalDiceContainerState.left = diceContainer.style.left || computedStyle.left;
+                originalDiceContainerState.right = diceContainer.style.right || computedStyle.right;
+                originalDiceContainerState.transform = diceContainer.style.transform || computedStyle.transform || '';
+                originalDiceContainerState.transition = diceContainer.style.transition; // Save current transition
             }
             
             diceContainer.classList.add('centered-roll', 'centered-roll-active');
+            diceContainer.style.transition = 'top 0.5s ease-out, left 0.5s ease-out, right 0.5s ease-out, transform 0.5s ease-out'; // Ensure centering animates
             diceContainerIsBeingDragged = false; 
             
             diceRoll.classList.remove('is-rolling', 'is-rolling-fast', 'is-rolling-jump', 'critical-failure', 'critical-success');
@@ -2511,7 +2503,7 @@ html
                         fichas[currentFichaId].diceRolls.pop();
                     }
                 }
-                salvarDados();
+                                salvarDados();
                 
                 setTimeout(() => {
                     resetarPosicaoDado();
@@ -2524,10 +2516,20 @@ html
 
         function resetarPosicaoDado() {
             diceContainer.classList.remove('centered-roll', 'centered-roll-active');
+            // Restore the transition that was saved *before* the centering animation
+            diceContainer.style.transition = originalDiceContainerState.transition; 
+            
             diceContainer.style.position = originalDiceContainerState.position;
             diceContainer.style.top = originalDiceContainerState.top;
-            diceContainer.style.left = originalDiceContainerState.left;
-            diceContainer.style.right = originalDiceContainerState.right;
+
+            // Logic for left/right based on what was saved (dragged vs default right-aligned)
+            if (originalDiceContainerState.left && originalDiceContainerState.left !== 'auto') {
+                diceContainer.style.left = originalDiceContainerState.left;
+                diceContainer.style.right = 'auto';
+            } else { // Assumed it was right-aligned or not explicitly left-set before centering
+                diceContainer.style.left = 'auto'; // Explicitly set left to auto if right is being restored
+                diceContainer.style.right = originalDiceContainerState.right;
+            }
             diceContainer.style.transform = originalDiceContainerState.transform;
             diceRoll.classList.remove("critical-failure", "critical-success");
         }
@@ -2557,7 +2559,7 @@ html
             diceOptionsMenu.style.display = diceOptionsMenu.style.display === 'flex' ? 'none' : 'flex';
             
             if (diceOptionsMenu.style.display === 'none' && !isDiceRolling) {
-                attributeRollData = null; // Clear if menu closed without selection (non-attribute context)
+                attributeRollData = null; 
             }
         });
 
@@ -2571,10 +2573,9 @@ html
                 diceRoll.textContent = '-'; 
                 diceRoll.classList.remove("critical-failure", "critical-success");
 
-                if (attributeRollData) { // If an attribute roll was pending menu selection
-                    iniciarRolagemComAnimacao(); // Now roll with the new dice type
+                if (attributeRollData) { 
+                    iniciarRolagemComAnimacao(); 
                 }
-                 // If no attributeRollData, just changes the die for next generic roll.
             });
         });
 
@@ -2586,7 +2587,7 @@ html
                     return;
                 }
 
-                attributeRollData = { // Set data for attribute roll
+                attributeRollData = { 
                     id: trigger.dataset.attributeId,
                     name: trigger.dataset.attributeName
                 };
@@ -2595,17 +2596,26 @@ html
                 if (fixedDice) { 
                     currentDiceMax = parseInt(fixedDice.substring(1));
                     changeDiceTypeBtn.textContent = fixedDice;
-                    diceOptionsMenu.style.display = 'none'; // No need for menu if die is fixed
+                    diceOptionsMenu.style.display = 'none'; 
                     iniciarRolagemComAnimacao();
                 } else { 
                     const rect = trigger.getBoundingClientRect();
-                    const menuWidth = diceOptionsMenu.offsetWidth || 100; // Estimate width
+                    const menuWidth = diceOptionsMenu.offsetWidth || 120; // A reasonable default or calculate dynamically
+                    const menuHeight = diceOptionsMenu.offsetHeight || 150; // A reasonable default or calculate dynamically
 
-                    diceOptionsMenu.style.top = (rect.bottom + window.scrollY + 5) + 'px';
-                    
+                    // Default position: above the trigger
+                    let menuTop = rect.top + window.scrollY - menuHeight - 5;
+                    // If too high (goes off-screen top), position below
+                    if (menuTop < window.scrollY) {
+                        menuTop = rect.bottom + window.scrollY + 5;
+                    }
+
                     let menuLeft = rect.left + window.scrollX + (rect.width / 2) - (menuWidth / 2);
+                    // Keep menu within viewport horizontal boundaries
                     if (menuLeft < 10) menuLeft = 10;
                     if (menuLeft + menuWidth > window.innerWidth - 10) menuLeft = window.innerWidth - menuWidth - 10;
+                    
+                    diceOptionsMenu.style.top = menuTop + 'px';
                     diceOptionsMenu.style.left = menuLeft + 'px';
 
                     diceOptionsMenu.style.right = 'auto';
@@ -2615,26 +2625,23 @@ html
         });
 
         document.addEventListener('click', function(event) {
-            // For Dice Options Menu
             const isDiceOptionClick = diceOptionsMenu.contains(event.target);
             const isAttributeTriggerClick = event.target.classList.contains('attribute-roll-trigger');
             const isChangeDiceBtnClick = event.target === changeDiceTypeBtn || changeDiceTypeBtn.contains(event.target);
 
             if (diceOptionsMenu.style.display === 'flex' && !isDiceOptionClick && !isAttributeTriggerClick && !isChangeDiceBtnClick) {
                 diceOptionsMenu.style.display = 'none';
-                if (!isDiceRolling) { // Only clear if not mid-roll, to preserve data if menu auto-closed by roll start
+                if (!isDiceRolling) { 
                     attributeRollData = null; 
                 }
             }
 
-            // For Anotacoes Textarea
             if (anotacoesTextarea.style.display === 'block' &&
                 !anotacoesTextarea.contains(event.target) &&
                 event.target !== anotacoesBtn) {
                 anotacoesTextarea.style.display = 'none';
             }
 
-            // For Dice History Panel
             if (diceHistoryPanel.style.display === 'flex' &&
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
@@ -2660,27 +2667,28 @@ html
 
         confirmarSalvarBtn.onclick = () => {
             if (racasPanel.style.display === "block") {
-                if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
-                    const raca = racasData.find(r => r.nome === tempRacaSelecionada);
-                    if (raca && calcularPontosVantagemTemp() >= 0) {
-                        racaSelecionada = tempRacaSelecionada;
-                        racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
-                        racaDescricaoInput.value = raca.vantagens.join("\n\n");
-                        racasPanel.style.display = "none";
-                        atualizarNivel(); 
-                        salvarDados();
-                    } else if (raca){
-                        alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
+                if (tempRacaSelecionada !== racaSelecionada) { // Only proceed if there's a change
+                    if (tempRacaSelecionada) { // If a new race is being selected
+                        const raca = racasData.find(r => r.nome === tempRacaSelecionada);
+                        if (raca && calcularPontosVantagemTemp() >= 0) {
+                            racaSelecionada = tempRacaSelecionada;
+                        } else if (raca) { // PH insufficient for the new race
+                            alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
+                            fecharModal("salvar-vantagens-modal");
+                            return; // Don't proceed with save or panel closure
+                        }
+                    } else { // If race is being deselected (tempRacaSelecionada is null)
+                         racaSelecionada = null;
                     }
-                } else { // Handles cases where no change or deselection happened
-                     racaSelecionada = tempRacaSelecionada; // ensure if it was deselected, it's saved as null
-                     const currentRacaData = racasData.find(r => r.nome === racaSelecionada);
-                     racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : "";
-                     racaDescricaoInput.value = currentRacaData ? currentRacaData.vantagens.join("\n\n") : "";
-                    racasPanel.style.display = "none";
-                    atualizarNivel(); 
-                    salvarDados();
                 }
+                // Update UI and data regardless of actual change for consistency (or if it's nullifying)
+                const currentRacaData = racasData.find(r => r.nome === racaSelecionada);
+                racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : "";
+                racaDescricaoInput.value = currentRacaData ? currentRacaData.vantagens.join("\n\n") : "";
+                racasPanel.style.display = "none";
+                atualizarNivel(); 
+                salvarDados();
+
             } else if (vantagensDesvantagensPanel.style.display === "block") { 
                 if (tempDesvantagensSelecionadas.length > 3) {
                      alert("Você pode ter no máximo 3 desvantagens!");
@@ -2866,25 +2874,22 @@ html
                 if (tempRacaSelecionada === r.nome) div.classList.add("comprada");
                 div.onclick = () => {
                     if (racaSelecionada && racaSelecionada !== r.nome && !isGmModeActive && r.nome !== tempRacaSelecionada) { 
-                         // If a race is already saved and user tries to select a NEW temp one (not deselect current temp)
                          alert("Raça salva só pode ser alterada com permissão do GM.");
                          return;
                     }
                     
-                    if (tempRacaSelecionada === r.nome) { // Deselecting current temp
+                    if (tempRacaSelecionada === r.nome) { 
                         tempRacaSelecionada = null;
-                    } else { // Selecting a new temp race
+                    } else { 
                         let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo || 0) : 0);
                         if (phDisponivelParaNovaRaca >= r.custo) {
                             tempRacaSelecionada = r.nome;
-                            // No confirmation modal here, selection is temporary until "SALVAR"
                         } else { 
                             alert("PH insuficientes!"); 
-                            // tempRacaSelecionada remains as it was (or null if nothing was selected before)
                         }
                     }
-                    atualizarRacasPanel(); // Re-render to reflect selection
-                    document.getElementById("salvar-racas-btn").style.display = (tempRacaSelecionada !== racaSelecionada) ? "block" : "none"; // Show save if temp selection differs from saved one
+                    atualizarRacasPanel(); 
+                    document.getElementById("salvar-racas-btn").style.display = (tempRacaSelecionada !== racaSelecionada) ? "block" : "none"; 
                 }; racasList.appendChild(div);
             });
              phTempRacaSpan.textContent = calcularPontosVantagemTemp();
@@ -3297,7 +3302,7 @@ html
             customTooltipElement.innerHTML = tooltipText;
             const rect = targetElement.getBoundingClientRect();
             
-            customTooltipElement.style.display = 'block'; // Ensure it's visible to calculate offsetWidth
+            customTooltipElement.style.display = 'block'; 
 
             let top = rect.bottom + window.scrollY + 5; 
             let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
@@ -3306,11 +3311,9 @@ html
             if (left + customTooltipElement.offsetWidth > window.innerWidth) {
                 left = window.innerWidth - customTooltipElement.offsetWidth - 5;
             }
-            // Check if tooltip goes off bottom of viewport, if so, place it above
             if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
                 top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; 
             }
-            // Check if tooltip goes off top of viewport (if placed above), if so, place it below (less common)
             if (top < window.scrollY) {
                 top = rect.bottom + window.scrollY + 5;
             }
@@ -3519,11 +3522,12 @@ html
              fireworksContainerRef = document.getElementById('fireworks-container'); 
              if (diceContainer) { 
                 const computedStyle = getComputedStyle(diceContainer);
-                originalDiceContainerState.top = computedStyle.top;
-                originalDiceContainerState.right = computedStyle.right;
-                originalDiceContainerState.left = computedStyle.left;
-                originalDiceContainerState.transform = computedStyle.transform;
                 originalDiceContainerState.position = computedStyle.position;
+                originalDiceContainerState.top = computedStyle.top;
+                originalDiceContainerState.left = computedStyle.left;
+                originalDiceContainerState.right = computedStyle.right;
+                originalDiceContainerState.transform = computedStyle.transform;
+                originalDiceContainerState.transition = computedStyle.transition; // Save initial transition for restoration
             }
 
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
