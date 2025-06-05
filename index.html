@@ -88,13 +88,14 @@ html
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
         
         section { 
-            /* background: #f0e6d2; */ 
+            /* background: #f0e6d2; */ /* Managed by JS for override */
             border-width: var(--largura-borda-secao);
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px; 
             transition: background-color 0.3s;
         }
+        /* body.dark-mode section no longer needed here as JS will handle it */
 
         section h2 { 
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer; 
@@ -138,39 +139,14 @@ html
         textarea { resize: vertical; }
         .atributos-container { display: flex; justify-content: space-between; gap: 20px; }
         .atributos-coluna, .atributos-coluna-destaque {
-            width: 48%; display: flex; flex-direction: column; align-items: stretch; /* Changed */
+            width: 48%; display: flex; flex-direction: column; align-items: flex-start;
         }
-        #ficha-content .atributo { /* Specific to primary attributes */
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Push label and (input+dice) apart */
-            margin-bottom: 15px;
-        }
-         #ficha-content .atributo label {
-            margin-bottom: 0;
-            margin-right: 8px; /* Space between label and input group */
-            white-space: nowrap; /* Prevent label from wrapping */
-        }
-        #ficha-content .atributo > div { /* Wrapper for input and dice icon */
-            display: flex;
-            align-items: center;
-            flex-grow: 1; /* Allow this div to take remaining space */
-        }
-        #ficha-content .atributo input[type="number"] {
-            flex-grow: 1; /* Input takes most of the space */
-            margin-bottom: 0; /* Override default */
-            margin-right: 5px; /* Space before dice */
-        }
-
-
         .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
         .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; margin-bottom:0;}
-        .atributo-destaque > div { display: flex; align-items: center; gap: 8px; } 
-        .atributo-destaque span:not(.attribute-roll-trigger):not(.gm-edit-icon) { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
-        body.dark-mode .atributo-destaque span:not(.attribute-roll-trigger):not(.gm-edit-icon) { color: #e0e0e0; }
-
+        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
+        body.dark-mode .atributo-destaque span { color: #e0e0e0; }
         .atributo-fogo { animation: fogo 1.5s infinite; }
         @keyframes fogo {
             0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
@@ -249,20 +225,9 @@ html
         #dice-container {
             position: absolute; top: 20px; right: 20px; width: auto; 
             text-align: center;
-            font-family: 'MedievalSharp', serif; cursor: move; z-index: 1000; /* Higher z-index */ user-select: none;
+            font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
             perspective: 800px; 
-            transition: top 0.3s ease-out, left 0.3s ease-out, right 0.3s ease-out, transform 0.3s ease-out; /* For animation */
         }
-        #dice-container.centered-roll {
-            position: fixed !important; /* Override absolute positioning */
-            top: 50% !important;
-            left: 50% !important;
-            transform: translate(-50%, -50%) scale(1.2) !important; /* Center and slightly enlarge */
-            right: auto !important; 
-            bottom: auto !important;
-            box-shadow: 0 0 20px 10px rgba(0,0,0,0.3); 
-        }
-
         #dice-container label { font-size: 1.2rem; color: #000; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
         body.dark-mode #dice-container label { color: #e0e0e0; }
         #dice-container label::before { content: "🎲"; margin-right: 5px; font-size: 1.5rem; }
@@ -335,12 +300,14 @@ html
         
         #dice-options-menu {
             display: none;
-            position: absolute; /* Will be positioned by JS */
+            position: absolute;
+            top: 40px; 
+            right: 0; 
             background-color: #f0e6d2;
             border: 1px solid #b8860b;
             border-radius: 4px;
             box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            z-index: 1100; 
+            z-index: 110; 
             padding: 5px;
             flex-direction: column; 
             gap: 5px;
@@ -358,23 +325,6 @@ html
         .dice-option-btn:hover { background-color: #d2b48c; }
         body.dark-mode .dice-option-btn { background-color: #3a2f1e; color: #f0e6d2; border-color: #5c4b35; }
         body.dark-mode .dice-option-btn:hover { background-color: #4a3c2a; }
-
-        .attribute-roll-trigger {
-            cursor: pointer;
-            font-size: 1.1rem; 
-            padding: 0 5px;
-            user-select: none;
-            margin-left: 5px; /* Added space after input/value */
-        }
-        .attribute-roll-trigger.small-dice {
-            font-size: 0.9rem; 
-        }
-
-        #ficha-content .locomotion-item > div { /* Target the div that wraps emoji, value, and icons */
-            display: flex;
-            align-items: center;
-            gap: 5px; /* This adds space between items inside the div */
-        }
 
         #fireworks-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -475,7 +425,7 @@ html
         #notification.critical-failure { background: rgba(255, 0, 0, 0.8); animation: aura-vermelha 2s infinite; }
         #notification.critical-success { background: rgba(0, 255, 0, 0.8); animation: aura-verde 2s infinite; }
         #notification.normal-result /* , #notification.save-success - Removido save-success para não piscar */ { animation: blink 1s infinite; }
-        #notification.save-success { background: rgba(0, 200, 0, 0.8); } 
+        #notification.save-success { background: rgba(0, 200, 0, 0.8); } /* Mantém a cor, mas não pisca mais */
 
         #character-image-container {
             position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
@@ -677,7 +627,7 @@ html
         
         .gm-edit-icon {
             font-size: 0.8rem;
-            /* margin-left: 5px; */ /* Now part of a gapped flex container */
+            margin-left: 5px;
             cursor: pointer;
             display: none; 
             color: #007bff; 
@@ -730,7 +680,7 @@ html
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
-            /* #dice-options-menu is positioned by JS, responsive CSS here might be tricky */
+            #dice-options-menu { top: 35px; }
 
             #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
@@ -849,88 +799,49 @@ html
                         <div class="atributos-coluna">
                             <div class="atributo">
                                 <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
-                                <div>
-                                    <input type="number" id="forca" value="0" min="0">
-                                    <span class="attribute-roll-trigger" data-attribute-id="forca" data-attribute-name="Força" title="Rolar Força">🎲</span>
-                                </div>
+                                <input type="number" id="forca" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
-                                <div>
-                                    <input type="number" id="destreza" value="0" min="0">
-                                    <span class="attribute-roll-trigger" data-attribute-id="destreza" data-attribute-name="Destreza" title="Rolar Destreza">🎲</span>
-                                </div>
+                                <input type="number" id="destreza" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
-                                <div>
-                                    <input type="number" id="agilidade" value="0" min="0">
-                                    <span class="attribute-roll-trigger" data-attribute-id="agilidade" data-attribute-name="Agilidade" title="Rolar Agilidade">🎲</span>
-                                </div>
+                                <input type="number" id="agilidade" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
-                                <div>
-                                    <input type="number" id="constituicao" value="0" min="0">
-                                    <span class="attribute-roll-trigger" data-attribute-id="constituicao" data-attribute-name="Constituição" title="Rolar Constituição">🎲</span>
-                                </div>
+                                <input type="number" id="constituicao" value="0" min="0">
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
-                                <div>
-                                    <input type="number" id="inteligencia" value="0" min="0">
-                                    <span class="attribute-roll-trigger" data-attribute-id="inteligencia" data-attribute-name="Inteligência" title="Rolar Inteligência">🎲</span>
-                                </div>
+                                <input type="number" id="inteligencia" value="0" min="0">
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
-                                <div>
-                                    <span id="ataque">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="ataque" data-attribute-name="Ataque" title="Rolar Ataque">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
-                                </div>
+                                <span id="ataque">0</span> <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
-                                <div>
-                                    <span id="ataque-magico">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="ataque-magico" data-attribute-name="Ataque Mágico" title="Rolar Ataque Mágico">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
-                                </div>
+                                <span id="ataque-magico">0</span> <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
-                                <div>
-                                    <span id="acerto">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="acerto" data-attribute-name="Acerto" title="Rolar Acerto">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
-                                </div>
+                                <span id="acerto">0</span> <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
-                                <div>
-                                    <span id="esquiva">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="esquiva" data-attribute-name="Esquiva" title="Rolar Esquiva">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
-                                </div>
+                                <span id="esquiva">0</span> <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
-                                <div>
-                                    <span id="rdf">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="rdf" data-attribute-name="RDF" title="Rolar RDF">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
-                                </div>
+                                <span id="rdf">0</span> <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
-                                <div>
-                                    <span id="rdm">0</span>
-                                    <span class="attribute-roll-trigger small-dice" data-attribute-id="rdm" data-attribute-name="RDM" title="Rolar RDM">🎲</span>
-                                    <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
-                                </div>
+                                <span id="rdm">0</span> <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
                             </div>
                         </div>
                     </div>
@@ -985,7 +896,16 @@ html
                         <div style="width:50%">
                             <label>Magias e Habilidades:</label>
                             <div id="magias-list" class="magias-container">
-                                <!-- Magias serão adicionadas aqui dinamicamente pelo JS -->
+                                <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 2" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 4" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 5" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 6" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 7" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 8" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 9" class="magia-nome">
+                                <input type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
                             </div>
                             <button id="adicionar-magia-btn">Adicionar Magia</button>
                         </div>
@@ -1011,28 +931,13 @@ html
                 <div class="section-content">
                     <div class="locomotion-container">
                         <div class="locomotion-item">
-                            <label>Velocidade de Corrida (km/h):</label>
-                            <div>
-                                <span>🏃‍♂️</span><span id="velocidade-corrida">25</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="velocidade-corrida" data-attribute-name="Velocidade Corrida" data-fixed-dice="D6" title="Rolar Velocidade de Corrida">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
-                            </div>
+                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span> <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Altura do Pulo (m):</label>
-                            <div>
-                                <span>⬆️</span><span id="altura-pulo">1</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="altura-pulo" data-attribute-name="Altura do Pulo" data-fixed-dice="D6" title="Rolar Altura do Pulo">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
-                            </div>
+                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span> <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Distância do Pulo (m):</label>
-                            <div>
-                                <span>➡️</span><span id="distancia-pulo">3</span>
-                                <span class="attribute-roll-trigger small-dice" data-attribute-id="distancia-pulo" data-attribute-name="Distância do Pulo" data-fixed-dice="D6" title="Rolar Distância do Pulo">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
-                            </div>
+                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span> <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
                         </div>
                     </div>
                 </div>
@@ -1380,18 +1285,6 @@ html
         let currentDiceMax = 20; 
         let fireworksContainerRef; 
         let tooltipTimeoutId = null; 
-        
-        // Estado do container do dado para restauração e drag
-        let originalDiceContainerState = {
-            top: null, left: null, right: null, transform: null, position: null,
-            transition: null, wasEverDragged: false,
-            initialCSSTop: null, initialCSSRight: null, initialCSSLeft: null
-        };
-        let attributeRollData = null; 
-        
-        let diceContainerIsBeingDragged = false;
-        let initialDragMouseX, initialDragMouseY, initialDiceLeft, initialDiceTop;
-
 
         function getFichasFromStorage() {
             const fichasJSON = localStorage.getItem(RGP_FICHAS_KEY);
@@ -1423,8 +1316,7 @@ html
                     forca: "0", destreza: "0", agilidade: "0", inteligencia: "0", constituicao: "0", experiencia: "0",
                     armaDireitaNome: "", armaDireitaAtaque: "0", armaDireitaAtaqueMagico: "0",
                     armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                    vantagens: "", magiasHabilidades: [], 
-                    desvantagens: "",
+                    vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
                     inventario: Array(10).fill({ item: "", peso: "0" }),
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
@@ -1521,8 +1413,7 @@ html
                 nomeFicha, nomePersonagem: "", descricaoPersonagem: "", forca: "0", destreza: "0", agilidade: "0",
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                vantagens: "", magiasHabilidades: [], 
-                desvantagens: "",
+                vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
                 inventario: Array(10).fill({ item: "", peso: "0" }),
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
@@ -1564,7 +1455,6 @@ html
                 return;
             }
 
-            // Ensure defaults for new properties if loading an old ficha
             if (ficha.diceRolls === undefined) ficha.diceRolls = [];
             if (ficha.collapsedSections === undefined) ficha.collapsedSections = {};
             if (ficha.gmOverrides === undefined) ficha.gmOverrides = {}; 
@@ -1581,13 +1471,7 @@ html
             if (ficha.backgroundImage === undefined) ficha.backgroundImage = null;
             if (ficha.backgroundSize === undefined) ficha.backgroundSize = 'cover';
             if (ficha.backgroundAttachment === undefined) ficha.backgroundAttachment = 'scroll';
-            if (ficha.darkMode === undefined) ficha.darkMode = false;
-            if (!Array.isArray(ficha.magiasHabilidades)) { 
-                 ficha.magiasHabilidades = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n").map(m => ({nome: m, descricao: "", custo: ""})) : [];
-            }
-            if (ficha.vidaAtual === undefined) ficha.vidaAtual = 50;
-            if (ficha.magiaAtual === undefined) ficha.magiaAtual = 20;
-            if (ficha.vigorAtual === undefined) ficha.vigorAtual = 10;
+            if (ficha.darkMode === undefined) ficha.darkMode = false; // Default to light mode if not set
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || ""; descricaoPersonagemInput.value = ficha.descricaoPersonagem || "";
@@ -1612,8 +1496,9 @@ html
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal(); 
 
-            renderizarMagiasHabilidades(ficha.magiasHabilidades || []);
-
+            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
+            magiasList.innerHTML = "";
+            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; input.addEventListener('input', salvarDados); magiasList.appendChild(input); });
             anotacoesTextarea.value = ficha.anotacoes || ""; classeNomeInput.value = ficha.classeNome || ""; classeDescricaoInput.value = ficha.classeDescricao || "";
             if (ficha.imagem && ficha.imagem.startsWith('data:image')) { characterImage.src = ficha.imagem; characterImage.style.display = "block"; } else { characterImage.src = ''; characterImage.style.display = "none"; }
 
@@ -1626,18 +1511,19 @@ html
             isXpUnlocked = false; 
             if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId); 
             
-            // Load JS variables for current resources
-            vidaAtual = parseInt(ficha.vidaAtual);
-            magiaAtual = parseInt(ficha.magiaAtual);
-            vigorAtual = parseFloat(ficha.vigorAtual);
+            vidaAtual = ficha.vidaAtual !== undefined ? parseInt(ficha.vidaAtual) : 50;
+            magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
+            vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
             
             document.body.classList.toggle("dark-mode", ficha.darkMode === true); 
-            aplicarEstilosDeFundoVisuais(); 
+            aplicarEstilosDeFundoVisuais(); // Centralized function to apply all background styles
 
-            atualizarNivel(); // This will call calcularAtributos()
-                              // calcularAtributos will use the loaded JS vidaAtual etc., cap it against new totals,
-                              // and then set the input field values.
+            atualizarNivel(); 
             
+            vidaAtualInput.value = Math.min(vidaAtual, vidaTotal); 
+            magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
+            vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
+
             previousValues.clear(); 
             document.querySelectorAll('input[type="text"],input[type="number"],textarea').forEach(input => {
                 previousValues.set(input, input.value); 
@@ -1645,6 +1531,7 @@ html
             
             aplicarPlanoDeFundoInicial(ficha); 
             aplicarEstilosFichaInicial(ficha); 
+            // aplicarCorDeFundoInicial and aplicarCorDeFundoInternoFichaInicial are now handled by aplicarEstilosDeFundoVisuais
             aplicarFonteInicial(ficha);
             aplicarCoresDadoInicial(ficha); 
             aplicarCustomizacoesDadoInicial(ficha); 
@@ -1653,16 +1540,6 @@ html
             document.body.classList.toggle("gm-mode-active", isGmModeActive); 
             gmModeBtn.classList.toggle("gm-active", isGmModeActive);
             gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
-            
-            // Reset dice container to its initial CSS position from the sheet, not a potentially dragged one
-            if (diceContainer) {
-                diceContainer.style.top = originalDiceContainerState.initialCSSTop || '20px';
-                diceContainer.style.right = originalDiceContainerState.initialCSSRight || '20px';
-                diceContainer.style.left = originalDiceContainerState.initialCSSLeft || 'auto';
-                diceContainer.style.transform = '';
-                originalDiceContainerState.wasEverDragged = false; // Reset dragged state
-            }
-
         }
 
         function atualizarBotaoBloquear() {
@@ -1671,17 +1548,10 @@ html
         }
 
         function salvarDados() {
-            if (!currentFichaId || !fichas[currentFichaId] || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) return;
+            if (!currentFichaId || !fichas[currentFichaId] || (isFichaLocked && !isFichaUnlocked)) return;
 
             const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
-            const magiasArray = [];
-            magiasList.querySelectorAll('.magia-item-container').forEach(item => {
-                magiasArray.push({
-                    nome: item.querySelector('.magia-nome')?.value || "",
-                    descricao: item.querySelector('.magia-descricao')?.value || "",
-                    custo: item.querySelector('.magia-custo')?.value || ""
-                });
-            });
+            const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
             
             const fichaAtual = fichas[currentFichaId];
 
@@ -1700,7 +1570,7 @@ html
             fichaAtual.armaEsquerdaAtaque = armaEsquerdaAtaqueInput.value;
             fichaAtual.armaEsquerdaAtaqueMagico = armaEsquerdaAtaqueMagicoInput.value;
             fichaAtual.vantagens = vantagensSelecionadas.join("\n");
-            fichaAtual.magiasHabilidades = magiasArray; 
+            fichaAtual.magiasHabilidades = magias.join("\n");
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
             
@@ -1721,6 +1591,7 @@ html
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment; 
             
+            // Store custom colors as they are from the picker
             if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
             if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
 
@@ -1729,10 +1600,13 @@ html
             
             fichaAtual.diceColor = diceColorInput.value; 
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            // texturaDado is saved when applied (aplicarTexturaDado)
+            fichaAtual.texturaDado = fichaAtual.texturaDado; 
             fichaAtual.animacaoDado = diceAnimationSelector.value; 
 
-            // Current resources are read directly from JS variables which are kept in sync
+            vidaAtual = parseInt(vidaAtualInput.value);
+            magiaAtual = parseInt(magiaAtualInput.value);
+            vigorAtual = parseFloat(vigorAtualInput.value);
+
             fichaAtual.vidaAtual = vidaAtual;
             fichaAtual.magiaAtual = magiaAtual;
             fichaAtual.vigorAtual = vigorAtual;
@@ -1836,11 +1710,10 @@ html
             pontosHabilidadeTotal = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ? 
                                       parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
 
-            const pdDisplay = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ? 
+            const phDisplay = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ?
                                parseInt(ficha.gmOverrides['pontos-habilidade']) :
                                (pontosHabilidadeTotal - pontosHabilidadeUsados);
-            pontosHabilidadeSpan.textContent = pdDisplay;
-
+            pontosHabilidadeSpan.textContent = phDisplay;
 
             pontosVantagemSpan.textContent = getPontosVantagem();
 
@@ -1885,7 +1758,7 @@ html
             let val = parseInt(vidaAtualInput.value);
             if (val < vidaTotal) { 
                 val++; 
-                vidaAtual = val; // Update JS variable
+                vidaAtual = val;
                 vidaAtualInput.value = vidaAtual;
                 salvarDados(); 
             } 
@@ -1894,7 +1767,7 @@ html
             let val = parseInt(vidaAtualInput.value);
             if (val > 0) { 
                 val--; 
-                vidaAtual = val; // Update JS variable
+                vidaAtual = val;
                 vidaAtualInput.value = vidaAtual; 
                 salvarDados(); 
             } 
@@ -1903,7 +1776,7 @@ html
             let val = parseInt(magiaAtualInput.value);
             if (val < magiaTotal) { 
                 val++; 
-                magiaAtual = val; // Update JS variable
+                magiaAtual = val;
                 magiaAtualInput.value = magiaAtual;
                 salvarDados(); 
             } 
@@ -1912,7 +1785,7 @@ html
             let val = parseInt(magiaAtualInput.value);
             if (val > 0) { 
                 val--; 
-                magiaAtual = val; // Update JS variable
+                magiaAtual = val;
                 magiaAtualInput.value = magiaAtual;
                 salvarDados(); 
             } 
@@ -1921,7 +1794,7 @@ html
             let val = parseFloat(vigorAtualInput.value);
             if (val < vigorTotal) { 
                 val = Math.min(val + 0.1, vigorTotal); 
-                vigorAtual = parseFloat(val.toFixed(1)); // Update JS variable
+                vigorAtual = val;
                 vigorAtualInput.value = vigorAtual.toFixed(1);
                 salvarDados(); 
             } 
@@ -1930,7 +1803,7 @@ html
             let val = parseFloat(vigorAtualInput.value);
             if (val > 0) { 
                 val = Math.max(val - 0.1, 0); 
-                vigorAtual = parseFloat(val.toFixed(1)); // Update JS variable
+                vigorAtual = val;
                 vigorAtualInput.value = vigorAtual.toFixed(1);
                 salvarDados(); 
             } 
@@ -1948,9 +1821,9 @@ html
 
             let totalPontosAtuais = currentForca + currentDestreza + currentAgilidade + currentInteligencia + currentConstituicao;
             
-            const pdDisponivelBase = pontosHabilidadeTotal; 
+            const pdCalculadoDisponivel = pontosHabilidadeTotal; 
             
-            if (totalPontosAtuais > pdDisponivelBase && ficha?.gmOverrides?.['pontos-habilidade'] === undefined) {
+            if (totalPontosAtuais > pdCalculadoDisponivel && ficha?.gmOverrides?.['pontos-habilidade'] === undefined) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido.");
                 forcaInput.value = previousValues.get(forcaInput) || "0";
                 destrezaInput.value = previousValues.get(destrezaInput) || "0";
@@ -1973,12 +1846,6 @@ html
             previousValues.set(constituicaoInput, constituicaoInput.value);
 
             pontosHabilidadeUsados = totalPontosAtuais; 
-             if (pontosHabilidadeSpan) { 
-                 pontosHabilidadeSpan.textContent = ficha?.gmOverrides?.['pontos-habilidade'] !== undefined ? 
-                                               parseInt(ficha.gmOverrides['pontos-habilidade']) :
-                                               (pontosHabilidadeTotal - pontosHabilidadeUsados);
-            }
-
 
             let calcAtaque = currentForca + Math.floor(currentDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
             let calcAtaqueMagico = currentInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
@@ -2051,15 +1918,13 @@ html
             magiaAtualInput.max = magiaTotal;
             vigorAtualInput.max = vigorTotal;
             
-            // Update JS current vars by capping against new totals, then update inputs
-            vidaAtual = Math.min(vidaAtual, vidaTotal); 
-            vidaAtualInput.value = vidaAtual;            
+            vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
+            magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
+            vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
 
-            magiaAtual = Math.min(magiaAtual, magiaTotal);
-            magiaAtualInput.value = magiaAtual;
-
-            vigorAtual = Math.min(vigorAtual, vigorTotal);
-            vigorAtualInput.value = vigorAtual.toFixed(1);
+            vidaAtual = parseInt(vidaAtualInput.value);
+            magiaAtual = parseInt(magiaAtualInput.value);
+            vigorAtual = parseFloat(vigorAtualInput.value);
 
 
             document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
@@ -2074,18 +1939,15 @@ html
 
 
         function resetarPontos() {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(resetPontosButton);
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
             senhaGmTitulo.textContent = "Peça permissão ao GM para Resetar Pontos";
             document.getElementById("senha-gm-modal").style.display = "flex"; 
             document.getElementById("senha-gm-input").value = "";
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                     atributosInputs.forEach(input => input.value = 0); 
                     pontosHabilidadeUsados = 0; 
-                    if (fichas[currentFichaId] && fichas[currentFichaId].gmOverrides) {
-                        delete fichas[currentFichaId].gmOverrides['pontos-habilidade']; 
-                    }
-                    atualizarNivel(); 
+                    atualizarNivel();
                     salvarDados(); 
                     fecharModal("senha-gm-modal");
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
@@ -2093,7 +1955,7 @@ html
         }
 
         function recomecarFicha() {
-             if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(recomecarButton);
+             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(recomecarButton);
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
                 if (fichas[currentFichaId]) { 
                     fichas[currentFichaId].gmOverrides = {};
@@ -2114,16 +1976,14 @@ html
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = "";
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-                
-                renderizarMagiasHabilidades([]);
-                
+                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); }
                 const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
                 characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; racaSelecionada = null;
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
                 classeNomeInput.value = ""; classeDescricaoInput.value = ""; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                 
                 const currentFichaObject = fichas[currentFichaId] || {};
-                currentFichaObject.darkMode = document.body.classList.contains('dark-mode');
+                currentFichaObject.darkMode = document.body.classList.contains('dark-mode'); // Preserve current theme or reset to default if preferred
 
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
@@ -2140,25 +2000,25 @@ html
                 currentFichaObject.backgroundImage = null;
                 currentFichaObject.backgroundSize = 'cover';
                 currentFichaObject.backgroundAttachment = 'scroll';
-                currentFichaObject.magiasHabilidades = [];
 
-                // Reset current resources to defaults, then atualizarNivel will apply Constitution etc.
-                vidaAtual = 50; 
-                magiaAtual = 20;
-                vigorAtual = 10;
-
-
-                aplicarEstilosDeFundoVisuais(); 
+                aplicarEstilosDeFundoVisuais(); // Apply correct backgrounds based on theme and null custom colors
                 aplicarEstilosFichaInicial(currentFichaObject); 
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
                 aplicarFonteInicial(currentFichaObject);
-                aplicarCoresDadoInicial(currentFichaObject); 
+                aplicarCoresDadoInicial(currentFichaObject); // This will also respect current dark/light mode
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstadoColapsoSecoes({});
                 
                 atualizarNivel(); 
                                  
-                salvarDados(); 
+                vidaAtualInput.value = vidaTotal; 
+                magiaAtualInput.value = magiaTotal;
+                vigorAtualInput.value = vigorTotal.toFixed(1);
+                vidaAtual = vidaTotal; 
+                magiaAtual = magiaTotal;
+                vigorAtual = vigorTotal;
+
+                salvarDados(); // Salvar todas as propriedades resetadas
             }
         }
 
@@ -2247,7 +2107,7 @@ html
             });
             input.addEventListener("input", (event) => {
                 const inputTarget = event.target;
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID && !isGmModeActive) { 
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) { 
                     inputTarget.value = previousValues.get(inputTarget) || "";
                     abrirModalSenha(inputTarget);
                     return; 
@@ -2268,7 +2128,7 @@ html
 
         [vidaAtualInput, magiaAtualInput, vigorAtualInput].forEach(input => {
             input.addEventListener('input', (event) => {
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID && !isGmModeActive) {
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     event.target.value = previousValues.get(event.target) || event.target.defaultValue;
                     abrirModalSenha(event.target);
                     return;
@@ -2283,8 +2143,8 @@ html
                     maxVal = vidaTotal;
                     if (value > maxVal) value = maxVal;
                     if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = vidaAtual; // Keep existing if invalid
-                    vidaAtual = value; // Update JS variable
+                    if (isNaN(value)) value = vidaAtual; 
+                    vidaAtual = value;
                     event.target.value = vidaAtual;
                 } else if (event.target === magiaAtualInput) {
                     value = parseInt(event.target.value);
@@ -2292,7 +2152,7 @@ html
                     if (value > maxVal) value = maxVal;
                     if (value < minVal) value = minVal;
                     if (isNaN(value)) value = magiaAtual;
-                    magiaAtual = value; // Update JS variable
+                    magiaAtual = value;
                     event.target.value = magiaAtual;
                 } else if (event.target === vigorAtualInput) {
                     value = parseFloat(event.target.value);
@@ -2300,7 +2160,7 @@ html
                     if (value > maxVal) value = maxVal;
                     if (value < minVal) value = minVal;
                     if (isNaN(value)) value = vigorAtual;
-                    vigorAtual = parseFloat(value.toFixed(1)); // Update JS variable
+                    vigorAtual = parseFloat(value.toFixed(1));
                     event.target.value = vigorAtual.toFixed(1);
                 }
                 salvarDados();
@@ -2313,7 +2173,7 @@ html
 
         experienciaInput.addEventListener('focus', (event) => {
             previousValues.set(event.target, event.target.value); 
-            if (experienciaInput.readOnly && !isXpUnlocked && !isGmModeActive) { 
+            if (experienciaInput.readOnly && !isXpUnlocked) { 
                 event.preventDefault();
                 senhaGmTitulo.textContent = "Desbloquear Campo de Experiência";
                 document.getElementById("senha-gm-modal").style.display = "flex";
@@ -2369,7 +2229,7 @@ html
         };
         document.getElementById("excluir-ficha").onclick = () => {
             if (currentFichaId === FICHA_MATRIZ_ID) return alert("A ficha matriz não pode ser excluída!");
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(document.getElementById("excluir-ficha"));
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(document.getElementById("excluir-ficha"));
             if (confirm("Tem certeza que deseja excluir esta ficha?")) {
                 delete fichas[currentFichaId];
                 saveFichasToStorage(fichas);
@@ -2379,113 +2239,19 @@ html
                 atualizarAbasFichas();
             }
         };
-       
-        diceContainer.onmousedown = e => { 
-            if (e.target !== diceContainer && !diceContainer.querySelector('label').contains(e.target)) return;
-            if (diceContainer.classList.contains('centered-roll')) return; 
-            
-            diceContainerIsBeingDragged = true;
-            originalDiceContainerState.wasEverDragged = true; // Mark as dragged
-            diceContainer.style.transition = 'none'; 
-            diceContainer.style.cursor = "grabbing"; 
-
-            initialDragMouseX = e.clientX;
-            initialDragMouseY = e.clientY;
-
-            const rect = diceContainer.getBoundingClientRect();
-            initialDiceLeft = rect.left - fichaContainer.getBoundingClientRect().left; // Relative to ficha-container
-            initialDiceTop = rect.top - fichaContainer.getBoundingClientRect().top;   // Relative to ficha-container
-        };
-
-        document.onmousemove = e => { 
-            if (diceContainerIsBeingDragged && !diceContainer.classList.contains('centered-roll')) { 
-                e.preventDefault(); 
-                let newLeft = initialDiceLeft + (e.clientX - initialDragMouseX);
-                let newTop = initialDiceTop + (e.clientY - initialDragMouseY);
-                
-                // Keep dice within ficha-container bounds (approx)
-                const fichaRect = fichaContainer.getBoundingClientRect();
-                const diceRect = diceContainer.getBoundingClientRect();
-
-                newLeft = Math.max(0, Math.min(newLeft, fichaRect.width - diceRect.width));
-                newTop = Math.max(0, Math.min(newTop, fichaRect.height - diceRect.height));
-
-                diceContainer.style.left = `${newLeft}px`;
-                diceContainer.style.top = `${newTop}px`;
-                diceContainer.style.right = "auto"; 
-            } 
-        };
-        document.onmouseup = () => { 
-            if(diceContainerIsBeingDragged) {
-                diceContainerIsBeingDragged = false; 
-                diceContainer.style.cursor = "move";
-                // Restore default transition only if not actively rolling
-                if (!diceContainer.classList.contains('centered-roll')) {
-                     diceContainer.style.transition = originalDiceContainerState.transition || 'top 0.3s ease-out, left 0.3s ease-out, right 0.3s ease-out, transform 0.3s ease-out';
-                }
-            } 
-        };
+        let isDragging = false, currentX = 0, currentY = 0, initialX, initialY;
         
-        // Function to show and position dice options menu
-        function showDiceOptionsMenu(relatedElement, isForAttributeRoll = false) {
-            const menu = diceOptionsMenu;
-            menu.style.display = 'flex';
-            const menuRect = menu.getBoundingClientRect(); // Get dimensions after display flex
+        diceContainer.onmousedown = e => { isDragging = true; initialX = e.clientX - currentX; initialY = e.clientY - currentY; diceContainer.style.cursor = "grabbing"; };
+        document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
+        document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} };
 
-            if (isForAttributeRoll) { // Position above and centered on the attribute trigger
-                const triggerRect = relatedElement.getBoundingClientRect();
-                let top = triggerRect.top + window.scrollY - menuRect.height - 5;
-                let left = triggerRect.left + window.scrollX + (triggerRect.width / 2) - (menuRect.width / 2);
-
-                // Adjust if out of viewport
-                if (top < window.scrollY) top = triggerRect.bottom + window.scrollY + 5;
-                if (left < 0) left = 5;
-                if (left + menuRect.width > window.innerWidth) left = window.innerWidth - menuRect.width - 5;
-                
-                menu.style.top = `${top}px`;
-                menu.style.left = `${left}px`;
-                menu.style.right = 'auto';
-            } else { // Position relative to the main dice type change button
-                const btnRect = relatedElement.getBoundingClientRect();
-                menu.style.top = `${btnRect.bottom + window.scrollY + 5}px`;
-                let left = btnRect.left + window.scrollX + (btnRect.width / 2) - (menuRect.width / 2);
-                
-                if (left < 0) left = 5;
-                if (left + menuRect.width > window.innerWidth) left = window.innerWidth - menuRect.width - 5;
-
-                menu.style.left = `${left}px`;
-                menu.style.right = 'auto';
-            }
-        }
-
-
-        function iniciarRolagemComAnimacao() {
-            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(diceRoll);
+        diceRoll.onclick = () => {
+            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked)) {
+                if (isFichaLocked && !isFichaUnlocked) abrirModalSenha(diceRoll);
                 return;
             }
             isDiceRolling = true;
             diceRoll.textContent = "...";
-            
-            // Save current state BEFORE centering animation
-            const computedStyle = getComputedStyle(diceContainer);
-            originalDiceContainerState.position = computedStyle.position;
-            originalDiceContainerState.transform = diceContainer.style.transform || computedStyle.transform || '';
-            originalDiceContainerState.transition = diceContainer.style.transition; 
-
-            if (originalDiceContainerState.wasEverDragged) {
-                originalDiceContainerState.top = diceContainer.style.top; // This is already relative to fichaContainer
-                originalDiceContainerState.left = diceContainer.style.left;
-                originalDiceContainerState.right = 'auto';
-            } else {
-                originalDiceContainerState.top = originalDiceContainerState.initialCSSTop;
-                originalDiceContainerState.left = originalDiceContainerState.initialCSSLeft;
-                originalDiceContainerState.right = originalDiceContainerState.initialCSSRight;
-            }
-            
-            diceContainer.classList.add('centered-roll'); // Centered-roll is fixed, so coordinates don't matter during this
-            diceContainer.style.transition = 'top 0.5s ease-out, left 0.5s ease-out, right 0.5s ease-out, transform 0.5s ease-out';
-            diceContainerIsBeingDragged = false; 
             
             diceRoll.classList.remove('is-rolling', 'is-rolling-fast', 'is-rolling-jump', 'critical-failure', 'critical-success');
             diceResult.style.display = "none";
@@ -2511,164 +2277,68 @@ html
                 diceRoll.textContent = roll;
 
                 let notificationClass = "normal-result";
-                let notificationMsg = "";
-                let historyEntry = {
-                    type: `D${currentDiceMax}`,
-                    result: roll,
-                    timestamp: new Date().toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                };
+                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
 
-
-                if (attributeRollData) {
-                    let attributeValueElement = document.getElementById(attributeRollData.id);
-                    let attributeValue = 0;
-                    if (attributeValueElement) {
-                        if (attributeValueElement.tagName === 'INPUT' || attributeValueElement.tagName === 'TEXTAREA') {
-                            attributeValue = parseInt(attributeValueElement.value) || 0;
-                        } else { 
-                            attributeValue = parseInt(attributeValueElement.textContent) || 0;
-                        }
-                    }
-
-                    const sumResult = roll + attributeValue;
-                    notificationMsg = `${attributeRollData.name}: ${sumResult} (D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-                    historyEntry.type = `D${currentDiceMax} (${attributeRollData.name})`;
-                    historyEntry.sum = sumResult;
-                    historyEntry.attrValue = attributeValue;
-
-
-                    if (roll === 1 && currentDiceMax !==3) { 
-                        diceRoll.classList.add("critical-failure"); 
-                        notificationClass = "critical-failure"; 
-                        notificationMsg = `FALHA CRÍTICA! ${attributeRollData.name}: ${sumResult} (D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-                    } else if (roll === currentDiceMax && currentDiceMax !==3) {
-                        diceRoll.classList.add("critical-success"); 
-                        notificationClass = "critical-success"; 
-                        notificationMsg = `SUCESSO CRÍTICO! ${attributeRollData.name}: ${sumResult} (D${currentDiceMax}: ${roll} + Atr: ${attributeValue})`;
-                    }
-
-                } else { 
-                    notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
-                    if (roll === 1 && currentDiceMax !==3) {
-                        diceRoll.classList.add("critical-failure");
-                        notificationClass = "critical-failure";
-                        notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
-                    } else if (roll === currentDiceMax && currentDiceMax !==3) {
-                        diceRoll.classList.add("critical-success");
-                        notificationClass = "critical-success";
-                        notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
-                    }
+                if (roll === 1) {
+                    diceRoll.classList.add("critical-failure");
+                    notificationClass = "critical-failure";
+                    notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
+                } else if (roll === currentDiceMax) {
+                    diceRoll.classList.add("critical-success");
+                    notificationClass = "critical-success";
+                    notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
                 }
-                
                 showNotification(notificationMsg, notificationClass);
                 
-                if(fichas[currentFichaId]) {
-                    if (!fichas[currentFichaId].diceRolls) fichas[currentFichaId].diceRolls = [];
-                    fichas[currentFichaId].diceRolls.unshift(historyEntry);
+                if (fichas[currentFichaId]) {
+                    const now = new Date();
+                    const timestamp = now.toLocaleString('pt-BR', { 
+                        day: '2-digit', month: '2-digit', year: 'numeric', 
+                        hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                    });
+                    fichas[currentFichaId].diceRolls = fichas[currentFichaId].diceRolls || [];
+                    fichas[currentFichaId].diceRolls.unshift({ 
+                        type: `D${currentDiceMax}`,
+                        result: roll,
+                        timestamp: timestamp
+                    });
                     if (fichas[currentFichaId].diceRolls.length > 100) { 
                         fichas[currentFichaId].diceRolls.pop();
                     }
+                    salvarDados(); 
                 }
-                salvarDados();
-                
-                setTimeout(() => {
-                    resetarPosicaoDado();
-                    isDiceRolling = false;
-                    attributeRollData = null; 
-                }, 1500);
-
+                isDiceRolling = false;
             }, duracaoAnimacao);
-        }
-
-        function resetarPosicaoDado() {
-            diceContainer.classList.remove('centered-roll');
-            diceContainer.style.transition = originalDiceContainerState.transition; 
-            
-            diceContainer.style.position = originalDiceContainerState.position;
-            diceContainer.style.top = originalDiceContainerState.top;
-            diceContainer.style.left = originalDiceContainerState.left;
-            diceContainer.style.right = originalDiceContainerState.right;
-            diceContainer.style.transform = originalDiceContainerState.transform;
-            
-            diceRoll.classList.remove("critical-failure", "critical-success");
-        }
-        
-        diceRoll.onclick = () => {
-            if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(diceRoll);
-                return;
-            }
-            attributeRollData = null; 
-            iniciarRolagemComAnimacao(); 
         };
         
         changeDiceTypeBtn.addEventListener('click', (event) => {
             event.stopPropagation(); 
             if (isDiceRolling) return;
-            attributeRollData = null; // This menu is for general dice type change
-            showDiceOptionsMenu(changeDiceTypeBtn, false);
+            diceOptionsMenu.style.display = diceOptionsMenu.style.display === 'flex' ? 'none' : 'flex';
         });
 
         document.querySelectorAll('.dice-option-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
+            button.addEventListener('click', () => {
                 if (isDiceRolling) return;
                 currentDiceMax = parseInt(button.dataset.diceMax);
                 changeDiceTypeBtn.textContent = `D${currentDiceMax}`;
                 diceOptionsMenu.style.display = 'none';
                 diceRoll.textContent = '-'; 
                 diceRoll.classList.remove("critical-failure", "critical-success");
-
-                if (attributeRollData) { // If menu was opened by an attribute trigger
-                    iniciarRolagemComAnimacao(); 
-                }
-            });
-        });
-
-        document.querySelectorAll('.attribute-roll-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (event) => {
-                event.stopPropagation();
-                if (isDiceRolling || (isFichaLocked && !isFichaUnlocked && !isGmModeActive)) {
-                    if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) abrirModalSenha(trigger);
-                    return;
-                }
-
-                attributeRollData = { 
-                    id: trigger.dataset.attributeId,
-                    name: trigger.dataset.attributeName
-                };
-                
-                const fixedDice = trigger.dataset.fixedDice;
-                if (fixedDice) { 
-                    currentDiceMax = parseInt(fixedDice.substring(1));
-                    changeDiceTypeBtn.textContent = fixedDice;
-                    diceOptionsMenu.style.display = 'none'; 
-                    iniciarRolagemComAnimacao();
-                } else { 
-                    showDiceOptionsMenu(trigger, true); // Open menu for attribute
-                }
             });
         });
 
         document.addEventListener('click', function(event) {
-            const isDiceOptionClick = diceOptionsMenu.contains(event.target);
-            const isAttributeTriggerClick = event.target.classList.contains('attribute-roll-trigger');
-            const isChangeDiceBtnClick = event.target === changeDiceTypeBtn || changeDiceTypeBtn.contains(event.target);
-
-            if (diceOptionsMenu.style.display === 'flex' && !isDiceOptionClick && !isAttributeTriggerClick && !isChangeDiceBtnClick) {
+            if (diceOptionsMenu.style.display === 'flex' && 
+                !diceOptionsMenu.contains(event.target) && 
+                event.target !== changeDiceTypeBtn) {
                 diceOptionsMenu.style.display = 'none';
-                // Do not clear attributeRollData here if a roll is pending due to dice option selection.
-                // It will be cleared after the roll is complete.
-                // If menu is just closed without selection and it was for attribute, then maybe clear.
-                // But for now, let's rely on it being cleared post-roll.
             }
-
             if (anotacoesTextarea.style.display === 'block' &&
                 !anotacoesTextarea.contains(event.target) &&
                 event.target !== anotacoesBtn) {
                 anotacoesTextarea.style.display = 'none';
             }
-
             if (diceHistoryPanel.style.display === 'flex' &&
                 !diceHistoryPanel.contains(event.target) &&
                 event.target !== diceHistoryTrigger) {
@@ -2678,7 +2348,7 @@ html
 
 
         vantagensDesvantagensBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(vantagensDesvantagensBtn);
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(vantagensDesvantagensBtn);
             tempVantagensSelecionadas = [...vantagensSelecionadas]; tempDesvantagensSelecionadas = [...desvantagensSelecionadas];
             vantagensDesvantagensPanel.style.display = "block"; document.getElementById("salvar-vantagens-btn").style.display = "none"; atualizarVantagensDesvantagensPanel();
         };
@@ -2694,28 +2364,21 @@ html
 
         confirmarSalvarBtn.onclick = () => {
             if (racasPanel.style.display === "block") {
-                if (tempRacaSelecionada !== racaSelecionada) { // Only proceed if there's a change
-                    if (tempRacaSelecionada) { // If a new race is being selected
-                        const raca = racasData.find(r => r.nome === tempRacaSelecionada);
-                        if (raca && calcularPontosVantagemTemp() >= 0) {
-                            racaSelecionada = tempRacaSelecionada;
-                        } else if (raca) { // PH insufficient for the new race
-                            alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
-                            fecharModal("salvar-vantagens-modal");
-                            return; // Don't proceed with save or panel closure
-                        }
-                    } else { // If race is being deselected (tempRacaSelecionada is null)
-                         racaSelecionada = null;
+                if (tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada) {
+                    const raca = racasData.find(r => r.nome === tempRacaSelecionada);
+                    if (raca && calcularPontosVantagemTemp() >= 0) {
+                        racaSelecionada = tempRacaSelecionada;
+                        racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
+                        racaDescricaoInput.value = raca.vantagens.join("\n\n");
+                        racasPanel.style.display = "none";
+                        atualizarNivel(); 
+                        salvarDados();
+                    } else if (raca){
+                        alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
                     }
+                } else {
+                    racasPanel.style.display = "none";
                 }
-                // Update UI and data regardless of actual change for consistency (or if it's nullifying)
-                const currentRacaData = racasData.find(r => r.nome === racaSelecionada);
-                racaNomeSpan.textContent = racaSelecionada ? racaSelecionada.split(" (")[0] : "";
-                racaDescricaoInput.value = currentRacaData ? currentRacaData.vantagens.join("\n\n") : "";
-                racasPanel.style.display = "none";
-                atualizarNivel(); 
-                salvarDados();
-
             } else if (vantagensDesvantagensPanel.style.display === "block") { 
                 if (tempDesvantagensSelecionadas.length > 3) {
                      alert("Você pode ter no máximo 3 desvantagens!");
@@ -2745,9 +2408,7 @@ html
         function atualizarVantagensDesvantagensPanel() {
             vantagensList.innerHTML = "<h3>Vantagens</h3>"; desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
             vantagensData.forEach(v => {
-                const div = document.createElement("div"); div.className = "vantagem-item"; 
-                div.textContent = `${v.nome} - Custo: ${v.custo} PH`;
-                div.title = v.descricao; 
+                const div = document.createElement("div"); div.className = "vantagem-item"; div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`;
                 if (tempVantagensSelecionadas.includes(v.nome)) div.classList.add("comprada");
                 div.onclick = () => {
                     if (vantagensSelecionadas.includes(v.nome)) alert("Vantagem salva só pode ser removida com permissão do GM.");
@@ -2760,9 +2421,7 @@ html
                 }; vantagensList.appendChild(div);
             });
             desvantagensData.forEach(d => {
-                const div = document.createElement("div"); div.className = "desvantagem-item"; 
-                div.textContent = `${d.nome} - Ganho: ${d.ganho} PH`;
-                div.title = d.descricao; 
+                const div = document.createElement("div"); div.className = "desvantagem-item"; div.textContent = `${d.nome} - Ganho: ${d.ganho} PH - ${d.descricao}`;
                 if (tempDesvantagensSelecionadas.includes(d.nome)) div.classList.add("comprada");
                 div.onclick = () => {
                     if (desvantagensSelecionadas.includes(d.nome)) alert("Desvantagem salva só pode ser removida com permissão do GM.");
@@ -2775,12 +2434,12 @@ html
         }
 
         function removerVantagem(v) {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Vantagem";
             if (confirm(`Deseja remover a vantagem "${v}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v); Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
                         fecharModal("senha-gm-modal"); 
                         atualizarNivel(); 
@@ -2790,12 +2449,12 @@ html
             }
         }
         function removerDesvantagem(d) {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Remover Desvantagem";
             if (confirm(`Deseja remover a desvantagem "${d}"?`)) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d); Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
                         fecharModal("senha-gm-modal"); 
                         atualizarNivel();
@@ -2825,73 +2484,15 @@ html
                 diceHistoryPanel.style.display = 'none';
             }
         };
-        
-        function renderizarMagiasHabilidades(magias) {
-            magiasList.innerHTML = ''; 
-            const magiasParaRenderizar = Array.isArray(magias) ? magias : [];
-            if (magiasParaRenderizar.length === 0) { 
-                for(let i = 0; i < 10; i++) magiasParaRenderizar.push({nome: "", descricao: "", custo: ""});
-            }
-            magiasParaRenderizar.forEach((magia, index) => adicionarSlotMagia(magia, index));
-        }
-        
-        function adicionarSlotMagia(magia = {nome: "", descricao: "", custo: ""}, index = -1) {
-            const magiaItemContainer = document.createElement('div');
-            magiaItemContainer.className = 'magia-item-container mb-4 p-2 border border-gray-300 rounded';
-        
-            const nomeInput = document.createElement('input');
-            nomeInput.type = 'text';
-            nomeInput.className = 'magia-nome block w-full p-2 border rounded mb-1';
-            nomeInput.placeholder = `Magia/Habilidade ${index === -1 ? magiasList.children.length + 1 : index + 1}`;
-            nomeInput.value = magia.nome;
-            nomeInput.addEventListener('input', salvarDados);
-            nomeInput.title = magia.descricao; 
-        
-            const descricaoTextarea = document.createElement('textarea');
-            descricaoTextarea.className = 'magia-descricao block w-full p-2 border rounded mb-1 text-sm';
-            descricaoTextarea.placeholder = 'Descrição (efeitos, duração, etc.)';
-            descricaoTextarea.value = magia.descricao;
-            descricaoTextarea.rows = 2;
-            descricaoTextarea.addEventListener('input', (e) => {
-                nomeInput.title = e.target.value; 
-                salvarDados();
-            });
-        
-            const custoInput = document.createElement('input');
-            custoInput.type = 'text';
-            custoInput.className = 'magia-custo block w-full p-2 border rounded mb-1 text-sm';
-            custoInput.placeholder = 'Custo (ex: 5 PM, 1 Ação)';
-            custoInput.value = magia.custo;
-            custoInput.addEventListener('input', salvarDados);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'Excluir';
-            deleteBtn.className = 'botao botao-excluir-magia text-xs px-2 py-1 bg-red-700 hover:bg-red-800';
-            deleteBtn.onclick = () => {
-                if (confirm("Tem certeza que deseja excluir esta magia/habilidade?")) {
-                    magiaItemContainer.remove();
-                    salvarDados();
-                }
-            };
-        
-            magiaItemContainer.appendChild(nomeInput);
-            magiaItemContainer.appendChild(descricaoTextarea);
-            magiaItemContainer.appendChild(custoInput);
-            magiaItemContainer.appendChild(deleteBtn);
-            magiasList.appendChild(magiaItemContainer);
-        }
 
         adicionarMagiaBtn.onclick = () => {
-             if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(adicionarMagiaBtn);
-            if (magiasList.querySelectorAll('.magia-item-container').length < 20) {
-                 adicionarSlotMagia();
-                 salvarDados(); 
-            }
+             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
+            if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); salvarDados(); }
             else alert("Limite de 20 magias/habilidades!");
         };
 
 
-        racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
+        racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
         fecharRacasBtn.onclick = () => { racasPanel.style.display = "none"; };
 
         function atualizarRacasPanel() {
@@ -2900,23 +2501,22 @@ html
                 div.innerHTML = `<h3>${r.nome}</h3><p>${r.descricao}</p><p><strong>Vantagens:</strong></p><ul>${r.vantagens.map(v => `<li>${v}</li>`).join("")}</ul>`;
                 if (tempRacaSelecionada === r.nome) div.classList.add("comprada");
                 div.onclick = () => {
-                    if (racaSelecionada && racaSelecionada !== r.nome && !isGmModeActive && r.nome !== tempRacaSelecionada) { 
-                         alert("Raça salva só pode ser alterada com permissão do GM.");
-                         return;
-                    }
-                    
-                    if (tempRacaSelecionada === r.nome) { 
-                        tempRacaSelecionada = null;
-                    } else { 
+                    if (racaSelecionada && racaSelecionada !== r.nome) alert("Raça salva só pode ser alterada com permissão do GM.");
+                    else if (tempRacaSelecionada === r.nome) { tempRacaSelecionada = null; }
+                    else {
                         let phDisponivelParaNovaRaca = calcularPontosVantagemTemp() + (tempRacaSelecionada ? (racasData.find(ra => ra.nome === tempRacaSelecionada)?.custo || 0) : 0);
                         if (phDisponivelParaNovaRaca >= r.custo) {
                             tempRacaSelecionada = r.nome;
-                        } else { 
-                            alert("PH insuficientes!"); 
-                        }
+                             document.getElementById("confirmar-compra-modal").style.display = "flex";
+                             document.getElementById("confirmar-compra-btn").onclick = () => {
+                                 atualizarRacasPanel();
+                                 document.getElementById("salvar-racas-btn").style.display = "block";
+                                 fecharModal("confirmar-compra-modal");
+                             };
+                        } else { alert("PH insuficientes!"); tempRacaSelecionada = null; }
                     }
-                    atualizarRacasPanel(); 
-                    document.getElementById("salvar-racas-btn").style.display = (tempRacaSelecionada !== racaSelecionada) ? "block" : "none"; 
+                    atualizarRacasPanel();
+                    document.getElementById("salvar-racas-btn").style.display = tempRacaSelecionada && tempRacaSelecionada !== racaSelecionada ? "block" : "none";
                 }; racasList.appendChild(div);
             });
              phTempRacaSpan.textContent = calcularPontosVantagemTemp();
@@ -2925,12 +2525,12 @@ html
 
         function abrirModalRaca() { document.getElementById("raca-opcoes-modal").style.display = "flex"; }
         function excluirRacaSelecionadaModal() {
-            fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            fecharModal('raca-opcoes-modal'); if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Excluir Raça";
             if (confirm("Tem certeza que deseja excluir a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaSelecionada = null; tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                         salvarDados(); fecharModal("senha-gm-modal"); 
                         atualizarNivel();
@@ -2939,17 +2539,17 @@ html
             }
         }
         function editarRacaSelecionadaModal() {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha(); fecharModal('raca-opcoes-modal');
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(); fecharModal('raca-opcoes-modal');
             document.getElementById("editar-raca-modal").style.display = "flex"; document.getElementById("editar-raca-nome").value = racaNomeSpan.textContent;
             document.getElementById("editar-raca-descricao").value = racaDescricaoInput.value;
         }
         function salvarEdicaoRaca() {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) return abrirModalSenha();
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha();
             senhaGmTitulo.textContent = "Peça permissão ao GM para Editar Raça";
             if (confirm("Tem certeza que deseja editar a raça selecionada?")) {
                 document.getElementById("senha-gm-modal").style.display = "flex"; document.getElementById("senha-gm-input").value = "";
                 document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaNomeSpan.textContent = document.getElementById("editar-raca-nome").value;
                         racaDescricaoInput.value = document.getElementById("editar-raca-descricao").value;
                         fecharModal('editar-raca-modal'); salvarDados(); fecharModal("senha-gm-modal");
@@ -2980,11 +2580,11 @@ html
 
         function showNotification(message, type) {
             notification.textContent = message; notification.className = type; notification.style.display = "block";
-            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 3000); 
+            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
         }
         
         customizacaoBtn.onclick = () => {
-            if (isFichaLocked && !isFichaUnlocked && !isGmModeActive) {
+            if (isFichaLocked && !isFichaUnlocked) {
                 return abrirModalSenha(customizacaoBtn, () => {
                     abrirModalCustomizacao();
                 });
@@ -2992,13 +2592,16 @@ html
             abrirModalCustomizacao();
         };
         
-       function abrirModalCustomizacao() {
-            const ficha = fichas[currentFichaId] || {}; 
+        function abrirModalCustomizacao() {
+            const ficha = fichas[currentFichaId] || {}; // Use an empty object if ficha is null
             const defaultLightPage = '#f0e6d2';
+            const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
+            const defaultDarkInternal = document.body.classList.contains('dark-mode') ? '#121212' : '#1e1e1e'; // More specific dark section color
 
-            backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+            backgroundColorInput.value = ficha.backgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkPage : defaultLightPage);
+            
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (document.body.classList.contains('dark-mode') ? defaultDarkInternal : defaultLightInternal);
 
 
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
@@ -3014,14 +2617,8 @@ html
             estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
             larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
             
-            const isCurrentlyDark = document.body.classList.contains('dark-mode');
-            const defaultDarkDiceBg = '#1e1e1e';
-            const defaultLightDiceBg = '#f0e6d2';
-            const defaultDarkDiceNum = '#e0e0e0';
-            const defaultLightDiceNum = '#000000';
-
-            diceColorInput.value = ficha.diceColor || (isCurrentlyDark ? defaultDarkDiceBg : defaultLightDiceBg);
-            diceNumberColorInput.value = ficha.diceNumberColor || (isCurrentlyDark ? defaultDarkDiceNum : defaultLightDiceNum);
+            diceColorInput.value = ficha.diceColor || (document.body.classList.contains('dark-mode') ? '#1e1e1e' : '#f0e6d2');
+            diceNumberColorInput.value = ficha.diceNumberColor || (document.body.classList.contains('dark-mode') ? '#e0e0e0' : '#000000');
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
             diceTextureInput.value = ""; 
 
@@ -3098,17 +2695,25 @@ html
         }
 
         function aplicarEstilosDeFundoVisuais() {
-            const ficha = fichas[currentFichaId] || {}; 
+            const ficha = fichas[currentFichaId] || {}; // Fallback to empty object if ficha is null
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            const defaultDarkInternalContainer = '#121212'; 
-            const defaultDarkInternalSection = '#1e1e1e';  
+            const defaultDarkInternalContainer = '#121212'; // For ficha-container in dark mode
+            const defaultDarkInternalSection = '#1e1e1e';   // For sections in dark mode
 
-            document.body.style.backgroundColor = isDarkModeActive ? defaultDarkPage : (ficha.backgroundColor || defaultLightPage);
-            
+            // Body background
+            if (isDarkModeActive) {
+                document.body.style.backgroundColor = defaultDarkPage;
+            } else {
+                document.body.style.backgroundColor = ficha.backgroundColor || defaultLightPage;
+            }
+            // Ensure the input in the modal shows the stored/default light color
+            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
+
+            // Ficha Container & Sections background
             let finalInternalContainerColor;
             let finalInternalSectionColor;
 
@@ -3124,9 +2729,10 @@ html
             document.querySelectorAll('#ficha-container section').forEach(sec => {
                 sec.style.backgroundColor = finalInternalSectionColor;
             });
-
-            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || defaultLightPage;
-            if (fichaInternalBackgroundColorInput) fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+             // Ensure the input in the modal shows the stored/default light color for internal
+            if (fichaInternalBackgroundColorInput) {
+                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || defaultLightInternal;
+            }
         }
         
         backgroundColorInput.addEventListener('input', (event) => {
@@ -3180,8 +2786,8 @@ html
             diceRoll.style.setProperty('--dice-bg-color', diceBg);
             diceRoll.style.setProperty('--dice-number-color', diceNumCol);
 
-            if(diceColorInput) diceColorInput.value = ficha.diceColor || '#f0e6d2';
-            if(diceNumberColorInput) diceNumberColorInput.value = ficha.diceNumberColor || '#000000';
+            if(diceColorInput) diceColorInput.value = diceBg; // Set picker to current visual or stored
+            if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
         
         diceHistoryTrigger.addEventListener('click', () => {
@@ -3204,15 +2810,12 @@ html
             }
 
             const rolls = fichas[currentFichaId].diceRolls;
-            diceHistoryList.innerHTML = rolls.map(roll => {
-                 let sumText = roll.sum !== undefined ? `, Total: <strong>${roll.sum}</strong>` : '';
-                 let attrText = roll.attrValue !== undefined ? ` (Base: ${roll.attrValue})` : ''; // Changed to show attrValue as base
-                return `
+            diceHistoryList.innerHTML = rolls.map(roll => `
                 <div class="dice-history-item">
-                    <span>${roll.type}, Resultado: <strong>${roll.result}</strong>${attrText}${sumText}</span>
+                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
                     <span class="timestamp">${roll.timestamp}</span>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
         fecharHistoricoBtn.addEventListener('click', () => {
@@ -3225,7 +2828,7 @@ html
             document.getElementById("senha-gm-input").value = "";
             document.getElementById("senha-gm-input").focus();
             document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                if (document.getElementById("senha-gm-input").value === senhaMatriz || isGmModeActive) {
+                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                     if (fichas[currentFichaId]) {
                         fichas[currentFichaId].diceRolls = [];
                         salvarDados();
@@ -3295,7 +2898,7 @@ html
                      event.preventDefault(); 
                 }
                 
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID && !isGmModeActive) {
+                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     abrirModalSenha(buttonElement); 
                     return;
                 }
@@ -3308,7 +2911,7 @@ html
             };
 
             const stopAction = () => {
-                if (!isActionActive) return;
+                                if (!isActionActive) return;
                 clearInterval(currentActionIntervalId);
                 currentActionIntervalId = null;
                 isActionActive = false;
@@ -3329,8 +2932,6 @@ html
             customTooltipElement.innerHTML = tooltipText;
             const rect = targetElement.getBoundingClientRect();
             
-            customTooltipElement.style.display = 'block'; 
-
             let top = rect.bottom + window.scrollY + 5; 
             let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
 
@@ -3341,10 +2942,6 @@ html
             if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
                 top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5; 
             }
-            if (top < window.scrollY) {
-                top = rect.bottom + window.scrollY + 5;
-            }
-
 
             customTooltipElement.style.top = `${top}px`;
             customTooltipElement.style.left = `${left}px`;
@@ -3354,7 +2951,6 @@ html
         function hideCustomTooltip() {
             if (customTooltipElement) {
                 customTooltipElement.classList.remove('visible');
-                 customTooltipElement.style.display = 'none';
             }
         }
 
@@ -3366,40 +2962,21 @@ html
                 document.querySelector('label[for="constituicao"]'),
                 document.querySelector('label[for="inteligencia"]')
             ];
-             const attributeDiceTriggers = document.querySelectorAll('.attribute-roll-trigger');
-
 
             attributeLabels.forEach(label => {
                 if (label) {
-                    let tooltipTimeoutIdLabel;
                     label.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutIdLabel); 
-                        tooltipTimeoutIdLabel = setTimeout(() => {
+                        clearTimeout(tooltipTimeoutId); 
+                        tooltipTimeoutId = setTimeout(() => {
                             showCustomTooltip(event.target);
-                        }, 2000); 
+                        }, 3000); 
                     });
 
                     label.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutIdLabel);
+                        clearTimeout(tooltipTimeoutId);
                         hideCustomTooltip();
                     });
                 }
-            });
-
-            attributeDiceTriggers.forEach(trigger => {
-                 if(trigger.title) { 
-                    let tooltipTimeoutIdTrigger;
-                    trigger.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutIdTrigger);
-                        tooltipTimeoutIdTrigger = setTimeout(() => {
-                           showCustomTooltip(event.target);
-                        }, 1500);
-                    });
-                    trigger.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutIdTrigger);
-                        hideCustomTooltip();
-                    });
-                 }
             });
         }
         
@@ -3546,16 +3123,11 @@ html
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            fireworksContainerRef = document.getElementById('fireworks-container'); 
-            if (diceContainer) { 
-                const computedStyle = getComputedStyle(diceContainer);
-                originalDiceContainerState.initialCSSTop = computedStyle.top;
-                originalDiceContainerState.initialCSSLeft = computedStyle.left;
-                originalDiceContainerState.initialCSSRight = computedStyle.right;
-                // Store the default transition specified in CSS for diceContainer
-                originalDiceContainerState.transition = computedStyle.transition;
+             fireworksContainerRef = document.getElementById('fireworks-container'); 
+             if (diceContainer) { 
+                currentX = diceContainer.offsetLeft;
+                currentY = diceContainer.offsetTop;
             }
-
             const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
             const btnAumentarVida = document.getElementById('btn-aumentar-vida');
             const btnDiminuirMagia = document.getElementById('btn-diminuir-magia');
