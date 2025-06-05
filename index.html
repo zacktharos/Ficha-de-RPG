@@ -65,7 +65,7 @@ html
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow); /* MODIFIED: Uses var for internal shadow */
             width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s, opacity 0.3s, transform 0.3s;
+            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s;
         }
         body.dark-mode #ficha-container {
             background: #121212; /* Dark mode ficha background */
@@ -463,7 +463,6 @@ html
         body.dark-mode .modal-content h3 { color: #e0e0e0; }
         .modal-content input, .modal-content select {
             width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;
-            box-sizing: border-box; /* Added for select in new modal */
         }
         body.dark-mode .modal-content input, body.dark-mode .modal-content select { background: #333; color: #e0e0e0; border-color: #555; }
         .modal-content button {
@@ -604,36 +603,6 @@ html
         .inventory-slot { display: flex; align-items: center; margin-bottom: 10px; }
         .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px; }
         .inventory-slot input[type="number"] { width: 60px; }
-        
-        /* Aleatório Button Styling */
-        #randomize-character-btn {
-            position: fixed;
-            left: 10px;
-            top: calc(50% - 120px); /* Positioned above anotacoes-btn */
-            transform: translateY(-50%);
-            padding: 10px 15px;
-            background: #c0a080; /* Different color */
-            color: #fff;
-            border: 2px solid #b8860b;
-            border-left: none; 
-            border-radius: 0 6px 6px 0;
-            font-family: 'MedievalSharp', serif;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            z-index: 1000;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-        }
-        body.dark-mode #randomize-character-btn {
-            background: #5a4a3a;
-            color: #f0e6d2;
-            border-color: #6b5230;
-        }
-        #randomize-character-btn:hover {
-            background: #a0522d;
-        }
-
         #anotacoes-btn {
             position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 15px;
             background: #f0e6d2; border: 2px solid #b8860b; border-left: none;
@@ -644,7 +613,6 @@ html
         }
         body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; border-color: #444;}
         #anotacoes-btn:hover { background: #a0522d; color: #fff; }
-        
         #anotacoes-textarea {
             display: none; position: fixed; left: 50px;
             top: 50%; transform: translateY(-50%);
@@ -731,54 +699,6 @@ html
             0% { text-shadow: 0 0 5px red, 0 0 10px red; box-shadow: 0 0 8px yellow, inset 0 0 5px rgba(255,0,0,0.3); }
             100% { text-shadow: 0 0 10px red, 0 0 15px orangered, 0 0 20px orangered; box-shadow: 0 0 15px yellow, inset 0 0 10px rgba(255,0,0,0.5); }
         }
-        
-        /* Archetype Selection Modal Styling */
-        #archetype-selection-modal .modal-content {
-            width: 350px; /* Or your preferred width */
-        }
-        #archetype-selection-modal select {
-            width: 100%; /* Takes full width of modal-content padding box */
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc; /* Default light mode */
-            border-radius: 6px;
-            box-sizing: border-box; 
-        }
-        body.dark-mode #archetype-selection-modal select {
-            background: #333;
-            color: #e0e0e0;
-            border-color: #555;
-        }
-
-        /* Animations for Ficha Container Randomization */
-        @keyframes ficha-disappear {
-            0% { transform: rotate(0deg) scale(1) translateY(0); opacity: 1; }
-            100% { transform: rotate(1080deg) scale(0) translateY(-200px) ; opacity: 0; } /* Spins more, shrinks, moves up */
-        }
-        @keyframes ficha-reappear { /* Light mode reappear */
-            0% { transform: scale(0.5) translateY(200px); opacity: 0; box-shadow: 0 0 5px rgba(255, 215, 0, 0); } /* Starts smaller, from below, transparent */
-            50% { opacity: 0.7; box-shadow: 0 0 40px gold, 0 0 60px #ffae42; } /* Mid-fade, strong glow */
-            100% { transform: scale(1) translateY(0); opacity: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 20px gold, var(--ficha-internal-glow); } /* Ends at normal state + soft glow */
-        }
-        @keyframes ficha-reappear-dark { /* Dark mode reappear */
-            0% { transform: scale(0.5) translateY(200px); opacity: 0; box-shadow: 0 0 5px rgba(173, 216, 230, 0); }
-            50% { opacity: 0.7; box-shadow: 0 0 40px #87CEEB, 0 0 60px #add8e6; }
-            100% { transform: scale(1) translateY(0); opacity: 1; box-shadow: 0 8px 20px rgba(0,0,0,0.2), 0 0 20px #87CEEB, var(--ficha-internal-glow); }
-        }
-
-        #ficha-container.disappearing {
-            animation: ficha-disappear 1.2s forwards ease-in-out;
-        }
-        #ficha-container.reappearing {
-            opacity: 0; /* Start transparent before animation kicks in */
-            /* Applied box-shadow for normal state will be restored from JS */
-        }
-        #ficha-container.reappearing.light-mode-animation {
-            animation: ficha-reappear 5s forwards ease-out;
-        }
-        #ficha-container.reappearing.dark-mode-animation {
-            animation: ficha-reappear-dark 5s forwards ease-out;
-        }
 
 
         @media (max-width: 768px) {
@@ -795,8 +715,7 @@ html
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
             #dice-options-menu { top: 35px; }
-            
-            #randomize-character-btn { top: calc(50% - 80px); padding: 8px 10px; font-size: 0.9rem;} /* Adjusted for smaller screens */
+
             #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
 
@@ -821,7 +740,6 @@ html
         <div id="add-ficha-btn"><span>+ Fichas</span></div>
     </div>
     <div id="ficha-container">
-        <!-- Conteúdo da Ficha -->
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
         <div id="game-master-message">Você virou o Game Master</div>
         <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
@@ -1103,13 +1021,9 @@ html
             </div>
         </div>
     </div>
-
-    <!-- Botões Laterais -->
-    <button id="randomize-character-btn">Aleatório</button>
     <button id="anotacoes-btn">Anotações</button>
     <textarea id="anotacoes-textarea" placeholder="Suas anotações aqui..."></textarea>
 
-    <!-- Painéis e Modais -->
     <div id="vantagens-desvantagens-panel">
         <h2>Vantagens e Desvantagens</h2>
         <div>Pontos de Vantagem Temporários: <span id="ph-temp">0</span></div>
@@ -1199,21 +1113,6 @@ html
             <button class="cancel-btn" onclick="fecharModal('editar-raca-modal')">Cancelar</button>
         </div>
     </div>
-
-    <!-- New Modal for Archetype Selection -->
-    <div id="archetype-selection-modal" class="modal">
-        <div class="modal-content">
-            <h3>Escolha o Arquétipo</h3>
-            <select id="archetype-select">
-                <option value="ataque">Ataque (Guerreiro)</option>
-                <option value="defesa">Defesa (Tank/Protetor)</option>
-                <option value="magia">Magia (Mago/Conjurador)</option>
-            </select>
-            <button class="confirm-btn" id="confirm-archetype-btn">Confirmar</button>
-            <button class="cancel-btn" onclick="fecharModal('archetype-selection-modal')">Cancelar</button>
-        </div>
-    </div>
-
     <div id="notification"></div>
 
     <!-- MODAL DE CUSTOMIZAÇÃO GERAL -->
@@ -1362,7 +1261,6 @@ html
             racaSelecionada = null, tempRacaSelecionada = null, vidaTotal, vidaAtual, magiaTotal, magiaAtual,
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
-        let isRandomizingCharacter = false; // New global flag
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas." }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas." }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance." }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão." }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc." }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc." }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão." }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão." }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte." }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir." }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados." }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida." }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc." }
@@ -1449,12 +1347,7 @@ html
             vigorAtualInput = document.getElementById('vigor-atual-input'),
             // New modal elements
             confirmarSalvarAtributosModal = document.getElementById("confirmar-salvar-atributos-modal"),
-            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn"),
-            // Randomization elements
-            randomizeCharacterBtn = document.getElementById("randomize-character-btn"),
-            archetypeSelectionModal = document.getElementById("archetype-selection-modal"),
-            archetypeSelect = document.getElementById("archetype-select"),
-            confirmArchetypeBtn = document.getElementById("confirm-archetype-btn");
+            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn");
 
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
@@ -2086,7 +1979,7 @@ html
                                  parseInt(ficha.gmOverrides['pontos-habilidade']) :
                                  (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined && !isRandomizingCharacter) { // Added !isRandomizingCharacter
+            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido ou valor mínimo salvo.");
 
                 atributosInputs.forEach(input => {
@@ -2105,7 +1998,7 @@ html
             pontosHabilidadeUsados = pdGastosPeloJogador;
             pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined && !isRandomizingCharacter) { // Added !isRandomizingCharacter
+            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
                  atributosInputs.forEach(input => {
                     previousValues.set(input, input.value);
                 });
@@ -3263,12 +3156,11 @@ html
                 }
             });
 
-            // Handle aura-azul independently of the internal glow logic
-            if (nivel >= 30 && (!ficha.gmOverrides || ficha.gmOverrides.nivel === undefined)) {
-                if (!isDarkModeActive) {
-                    fichaContainer.classList.add("aura-azul");
-                } else {
+            if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
+                if (isDarkModeActive) {
                     fichaContainer.classList.remove("aura-azul");
+                } else {
+                    fichaContainer.classList.add("aura-azul");
                 }
             } else {
                 fichaContainer.classList.remove("aura-azul");
@@ -3295,7 +3187,9 @@ html
             aplicarEstilosDeSombra();
             salvarDados();
         });
-                    shadowIntensityFichaValueSpan.textContent = intensity;
+        shadowIntensityFichaSlider.addEventListener('input', (event) => {
+            const intensity = parseInt(event.target.value);
+            shadowIntensityFichaValueSpan.textContent = intensity;
             if (fichas[currentFichaId]) fichas[currentFichaId].shadowIntensityFicha = intensity;
             aplicarEstilosDeSombra();
             salvarDados();
@@ -3480,7 +3374,7 @@ html
                         clearTimeout(tooltipTimeoutId);
                         tooltipTimeoutId = setTimeout(() => {
                             showCustomTooltip(event.target);
-                        }, 3000); // Show tooltip after 3 seconds
+                        }, 3000);
                     });
 
                     label.addEventListener('mouseleave', () => {
@@ -3576,12 +3470,14 @@ html
 
                 if (isPrimaryAttributeInput) { 
                     targetElement.value = newValue;
+                    
                 } else { 
                     ficha.gmOverrides[targetId] = newValue;
                 }
 
                 salvarDados();
-                atualizarNivel(); // This will call calcularAtributos
+                atualizarNivel();
+
                 showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
             }
         }
@@ -3603,7 +3499,7 @@ html
             document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
 
             if (fichas[currentFichaId]) {
-                fichas[currentFichaId].corBordaSecao = novaCorBordaCustom; // Store the light mode custom color
+                fichas[currentFichaId].corBordaSecao = novaCorBordaCustom;
                 fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
                 fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
             }
@@ -3616,7 +3512,7 @@ html
             const defaultDarkBorder = '#555';
             const defaultLightBorder = '#b8860b';
 
-            const corBordaCustom = ficha.corBordaSecao || defaultLightBorder; // User's light mode preference
+            const corBordaCustom = ficha.corBordaSecao || defaultLightBorder;
             const estiloBorda = ficha.estiloBordaSecao || 'solid';
             const larguraBorda = ficha.larguraBordaSecao || '2px';
 
@@ -3626,7 +3522,7 @@ html
             document.documentElement.style.setProperty('--estilo-borda-secao', estiloBorda);
             document.documentElement.style.setProperty('--largura-borda-secao', larguraBorda);
 
-            if (corBordaSecaoInput) corBordaSecaoInput.value = corBordaCustom; // Always show the light mode custom value in input
+            if (corBordaSecaoInput) corBordaSecaoInput.value = corBordaCustom;
             if (estiloBordaSecaoSelect) estiloBordaSecaoSelect.value = estiloBorda;
             if (larguraBordaSecaoInput) larguraBordaSecaoInput.value = parseInt(larguraBorda) || 2;
         }
@@ -3657,7 +3553,7 @@ html
             } else {
                 diceRoll.style.backgroundImage = 'none';
                 if (ficha) ficha.texturaDado = null;
-                 diceTextureInput.value = ""; // Clear the file input
+                 diceTextureInput.value = "";
             }
             if (ficha) salvarDados();
             showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
@@ -3686,274 +3582,6 @@ html
                  diceAnimationSelector.value = ficha.animacaoDado;
             }
         }
-        
-        // --- Start of Randomization Logic ---
-        randomizeCharacterBtn.addEventListener('click', () => {
-            if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                return abrirModalSenha(randomizeCharacterBtn, () => {
-                    archetypeSelectionModal.style.display = "flex";
-                });
-            }
-            if (isRandomizingCharacter) return; // Prevent multiple clicks
-            archetypeSelectionModal.style.display = "flex";
-        });
-
-        confirmArchetypeBtn.addEventListener('click', () => {
-            const selectedArchetype = archetypeSelect.value;
-            fecharModal('archetype-selection-modal');
-            startCharacterRandomization(selectedArchetype);
-        });
-
-        async function startCharacterRandomization(archetype) {
-            if (isRandomizingCharacter) return;
-            isRandomizingCharacter = true;
-
-            fichaContainer.classList.add('disappearing');
-            
-            // Wait for disappear animation to roughly complete
-            await new Promise(resolve => setTimeout(resolve, 1100)); // Matches animation duration
-
-            await clearAndGenerateRandomData(archetype); // Generate new data
-            
-            // Force repaint before reappearing
-            void fichaContainer.offsetWidth; 
-
-            fichaContainer.classList.remove('disappearing');
-            fichaContainer.classList.add('reappearing');
-            
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            if (isDarkMode) {
-                fichaContainer.classList.add('dark-mode-animation');
-            } else {
-                fichaContainer.classList.add('light-mode-animation');
-            }
-            
-            // Wait for reappear animation
-            await new Promise(resolve => setTimeout(resolve, 5000)); // Matches animation duration
-
-            fichaContainer.classList.remove('reappearing', 'light-mode-animation', 'dark-mode-animation');
-            // Ensure final state has correct shadow if needed
-            aplicarEstilosDeSombra(); 
-            isRandomizingCharacter = false;
-            showNotification("Personagem aleatório gerado!", "save-success");
-        }
-
-        async function clearAndGenerateRandomData(archetype) {
-            const ficha = fichas[currentFichaId];
-            if (!ficha) {
-                isRandomizingCharacter = false;
-                return;
-            }
-
-            // 1. Reset basic info
-            nomePersonagemInput.value = "";
-            descricaoPersonagemInput.value = "";
-            classeNomeInput.value = ""; // Can be filled by archetype later if desired
-            classeDescricaoInput.value = "";
-
-            // 2. Reset experience and level (optional, but common for full reroll)
-            // If you want to keep current level, comment these out or adjust logic
-            experienciaInput.value = "0";
-            experiencia = 0;
-            nivel = 0; 
-            ficha.gmOverrides = {}; // Clear GM overrides for a fresh start
-
-            // 3. Reset attributes to their locked minimums or 0
-            ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
-            atributosInputs.forEach(input => {
-                input.value = ficha.lockedAtributos[input.id] || 0;
-            });
-            pontosHabilidadeUsados = Object.values(ficha.lockedAtributos).reduce((sum, val) => sum + (parseInt(val) || 0), 0);
-             
-            // 4. Reset advantages, disadvantages, race
-            vantagensSelecionadas = [];
-            desvantagensSelecionadas = [];
-            racaSelecionada = null;
-
-            vantagensListDisplay.innerHTML = "";
-            desvantagensListDisplay.innerHTML = "";
-            racaNomeSpan.textContent = "";
-            racaDescricaoInput.value = "";
-
-            // 5. Determine available PD and PH
-            // Based on level (which is now 0 or current if not reset)
-            const nivelInfoParaRandom = nivelData.find(n => n.nivel === nivel) || nivelData[0];
-            let pdDisponiveis = nivelInfoParaRandom.pd - pontosHabilidadeUsados; // Subtract already locked points
-            let phDisponiveis = nivelInfoParaRandom.ph;
-
-            // 6. Generate Random Content
-            nomePersonagemInput.value = generateRandomFullName();
-            descricaoPersonagemInput.value = generateRandomDescriptionText(archetype);
-
-            const { selectedRace, raceCost } = selectRandomRace(phDisponiveis);
-            if (selectedRace) {
-                racaSelecionada = selectedRace.nome;
-                racaNomeSpan.textContent = selectedRace.nome.split(" (")[0];
-                racaDescricaoInput.value = selectedRace.vantagens.join("\n\n");
-                phDisponiveis -= raceCost;
-            }
-            
-            const { finalVantagens, finalDesvantagens, phSpent, phGained } = selectRandomAdvantagesDisadvantages(phDisponiveis, nivel);
-            vantagensSelecionadas = finalVantagens.map(v => v.nome);
-            desvantagensSelecionadas = finalDesvantagens.map(d => d.nome);
-
-            vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; /* no onclick for random */ vantagensListDisplay.appendChild(div); });
-            desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; /* no onclick for random */ desvantagensListDisplay.appendChild(div); });
-            
-            // 7. Distribute attributes
-            distributeAttributesRandomlyForArchetype(archetype, pdDisponiveis, ficha.lockedAtributos || {});
-            
-            // 8. Final updates and save
-            atualizarNivel(); // This calls calcularAtributos, which also updates PH/PD spans and resource totals
-            
-            // Set current resources to max after attributes are set
-            vidaAtualInput.value = vidaTotal;
-            magiaAtualInput.value = magiaTotal;
-            vigorAtualInput.value = vigorTotal.toFixed(1);
-            vidaAtual = vidaTotal;
-            magiaAtual = magiaTotal;
-            vigorAtual = vigorTotal;
-
-            salvarDados(); // Save all changes
-        }
-
-        function generateRandomFullName() {
-            const firstNames = ["Aelar", "Brynn", "Corin", "Darius", "Elara", "Finnian", "Gwen", "Hadrian", "Isolde", "Jasper", "Kael", "Lyra", "Marius", "Nadia", "Orion", "Phoebe", "Quinn", "Roric", "Seraphina", "Tarek", "Uriel", "Vesper", "Wren", "Xylia", "Yarrow", "Zephyr"];
-            const lastNames = ["Blackwood", "Stonehaven", "Silvermoon", "Ironhand", "Swiftarrow", "Stormblade", "Nightwind", "Sunstrider", "Shadowwalker", "Frostbeard", "Goldleaf", "Riverbend", "Wildheart", "Starfall", "Moonwhisper"];
-            const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-            return `${firstName} ${lastName}`;
-        }
-
-        function generateRandomDescriptionText(archetype) {
-            const commonStarts = [
-                "Um viajante de terras distantes,", "Com um passado misterioso,", "Buscando fortuna e glória,",
-                "Um pária de sua terra natal,", "Com um destino ainda não escrito,", "Movido por uma antiga profecia,"
-            ];
-            const commonEnds = [
-                "enfrenta o mundo com coragem.", "e uma sede insaciável por aventura.", "procurando seu lugar no mundo.",
-                "carregando o peso de suas escolhas.", "e uma esperança relutante no coração.", "pronto para o que vier."
-            ];
-            let middlePart = "";
-            switch(archetype) {
-                case 'ataque':
-                    middlePart = "este guerreiro é conhecido por sua força bruta e habilidade com lâminas,";
-                    break;
-                case 'defesa':
-                    middlePart = "este protetor inabalável usa seu escudo e resiliência para defender os inocentes,";
-                    break;
-                case 'magia':
-                    middlePart = "este conjurador arcano manipula as energias místicas do universo,";
-                    break;
-                default:
-                     middlePart = "esta alma errante explora os caminhos menos trilhados,";
-            }
-            return `${commonStarts[Math.floor(Math.random() * commonStarts.length)]} ${middlePart} ${commonEnds[Math.floor(Math.random() * commonEnds.length)]}`;
-        }
-
-        function selectRandomRace(availablePH) {
-            const affordableRaces = racasData.filter(r => r.custo <= availablePH);
-            if (affordableRaces.length > 0) {
-                const selectedRace = affordableRaces[Math.floor(Math.random() * affordableRaces.length)];
-                return { selectedRace, raceCost: selectedRace.custo };
-            }
-            return { selectedRace: null, raceCost: 0 }; // No race if none are affordable
-        }
-
-        function selectRandomAdvantagesDisadvantages(initialPH, currentNivel) {
-            let currentPH = initialPH;
-            let selectedVantagens = [];
-            let selectedDesvantagens = [];
-
-            // Select Desvantagens (max 3)
-            const shuffledDesvantagens = [...desvantagensData].sort(() => 0.5 - Math.random());
-            for (const desvant of shuffledDesvantagens) {
-                if (selectedDesvantagens.length < 3) {
-                    selectedDesvantagens.push(desvant);
-                    currentPH += desvant.ganho;
-                }
-                if (selectedDesvantagens.length >= 3) break;
-            }
-
-            // Select Vantagens
-            const shuffledVantagens = [...vantagensData]
-                .filter(v => !(v.restricao === "inicio" && currentNivel > 0)) // Respect "inicio" restriction
-                .sort(() => 0.5 - Math.random());
-
-            for (const vant of shuffledVantagens) {
-                if (currentPH >= vant.custo) {
-                    selectedVantagens.push(vant);
-                    currentPH -= vant.custo;
-                }
-            }
-            return { 
-                finalVantagens: selectedVantagens, 
-                finalDesvantagens: selectedDesvantagens,
-                phSpent: initialPH - currentPH + selectedDesvantagens.reduce((sum, d) => sum + d.ganho, 0),
-                phGained: selectedDesvantagens.reduce((sum, d) => sum + d.ganho, 0)
-            };
-        }
-        
-        function distributeAttributesRandomlyForArchetype(archetype, totalPD, lockedAttrs) {
-            let pdRemaining = totalPD;
-            const attributes = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
-            const attrKeys = Object.keys(attributes);
-
-            // Initialize with locked values and reduce pdRemaining
-            attrKeys.forEach(key => {
-                const lockedVal = parseInt(lockedAttrs[key]) || 0;
-                attributes[key] = lockedVal;
-                // pdRemaining is already adjusted before calling this function for locked points
-            });
-
-            // Define weights based on archetype
-            const weights = {
-                ataque: { forca: 4, destreza: 3, constituicao: 2, agilidade: 1, inteligencia: 0.5 },
-                defesa: { constituicao: 4, forca: 2, destreza: 1, agilidade: 2, inteligencia: 1 },
-                magia:  { inteligencia: 4, constituicao: 2, destreza: 2, agilidade: 1, forca: 0.5 }
-            };
-            const currentWeights = weights[archetype] || { forca: 1, destreza: 1, agilidade: 1, constituicao: 1, inteligencia: 1 };
-
-            // Distribute remaining PD
-            let iterations = 0; // Safety break
-            while (pdRemaining > 0 && iterations < 1000) {
-                let distributedThisRound = false;
-                // Create a weighted list of attributes to pick from
-                const weightedAttrPool = [];
-                attrKeys.forEach(key => {
-                    for (let i = 0; i < Math.ceil(currentWeights[key] * 10); i++) { // Multiply by 10 for better granularity
-                        weightedAttrPool.push(key);
-                    }
-                });
-
-                if (weightedAttrPool.length > 0) {
-                    const randomAttrKey = weightedAttrPool[Math.floor(Math.random() * weightedAttrPool.length)];
-                    attributes[randomAttrKey]++;
-                    pdRemaining--;
-                    distributedThisRound = true;
-                }
-                
-                if (!distributedThisRound && pdRemaining > 0) { // If somehow no attribute was picked (e.g., all weights 0)
-                    const randomFallbackKey = attrKeys[Math.floor(Math.random() * attrKeys.length)];
-                    attributes[randomFallbackKey]++;
-                    pdRemaining--;
-                }
-                iterations++;
-            }
-            if (iterations >= 1000 && pdRemaining > 0) {
-                console.warn("Random attribute distribution might not have used all PD due to iteration limit or weighting issues.");
-            }
-
-
-            // Update input fields
-            forcaInput.value = attributes.forca;
-            destrezaInput.value = attributes.destreza;
-            agilidadeInput.value = attributes.agilidade;
-            constituicaoInput.value = attributes.constituicao;
-            inteligenciaInput.value = attributes.inteligencia;
-        }
-
-        // --- End of Randomization Logic ---
 
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -3978,7 +3606,7 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, #randomize-character-btn').forEach(btn => {
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
