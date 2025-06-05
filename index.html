@@ -97,9 +97,9 @@ html
             opacity: 0; /* Start transparent for the animation */
         }
         @keyframes reappearWithGlow {
-            0% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 30px gold, 0 0 50px gold, var(--ficha-internal-glow); }
-            30% { opacity: 0.7; transform: scale(1.05); box-shadow: 0 0 15px gold, 0 0 25px gold, var(--ficha-internal-glow); }
-            100% { opacity: 1; transform: scale(1); box-shadow: 0 8px 20px rgba(0,0,0,0.2), var(--ficha-internal-glow); }
+            0% { opacity: 0; transform: scale(0.5); box-shadow: 0 0 30px gold, 0 0 50px gold, 0 0 70px darkorange, var(--ficha-internal-glow); }
+            30% { opacity: 0.7; transform: scale(1.05); box-shadow: 0 0 15px gold, 0 0 25px gold, 0 0 35px darkorange, var(--ficha-internal-glow); }
+            100% { opacity: 1; transform: scale(1); /* Final box-shadow will be restored by JS */ }
         }
 
 
@@ -560,16 +560,18 @@ html
             flex-shrink: 0;
         }
 
-
-        #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
+        /* Botão Aleatório é estilizado pela classe .botao herdada */
+        #vantagens-desvantagens-btn, #racas-btn, #classes-btn, #randomize-btn { /* Adicionado #randomize-btn aqui */
             padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease; z-index: 10;
         }
-        body.dark-mode #vantagens-desvantagens-btn, body.dark-mode #racas-btn, body.dark-mode #classes-btn {
+        body.dark-mode #vantagens-desvantagens-btn, body.dark-mode #racas-btn, body.dark-mode #classes-btn, body.dark-mode #randomize-btn { /* Adicionado #randomize-btn aqui */
             background: #1e1e1e; color: #e0e0e0;
         }
-        #vantagens-desvantagens-btn:hover, #racas-btn:hover, #classes-btn:hover { background: #a0522d; color: #fff; }
+        #vantagens-desvantagens-btn:hover, #racas-btn:hover, #classes-btn:hover, #randomize-btn:hover { background: #a0522d; color: #fff; } /* Adicionado #randomize-btn aqui */
+
+
         #vantagens-desvantagens-panel, #racas-panel, #classes-panel {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(240, 230, 210, 0.95); padding: 20px; overflow-y: auto; z-index: 999;
@@ -624,26 +626,18 @@ html
         .inventory-slot input[type="text"] { flex-grow: 1; margin-right: 10px; }
         .inventory-slot input[type="number"] { width: 60px; }
 
-        /* Botão Aleatório e Anotações */
-        #randomize-btn, #anotacoes-btn {
-            position: fixed; left: 10px; padding: 10px 15px;
-            background: #f0e6d2; border: 2px solid #b8860b;
+        /* Botão Anotações (mantido como antes, se o Aleatório agora está com os outros) */
+        #anotacoes-btn {
+            position: fixed; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 15px;
+            background: #f0e6d2; border: 2px solid #b8860b; border-left: none;
+            border-radius: 0 6px 6px 0;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
             transition: background-color 0.3s ease; z-index: 1000;
             writing-mode: vertical-rl; text-orientation: mixed;
         }
-        #randomize-btn {
-            top: calc(50% - 75px); /* Ajustado para ficar acima de anotações */
-            border-radius: 0 6px 6px 0; border-left: none;
-        }
-        #anotacoes-btn {
-            top: 50%; transform: translateY(-50%);
-            border-radius: 0 6px 6px 0; border-left: none;
-        }
-        body.dark-mode #randomize-btn, body.dark-mode #anotacoes-btn {
-            background: #1e1e1e; color: #e0e0e0; border-color: #444;
-        }
-        #randomize-btn:hover, #anotacoes-btn:hover { background: #a0522d; color: #fff; }
+        body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; border-color: #444;}
+        #anotacoes-btn:hover { background: #a0522d; color: #fff; }
+
 
         #anotacoes-textarea {
             display: none; position: fixed; left: 50px;
@@ -742,14 +736,19 @@ html
             .atributos-container, .vida-magia-vigor { flex-direction: column; }
             .atributos-coluna, .atributos-coluna-destaque, .atributo-container { width: 100%; }
             .botoes-container, .theme-buttons-container { flex-wrap: wrap; }
+            /* Central buttons container */
+            div[style*="display:flex;justify-content:center;gap:20px;margin-bottom:20px"] {
+                flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+            }
+
 
              #dice-container { width: auto; }
             #dice-roll { width: 80px; height: 80px; font-size: 2rem; }
             #change-dice-type-btn {width: 45px; font-size: 0.8rem;}
             #dice-options-menu { top: 35px; }
 
-            #randomize-btn { top: calc(50% - 100px); padding: 8px 10px; font-size: 0.9rem; } /* Adjusted for mobile */
-            #anotacoes-btn { top: calc(50% - 45px); padding: 8px 10px; font-size: 0.9rem;} /* Adjusted for mobile */
+            /* Anotacoes button remains on the side */
+            #anotacoes-btn { top: 50%; transform: translateY(-50%); padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
 
 
@@ -1062,10 +1061,11 @@ html
                 </div>
             </section>
 
-            <div style="display:flex;justify-content:center;gap:20px;margin-bottom:20px">
+            <div style="display:flex;justify-content:center;gap:20px;margin-bottom:20px; flex-wrap:wrap;">
                 <button id="vantagens-desvantagens-btn" class="botao">Vantagens e Desvantagens</button>
                 <button id="racas-btn" class="botao">Raças 🏰</button>
                 <button id="classes-btn" class="botao">Classes ⚔️</button>
+                <button id="randomize-btn" class="botao">Aleatório 🎲</button> <!-- BOTÃO MOVIDO AQUI -->
             </div>
 
             <div class="botoes-container">
@@ -1083,7 +1083,7 @@ html
             </div>
         </div>
     </div>
-    <button id="randomize-btn">Aleatório</button>
+    <!-- Botão Anotações mantido na lateral -->
     <button id="anotacoes-btn">Anotações</button>
     <textarea id="anotacoes-textarea" placeholder="Suas anotações aqui..."></textarea>
 
@@ -1356,9 +1356,9 @@ html
         // For Random Name/Description Generation
         const randomFirstNames = ["Arion", "Lyra", "Kael", "Seraphina", "Jax", "Elara", "Roric", "Astrid", "Zephyr", "Morgana", "Finn", "Isolde"];
         const randomLastNames = ["Stonehand", "Moonwhisper", "Ironheart", "Swiftarrow", "Shadowwalker", "Brightwood", "Stormblade", "Winterfell", "Sunstrider", "Nightwind"];
-        const randomEpithets = ["the Valiant", "of the Silent Path", "the Just", "Flameheart", "the Wanderer", "Star-gazer", "the Unseen", "Iron-Will"];
-        const randomOrigins = ["a remote village", "a bustling port city", "ancient ruins", "a mystical forest", "a forgotten monastery", "the harsh northern tundras"];
-        const randomMotivations = ["seeking lost knowledge", "avenging a past wrong", "protecting the innocent", "searching for a legendary artifact", "proving their worth", "escaping a troubled past"];
+        const randomEpithets = ["o Valente", "do Caminho Silencioso", "o Justo", "Coração de Fogo", "o Errante", "Observador de Estrelas", "o Invisível", "Vontade de Ferro"];
+        const randomOrigins = ["uma vila remota", "uma cidade portuária movimentada", "ruínas antigas", "uma floresta mística", "um monastério esquecido", "as duras tundras do norte"];
+        const randomMotivations = ["buscando conhecimento perdido", "vingando um erro do passado", "protegendo os inocentes", "procurando um artefato lendário", "provando seu valor", "escapando de um passado conturbado"];
 
 
         // Cache DOM Elements
@@ -3241,39 +3241,37 @@ html
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
             let fichaInternalShadowString = 'transparent 0 0 0 0 inset';
-            let sectionInternalShadowString = 'none';
+            let sectionInternalShadowString = 'none'; // Default for sections
 
+            // Apply ficha-internal-glow to ficha-container
             if (!isDarkModeActive) {
                 const intensityFicha = ficha.shadowIntensityFicha || 0;
                 const colorFicha = ficha.shadowColorFicha || '#000000';
 
                 if (intensityFicha > 0) {
-                    const internalBlurPx = intensityFicha * 0.5;
-                    const internalSpreadPx = intensityFicha * 0.2;
-                    const commonInsetShadow = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
-                    fichaInternalShadowString = commonInsetShadow;
-                    sectionInternalShadowString = commonInsetShadow;
+                    const internalBlurPx = intensityFicha * 0.5; // Example calculation
+                    const internalSpreadPx = intensityFicha * 0.2; // Example calculation
+                    fichaInternalShadowString = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
+                    sectionInternalShadowString = fichaInternalShadowString; // Sections also get this shadow
                 }
             }
-
             document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalShadowString);
 
+            // Apply box-shadow to sections (which might include the internal glow or be none in dark mode)
             document.querySelectorAll('#ficha-container section').forEach(sec => {
-                if (isDarkModeActive) {
-                    sec.style.boxShadow = 'none';
-                } else {
-                    sec.style.boxShadow = sectionInternalShadowString;
-                }
+                sec.style.boxShadow = sectionInternalShadowString;
             });
 
-            if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
-                if (isDarkModeActive) {
-                    fichaContainer.classList.remove("aura-azul");
-                } else {
-                    fichaContainer.classList.add("aura-azul");
-                }
+            // Restore main ficha-container's external shadow and potential aura
+            const externalShadow = "0 8px 20px rgba(0, 0, 0, 0.2)";
+            if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined && !isDarkModeActive) {
+                 // If aura-azul is active, pulsar-aura animation handles the shadow
+                fichaContainer.classList.add("aura-azul"); // Ensure it's there if it should be
+                // The animation @keyframes pulsar-aura already includes var(--ficha-internal-glow)
             } else {
                 fichaContainer.classList.remove("aura-azul");
+                 // Combine external shadow with internal glow for non-aura state
+                fichaContainer.style.boxShadow = `${externalShadow}, var(--ficha-internal-glow)`;
             }
         }
 
@@ -3716,6 +3714,7 @@ html
             if (archetype === 'Ataque') focus = "sua maestria em combate e força implacável";
             else if (archetype === 'Defesa') focus = "sua resiliência inabalável e táticas defensivas";
             else if (archetype === 'Magia') focus = "seu profundo conhecimento arcano e poderes místicos";
+            else focus = "suas diversas habilidades e adaptabilidade"; // Default for no archetype
 
             return `Conhecido como ${epithet}, este indivíduo de ${origin} é movido por ${motivation}, e notável por ${focus}.`;
         }
@@ -3733,18 +3732,21 @@ html
         }
 
         function performFullRandomization(archetype) {
-            if (!recomecarFicha(true)) return; // Force recomecar without confirmation
+            if (!recomecarFicha(true)) return; // Force recomecar without confirmation and check success
 
             experienciaInput.value = "0"; // Ensure level 0 for PD/PH calculation
-            atualizarNivel(); // This sets pontosHabilidadeTotal and calls getPontosVantagem
+            atualizarNivel(); // This sets pontosHabilidadeTotal, nivelSpan, pontosVantagemSpan, and calls calcularAtributos
 
             // 1. Nome e Descrição
             nomePersonagemInput.value = generateRandomFullName();
             descricaoPersonagemInput.value = generateRandomDesc(archetype);
+            nomePersonagemTitulo.textContent = nomePersonagemInput.value || "Ficha de Personagem";
 
-            let phAtual = parseInt(pontosVantagemSpan.textContent);
+
+            let phAtual = parseInt(pontosVantagemSpan.textContent); // Should be 8 after recomecar + atualizarNivel
 
             // 2. Raça
+            racaSelecionada = null; // Clear previous
             const affordableRaces = racasData.filter(r => r.custo <= phAtual);
             if (affordableRaces.length > 0) {
                 const chosenRace = getRandomElement(affordableRaces);
@@ -3752,10 +3754,13 @@ html
                 phAtual -= chosenRace.custo;
                 racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
                 racaDescricaoInput.value = chosenRace.vantagens.join("\n\n");
+            } else {
+                racaNomeSpan.textContent = "";
+                racaDescricaoInput.value = "";
             }
 
             // 3. Desvantagens (0 a 3)
-            desvantagensSelecionadas = [];
+            desvantagensSelecionadas = []; // Clear previous
             const numDesvantagens = Math.floor(Math.random() * 4); // 0, 1, 2, or 3
             const availableDesvantagens = [...desvantagensData];
             for (let i = 0; i < numDesvantagens && availableDesvantagens.length > 0; i++) {
@@ -3764,13 +3769,14 @@ html
                 desvantagensSelecionadas.push(chosenDesvantagem.nome);
                 phAtual += chosenDesvantagem.ganho;
             }
-            desvantagensListDisplay.innerHTML = desvantagensSelecionadas.map(d => `<div class="list-item">${d}</div>`).join("");
+            desvantagensListDisplay.innerHTML = ""; // Clear display
+            desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
 
 
             // 4. Vantagens
-            vantagensSelecionadas = [];
-            const availableVantagens = vantagensData.filter(v => v.restricao !== "inicio" || nivel === 0); // Consider "inicio" only for level 0
-            let attempts = 0; // Prevent infinite loop if no affordable advantages
+            vantagensSelecionadas = []; // Clear previous
+            const availableVantagens = vantagensData.filter(v => v.restricao !== "inicio" || nivel === 0); 
+            let attempts = 0; 
             while (phAtual > 0 && attempts < 20 && availableVantagens.length > 0) {
                 const affordableVantagensNow = availableVantagens.filter(v => v.custo <= phAtual && !vantagensSelecionadas.includes(v.nome));
                 if (affordableVantagensNow.length === 0) break;
@@ -3778,9 +3784,13 @@ html
                 const chosenVantagem = getRandomElement(affordableVantagensNow);
                 vantagensSelecionadas.push(chosenVantagem.nome);
                 phAtual -= chosenVantagem.custo;
+                // Remove chosen advantage from available list to avoid duplicates in this loop
+                const indexToRemove = availableVantagens.findIndex(v => v.nome === chosenVantagem.nome);
+                if (indexToRemove > -1) availableVantagens.splice(indexToRemove, 1);
                 attempts++;
             }
-            vantagensListDisplay.innerHTML = vantagensSelecionadas.map(v => `<div class="list-item">${v}</div>`).join("");
+            vantagensListDisplay.innerHTML = ""; // Clear display
+            vantagensSelecionadas.forEach(v => { const div = document.createElement("div"); div.textContent = v; div.className = "list-item"; div.onclick = () => removerVantagem(v); vantagensListDisplay.appendChild(div); });
 
 
             // Update PH display after all selections
@@ -3788,7 +3798,7 @@ html
 
 
             // 5. Atributos (PD)
-            let pdParaDistribuir = pontosHabilidadeTotal; // From atualizarNivel
+            let pdParaDistribuir = pontosHabilidadeTotal; // From atualizarNivel for level 0 (should be 25)
             const attributeWeights = {
                 Ataque: [
                     { id: 'forca', weight: 35 }, { id: 'destreza', weight: 25 },
@@ -3807,7 +3817,7 @@ html
                 ]
             };
 
-            const currentWeights = attributeWeights[archetype] || attributeWeights['Ataque']; // Default to Ataque
+            const currentWeights = attributeWeights[archetype] || attributeWeights['Ataque']; 
             const distributedAttrs = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
 
             for (let i = 0; i < pdParaDistribuir; i++) {
@@ -3822,28 +3832,31 @@ html
             inteligenciaInput.value = distributedAttrs.inteligencia;
 
             // Final updates
-            pontosHabilidadeUsados = pdParaDistribuir; // All points are used
-            pontosHabilidadeSpan.textContent = 0;
+            pontosHabilidadeUsados = pdParaDistribuir; 
+            pontosHabilidadeSpan.textContent = 0; // All PD should be used
 
+            // Reset lockedAtributos for the new random character
+            if (fichas[currentFichaId]) {
+                 fichas[currentFichaId].lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none"; // Hide save button
+            }
 
-            calcularAtributos(); // Recalculate derived stats
+            calcularAtributos(); // Recalculate derived stats like HP, MP, etc.
             salvarDados(); // Save all changes
             showNotification(`Personagem aleatório (${archetype}) gerado!`, "save-success");
         }
 
 
-                function startRandomizationAnimation(archetype) {
+        function startRandomizationAnimation(archetype) {
             fichaContainer.classList.add('randomizing-spin-fade');
+
             fichaContainer.addEventListener('animationend', function onSpinEnd(event) {
                 if (event.animationName === 'spinAndFadeOut') {
-                    fichaContainer.removeEventListener('animationend', onSpinEnd);
-                    fichaContainer.style.visibility = 'hidden'; // Hide before changing content
-                    fichaContainer.style.opacity = '0'; // Ensure it's fully transparent before reappearing
+                    fichaContainer.style.visibility = 'hidden';
+                    fichaContainer.style.opacity = '0';
 
-                    performFullRandomization(archetype); // This now calls recomecarFicha(true)
+                    performFullRandomization(archetype); 
 
-                    // Force a reflow to ensure the opacity and visibility changes are applied
-                    // before adding the reappear animation class.
                     void fichaContainer.offsetWidth; 
 
                     fichaContainer.classList.remove('randomizing-spin-fade');
@@ -3852,17 +3865,14 @@ html
 
                     fichaContainer.addEventListener('animationend', function onReappearEnd(event) {
                          if (event.animationName === 'reappearWithGlow') {
-                            fichaContainer.removeEventListener('animationend', onReappearEnd);
                             fichaContainer.classList.remove('randomizing-reappear');
-                            // Ensure final state is as expected without animation interference
                             fichaContainer.style.opacity = '1';
                             fichaContainer.style.transform = 'scale(1)';
-                            // Re-apply the correct box shadow based on current state (dark mode, level 30 aura etc.)
                             aplicarEstilosDeSombra(); 
                          }
-                    }, {once: true}); // Use {once: true} to automatically remove listener
+                    }, { once: true }); 
                 }
-            }, {once: true}); // Use {once: true} to automatically remove listener
+            }, { once: true }); 
         }
 
 
@@ -3931,7 +3941,7 @@ html
             setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
             setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, #randomize-btn, .archetype-btn').forEach(btn => {
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .archetype-btn').forEach(btn => { // Removed #randomize-btn as it's covered by .botao
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
             });
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
