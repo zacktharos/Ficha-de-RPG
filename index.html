@@ -5,7 +5,7 @@ html
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&family=Cinzel+Decorative:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -62,19 +62,18 @@ html
         #ficha-container {
             background: #f0e6d2;
             padding: 30px; border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow); /* MODIFIED: Uses var for internal shadow */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow);
             width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
         }
         body.dark-mode #ficha-container {
-            background: #121212; /* Dark mode ficha background */
+            background: #121212;
             color: #e0e0e0;
-            /* The var(--ficha-internal-glow) will be transparent in dark mode via JS */
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow);
         }
 
-        @keyframes pulsar-aura { /* Used for Nivel 30+ Ficha Aura */
+        @keyframes pulsar-aura {
             0% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF, var(--ficha-internal-glow); }
             50% { box-shadow: 0 0 30px #00BFFF, 0 0 50px #00BFFF, 0 0 60px #00BFFF, var(--ficha-internal-glow); }
             100% { box-shadow: 0 0 20px #00BFFF, 0 0 30px #00BFFF, 0 0 40px #00BFFF, var(--ficha-internal-glow); }
@@ -102,13 +101,10 @@ html
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px;
-            transition: background-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition for section shadow */
-            /* box-shadow is now controlled by JS for sections */
+            transition: background-color 0.3s, box-shadow 0.3s, border-color 0.3s;
         }
         body.dark-mode section {
-             border-color: #555; /* Default dark mode border for sections */
-             /* background-color will be set by JS to dark mode default */
-             /* box-shadow will be set to none by JS in dark mode */
+             border-color: #555;
         }
 
 
@@ -128,20 +124,12 @@ html
             background: #fff; color: #000;
         }
         .recurso-atual-input {
-            width: 70px !important;
-            text-align: center;
-            font-family: 'MedievalSharp', serif;
-            font-size: 1.1rem;
-            padding: 5px 2px;
-            margin: 0 3px !important;
-            -moz-appearance: textfield;
-            box-sizing: border-box;
+            width: 70px !important; text-align: center; font-family: 'MedievalSharp', serif;
+            font-size: 1.1rem; padding: 5px 2px; margin: 0 3px !important;
+            -moz-appearance: textfield; box-sizing: border-box;
         }
         .recurso-atual-input::-webkit-outer-spin-button,
-        .recurso-atual-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+        .recurso-atual-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
         body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea, body.dark-mode select {
             background: #333; color: #e0e0e0; border-color: #555;
@@ -171,9 +159,9 @@ html
         .vida-magia-vigor { display: flex; justify-content: space-around; gap: 15px; flex-wrap: wrap; }
         .atributo-container {
             background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 8px; border: 1px solid #b8860b;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px; text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px; text-align: center; transition: all 0.3s ease;
         }
-        body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8); } /* Will be overridden by JS if fichaInternalBackground is dark mode default */
+        body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8); }
         .atributo-container::before { font-size: 1.5rem; margin-bottom: 5px; display: block; }
         .atributo-container.vida::before { content: "❤️"; }
         .atributo-container.magia::before { content: "✨"; }
@@ -187,7 +175,7 @@ html
         button {
             background: #b8860b; color: #fff; border: none; padding: 5px 10px;
             cursor: pointer; font-size: 1.2rem; border-radius: 4px; margin: 0 5px;
-            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.1s ease;
+            transition: all 0.3s ease;
         }
         body.dark-mode button { background: #555; }
         button:hover { background: #a0522d; }
@@ -227,6 +215,7 @@ html
             width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
             font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
             font-family: 'MedievalSharp', serif;
+            transition: all 0.3s ease;
         }
         body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
         #nivel.aura-azul { animation: pulsar-aura 5s 1; }
@@ -238,8 +227,7 @@ html
         .expandable-textarea:focus { height: 15cm; }
 
         #dice-container {
-            position: absolute; top: 20px; right: 20px; width: auto;
-            text-align: center;
+            position: absolute; top: 20px; right: 20px; width: auto; text-align: center;
             font-family: 'MedievalSharp', serif; cursor: move; z-index: 10; user-select: none;
             perspective: 800px;
         }
@@ -257,14 +245,11 @@ html
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 2.5rem;
-            cursor: pointer;
-            margin: 0;
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s, background-image 0.3s;
+            cursor: pointer; margin: 0; position: relative;
+            transition: all 0.3s ease;
             font-family: 'MedievalSharp', serif;
             transform-style: preserve-3d;
-            background-size: cover;
-            background-position: center;
+            background-size: cover; background-position: center;
         }
         body.dark-mode #dice-roll { border-color: #444; }
 
@@ -314,28 +299,14 @@ html
         body.dark-mode #change-dice-type-btn { background-color: #4a3c2a; color: #f0e6d2; border-color: #6b5230; }
 
         #dice-options-menu {
-            display: none;
-            position: absolute;
-            top: 40px;
-            right: 0;
-            background-color: #f0e6d2;
-            border: 1px solid #b8860b;
-            border-radius: 4px;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            z-index: 110;
-            padding: 5px;
-            flex-direction: column;
-            gap: 5px;
+            display: none; position: absolute; top: 40px; right: 0; background-color: #f0e6d2;
+            border: 1px solid #b8860b; border-radius: 4px; box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            z-index: 110; padding: 5px; flex-direction: column; gap: 5px;
         }
         body.dark-mode #dice-options-menu { background-color: #1e1e1e; border-color: #444; }
         .dice-option-btn {
-            width: 100%;
-            padding: 8px 10px;
-            font-size: 0.9rem;
-            background-color: #e6cca7; color: #3a2800;
-            border: 1px solid #b8860b; border-radius: 3px;
-            text-align: center;
-            margin:0;
+            width: 100%; padding: 8px 10px; font-size: 0.9rem; background-color: #e6cca7; color: #3a2800;
+            border: 1px solid #b8860b; border-radius: 3px; text-align: center; margin:0;
         }
         .dice-option-btn:hover { background-color: #d2b48c; }
         body.dark-mode .dice-option-btn { background-color: #3a2f1e; color: #f0e6d2; border-color: #5c4b35; }
@@ -345,9 +316,7 @@ html
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; pointer-events: none; overflow: hidden;
         }
-        .firework-particle {
-            position: absolute; border-radius: 50%; opacity: 1;
-        }
+        .firework-particle { position: absolute; border-radius: 50%; opacity: 1; }
         @keyframes particle-trail {
             0% { opacity: 1; transform: scale(1) translateY(0px); }
             50% { opacity: 0.7; }
@@ -355,41 +324,18 @@ html
         }
 
         #dice-history-trigger {
-            position: fixed;
-            top: calc(50% + 70px);
-            right: 10px;
-            transform: translateY(-50%);
-            padding: 10px 15px;
-            background: #a0522d;
-            color: white;
-            border: 2px solid #b8860b;
-            border-right: none;
-            border-radius: 6px 0 0 6px;
-            font-family: 'MedievalSharp', serif;
-            font-size: 1rem;
-            cursor: pointer;
-            z-index: 1000;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
+            position: fixed; top: calc(50% + 70px); right: 10px; transform: translateY(-50%); padding: 10px 15px;
+            background: #a0522d; color: white; border: 2px solid #b8860b; border-right: none;
+            border-radius: 6px 0 0 6px; font-family: 'MedievalSharp', serif; font-size: 1rem;
+            cursor: pointer; z-index: 1000; writing-mode: vertical-rl; text-orientation: mixed;
         }
         body.dark-mode #dice-history-trigger { background-color: #555; border-color: #444;}
 
         #dice-history-panel {
-            position: fixed;
-            right: 50px;
-            top: calc(50% + 70px);
-            transform: translateY(-50%);
-            width: 400px;
-            max-height: 400px;
-            background: #fff;
-            border: 2px solid #b8860b;
-            border-radius: 6px;
-            padding: 15px;
-            font-size: 0.9rem;
-            z-index: 1001;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            display: none;
-            flex-direction: column;
+            position: fixed; right: 50px; top: calc(50% + 70px); transform: translateY(-50%);
+            width: 400px; max-height: 400px; background: #fff; border: 2px solid #b8860b;
+            border-radius: 6px; padding: 15px; font-size: 0.9rem; z-index: 1001;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3); display: none; flex-direction: column;
         }
         body.dark-mode #dice-history-panel { background: #333; color: #e0e0e0; border-color: #555;}
 
@@ -400,22 +346,13 @@ html
         body.dark-mode #dice-history-panel h2 { color: #c58c5a;}
 
         #dice-history-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            background: #f9f2e7;
-            border: 1px solid #b8860b;
-            border-radius: 4px;
-            padding: 8px;
-            margin-bottom: 10px;
+            flex-grow: 1; overflow-y: auto; background: #f9f2e7; border: 1px solid #b8860b;
+            border-radius: 4px; padding: 8px; margin-bottom: 10px;
         }
         body.dark-mode #dice-history-list { background: #2a2a2a; border-color: #555; }
         .dice-history-item {
-            padding: 6px 4px;
-            border-bottom: 1px dashed #d2b48c;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 6px 4px; border-bottom: 1px dashed #d2b48c; font-size: 0.9rem;
+            display: flex; justify-content: space-between; align-items: center;
         }
         body.dark-mode .dice-history-item { border-bottom-color: #4a3c2a; }
         .dice-history-item:last-child { border-bottom: none; }
@@ -480,64 +417,65 @@ html
             overflow-y: auto;
             text-align: left;
         }
-        #customizacao-modal .modal-content h3 {
-            text-align: center;
-            font-size: 1.8rem;
-            color: #a0522d;
-        }
+        #customizacao-modal .modal-content h3 { text-align: center; font-size: 1.8rem; color: #a0522d; }
         body.dark-mode #customizacao-modal .modal-content h3 { color: #c58c5a;}
-
         #customizacao-modal fieldset {
-            border: 1px solid #b8860b;
-            border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border: 1px solid #b8860b; border-radius: 6px;
+            padding: 15px; margin-bottom: 20px;
         }
         body.dark-mode #customizacao-modal fieldset { border-color: #555; }
-
         #customizacao-modal legend {
-            font-family: 'MedievalSharp', serif;
-            font-size: 1.3rem;
-            color: #800000;
-            padding: 0 10px;
-            font-weight: bold;
+            font-family: 'MedievalSharp', serif; font-size: 1.3rem;
+            color: #800000; padding: 0 10px; font-weight: bold;
         }
         body.dark-mode #customizacao-modal legend { color: #d2b48c;}
-
-        #customizacao-modal .input-group {
-            margin-bottom: 15px;
-        }
-        #customizacao-modal .input-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: normal;
-        }
+        #customizacao-modal .input-group { margin-bottom: 15px; }
+        #customizacao-modal .input-group label { display: block; margin-bottom: 5px; font-weight: normal; }
         #customizacao-modal .input-group input[type="color"],
         #customizacao-modal .input-group input[type="file"],
         #customizacao-modal .input-group select,
         #customizacao-modal .input-group input[type="number"],
         #customizacao-modal .input-group input[type="range"] {
-            width: 100%;
-            box-sizing: border-box;
+            width: 100%; box-sizing: border-box;
         }
-
-        #customizacao-modal .radio-group label {
-            display: inline-block;
-            margin-right: 15px;
-            font-weight: normal;
-        }
-        #customizacao-modal .radio-group input[type="radio"] {
-           width: auto;
-           margin-right: 5px;
-        }
+        #customizacao-modal .radio-group label { display: inline-block; margin-right: 15px; font-weight: normal; }
+        #customizacao-modal .radio-group input[type="radio"] { width: auto; margin-right: 5px; }
         #customizacao-modal .custom-dice-texture-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            display: flex; align-items: center;
+            gap: 10px; margin-bottom: 15px;
         }
-        #customizacao-modal .custom-dice-texture-controls button {
-            flex-shrink: 0;
+        #customizacao-modal .custom-dice-texture-controls button { flex-shrink: 0; }
+        
+        /* NEW: Theme selector styles */
+        .theme-selector-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .theme-btn {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid #b8860b;
+            background-color: #f0e6d2;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'MedievalSharp', serif;
+        }
+        .theme-btn.active {
+            background-color: #a0522d;
+            color: #fff;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            border-color: #a0522d;
+        }
+        body.dark-mode .theme-btn {
+             background-color: #333;
+             border-color: #555;
+             color: #eee;
+        }
+        body.dark-mode .theme-btn.active {
+             background-color: #777;
+             border-color: #777;
         }
 
 
@@ -642,57 +580,29 @@ html
         .lock-icon { margin-left: 5px; cursor: help; }
 
         .gm-edit-icon {
-            font-size: 0.8rem;
-            margin-left: 5px;
-            cursor: pointer;
-            display: none;
-            color: #007bff;
+            font-size: 0.8rem; margin-left: 5px; cursor: pointer;
+            display: none; color: #007bff;
         }
-        body.gm-mode-active .gm-edit-icon {
-            display: inline;
-        }
-        body.dark-mode .gm-edit-icon {
-            color: #61dafb;
-        }
-        .gm-edit-icon:hover {
-            text-shadow: 0 0 3px currentColor;
-        }
+        body.gm-mode-active .gm-edit-icon { display: inline; }
+        body.dark-mode .gm-edit-icon { color: #61dafb; }
+        .gm-edit-icon:hover { text-shadow: 0 0 3px currentColor; }
         #custom-tooltip {
-            position: absolute;
-            visibility: hidden;
-            background-color: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 0.85rem;
-            z-index: 2000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            max-width: 250px;
-            text-align: left;
+            position: absolute; visibility: hidden; background-color: #333;
+            color: white; padding: 8px 12px; border-radius: 5px; font-size: 0.85rem;
+            z-index: 2000; pointer-events: none; opacity: 0;
+            transition: opacity 0.2s ease-in-out; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            max-width: 250px; text-align: left;
         }
         body.dark-mode #custom-tooltip {
-            background-color: #f0e6d2;
-            color: #1e1e1e;
-            border: 1px solid #444;
+            background-color: #f0e6d2; color: #1e1e1e; border: 1px solid #444;
         }
-        #custom-tooltip.visible {
-            visibility: visible;
-            opacity: 1;
-        }
+        #custom-tooltip.visible { visibility: visible; opacity: 1; }
 
-        /* New CSS for attribute save confirmation modal */
         #confirmar-salvar-atributos-texto {
-            background-color: yellow; /* Amarelo */
-            color: #333; /* Texto escuro para contraste com amarelo */
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px; /* Added margin for spacing */
+            background-color: yellow; color: #333; padding: 10px;
+            border-radius: 4px; margin-bottom: 15px;
             animation: glow-red-text 1.5s infinite alternate;
-            font-weight: bold;
-            font-size: 1.1rem; /* Slightly larger font for emphasis */
+            font-weight: bold; font-size: 1.1rem;
         }
 
         @keyframes glow-red-text {
@@ -719,19 +629,206 @@ html
             #anotacoes-btn { padding: 8px 10px; font-size: 0.9rem;}
             #anotacoes-textarea { left: 40px; width: calc(100vw - 60px); height: 300px; }
 
-            #dice-history-trigger {
-                padding: 8px 10px; font-size: 0.9rem;
-                top: calc(50% + 120px);
-            }
-            #dice-history-panel {
-                right: 40px; width: calc(100vw - 60px); max-height: 300px;
-                top: calc(50% + 120px);
-            }
-            #customizacao-modal .modal-content {
-                 width: 90%;
-            }
+            #dice-history-trigger { padding: 8px 10px; font-size: 0.9rem; top: calc(50% + 120px); }
+            #dice-history-panel { right: 40px; width: calc(100vw - 60px); max-height: 300px; top: calc(50% + 120px); }
+            #customizacao-modal .modal-content { width: 90%; }
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
+
+        /* ================================================= */
+        /* === NOVO TEMA: GRIMÓRIO SOMBRIO RÚNICO (INÍCIO) === */
+        /* ================================================= */
+
+        body.theme-grimoire {
+            --cor-fundo-pagina: #10101e;
+            --cor-fundo-ficha: rgba(12, 12, 22, 0.75);
+            --cor-brilho-ciano: #00ffff;
+            --cor-brilho-ciano-escuro: #008f8f;
+            --cor-texto-principal: #e0e6f0;
+            --cor-texto-secundario: #a0a6c0;
+            --cor-roxo-sutil: #2e2a4f;
+            --cor-vermelho-erro: #ff4d6a;
+
+            background-color: var(--cor-fundo-pagina) !important;
+            background-image: radial-gradient(circle at 50% 50%, var(--cor-roxo-sutil) 5%, transparent 60%);
+            color: var(--cor-texto-principal);
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body.theme-grimoire #ficha-container {
+            background: var(--cor-fundo-ficha);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--cor-brilho-ciano);
+            box-shadow: 0 0 15px 0px var(--cor-brilho-ciano-escuro), inset 0 0 10px 0px rgba(0, 255, 255, 0.2);
+            border-radius: 0;
+            clip-path: polygon(0 15px, 15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px));
+        }
+
+        body.theme-grimoire h1#nome-personagem-titulo {
+            font-family: 'Cinzel Decorative', cursive;
+            color: #fff;
+            font-size: 3.2rem;
+            animation: grimoire-title-glow 3s infinite alternate;
+            text-shadow: 0 0 8px var(--cor-brilho-ciano), 0 0 16px var(--cor-brilho-ciano-escuro);
+        }
+        @keyframes grimoire-title-glow {
+            from { text-shadow: 0 0 5px var(--cor-brilho-ciano), 0 0 10px var(--cor-brilho-ciano-escuro); }
+            to { text-shadow: 0 0 10px var(--cor-brilho-ciano), 0 0 20px var(--cor-brilho-ciano), 0 0 30px var(--cor-brilho-ciano-escuro); }
+        }
+
+        body.theme-grimoire section {
+            border: none;
+            background: transparent !important;
+            box-shadow: none !important;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        body.theme-grimoire section h2 {
+            font-family: 'Cinzel Decorative', cursive;
+            color: var(--cor-brilho-ciano);
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        body.theme-grimoire label {
+            color: var(--cor-texto-secundario);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        body.theme-grimoire input[type="text"],
+        body.theme-grimoire input[type="number"],
+        body.theme-grimoire textarea,
+        body.theme-grimoire select {
+            background: transparent !important;
+            border: none !important;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.4) !important;
+            color: var(--cor-texto-principal) !important;
+            border-radius: 0;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        body.theme-grimoire input:focus,
+        body.theme-grimoire textarea:focus,
+        body.theme-grimoire select:focus {
+            outline: none;
+            border-color: var(--cor-brilho-ciano) !important;
+            box-shadow: 0 3px 15px -5px var(--cor-brilho-ciano) !important;
+        }
+        
+        body.theme-grimoire .recurso-atual-input {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 1.4rem !important;
+        }
+        
+        body.theme-grimoire .atributo-container {
+            background: rgba(30, 30, 50, 0.5);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            border-radius: 0;
+            padding: 25px 15px;
+        }
+        body.theme-grimoire .atributo-container::before { display: none; }
+        body.theme-grimoire .atributo-container h3 { font-family: 'Cinzel Decorative', cursive; color: #fff; font-size: 1.8rem; }
+        body.theme-grimoire .medieval-box { background: transparent !important; border: none !important; padding: 5px; }
+        
+        body.theme-grimoire .botao {
+            background: transparent;
+            border: 1px solid var(--cor-brilho-ciano);
+            color: var(--cor-brilho-ciano);
+            font-family: 'Cinzel Decorative', cursive;
+            border-radius: 2px;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+        }
+        body.theme-grimoire .botao:hover {
+            background-color: var(--cor-brilho-ciano);
+            color: var(--cor-fundo-pagina);
+            box-shadow: 0 0 10px var(--cor-brilho-ciano);
+        }
+
+        body.theme-grimoire #reset-pontos,
+        body.theme-grimoire #recomecar,
+        body.theme-grimoire #excluir-ficha,
+        body.theme-grimoire .modal-content .cancel-btn {
+            background-color: transparent !important;
+            border: 1px solid var(--cor-vermelho-erro) !important;
+            color: var(--cor-vermelho-erro) !important;
+        }
+        body.theme-grimoire #reset-pontos:hover,
+        body.theme-grimoire #recomecar:hover,
+        body.theme-grimoire #excluir-ficha:hover,
+        body.theme-grimoire .modal-content .cancel-btn:hover {
+            background-color: var(--cor-vermelho-erro) !important;
+            color: var(--cor-fundo-pagina) !important;
+            box-shadow: 0 0 10px var(--cor-vermelho-erro);
+        }
+        
+        body.theme-grimoire .modal-content .confirm-btn {
+            background-color: transparent !important;
+            border: 1px solid var(--cor-brilho-ciano) !important;
+            color: var(--cor-brilho-ciano) !important;
+        }
+        body.theme-grimoire .modal-content .confirm-btn:hover {
+            background-color: var(--cor-brilho-ciano) !important;
+            color: var(--cor-fundo-pagina) !important;
+            box-shadow: 0 0 10px var(--cor-brilho-ciano);
+        }
+
+        body.theme-grimoire #dice-roll {
+            background: rgba(12, 12, 22, 0.8);
+            border: 2px solid var(--cor-brilho-ciano);
+            color: var(--cor-brilho-ciano);
+            box-shadow: 0 0 10px var(--cor-brilho-ciano-escuro);
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            font-size: 2.8rem;
+            font-family: 'Cinzel Decorative', cursive;
+        }
+        body.theme-grimoire #dice-container label::before { content: "✧"; }
+        
+        body.theme-grimoire #nivel {
+            background: transparent;
+            border: 2px solid var(--cor-brilho-ciano);
+            color: var(--cor-texto-principal);
+            font-family: 'Cinzel Decorative', cursive;
+            box-shadow: inset 0 0 15px rgba(0,255,255,0.4);
+        }
+        
+        body.theme-grimoire #character-image-container {
+            border-radius: 50%;
+            border: 2px solid var(--cor-brilho-ciano);
+            box-shadow: 0 0 8px var(--cor-brilho-ciano);
+        }
+
+        body.theme-grimoire .atributos-coluna-destaque {
+            background: rgba(30, 30, 50, 0.5) !important;
+            border: 1px solid rgba(0, 255, 255, 0.3) !important;
+        }
+        body.theme-grimoire .atributo-destaque label { color: var(--cor-brilho-ciano); }
+        body.theme-grimoire .atributo-destaque span { font-family: 'Roboto', sans-serif; color: var(--cor-texto-principal); }
+        body.theme-grimoire .atributo-fogo { animation: grimoire-fogo 1.5s infinite; }
+        @keyframes grimoire-fogo {
+            0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff8c00; }
+            50% { text-shadow: 0 0 10px #ff4500, 0 0 15px #ffd700; }
+            100% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff8c00; }
+        }
+        
+        body.theme-grimoire .modal-content {
+            background: var(--cor-fundo-ficha) !important;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--cor-brilho-ciano) !important;
+        }
+        body.theme-grimoire .modal-content h3 { font-family: 'Cinzel Decorative', cursive; color: #fff !important; }
+
+        /* =============================================== */
+        /* === NOVO TEMA: GRIMÓRIO SOMBRIO RÚNICO (FIM) === */
+        /* =============================================== */
 
     </style>
 </head>
@@ -1121,6 +1218,14 @@ html
             <h3>Painel de Customização</h3>
 
             <fieldset>
+                <legend>Modelo da Ficha</legend>
+                <div class="theme-selector-container">
+                    <button class="theme-btn" data-theme="default">Padrão Medieval</button>
+                    <button class="theme-btn" data-theme="grimoire">Grimório Rúnico</button>
+                </div>
+            </fieldset>
+
+            <fieldset>
                 <legend>Aparência da Página e Ficha</legend>
                 <div class="input-group">
                     <label for="background-color-input">Cor de Fundo (Página):</label>
@@ -1312,7 +1417,6 @@ html
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
             salvarAtributosBtnEl = document.getElementById("salvar-atributos-btn"), 
-
             customizacaoBtn = document.getElementById("customizacao-btn"),
             customizacaoModal = document.getElementById("customizacao-modal"),
             backgroundImageInput = document.getElementById("background-image-input"),
@@ -1345,10 +1449,8 @@ html
             vidaAtualInput = document.getElementById('vida-atual-input'),
             magiaAtualInput = document.getElementById('magia-atual-input'),
             vigorAtualInput = document.getElementById('vigor-atual-input'),
-            // New modal elements
             confirmarSalvarAtributosModal = document.getElementById("confirmar-salvar-atributos-modal"),
             confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn");
-
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
         let currentActionIntervalId = null;
@@ -1410,6 +1512,7 @@ html
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
+                    theme: 'default', // NEW
                     backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll',
                     backgroundColor: null,
                     fichaInternalBackgroundColor: null,
@@ -1511,6 +1614,7 @@ html
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
+                theme: 'default', // NEW
                 backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll',
                 backgroundColor: null,
                 fichaInternalBackgroundColor: null,
@@ -1574,6 +1678,7 @@ html
             ficha.shadowColorFicha = ficha.shadowColorFicha || '#000000';
             ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
+            ficha.theme = ficha.theme || 'default'; // NEW
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || "";
@@ -1650,6 +1755,8 @@ html
                 previousValues.set(input, input.value);
             });
 
+            // Apply visual styles
+            aplicarTema(ficha.theme, false); // NEW: Apply theme on load
             aplicarPlanoDeFundoInicial(ficha);
             aplicarEstilosFichaInicial(ficha);
             aplicarFonteInicial(ficha);
@@ -1681,13 +1788,11 @@ html
 
             fichaAtual.nomePersonagem = nomePersonagemInput.value;
             fichaAtual.descricaoPersonagem = descricaoPersonagemInput.value;
-
             fichaAtual.forca = forcaInput.value;
             fichaAtual.destreza = destrezaInput.value;
             fichaAtual.agilidade = agilidadeInput.value;
             fichaAtual.inteligencia = inteligenciaInput.value;
             fichaAtual.constituicao = constituicaoInput.value;
-
             fichaAtual.experiencia = experienciaInput.value;
             fichaAtual.armaDireitaNome = armaDireitaNomeInput.value;
             fichaAtual.armaDireitaAtaque = armaDireitaAtaqueInput.value;
@@ -1699,7 +1804,6 @@ html
             fichaAtual.magiasHabilidades = magias.join("\n");
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
-
             fichaAtual.isLocked = isFichaLocked;
             fichaAtual.password = fichaPassword;
             fichaAtual.imagem = characterImage.src.startsWith('data:image') ? characterImage.src : null;
@@ -1713,34 +1817,26 @@ html
             fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
             fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
-
+            
+            // Visuals
+            fichaAtual.theme = fichaAtual.theme || 'default'; // NEW
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment;
-
             if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
             if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
             if (fichaTransparencySlider) fichaAtual.fichaTransparencyLevel = parseInt(fichaTransparencySlider.value);
-
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
-
             fichaAtual.diceColor = diceColorInput.value;
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
             fichaAtual.animacaoDado = diceAnimationSelector.value;
-
-            vidaAtual = parseInt(vidaAtualInput.value);
-            magiaAtual = parseInt(magiaAtualInput.value);
-            vigorAtual = parseFloat(vigorAtualInput.value);
-
-            fichaAtual.vidaAtual = vidaAtual;
-            fichaAtual.magiaAtual = magiaAtual;
-            fichaAtual.vigorAtual = vigorAtual;
-
+            fichaAtual.vidaAtual = parseInt(vidaAtualInput.value);
+            fichaAtual.magiaAtual = parseInt(magiaAtualInput.value);
+            fichaAtual.vigorAtual = parseFloat(vigorAtualInput.value);
             fichaAtual.corBordaSecao = corBordaSecaoInput.value;
             fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
             fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
-
             fichaAtual.shadowColorFicha = shadowColorFichaInput.value;
             fichaAtual.shadowIntensityFicha = parseInt(shadowIntensityFichaSlider.value);
 
@@ -2159,6 +2255,7 @@ html
 
                 const currentFichaObject = fichas[currentFichaId] || {};
                 currentFichaObject.darkMode = document.body.classList.contains('dark-mode');
+                currentFichaObject.theme = 'default'; // NEW: Reset theme on recomecar
 
                 currentFichaObject.diceRolls = [];
                 currentFichaObject.collapsedSections = {};
@@ -2179,6 +2276,7 @@ html
                 currentFichaObject.shadowColorFicha = '#000000';
                 currentFichaObject.shadowIntensityFicha = 0;
 
+                aplicarTema('default'); // NEW: Apply default theme visually
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstilosFichaInicial(currentFichaObject);
                 aplicarCustomizacoesDadoInicial(currentFichaObject);
@@ -2874,14 +2972,19 @@ html
 
         function abrirModalCustomizacao() {
             const ficha = fichas[currentFichaId] || {};
+            
+            // NEW: Set active theme button
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeThemeBtn = document.querySelector(`.theme-btn[data-theme="${ficha.theme || 'default'}"]`);
+            if (activeThemeBtn) activeThemeBtn.classList.add('active');
+
             const isDarkModeActive = document.body.classList.contains('dark-mode');
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            // const defaultDarkInternalSection = isDarkModeActive ? '#1e1e1e' : '#333'; // This was a bit confusing before
 
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal); // Default to matriz dark or page dark if dark mode, else light
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal);
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
 
             const bgSize = ficha?.backgroundSize || 'cover';
@@ -2909,6 +3012,30 @@ html
 
             customizacaoModal.style.display = "flex";
         }
+        
+        // NEW: Function to apply a theme
+        function aplicarTema(themeName, doSave = true) {
+            // Remove all possible theme classes
+            document.body.classList.remove('theme-grimoire');
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+
+            // Add the new theme class if it's not the default
+            if (themeName !== 'default') {
+                document.body.classList.add(`theme-${themeName}`);
+            }
+
+            // Set the active button in the modal
+            const activeBtn = document.querySelector(`.theme-btn[data-theme="${themeName}"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Save the choice to localStorage
+            if (doSave && fichas[currentFichaId]) {
+                fichas[currentFichaId].theme = themeName;
+                salvarDados();
+                showNotification(`Tema "${activeBtn.textContent}" aplicado!`, "save-success");
+            }
+        }
+
 
         function aplicarPlanoDeFundo() {
             const file = backgroundImageInput.files[0];
@@ -3012,8 +3139,8 @@ html
                  if (isDarkModeActive) {
                     if (el.matches('.atributos-coluna-destaque')) baseColorForElement = '#333';
                     else if (el.matches('.medieval-box')) baseColorForElement = '#1e1e1e';
-                    else if (el.matches('.atributo-container')) baseColorForElement = 'rgba(50, 50, 50, 0.8)'; // Default dark for this one
-                    else baseColorForElement = sectionDefaultDark; // Default dark for sections
+                    else if (el.matches('.atributo-container')) baseColorForElement = 'rgba(50, 50, 50, 0.8)';
+                    else baseColorForElement = sectionDefaultDark;
                  } else {
                     if (el.matches('.atributos-coluna-destaque')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#fff';
                     else if (el.matches('.medieval-box')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#f0e6d2';
@@ -3025,16 +3152,15 @@ html
                 if (rgbEl) {
                     el.style.backgroundColor = `rgba(${rgbEl.r}, ${rgbEl.g}, ${rgbEl.b}, ${alpha})`;
                 } else {
-                     // Handle cases where baseColorForElement might already have alpha (like 'rgba(50,50,50,0.8)')
                     if (baseColorForElement.startsWith('rgba')) {
                         const parts = baseColorForElement.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
                         if (parts) {
                             el.style.backgroundColor = `rgba(${parts[1]}, ${parts[2]}, ${parts[3]}, ${alpha})`;
                         } else {
-                            el.style.backgroundColor = baseColorForElement; // Fallback
+                            el.style.backgroundColor = baseColorForElement;
                         }
                     } else {
-                        el.style.backgroundColor = baseColorForElement; // Fallback for non-hex, non-rgba
+                        el.style.backgroundColor = baseColorForElement;
                     }
                 }
             });
@@ -3618,6 +3744,14 @@ html
                 });
             });
             setupAttributeTooltips();
+
+            // NEW: Event listeners for theme buttons
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const themeName = e.target.dataset.theme;
+                    aplicarTema(themeName);
+                });
+            });
         });
 
     </script>
