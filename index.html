@@ -1,11 +1,13 @@
-html
+   
+
+        html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha de Personagem RPG</title>
-    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Inter:wght@400;600&family=Times+New+Roman&family=Arial&family=Courier+New&family=Georgia&family=Verdana&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root {
@@ -65,7 +67,7 @@ html
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2), var(--ficha-internal-glow); /* MODIFIED: Uses var for internal shadow */
             width: 95%; max-width: 1200px;
             margin: 80px auto 20px; border: 2px solid #b8860b; position: relative; z-index: 1;
-            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s;
+            transition: font-family 0.3s, background-color 0.3s, box-shadow 0.3s, border 0.3s;
         }
         body.dark-mode #ficha-container {
             background: #121212; /* Dark mode ficha background */
@@ -86,6 +88,7 @@ html
         h1#nome-personagem-titulo {
             font-family: 'MedievalSharp', serif; color: #1C2526; font-size: 3rem; margin-bottom: 20px;
             text-align: center; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); animation: raios 2s infinite linear;
+             transition: color 0.3s, text-shadow 0.3s;
         }
         body.dark-mode h1#nome-personagem-titulo {
              color: #c58c5a;
@@ -102,7 +105,7 @@ html
             border-style: var(--estilo-borda-secao);
             border-color: var(--cor-borda-secao);
             border-radius: 8px; padding: 15px; margin-bottom: 20px;
-            transition: background-color 0.3s, box-shadow 0.3s; /* Added box-shadow transition for section shadow */
+            transition: background-color 0.3s, box-shadow 0.3s, border 0.3s; /* Added box-shadow transition for section shadow */
             /* box-shadow is now controlled by JS for sections */
         }
         body.dark-mode section {
@@ -115,16 +118,17 @@ html
         section h2 {
             text-align: center; font-family: 'MedievalSharp', serif; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
+             transition: color 0.3s;
         }
         section h2 .collapse-icon { margin-left: 10px; font-size: 1.2rem; transition: transform 0.2s; }
         section .section-content.collapsed { display: none; }
         section h2 .collapse-icon.collapsed { transform: rotate(-90deg); }
 
-        label { font-weight: 600; color: #000; margin-bottom: 8px; display: block; }
+        label { font-weight: 600; color: #000; margin-bottom: 8px; display: block;  transition: color 0.3s; }
         body.dark-mode label { color: #e0e0e0; }
         input[type="text"], input[type="number"], textarea, select {
             padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
-            margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease;
+            margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease, background-color 0.3s, color 0.3s;
             background: #fff; color: #000;
         }
         .recurso-atual-input {
@@ -155,12 +159,13 @@ html
         .atributos-container { display: flex; justify-content: space-between; gap: 20px; }
         .atributos-coluna, .atributos-coluna-destaque {
             width: 48%; display: flex; flex-direction: column; align-items: flex-start;
+            transition: background-color 0.3s, border-color 0.3s;
         }
         .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
         .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
-        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s; }
         body.dark-mode .atributo-destaque span { color: #e0e0e0; }
         .atributo-fogo { animation: fogo 1.5s infinite; }
         @keyframes fogo {
@@ -172,22 +177,23 @@ html
         .atributo-container {
             background: rgba(255, 255, 255, 0.8); padding: 12px; border-radius: 8px; border: 1px solid #b8860b;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); width: 30%; min-width: 200px; text-align: center;
+             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         body.dark-mode .atributo-container { background: rgba(50, 50, 50, 0.8); } /* Will be overridden by JS if fichaInternalBackground is dark mode default */
         .atributo-container::before { font-size: 1.5rem; margin-bottom: 5px; display: block; }
         .atributo-container.vida::before { content: "❤️"; }
         .atributo-container.magia::before { content: "✨"; }
         .atributo-container.vigor::before { content: "⚡"; }
-        .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; margin: 5px 0; text-align: center; }
+        .medieval-box { background: #f0e6d2; border: 2px solid #b8860b; border-radius: 8px; padding: 10px; margin: 5px 0; text-align: center; transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .medieval-box { background: #1e1e1e; border-color: #444; }
         .valor-atual.medieval-box { display: flex; align-items: center; justify-content: center; }
 
-        .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px; }
+        .regeneracao { font-size: 0.8rem; color: #555; margin-top: 5px; transition: color 0.3s; }
         body.dark-mode .regeneracao { color: #aaa; }
         button {
             background: #b8860b; color: #fff; border: none; padding: 5px 10px;
             cursor: pointer; font-size: 1.2rem; border-radius: 4px; margin: 0 5px;
-            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.1s ease;
+            transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.1s ease, color 0.3s;
         }
         body.dark-mode button { background: #555; }
         button:hover { background: #a0522d; }
@@ -201,7 +207,7 @@ html
         .botoes-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; margin-bottom: 20px; flex-wrap: wrap; }
         .botao {
             padding: 12px 25px; border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.1s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.1s ease, color 0.3s, text-shadow 0.3s, border 0.3s;
             font-family: 'MedievalSharp', serif;
             color: #fff; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
@@ -227,12 +233,13 @@ html
             width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
             font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
             font-family: 'MedievalSharp', serif;
+             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
         }
         body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
         #nivel.aura-azul { animation: pulsar-aura 5s 1; }
         .expandable-textarea {
             height: 100px; width: 100%; background: #fff; border: 2px solid #b8860b;
-            border-radius: 6px; padding: 10px; font-size: 0.9rem; transition: height 0.3s ease;
+            border-radius: 6px; padding: 10px; font-size: 0.9rem; transition: height 0.3s ease, background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode .expandable-textarea { background: #333; }
         .expandable-textarea:focus { height: 15cm; }
@@ -260,7 +267,7 @@ html
             cursor: pointer;
             margin: 0;
             position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s, background-image 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s, color 0.3s, background-image 0.3s, border-color 0.3s;
             font-family: 'MedievalSharp', serif;
             transform-style: preserve-3d;
             background-size: cover;
@@ -291,7 +298,7 @@ html
             100% { transform: translateY(0) rotate(720deg) scale(1); }
         }
 
-        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; }
+        #dice-result { margin-top: 10px; font-size: 1rem; color: #000; display: none; animation: blink 1s infinite; transition: color 0.3s; }
         body.dark-mode #dice-result { color: #e0e0e0; }
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -310,6 +317,7 @@ html
             background-color: #d2b48c; color: #3a2800; border: 1px solid #b8860b;
             width: 55px; height: 36px; font-size: 0.9rem; padding: 5px;
             box-sizing: border-box;
+             transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         body.dark-mode #change-dice-type-btn { background-color: #4a3c2a; color: #f0e6d2; border-color: #6b5230; }
 
@@ -326,6 +334,7 @@ html
             padding: 5px;
             flex-direction: column;
             gap: 5px;
+             transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode #dice-options-menu { background-color: #1e1e1e; border-color: #444; }
         .dice-option-btn {
@@ -336,6 +345,7 @@ html
             border: 1px solid #b8860b; border-radius: 3px;
             text-align: center;
             margin:0;
+             transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
         .dice-option-btn:hover { background-color: #d2b48c; }
         body.dark-mode .dice-option-btn { background-color: #3a2f1e; color: #f0e6d2; border-color: #5c4b35; }
@@ -371,6 +381,7 @@ html
             z-index: 1000;
             writing-mode: vertical-rl;
             text-orientation: mixed;
+            transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode #dice-history-trigger { background-color: #555; border-color: #444;}
 
@@ -390,12 +401,13 @@ html
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             display: none;
             flex-direction: column;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
         body.dark-mode #dice-history-panel { background: #333; color: #e0e0e0; border-color: #555;}
 
         #dice-history-panel h2 {
             font-family: 'MedievalSharp', serif; font-size: 1.5rem; text-align: center;
-            color: #a0522d; margin-bottom: 10px; flex-shrink: 0;
+            color: #a0522d; margin-bottom: 10px; flex-shrink: 0; transition: color 0.3s;
         }
         body.dark-mode #dice-history-panel h2 { color: #c58c5a;}
 
@@ -407,6 +419,7 @@ html
             border-radius: 4px;
             padding: 8px;
             margin-bottom: 10px;
+             transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode #dice-history-list { background: #2a2a2a; border-color: #555; }
         .dice-history-item {
@@ -416,10 +429,11 @@ html
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: border-bottom-color 0.3s;
         }
         body.dark-mode .dice-history-item { border-bottom-color: #4a3c2a; }
         .dice-history-item:last-child { border-bottom: none; }
-        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; white-space: nowrap; }
+        .dice-history-item .timestamp { font-size: 0.7rem; color: #777; margin-left: 8px; white-space: nowrap; transition: color 0.3s; }
         body.dark-mode .dice-history-item .timestamp { color: #aaa; }
 
         .dice-history-buttons { display: flex; justify-content: space-between; margin-top: auto; flex-shrink: 0;}
@@ -446,6 +460,7 @@ html
             position: absolute; top: 10px; left: 10px; width: 100px; height: 100px; background: #f0e6d2;
             border: 2px solid #b8860b; border-radius: 8px; display: flex; align-items: center;
             justify-content: center; cursor: pointer; overflow: hidden; z-index: 10;
+            transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode #character-image-container { background: #1e1e1e; }
         #character-image { width: 100%; height: 100%; object-fit: cover; display: none; }
@@ -457,9 +472,10 @@ html
         .modal-content {
             background: #f0e6d2; padding: 20px; border-radius: 8px; border: 2px solid #b8860b;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); width: 300px; text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode .modal-content { background: #1e1e1e; border-color: #444; }
-        .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; }
+        .modal-content h3 { font-family: 'MedievalSharp', serif; color: #000; margin-bottom: 15px; transition: color 0.3s; }
         body.dark-mode .modal-content h3 { color: #e0e0e0; }
         .modal-content input, .modal-content select {
             width: calc(100% - 20px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px;
@@ -492,6 +508,7 @@ html
             border-radius: 6px;
             padding: 15px;
             margin-bottom: 20px;
+            transition: border-color 0.3s;
         }
         body.dark-mode #customizacao-modal fieldset { border-color: #555; }
 
@@ -501,6 +518,7 @@ html
             color: #800000;
             padding: 0 10px;
             font-weight: bold;
+            transition: color 0.3s;
         }
         body.dark-mode #customizacao-modal legend { color: #d2b48c;}
 
@@ -544,7 +562,7 @@ html
         #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
             padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
-            transition: background-color 0.3s ease; z-index: 10;
+            transition: background-color 0.3s ease, border-color 0.3s, color 0.3s; z-index: 10;
         }
         body.dark-mode #vantagens-desvantagens-btn, body.dark-mode #racas-btn, body.dark-mode #classes-btn {
             background: #1e1e1e; color: #e0e0e0;
@@ -554,18 +572,19 @@ html
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(240, 230, 210, 0.95); padding: 20px; overflow-y: auto; z-index: 999;
             border: 2px solid #b8860b; box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+             transition: background-color 0.3s, border-color 0.3s;
         }
         body.dark-mode #vantagens-desvantagens-panel, body.dark-mode #racas-panel, body.dark-mode #classes-panel {
             background: rgba(30, 30, 30, 0.95);
         }
         #vantagens-desvantagens-panel h2, #racas-panel h2, #classes-panel h2 {
             font-family: 'MedievalSharp', serif; font-size: 2rem; text-align: center;
-            color: #a0522d; margin-bottom: 20px;
+            color: #a0522d; margin-bottom: 20px; transition: color 0.3s;
         }
         #racas-panel h2 { font-size: 3rem; }
         .vantagem-item, .desvantagem-item, .raca-item {
             padding: 10px; margin: 5px 0; background: #fff; border: 1px solid #ccc;
-            border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease;
+            border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease, border-color 0.3s, color 0.3s;
         }
         body.dark-mode .vantagem-item, body.dark-mode .desvantagem-item, body.dark-mode .raca-item {
             background: #333; border-color: #555;
@@ -577,7 +596,7 @@ html
         #salvar-vantagens-btn, #salvar-racas-btn, #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn {
             position: fixed; bottom: 20px; padding: 12px 25px; background: #a52a2a; color: #fff;
             border: none; border-radius: 6px; font-family: 'MedievalSharp', serif; font-size: 1.2rem;
-            cursor: pointer; transition: transform 0.2s ease;
+            cursor: pointer; transition: transform 0.2s ease, background-color 0.3s;
         }
         #salvar-vantagens-btn, #salvar-racas-btn { right: 250px; animation: aura-verde-btn 2s infinite; display: none; background: #000; }
         #fechar-pagina-btn, #fechar-racas-btn, #fechar-classes-btn { right: 20px; }
@@ -589,14 +608,14 @@ html
             50% { box-shadow: 0 0 15px #00ff00, 0 0 20px #00ff00; }
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
-        .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; }
+        .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
         .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
         .locomotion-item label { font-weight: bold; color: #FFD700; }
         .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; margin-left: 5px; font-weight: bold; }
         #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513; }
-        .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto; }
+        .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto;  transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .list-display { background: #333; border-color: #555; }
-        .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; }
+        .list-item { cursor: pointer; margin-bottom: 5px; padding: 5px; border-bottom: 1px solid #ccc; transition: border-color 0.3s;}
         body.dark-mode .list-item { border-color: #555; }
         .list-item:hover { background: #e0e0e0; }
         body.dark-mode .list-item:hover { background: #444; }
@@ -608,7 +627,7 @@ html
             background: #f0e6d2; border: 2px solid #b8860b; border-left: none;
             border-radius: 0 6px 6px 0;
             font-family: 'MedievalSharp', serif; font-size: 1rem; color: #000; cursor: pointer;
-            transition: background-color 0.3s ease; z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s; z-index: 1000;
             writing-mode: vertical-rl; text-orientation: mixed;
         }
         body.dark-mode #anotacoes-btn { background: #1e1e1e; color: #e0e0e0; border-color: #444;}
@@ -618,23 +637,24 @@ html
             top: 50%; transform: translateY(-50%);
             width: 400px; height: 400px; background: #fff; border: 2px solid #b8860b;
             border-radius: 6px; padding: 10px; font-size: 0.9rem; resize: none; z-index: 1001;
+             transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
         body.dark-mode #anotacoes-textarea { background: #333; color: #e0e0e0; }
-        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background: #fff; }
+        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background: #fff;  transition: background-color 0.3s, border-color 0.3s; }
         body.dark-mode .magias-container { background: #333; border-color: #555; }
         .magias-container input { margin-bottom: 10px; }
         #adicionar-magia-btn { background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: block; margin-top: 10px; }
         #adicionar-magia-btn:hover { background: #a0522d; }
-        .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px; margin-top: 10px; }
+        .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px; margin-top: 10px; transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .classe-raca-container { background: #1e1e1e; border-color: #444; }
-        .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem; }
-        .classe-raca-container span[onclick] { background: #fff; border: 2px solid #b8860b; padding: 10px; cursor: pointer; display: block; }
+        .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem; transition: color 0.3s;}
+        .classe-raca-container span[onclick] { background: #fff; border: 2px solid #b8860b; padding: 10px; cursor: pointer; display: block;  transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .classe-raca-container span[onclick] { background: #333; color: #e0e0e0; }
         .classe-raca-container textarea { width: 100%; background: #fff; border: 2px solid #b8860b; }
         body.dark-mode .classe-raca-container textarea { background: #333; color: #e0e0e0; }
         .raca-item { margin-bottom: 20px; padding: 10px; background: #fff; border: 2px solid #b8860b; border-radius: 6px; }
-        .raca-item h3 { font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #a0522d; }
-        .raca-item p { font-size: 1rem; color: #000; }
+        .raca-item h3 { font-family: 'MedievalSharp', serif; font-size: 1.5rem; color: #a0522d;  transition: color 0.3s;}
+        .raca-item p { font-size: 1rem; color: #000; transition: color 0.3s;}
         body.dark-mode .raca-item { background: #333; border-color: #555; }
         body.dark-mode .raca-item p { color: #e0e0e0; }
         .theme-buttons-container { display: flex; justify-content: center; align-items:center; gap: 10px; margin-top: -10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -683,7 +703,6 @@ html
             opacity: 1;
         }
 
-        /* New CSS for attribute save confirmation modal */
         #confirmar-salvar-atributos-texto {
             background-color: yellow; /* Amarelo */
             color: #333; /* Texto escuro para contraste com amarelo */
@@ -700,6 +719,141 @@ html
             100% { text-shadow: 0 0 10px red, 0 0 15px orangered, 0 0 20px orangered; box-shadow: 0 0 15px yellow, inset 0 0 10px rgba(255,0,0,0.5); }
         }
 
+        /**********************************************
+        *      NEW THEME STYLES START HERE            *
+        ***********************************************/
+
+        /* --- Animations --- */
+        @keyframes futuristic-glow {
+            from { text-shadow: 0 0 4px #fff, 0 0 8px #fff, 0 0 12px #00aaff, 0 0 16px #00aaff; }
+            to { text-shadow: 0 0 8px #fff, 0 0 12px #00aaff, 0 0 16px #00aaff, 0 0 20px #00aaff; }
+        }
+        @keyframes fire-flicker-shadow {
+            0%,100% { text-shadow: 0 0 4px #fff, 0 0 10px #ff0, 0 0 20px #f80; }
+            50% { text-shadow: 0 0 6px #fff, 0 0 15px #ff0, 0 0 25px #f60; }
+        }
+        @keyframes fire-flicker-border {
+            0%,100% { border-color: #f80; box-shadow: 0 0 10px #f80; }
+            50% { border-color: #ff0; box-shadow: 0 0 20px #ff0; }
+        }
+        @keyframes water-flow {
+            0%{background-position:0% 50%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 50%}
+        }
+        @keyframes air-drift {
+            0% { transform: translateX(0); opacity: 0.7; }
+            50% { transform: translateX(5px); opacity: 1; }
+            100% { transform: translateX(0); opacity: 0.7; }
+        }
+        @keyframes earth-rumble-shadow {
+             0%, 100% { text-shadow: 1px 1px 2px #3d2b1f; }
+             50% { text-shadow: -1px -1px 2px #3d2b1f; }
+        }
+
+        /* --- Futuristic Theme --- */
+        .theme-futurista {
+            font-family: 'Orbitron', sans-serif !important;
+            background: #05080d url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cg fill="%230a142e" fill-opacity="0.4"%3E%3Crect x="0" y="0" width="100" height="1"/%3E%3Crect x="0" y="0" width="1" height="100"/%3E%3C/g%3E%3C/svg%3E') !important;
+            color: #00e5ff;
+        }
+        .theme-futurista #ficha-container {
+            background-color: rgba(1, 4, 15, 0.85);
+            border: 2px solid #00aaff;
+            border-radius: 4px;
+            box-shadow: 0 0 25px rgba(0, 170, 255, 0.6), inset 0 0 15px rgba(0, 170, 255, 0.4);
+        }
+        .theme-futurista h1#nome-personagem-titulo { font-family: 'Orbitron', sans-serif !important; color: #ffffff; animation: futuristic-glow 1.5s infinite alternate; }
+        .theme-futurista section {
+            background-color: rgba(10, 25, 50, 0.7);
+            border-color: #0077cc;
+            border-style: solid;
+            box-shadow: inset 0 0 8px rgba(0, 120, 200, 0.5);
+        }
+        .theme-futurista section h2, .theme-futurista .atributo-destaque label { font-family: 'Orbitron', sans-serif !important; color: #00e5ff; }
+        .theme-futurista .botao, .theme-futurista button {
+            background-color: transparent; border: 2px solid #00aaff; color: #00e5ff;
+            text-shadow: 0 0 5px #00e5ff; border-radius: 4px;
+        }
+        .theme-futurista .botao:hover, .theme-futurista button:hover { background-color: rgba(0, 170, 255, 0.2); transform: scale(1.05); }
+        .theme-futurista input, .theme-futurista textarea, .theme-futurista select {
+            background-color: #0a1020; color: #00e5ff; border: 1px solid #0077cc;
+        }
+        .theme-futurista #dice-roll { background-color: #0a1020; color: #00e5ff; border-color: #00aaff; box-shadow: 0 0 10px #00aaff; }
+
+        /* --- Elemental Fogo Theme --- */
+        .theme-elemental-fogo { background-color: #2b0c00 !important; }
+        .theme-elemental-fogo #ficha-container {
+            background-color: rgba(50, 0, 0, 0.7);
+            border: 2px solid #ff4500;
+            box-shadow: 0 0 30px #ff4500, inset 0 0 20px #8b0000;
+            animation: fire-flicker-border 3s infinite linear;
+        }
+        .theme-elemental-fogo h1, .theme-elemental-fogo h2, .theme-elemental-fogo .atributo-destaque label { color: #ffd700; animation: fire-flicker-shadow 2s infinite alternate; }
+        .theme-elemental-fogo section { background-color: rgba(60, 10, 0, 0.7); border-color: #f80; }
+        .theme-elemental-fogo .botao, .theme-elemental-fogo button { background: #c04000; border: 1px solid #ff4500; color: #fff; }
+        .theme-elemental-fogo input, .theme-elemental-fogo textarea { background-color: #4a1c00; border-color: #c04000; color: #ffebcd; }
+        .theme-elemental-fogo #dice-roll {
+             background: radial-gradient(circle, #ffcc00 0%, #ff4500 100%); color: #401000;
+             border: 2px solid #f80; text-shadow: 0 0 5px #fff; animation: fire-flicker-border 2s infinite alternate;
+        }
+
+        /* --- Elemental Agua Theme --- */
+        .theme-elemental-agua { background-color: #0b2c3c !important; color: #e0f7fa; }
+        .theme-elemental-agua #ficha-container {
+            background: linear-gradient(135deg, rgba(20, 80, 120, 0.8), rgba(5, 40, 60, 0.8));
+            background-size: 200% 200%;
+            border: 2px solid #33cccc;
+            border-radius: 20px;
+            box-shadow: 0 0 25px #33cccc, inset 0 0 15px rgba(51, 204, 204, 0.4);
+            animation: water-flow 8s ease infinite;
+        }
+        .theme-elemental-agua section { border-radius: 15px; background-color: rgba(10, 50, 80, 0.7); border-color: #17a2b8; }
+        .theme-elemental-agua h1, .theme-elemental-agua h2, .theme-elemental-agua .atributo-destaque label { color: #b2ebf2; text-shadow: 0 0 8px #fff; }
+        .theme-elemental-agua .botao, .theme-elemental-agua button { background-color: #007b8a; border-radius: 50px; border: 1px solid #17a2b8; }
+        .theme-elemental-agua input, .theme-elemental-agua textarea { background-color: #0f3f54; border-color: #17a2b8; border-radius: 10px; color: #e0f7fa; }
+        .theme-elemental-agua #dice-roll {
+             background: radial-gradient(circle, #b2ebf2, #17a2b8); color: #0b2c3c;
+             border-radius: 50%; border: 2px solid #33cccc; box-shadow: 0 0 10px #33cccc, inset 0 0 8px #fff;
+        }
+
+        /* --- Elemental Ar Theme --- */
+        .theme-elemental-ar { background-color: #e8f7fe !important; color: #2c3e50; }
+        .theme-elemental-ar #ficha-container {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid #add8e6;
+            box-shadow: 0 0 30px rgba(173, 216, 230, 0.7); backdrop-filter: blur(3px);
+        }
+        .theme-elemental-ar section { background-color: rgba(240, 248, 255, 0.8); border-color: #cce7ff; border-style: dashed; animation: air-drift 10s infinite alternate; }
+        .theme-elemental-ar h1, .theme-elemental-ar h2, .theme-elemental-ar .atributo-destaque label { color: #3498db; }
+        .theme-elemental-ar .botao, .theme-elemental-ar button { background-color: #a7d7ec; color: #2c3e50; border: none; text-shadow: none; }
+        .theme-elemental-ar input, .theme-elemental-ar textarea { background-color: #f0f8ff; border-color: #a7d7ec; }
+        .theme-elemental-ar #dice-roll {
+            background: #fff; color: #3498db; border-color: #a7d7ec;
+            box-shadow: 0 0 15px #a7d7ec; opacity: 0.9;
+        }
+
+        /* --- Elemental Terra Theme --- */
+        .theme-elemental-terra { background-color: #3e2e21 !important; }
+        .theme-elemental-terra #ficha-container {
+            background-color: rgba(139, 69, 19, 0.7);
+            border-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M7.7,64.4c2.9-2.3,4.3-5.5,4.3-8.8c0-3.9-1.9-7.5-5.2-9.7c-2.3-1.6-4.9-2.4-7.8-2.4c-8,0-14.4,6.5-14.4,14.4 c0,8,6.5,14.4,14.4,14.4c1.1,0,2.2-0.1,3.3-0.4c0.9,1.7,2.2,3.3,4,4.6c2.9,2.2,6.4,3.3,10.2,3.3c3.2,0,6.2-0.8,8.8-2.5 c-3.3-3-5-7.1-5-11.4C20.4,70.5,15.1,65.2,7.7,64.4z" fill="%23654321"/%3E%3C/svg%3E') 30 stretch;
+            border-width: 15px;
+            border-style: solid;
+        }
+        .theme-elemental-terra section { background-color: rgba(111, 60, 20, 0.7); border: 2px solid #5d4037; }
+        .theme-elemental-terra h1, .theme-elemental-terra h2 { color: #f0e2d2; text-shadow: 2px 2px 3px #3e2e21; font-weight: bold; animation: earth-rumble-shadow 4s infinite; }
+        .theme-elemental-terra .atributo-destaque label { color: #f0e2d2; }
+        .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
+        .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
+        .theme-elemental-terra #dice-roll {
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
+        }
+
+        /**********************************************
+        *          NEW THEME STYLES END HERE          *
+        ***********************************************/
 
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -1120,6 +1274,28 @@ html
         <div class="modal-content">
             <h3>Painel de Customização</h3>
 
+             <fieldset>
+                <legend>Modelo de Ficha</legend>
+                <div class="input-group">
+                    <label for="theme-selector">Tema da Ficha:</label>
+                    <select id="theme-selector">
+                        <option value="theme-medieval">Medieval (Padrão)</option>
+                        <option value="theme-futurista">Futurista</option>
+                        <option value="theme-elemental">Elemental</option>
+                    </select>
+                </div>
+                <div class="input-group" id="elemental-theme-group" style="display: none;">
+                    <label for="elemental-theme-selector">Elemento:</label>
+                    <select id="elemental-theme-selector">
+                        <option value="fogo">Fogo</option>
+                        <option value="agua">Água</option>
+                        <option value="ar">Ar</option>
+                        <option value="terra">Terra</option>
+                    </select>
+                </div>
+                <button class="confirm-btn" onclick="prepararAplicarModeloFicha()" style="width:100%;">Aplicar Modelo</button>
+            </fieldset>
+
             <fieldset>
                 <legend>Aparência da Página e Ficha</legend>
                 <div class="input-group">
@@ -1135,6 +1311,7 @@ html
                     <select id="font-selector" title="Fonte Principal" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; padding: 10px; border-radius: 6px; ">
                         <option value="'Inter', sans-serif">Padrão (Inter)</option>
                         <option value="'MedievalSharp', cursive">Medieval</option>
+                         <option value="'Orbitron', sans-serif">Futurista (Orbitron)</option>
                         <option value="'Times New Roman', Times, serif">Times New Roman</option>
                         <option value="'Arial', Helvetica, sans-serif">Arial</option>
                         <option value="'Courier New', Courier, monospace">Courier New</option>
@@ -1236,6 +1413,16 @@ html
         </div>
     </div>
 
+    <!-- NEW THEME CONFIRMATION MODAL -->
+    <div id="confirmar-tema-modal" class="modal">
+        <div class="modal-content">
+            <h3>Quer manter a alteração?</h3>
+            <p>A ficha voltará ao modelo anterior se clicar em "Não".</p>
+            <button class="confirm-btn" id="confirmar-tema-sim-btn">Sim</button>
+            <button class="cancel-btn" id="confirmar-tema-nao-btn">Não</button>
+        </div>
+    </div>
+
 
     <div id="fireworks-container"></div>
     <div id="dice-history-trigger">Histórico de Dados</div>
@@ -1261,6 +1448,8 @@ html
             racaSelecionada = null, tempRacaSelecionada = null, vidaTotal, vidaAtual, magiaTotal, magiaAtual,
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
+        let previousTheme = '';
+
 
         const vantagensData = [
             { nome: "Maestria com Armas curtas (2)", custo: 2, descricao: "+1 em ataque, +1 em acerto com armas curtas." }, { nome: "Maestria com armas pesadas (2)", custo: 2, descricao: "+2 em ataque com armas pesadas." }, { nome: "Maestria com armas de longo alcance (2)", custo: 2, descricao: "+2 em acerto com armas de longo alcance." }, { nome: "Furtar (2)", custo: 2, descricao: "+4 em testes de furto." }, { nome: "Lábia (2)", custo: 2, descricao: "+5 em testes de lábia." }, { nome: "Velejar (1)", custo: 1, descricao: "" }, { nome: "Beleza (1)", custo: 1, descricao: "+3 o teste em lábia, paquera e persuasão." }, { nome: "Boa Fama (2)", custo: 2, descricao: "+4 chance de descontos em armamentos, pousadas, alimentos, etc." }, { nome: "Arremedo (2)", custo: 2, descricao: "Capacidade de imitar qualquer som SIMPLES." }, { nome: "Destemor (1)", custo: 1, descricao: "Dificilmente é assustado por algo." }, { nome: "Empatia (3)", custo: 3, descricao: "Sensibilidade extraordinária em relação aos outras pessoas. Excelente para identificar impostores, possessões por espirito, etc." }, { nome: "Empatia com animais (1)", custo: 1, descricao: "Pode compreender as motivações dos animais." }, { nome: "Patrono (4)", custo: 4, descricao: "Possui um mentor/mestre/professor, até mesmo uma organização/guilda que pode lhe oferecer ajuda." }, { nome: "Reconhecimento Social (2)", custo: 2, descricao: "Membro de um grupo respeitado/temido/venerado. +2 teste em lábia, paquera e persuasão." }, { nome: "Riqueza (2)", custo: 2, descricao: "Inicia com 20 moedas de ouro." }, { nome: "Aptidão para magia (4)", custo: 4, descricao: "+15% dano e -15% custo de magia para a magia que tem aptidão." }, { nome: "Combo Físico (4)", custo: 4, descricao: "Inicia com 50km velocidade corrida, pulo de 3m altura e 9m distância.", restricao: "inicio" }, { nome: "Nadar (1)", custo: 1, descricao: "" }, { nome: "Escalar (2)", custo: 2, descricao: "" }, { nome: "Segunda língua (1)", custo: 1, descricao: "Fala mais um idioma." }, { nome: "Paquerador (2)", custo: 2, descricao: "+4 em teste para paquera e persuasão envolvendo flerte." }, { nome: "Senso de perigo (5)", custo: 5, descricao: "Quando algo grave ocorrer o mestre pedirá pra você jogar um dado para reagir." }, { nome: "Acrobata (3)", custo: 3, descricao: "+ fama ao lutar em público." }, { nome: "Equilíbrio Perfeito (3)", custo: 3, descricao: "+8 em testes de equilíbrio." }, { nome: "Tecnologia (2)", custo: 2, descricao: "Engenhoso, pode inventar coisas, criar objetos improvisados." }, { nome: "Poder Oculto (7)", custo: 7, descricao: "Com 10% vida, ativa +50% em todos atributos. Volta ao normal acima de 10% vida." }, { nome: "Sobrevivência em floresta (2)", custo: 2, descricao: "Facilidade para achar cavernas, criar assentamentos, achar comida, gravar caminhos, achar água, etc." }
@@ -1311,8 +1500,7 @@ html
             racaDescricaoInput = document.getElementById("raca-descricao"), luaBtn = document.getElementById("lua-btn"), solBtn = document.getElementById("sol-btn"),
             salvarRacasBtn = document.getElementById("salvar-racas-btn"), racasList = document.getElementById("racas-list"),
             atributosInputs = [forcaInput, destrezaInput, agilidadeInput, inteligenciaInput, constituicaoInput],
-            salvarAtributosBtnEl = document.getElementById("salvar-atributos-btn"), 
-
+            salvarAtributosBtnEl = document.getElementById("salvar-atributos-btn"),
             customizacaoBtn = document.getElementById("customizacao-btn"),
             customizacaoModal = document.getElementById("customizacao-modal"),
             backgroundImageInput = document.getElementById("background-image-input"),
@@ -1345,10 +1533,15 @@ html
             vidaAtualInput = document.getElementById('vida-atual-input'),
             magiaAtualInput = document.getElementById('magia-atual-input'),
             vigorAtualInput = document.getElementById('vigor-atual-input'),
-            // New modal elements
             confirmarSalvarAtributosModal = document.getElementById("confirmar-salvar-atributos-modal"),
-            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn");
-
+            confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn"),
+            // Theme UI Elements
+            themeSelector = document.getElementById('theme-selector'),
+            elementalThemeGroup = document.getElementById('elemental-theme-group'),
+            elementalThemeSelector = document.getElementById('elemental-theme-selector'),
+            confirmarTemaModal = document.getElementById('confirmar-tema-modal'),
+            confirmarTemaSimBtn = document.getElementById('confirmar-tema-sim-btn'),
+            confirmarTemaNaoBtn = document.getElementById('confirmar-tema-nao-btn');
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
         let currentActionIntervalId = null;
@@ -1423,7 +1616,8 @@ html
                     corBordaSecao: '#b8860b', estiloBordaSecao: 'solid', larguraBordaSecao: '2px',
                     shadowColorFicha: '#000000',
                     shadowIntensityFicha: 0,
-                    lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 } 
+                    lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
+                    theme: 'theme-medieval'
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1525,7 +1719,8 @@ html
                 darkMode: document.body.classList.contains('dark-mode'),
                 shadowColorFicha: '#000000',
                 shadowIntensityFicha: 0,
-                lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 } 
+                lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
+                theme: 'theme-medieval'
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1573,7 +1768,16 @@ html
             ficha.darkMode = ficha.darkMode === undefined ? false : ficha.darkMode;
             ficha.shadowColorFicha = ficha.shadowColorFicha || '#000000';
             ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
-            ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
+            ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+            ficha.theme = ficha.theme || 'theme-medieval';
+
+            limparClassesDeTema();
+            aplicarClassesDeTema(ficha.theme);
+            if (ficha.darkMode) {
+                 document.body.classList.add('dark-mode');
+            } else {
+                 document.body.classList.remove('dark-mode');
+            }
 
 
             nomePersonagemInput.value = ficha.nomePersonagem || "";
@@ -1634,7 +1838,6 @@ html
             magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
 
-            document.body.classList.toggle("dark-mode", ficha.darkMode === true);
 
             atualizarNivel(); // This calls calcularAtributos
 
@@ -1663,7 +1866,7 @@ html
             gmModeBtn.classList.toggle("gm-active", isGmModeActive);
             gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
 
-            if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none"; 
+            if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
         }
 
         function atualizarBotaoBloquear() {
@@ -1712,7 +1915,7 @@ html
             fichaAtual.diceRolls = fichaAtual.diceRolls || [];
             fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
-            fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
+            fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
@@ -1724,6 +1927,7 @@ html
 
             fichaAtual.darkMode = document.body.classList.contains("dark-mode");
             fichaAtual.fontFamily = fontSelector.value;
+            fichaAtual.theme = getCurrentThemeFromClasses();
 
             fichaAtual.diceColor = diceColorInput.value;
             fichaAtual.diceNumberColor = diceNumberColorInput.value;
@@ -2112,12 +2316,12 @@ html
                         atributosInputs.forEach(input => {
                             input.value = 0;
                         });
-                        ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
+                        ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
                     }
                     pontosHabilidadeUsados = 0;
-                    if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none"; 
-                    atualizarNivel(); 
-                    salvarDados();    
+                    if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
+                    atualizarNivel();
+                    salvarDados();
                     fecharModal("senha-gm-modal");
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
             };
@@ -2132,9 +2336,9 @@ html
                     atributosInputs.forEach(input => {
                         input.value = "0";
                     });
-                    ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 }; 
+                    ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
                 }
-                if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none"; 
+                if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
 
 
                 experienciaInput.value = "0";
@@ -2178,6 +2382,10 @@ html
                 currentFichaObject.backgroundAttachment = 'scroll';
                 currentFichaObject.shadowColorFicha = '#000000';
                 currentFichaObject.shadowIntensityFicha = 0;
+                currentFichaObject.theme = 'theme-medieval';
+
+                limparClassesDeTema();
+                document.body.classList.add('theme-medieval');
 
                 aplicarPlanoDeFundoInicial(currentFichaObject);
                 aplicarEstilosFichaInicial(currentFichaObject);
@@ -2285,7 +2493,7 @@ html
             if (inputElement && inputElement.tagName === 'INPUT' && previousValues.has(inputElement)) {
                  inputElement.value = previousValues.get(inputElement) || inputElement.defaultValue || "";
                  if (atributosInputs.includes(inputElement)) {
-                    calcularAtributos(); 
+                    calcularAtributos();
                 }
             }
             delete modal.callbackSuccess;
@@ -2304,16 +2512,16 @@ html
                     abrirModalSenha(inputTarget);
                     return;
                 }
-                if (inputTarget.id.includes("arma")) { 
+                if (inputTarget.id.includes("arma")) {
                     calcularAtributos();
-                } else if (inputTarget.classList.contains('inventory-weight')) { 
+                } else if (inputTarget.classList.contains('inventory-weight')) {
                     calcularPesoTotal();
-                    calcularAtributos(); 
+                    calcularAtributos();
                 }
                 salvarDados();
             });
         });
-        nomePersonagemInput.oninput = salvarDados; 
+        nomePersonagemInput.oninput = salvarDados;
 
         atributosInputs.forEach(input => {
             input.addEventListener("focus", (event) => {
@@ -2357,7 +2565,7 @@ html
                 }
 
                 calcularAtributos();
-                salvarDados(); 
+                salvarDados();
             });
         });
 
@@ -2379,9 +2587,9 @@ html
                     maxVal = vidaTotal;
                     if (value > maxVal) value = maxVal;
                     if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = vidaAtual; 
+                    if (isNaN(value)) value = vidaAtual;
                     vidaAtual = value;
-                    event.target.value = vidaAtual; 
+                    event.target.value = vidaAtual;
                 } else if (event.target === magiaAtualInput) {
                     value = parseInt(event.target.value);
                     maxVal = magiaTotal;
@@ -2399,7 +2607,7 @@ html
                     vigorAtual = parseFloat(value.toFixed(1));
                     event.target.value = vigorAtual.toFixed(1);
                 }
-                salvarDados(); 
+                salvarDados();
             });
             input.addEventListener('focus', (event) => {
                  previousValues.set(event.target, event.target.value);
@@ -2706,7 +2914,7 @@ html
         inventarioSlots.addEventListener("input", (event) => {
             if (event.target.classList.contains('inventory-weight')) {
                 calcularPesoTotal();
-                calcularAtributos(); 
+                calcularAtributos();
                 salvarDados();
             } else if (event.target.classList.contains('inventory-item')) {
                 salvarDados();
@@ -2830,7 +3038,7 @@ html
                 if (!ficha) return;
 
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                    abrirModalSenha(salvarAtributosBtnEl, () => { 
+                    abrirModalSenha(salvarAtributosBtnEl, () => {
                         if(confirmarSalvarAtributosModal) confirmarSalvarAtributosModal.style.display = "flex";
                     });
                     return;
@@ -2849,10 +3057,10 @@ html
                     ficha.lockedAtributos[input.id] = parseInt(input.value) || 0;
                 });
 
-                salvarDados(); 
+                salvarDados();
                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
-                
-                fecharModal('confirmar-salvar-atributos-modal'); 
+
+                fecharModal('confirmar-salvar-atributos-modal');
                 showNotification("Atributos Mínimos Salvos! Os valores atuais são os novos mínimos.", "save-success");
             });
         }
@@ -2878,7 +3086,17 @@ html
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
             const defaultLightInternal = '#f0e6d2';
-            // const defaultDarkInternalSection = isDarkModeActive ? '#1e1e1e' : '#333'; // This was a bit confusing before
+
+            const currentTheme = ficha.theme || 'theme-medieval';
+            if (currentTheme.startsWith('theme-elemental')) {
+                themeSelector.value = 'theme-elemental';
+                elementalThemeGroup.style.display = 'block';
+                elementalThemeSelector.value = currentTheme.split('-').pop();
+            } else {
+                themeSelector.value = currentTheme;
+                elementalThemeGroup.style.display = 'none';
+            }
+
 
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
             fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal); // Default to matriz dark or page dark if dark mode, else light
@@ -2988,7 +3206,7 @@ html
             let currentTransparencyPercent = (ficha && ficha.fichaTransparencyLevel !== undefined) ? parseInt(ficha.fichaTransparencyLevel) : 100;
             let alpha = currentTransparencyPercent / 100.0;
 
-            const fichaContainerDefaultDark = '#121212'; 
+            const fichaContainerDefaultDark = '#121212';
             const fichaContainerDefaultLight = '#f0e6d2';
             const sectionDefaultDark = '#1e1e1e';
             const sectionDefaultLight = '#f0e6d2';
@@ -3002,7 +3220,7 @@ html
             if (rgbFichaContainer) {
                 fichaContainer.style.backgroundColor = `rgba(${rgbFichaContainer.r}, ${rgbFichaContainer.g}, ${rgbFichaContainer.b}, ${alpha})`;
             } else {
-                fichaContainer.style.backgroundColor = baseFichaContainerColorHex; 
+                fichaContainer.style.backgroundColor = baseFichaContainerColorHex;
             }
             if(isDarkModeActive) fichaContainer.style.color = '#e0e0e0'; else fichaContainer.style.color = '#000';
 
@@ -3468,10 +3686,10 @@ html
                     ficha.gmOverrides = {};
                 }
 
-                if (isPrimaryAttributeInput) { 
+                if (isPrimaryAttributeInput) {
                     targetElement.value = newValue;
-                    
-                } else { 
+
+                } else {
                     ficha.gmOverrides[targetId] = newValue;
                 }
 
@@ -3483,7 +3701,7 @@ html
         }
         fichaContainer.addEventListener('click', handleGmEdit);
 
-        function aplicarEstilosFicha() {
+                function aplicarEstilosFicha() {
             const isDarkModeActive = document.body.classList.contains('dark-mode');
             const defaultDarkBorder = '#555';
             const defaultLightBorder = '#b8860b';
@@ -3583,6 +3801,65 @@ html
             }
         }
 
+
+        /***************************************************
+        *               THEME FUNCTIONS START                *
+        ****************************************************/
+        themeSelector.addEventListener('change', (event) => {
+            if (event.target.value === 'theme-elemental') {
+                elementalThemeGroup.style.display = 'block';
+            } else {
+                elementalThemeGroup.style.display = 'none';
+            }
+        });
+
+        function prepararAplicarModeloFicha() {
+            let novoTema = themeSelector.value;
+            if (novoTema === 'theme-elemental') {
+                novoTema += '-' + elementalThemeSelector.value;
+            }
+            previousTheme = getCurrentThemeFromClasses();
+            limparClassesDeTema();
+            aplicarClassesDeTema(novoTema);
+            confirmarTemaModal.style.display = 'flex';
+        }
+
+        confirmarTemaSimBtn.addEventListener('click', () => {
+            const novoTema = getCurrentThemeFromClasses();
+            if(fichas[currentFichaId]) {
+                fichas[currentFichaId].theme = novoTema;
+            }
+            salvarDados();
+            fecharModal('confirmar-tema-modal');
+            showNotification("Tema aplicado com sucesso!", "save-success");
+        });
+
+        confirmarTemaNaoBtn.addEventListener('click', () => {
+            limparClassesDeTema();
+            aplicarClassesDeTema(previousTheme);
+            fecharModal('confirmar-tema-modal');
+        });
+
+        function aplicarClassesDeTema(themeString) {
+             const themeClasses = themeString.split(' ');
+             themeClasses.forEach(cls => {
+                if(cls) document.body.classList.add(cls);
+            });
+        }
+
+        function limparClassesDeTema() {
+            const classesToRemove = Array.from(document.body.classList).filter(cls => cls.startsWith('theme-'));
+            classesToRemove.forEach(cls => document.body.classList.remove(cls));
+        }
+
+        function getCurrentThemeFromClasses() {
+             const themeClasses = Array.from(document.body.classList).filter(cls => cls.startsWith('theme-'));
+             return themeClasses.join(' ') || 'theme-medieval'; // Default
+        }
+
+        /*************************************************
+        *                THEME FUNCTIONS END                 *
+        **************************************************/
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container');
