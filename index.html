@@ -161,10 +161,19 @@ html
         }
         .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
+        
+        /* ATRIBUTO LAYOUT CHANGES */
+        .atributo { display: flex; align-items: center; gap: 8px; margin-bottom: 13px; }
+        .atributo label { margin-bottom: 0; flex: 0 1 120px; /* Adjust basis as needed */ }
+        .atributo input[type="number"] { margin-bottom: 0; flex-grow: 1; }
+        
         .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
-        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s; }
-        body.dark-mode .atributo-destaque span { color: #e0e0e0; }
+        .atributo-destaque .value-wrapper { display: flex; align-items: center; gap: 8px; }
+        .atributo-destaque .value-wrapper span:first-child { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s; }
+
+        body.dark-mode .atributo-destaque .value-wrapper span:first-child { color: #e0e0e0; }
+
         .atributo-fogo { animation: fogo 1.5s infinite; }
         @keyframes fogo {
             0% { text-shadow: 0 0 5px #ff4500, 0 0 10px #ff4500; }
@@ -607,9 +616,9 @@ html
             100% { box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; }
         }
         .locomotion-container { background: #8B4513; border: 3px solid #FFD700; border-radius: 10px; padding: 15px; color: #FFD700; font-family: 'MedievalSharp', serif; transition: background-color 0.3s, border-color 0.3s, color 0.3s; }
-        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; }
+        .locomotion-item { display: flex; align-items: center; margin-bottom: 10px; gap: 8px; }
         .locomotion-item label { font-weight: bold; color: #FFD700; }
-        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; margin-left: 5px; font-weight: bold; }
+        .locomotion-item span { font-size: 1.2rem; color: #FFF; text-shadow: 1px 1px 2px #000; font-weight: bold; }
         #distancia-pulo, #altura-pulo, #velocidade-corrida { background-color: #8B4513; border-color: #8B4513; }
         .list-display { background: #fff; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; min-height: 100px; max-height: 200px; overflow-y: auto;  transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .list-display { background: #333; border-color: #555; }
@@ -716,6 +725,91 @@ html
             0% { text-shadow: 0 0 5px red, 0 0 10px red; box-shadow: 0 0 8px yellow, inset 0 0 5px rgba(255,0,0,0.3); }
             100% { text-shadow: 0 0 10px red, 0 0 15px orangered, 0 0 20px orangered; box-shadow: 0 0 15px yellow, inset 0 0 10px rgba(255,0,0,0.5); }
         }
+
+        /* --- Level Up Message Box --- */
+        #level-up-message-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2001;
+            padding: 25px;
+            background-color: #ffffe0; /* Light yellow */
+            border: 2px solid #f0ad4e; /* Amber */
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            text-align: center;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.5rem;
+            color: #333;
+            max-width: 80%;
+            display: none; /* Hidden by default */
+        }
+        #level-up-message-box.visible {
+            display: block;
+            animation: glow-yellow 1s infinite;
+        }
+        @keyframes glow-yellow {
+            0%, 100% { box-shadow: 0 0 10px #f0ad4e, 0 0 20px #f0ad4e; opacity: 1; }
+            50% { box-shadow: 0 0 20px #f0ad4e, 0 0 30px #f0ad4e; opacity: 0.85; }
+        }
+
+        /* --- NEW STYLES FOR ATTRIBUTE DICE ROLLER --- */
+        .attribute-dice-roller {
+            font-size: 1.1rem;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.2s, text-shadow 0.2s;
+            line-height: 1;
+        }
+        .attribute-dice-roller:hover {
+            transform: scale(1.2);
+        }
+        @keyframes yellow-glow-pulse {
+            0%, 100% {
+                text-shadow: 0 0 4px #ffd700, 0 0 8px #ffd700, 0 0 12px #ffd700;
+                transform: scale(1.1);
+            }
+            50% {
+                text-shadow: 0 0 8px #ffd700, 0 0 16px #ffae00, 0 0 20px #ffae00;
+                transform: scale(1.3);
+            }
+        }
+        .attribute-dice-roller.active {
+            animation: yellow-glow-pulse 1s infinite;
+            color: #ffc107;
+        }
+        #special-roll-result-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 25px 40px;
+            border-radius: 15px;
+            border: 3px solid #ffd700;
+            z-index: 2002;
+            font-family: 'MedievalSharp', serif;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        #special-roll-result-container .final-result-number {
+            font-size: 4rem;
+            font-weight: bold;
+            display: inline-block;
+            animation: rgb-flicker-blink 1s infinite;
+        }
+        @keyframes rgb-flicker-blink {
+            0%   { color: #ff00de; text-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de; opacity: 1;}
+            25%  { color: #00f8f8; text-shadow: 0 0 10px #00f8f8, 0 0 20px #00f8f8; }
+            50%  { color: #adff2f; text-shadow: 0 0 10px #adff2f, 0 0 20px #adff2f; opacity: 0.7;}
+            75%  { color: #f88d00; text-shadow: 0 0 10px #f88d00, 0 0 20px #f88d00; }
+            100% { color: #ff00de; text-shadow: 0 0 10px #ff00de, 0 0 20px #ff00de; opacity: 1;}
+        }
+
 
         /**********************************************
         *      NEW THEME STYLES START HERE            *
@@ -845,7 +939,7 @@ html
         .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
         .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
         .theme-elemental-terra #dice-roll {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
             color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
         }
 
@@ -882,6 +976,7 @@ html
             #customizacao-modal .modal-content {
                  width: 90%;
             }
+            #level-up-message-box { font-size: 1.2rem; padding: 15px; }
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
 
@@ -894,6 +989,7 @@ html
     <div id="ficha-container">
         <h1 id="nome-personagem-titulo">Ficha de Personagem</h1>
         <div id="game-master-message">Você virou o Game Master</div>
+        <div id="level-up-message-box"></div> <!-- NEW: Level Up message box -->
         <div id="character-image-container" onclick="document.getElementById('character-image-input').click()">
             <img id="character-image" alt="Imagem do Personagem">
             <input type="file" id="character-image-input" accept="image/*" style="display:none">
@@ -985,49 +1081,83 @@ html
                         <div class="atributos-coluna">
                             <div class="atributo">
                                 <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
-                                <input type="number" id="forca" value="0" min="0"> <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
+                                <input type="number" id="forca" value="0" min="0">
+                                <span class="attribute-dice-roller" data-attribute-source="forca">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
-                                <input type="number" id="destreza" value="0" min="0"> <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
+                                <input type="number" id="destreza" value="0" min="0">
+                                <span class="attribute-dice-roller" data-attribute-source="destreza">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
-                                <input type="number" id="agilidade" value="0" min="0"> <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
+                                <input type="number" id="agilidade" value="0" min="0">
+                                <span class="attribute-dice-roller" data-attribute-source="agilidade">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
-                                <input type="number" id="constituicao" value="0" min="0"> <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
+                                <input type="number" id="constituicao" value="0" min="0">
+                                <span class="attribute-dice-roller" data-attribute-source="constituicao">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
-                                <input type="number" id="inteligencia" value="0" min="0"> <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
+                                <input type="number" id="inteligencia" value="0" min="0">
+                                <span class="attribute-dice-roller" data-attribute-source="inteligencia">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
-                                <span id="ataque">0</span> <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="ataque">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="ataque">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
+                                </div>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
-                                <span id="ataque-magico">0</span> <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="ataque-magico">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="ataque-magico">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
+                                </div>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
-                                <span id="acerto">0</span> <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="acerto">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="acerto">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
+                                </div>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
-                                <span id="esquiva">0</span> <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="esquiva">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="esquiva">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
+                                </div>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
-                                <span id="rdf">0</span> <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="rdf">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="rdf">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
+                                </div>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
-                                <span id="rdm">0</span> <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
+                                <div class="value-wrapper">
+                                    <span id="rdm">0</span>
+                                    <span class="attribute-dice-roller" data-attribute-source="rdm">🎲</span>
+                                    <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1120,13 +1250,19 @@ html
                 <div class="section-content">
                     <div class="locomotion-container">
                         <div class="locomotion-item">
-                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span> <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
+                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span>
+                            <span class="attribute-dice-roller" data-attribute-source="velocidade-corrida">🎲</span>
+                            <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span> <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
+                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span>
+                            <span class="attribute-dice-roller" data-attribute-source="altura-pulo">🎲</span>
+                            <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span> <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
+                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span>
+                             <span class="attribute-dice-roller" data-attribute-source="distancia-pulo">🎲</span>
+                            <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
                         </div>
                     </div>
                 </div>
@@ -1266,6 +1402,8 @@ html
         </div>
     </div>
     <div id="notification"></div>
+    <div id="special-roll-result-container"></div> <!-- NEW CONTAINER FOR SPECIAL ROLLS -->
+
 
     <!-- MODAL DE CUSTOMIZAÇÃO GERAL -->
     <div id="customizacao-modal" class="modal">
@@ -1455,6 +1593,22 @@ html
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
         let previousTheme = '';
+        let activeAttributeRoller = null; // NEW: Tracks the active attribute dice icon
+
+        // NEW: Level Up Messages
+        const levelUpMessages = [
+            "Nunca é tarde para desistir.", "Se outro pode ser o primeiro, por que tem que ser?", "Tudo saindo conforme o não planejado.",
+            "Veja pelo lado bom: não há!", "A luz no fim do túnel? Foi cortada por falta de pagamento.", "A vida é uma montanha-russa... Pena que você esqueceu o cinto.",
+            "O segredo do sucesso é desistir antes de tentar.", "Relaxe, daqui para frente é só para trás.", "Errar é humano. Persistir no erro é seu talento.",
+            "Você é único. Ainda bem.", "Acorde com determinação. Volte a dormir com frustração.", "O importante é competir... e perder com classe.",
+            "A vida é curta. Aproveite pra não fazer nada.", "Nunca subestime sua incapacidade.", "A felicidade é uma escolha... difícil.",
+            "Se a vida te der limões, aprenda a chorar em silêncio.", "Você não está sozinho. Todo mundo tá se fodendo também.", "Dê o seu melhor. Só não espere que funcione.",
+            "O impossível só existe pra quem tenta.", "A motivação vem. E vai. Igual seu foco.", "Não se preocupe, você não é o único a sentir que tudo está dando errado.",
+            "A vida é uma corrida - e você pode estar correndo na direção errada.", "Cada novo dia é uma nova chance - de repetir os mesmos erros de ontem.",
+            "O fracasso é o primeiro passo para o sucesso - ou para uma boa desculpa.", "Siga seus sonhos - mas esteja preparado para os pesadelos.",
+            "A vida é feita de altos e baixos - e você pode estar no fundo do poço.", "Se você não se arriscar, nunca saberá - mas também pode evitar muitas frustrações.",
+            "O importante é aprender com os erros - mas alguns erros são repetitivos.", "A vida é uma jornada - mas não é preciso chegar a lugar algum.", "Nunca é tarde para mudar - a não ser que você já esteja muito confortável."
+        ];
 
 
         const vantagensData = [
@@ -1492,7 +1646,9 @@ html
             diceContainer = document.getElementById("dice-container"), diceRoll = document.getElementById("dice-roll"), diceResult = document.getElementById("dice-result"),
             changeDiceTypeBtn = document.getElementById('change-dice-type-btn'),
             diceOptionsMenu = document.getElementById('dice-options-menu'),
-            notification = document.getElementById("notification"), characterImageInput = document.getElementById("character-image-input"),
+            notification = document.getElementById("notification"),
+            specialRollContainer = document.getElementById('special-roll-result-container'),
+            characterImageInput = document.getElementById("character-image-input"),
             characterImage = document.getElementById("character-image"), vantagensDesvantagensBtn = document.getElementById("vantagens-desvantagens-btn"),
             vantagensDesvantagensPanel = document.getElementById("vantagens-desvantagens-panel"), vantagensList = document.getElementById("vantagens-list"),
             desvantagensList = document.getElementById("desvantagens-list"), salvarVantagensBtn = document.getElementById("salvar-vantagens-btn"),
@@ -1623,7 +1779,8 @@ html
                     shadowColorFicha: '#000000',
                     shadowIntensityFicha: 0,
                     lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
-                    theme: 'theme-medieval'
+                    theme: 'theme-medieval',
+                    usedLevelUpMessages: [] // NEW
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1726,7 +1883,8 @@ html
                 shadowColorFicha: '#000000',
                 shadowIntensityFicha: 0,
                 lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
-                theme: 'theme-medieval'
+                theme: 'theme-medieval',
+                usedLevelUpMessages: [] // NEW
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -1776,6 +1934,7 @@ html
             ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
             ficha.theme = ficha.theme || 'theme-medieval';
+            ficha.usedLevelUpMessages = ficha.usedLevelUpMessages || []; // NEW
 
             limparClassesDeTema();
             aplicarClassesDeTema(ficha.theme);
@@ -1922,6 +2081,7 @@ html
             fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
             fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+            fichaAtual.usedLevelUpMessages = fichaAtual.usedLevelUpMessages || []; // NEW
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
@@ -2035,6 +2195,17 @@ html
                 setTimeout(dispararFogoDeArtificioIndividual, Math.random() * 1000 + (i * 150));
             }
         }
+        
+        // NEW: Function to show the level up message
+        function showLevelUpMessage(message) {
+            const box = document.getElementById('level-up-message-box');
+            if (!box) return;
+            box.textContent = message;
+            box.classList.add('visible');
+            setTimeout(() => {
+                box.classList.remove('visible');
+            }, 5000);
+        }
 
         function atualizarNivel() {
             const ficha = fichas[currentFichaId];
@@ -2058,6 +2229,18 @@ html
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000);
                 showNotification(`Parabéns! Você alcançou o Nível ${nivel}!`, "critical-success");
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6));
+
+                // NEW: Trigger for level up message
+                ficha.usedLevelUpMessages = ficha.usedLevelUpMessages || [];
+                const availableMessagesIndices = levelUpMessages.map((_, i) => i).filter(i => !ficha.usedLevelUpMessages.includes(i));
+                
+                if (availableMessagesIndices.length > 0) {
+                    const randomIndex = availableMessagesIndices[Math.floor(Math.random() * availableMessagesIndices.length)];
+                    const message = levelUpMessages[randomIndex];
+                    showLevelUpMessage(message);
+                    ficha.usedLevelUpMessages.push(randomIndex);
+                    salvarDados(); // Save that the message has been used
+                }
             }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none";
 
@@ -2189,7 +2372,9 @@ html
                                  parseInt(ficha.gmOverrides['pontos-habilidade']) :
                                  (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
+            // BUG FIX: The check `&& ficha.gmOverrides?.['pontos-habilidade'] === undefined` was removed.
+            // The limit must be respected regardless of whether the GM set the total PD or not.
+            if (pdGastosPeloJogador > pdTotalDisponivel) {
                 alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido ou valor mínimo salvo.");
 
                 atributosInputs.forEach(input => {
@@ -2208,7 +2393,7 @@ html
             pontosHabilidadeUsados = pdGastosPeloJogador;
             pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
+            if (pdGastosPeloJogador > pdTotalDisponivel) {
                  atributosInputs.forEach(input => {
                     previousValues.set(input, input.value);
                 });
@@ -2343,6 +2528,7 @@ html
                         input.value = "0";
                     });
                     ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+                    ficha.usedLevelUpMessages = []; // NEW: Reset used messages on recomeçar
                 }
                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
 
@@ -2695,6 +2881,25 @@ html
         document.onmousemove = e => { if (isDragging) { e.preventDefault(); currentX = e.clientX - initialX; currentY = e.clientY - initialY; diceContainer.style.left = `${currentX}px`; diceContainer.style.top = `${currentY}px`; diceContainer.style.right = "auto"; } };
         document.onmouseup = () => { if(isDragging) {isDragging = false; diceContainer.style.cursor = "move";} };
 
+        // --- NEW: Helper function to get attribute value ---
+        function getAttributeValue(sourceId) {
+            const sourceElement = document.getElementById(sourceId);
+            if (!sourceElement) return 0;
+            let value = (sourceElement.tagName.toLowerCase() === 'input') ? sourceElement.value : sourceElement.textContent;
+            return parseFloat(value) || 0;
+        }
+
+        // --- NEW: Function to display the special roll result ---
+        function displaySpecialRoll(attrVal, roll, total) {
+            if (!specialRollContainer) return;
+            specialRollContainer.innerHTML = `Total: ${attrVal} + ${roll} = <span class="final-result-number">${total}</span>`;
+            specialRollContainer.style.display = 'block';
+
+            setTimeout(() => {
+                specialRollContainer.style.display = 'none';
+            }, 4000); // Display for 4 seconds
+        }
+
         diceRoll.onclick = () => {
             if (isDiceRolling || (isFichaLocked && !isFichaUnlocked)) {
                 if (isFichaLocked && !isFichaUnlocked) abrirModalSenha(diceRoll);
@@ -2710,54 +2915,57 @@ html
             let classeAnimacao = 'is-rolling';
             let duracaoAnimacao = 1000;
 
-            if (animacaoSelecionada === 'rapido') {
-                classeAnimacao = 'is-rolling-fast';
-                duracaoAnimacao = 500;
-            } else if (animacaoSelecionada === 'salto') {
-                classeAnimacao = 'is-rolling-jump';
-                duracaoAnimacao = 1200;
-            }
+            if (animacaoSelecionada === 'rapido') { classeAnimacao = 'is-rolling-fast'; duracaoAnimacao = 500; } 
+            else if (animacaoSelecionada === 'salto') { classeAnimacao = 'is-rolling-jump'; duracaoAnimacao = 1200; }
             diceRoll.classList.add(classeAnimacao);
 
             setTimeout(() => {
                 const roll = Math.floor(Math.random() * currentDiceMax) + 1;
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
-
+                const now = new Date();
+                const timestamp = now.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
                 diceRoll.classList.remove(classeAnimacao);
                 diceRoll.textContent = roll;
-
-                let notificationClass = "normal-result";
-                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
-
-                if (roll === 1) {
-                    diceRoll.classList.add("critical-failure");
-                    notificationClass = "critical-failure";
-                    notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
-                } else if (roll === currentDiceMax) {
-                    diceRoll.classList.add("critical-success");
-                    notificationClass = "critical-success";
-                    notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
-                }
-                showNotification(notificationMsg, notificationClass);
-
-                if (fichas[currentFichaId]) {
-                    const now = new Date();
-                    const timestamp = now.toLocaleString('pt-BR', {
-                        day: '2-digit', month: '2-digit', year: 'numeric',
-                        hour: '2-digit', minute: '2-digit', second: '2-digit'
-                    });
-                    fichas[currentFichaId].diceRolls = fichas[currentFichaId].diceRolls || [];
-                    fichas[currentFichaId].diceRolls.unshift({
-                        type: `D${currentDiceMax}`,
-                        result: roll,
-                        timestamp: timestamp
-                    });
-                    if (fichas[currentFichaId].diceRolls.length > 100) {
-                        fichas[currentFichaId].diceRolls.pop();
-                    }
-                    salvarDados();
-                }
                 isDiceRolling = false;
+                
+                if (activeAttributeRoller) {
+                    const sourceId = activeAttributeRoller.dataset.attributeSource;
+                    const attributeValue = getAttributeValue(sourceId);
+                    const finalResult = attributeValue + roll;
+                    
+                    displaySpecialRoll(attributeValue, roll, finalResult);
+
+                    if (fichas[currentFichaId]) {
+                        fichas[currentFichaId].diceRolls = fichas[currentFichaId].diceRolls || [];
+                        fichas[currentFichaId].diceRolls.unshift({ type: `${sourceId.toUpperCase()} + D${currentDiceMax}`, result: `${attributeValue} + ${roll} = ${finalResult}`, timestamp });
+                        if (fichas[currentFichaId].diceRolls.length > 100) fichas[currentFichaId].diceRolls.pop();
+                        salvarDados();
+                    }
+                    activeAttributeRoller.classList.remove('active');
+                    activeAttributeRoller = null;
+                } else {
+                    let notificationClass = "normal-result";
+                    let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
+
+                    if (roll === 1) {
+                        diceRoll.classList.add("critical-failure");
+                        notificationClass = "critical-failure";
+                        notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
+                    } else if (roll === currentDiceMax) {
+                        diceRoll.classList.add("critical-success");
+                        notificationClass = "critical-success";
+                        notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
+                    }
+                    showNotification(notificationMsg, notificationClass);
+
+                    if (fichas[currentFichaId]) {
+                        fichas[currentFichaId].diceRolls = fichas[currentFichaId].diceRolls || [];
+                        fichas[currentFichaId].diceRolls.unshift({ type: `D${currentDiceMax}`, result: roll, timestamp });
+                        if (fichas[currentFichaId].diceRolls.length > 100) fichas[currentFichaId].diceRolls.pop();
+                        salvarDados();
+                    }
+                }
             }, duracaoAnimacao);
         };
 
@@ -3152,34 +3360,7 @@ html
                          fichas[currentFichaId].backgroundSize = selectedSize;
                          fichas[currentFichaId].backgroundAttachment = attachment;
                     }
-                    salvarDados();
-                    showNotification("Imagem de fundo da página aplicada!", "save-success");
-                };
-                reader.readAsDataURL(file);
-            } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
-                document.body.style.backgroundSize = selectedSize;
-                document.body.style.backgroundAttachment = attachment;
-                if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].backgroundSize = selectedSize;
-                    fichas[currentFichaId].backgroundAttachment = attachment;
-                }
-                salvarDados();
-                showNotification("Configurações do plano de fundo da página atualizadas!", "save-success");
-            } else {
-                alert("Nenhuma imagem selecionada para aplicar como plano de fundo da página.");
-            }
-        }
-
-        function excluirPlanoDeFundo() {
-            if (confirm("Remover imagem de fundo da página?")) {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundAttachment = 'scroll';
-                if (fichas[currentFichaId]) {
-                     fichas[currentFichaId].backgroundImage = null;
-                     fichas[currentFichaId].backgroundSize = 'cover';
-                     fichas[currentFichaId].backgroundAttachment = 'scroll';
-                }
-                salvarDados();
+                                    salvarDados();
                 showNotification("Imagem de fundo da página removida!", "save-success");
             }
         }
@@ -3441,7 +3622,7 @@ html
             const rolls = fichas[currentFichaId].diceRolls;
             diceHistoryList.innerHTML = rolls.map(roll => `
                 <div class="dice-history-item">
-                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
+                    <span>${roll.type}: <strong>${roll.result}</strong></span>
                     <span class="timestamp">${roll.timestamp}</span>
                 </div>
             `).join('');
@@ -3747,7 +3928,7 @@ html
             document.documentElement.style.setProperty('--largura-borda-secao', larguraBorda);
 
             if (corBordaSecaoInput) corBordaSecaoInput.value = corBordaCustom;
-            if (estiloBordaSecaoSelect) estiloBordaSecaoSelect.value = estiloBorda;
+            if (estiloBordaSecaoselect) estiloBordaSecaoSelect.value = estiloBorda;
             if (larguraBordaSecaoInput) larguraBordaSecaoInput.value = parseInt(larguraBorda) || 2;
         }
 
@@ -3937,8 +4118,37 @@ html
 
 
         /*************************************************
-        *                THEME FUNCTIONS END                 *
+        *           ATTRIBUTE ROLLER FUNCTIONS           *
         **************************************************/
+        function toggleAttributeRoller(event) {
+            const clickedRoller = event.target;
+            
+            // If the clicked roller is already active, deactivate it
+            if (clickedRoller === activeAttributeRoller) {
+                activeAttributeRoller.classList.remove('active');
+                activeAttributeRoller = null;
+            } else {
+                // If another roller is active, deactivate it first
+                if (activeAttributeRoller) {
+                    activeAttributeRoller.classList.remove('active');
+                }
+                // Activate the new one
+                activeAttributeRoller = clickedRoller;
+                activeAttributeRoller.classList.add('active');
+            }
+        }
+        
+        function setupAttributeDiceRollers() {
+            const rollers = document.querySelectorAll('.attribute-dice-roller');
+            rollers.forEach(roller => {
+                roller.addEventListener('click', toggleAttributeRoller);
+            });
+        }
+
+        /*************************************************
+        *                END NEW FUNCTIONS                 *
+        **************************************************/
+
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container');
@@ -3980,6 +4190,7 @@ html
                 });
             });
             setupAttributeTooltips();
+            setupAttributeDiceRollers(); // NEW: Setup listeners for attribute dice icons
         });
 
     </script>
