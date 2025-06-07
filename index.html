@@ -718,6 +718,52 @@ html
         }
 
         /**********************************************
+        *      NEW STYLES START HERE                 *
+        ***********************************************/
+
+        .attribute-dice-icon {
+            cursor: pointer;
+            margin-left: 8px;
+            display: inline-block;
+            transition: transform 0.2s;
+            font-size: 1rem;
+            user-select: none;
+        }
+
+        .attribute-dice-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .attribute-dice-icon.selected {
+            animation: glow-yellow 1s infinite alternate;
+        }
+
+        @keyframes glow-yellow {
+            from {
+                text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 15px #ff8c00;
+            }
+            to {
+                text-shadow: 0 0 10px #ffd700, 0 0 20px #ffae42, 0 0 25px #ff8c00;
+                transform: scale(1.1);
+            }
+        }
+
+        #notification .final-sum-result {
+            font-size: 2.5em; /* Significantly larger */
+            font-weight: bold;
+            display: inline-block; /* Needed for animation */
+            animation: rgb-flicker 0.5s infinite;
+        }
+
+        @keyframes rgb-flicker {
+            0%   { color: red; text-shadow: 0 0 5px red; }
+            25%  { color: lime; text-shadow: 0 0 5px lime;}
+            50%  { color: blue; text-shadow: 0 0 5px blue;}
+            75%  { color: yellow; text-shadow: 0 0 5px yellow;}
+            100% { color: magenta; text-shadow: 0 0 5px magenta;}
+        }
+
+        /**********************************************
         *      NEW THEME STYLES START HERE            *
         ***********************************************/
 
@@ -845,7 +891,7 @@ html
         .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
         .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
         .theme-elemental-terra #dice-roll {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
             color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
         }
 
@@ -985,49 +1031,65 @@ html
                         <div class="atributos-coluna">
                             <div class="atributo">
                                 <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
-                                <input type="number" id="forca" value="0" min="0"> <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
+                                <input type="number" id="forca" value="0" min="0">
+                                <span class="attribute-dice-icon" data-attribute-source="forca" title="Rolar com Força">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
-                                <input type="number" id="destreza" value="0" min="0"> <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
+                                <input type="number" id="destreza" value="0" min="0">
+                                <span class="attribute-dice-icon" data-attribute-source="destreza" title="Rolar com Destreza">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
-                                <input type="number" id="agilidade" value="0" min="0"> <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
+                                <input type="number" id="agilidade" value="0" min="0">
+                                <span class="attribute-dice-icon" data-attribute-source="agilidade" title="Rolar com Agilidade">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
-                                <input type="number" id="constituicao" value="0" min="0"> <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
+                                <input type="number" id="constituicao" value="0" min="0">
+                                <span class="attribute-dice-icon" data-attribute-source="constituicao" title="Rolar com Constituição">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
-                                <input type="number" id="inteligencia" value="0" min="0"> <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
+                                <input type="number" id="inteligencia" value="0" min="0">
+                                <span class="attribute-dice-icon" data-attribute-source="inteligencia" title="Rolar com Inteligência">🎲</span>
+                                <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
-                                <span id="ataque">0</span> <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
+                                <span><span id="ataque">0</span><span class="attribute-dice-icon" data-attribute-source="ataque" title="Rolar com Ataque">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
-                                <span id="ataque-magico">0</span> <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
+                                <span><span id="ataque-magico">0</span><span class="attribute-dice-icon" data-attribute-source="ataque-magico" title="Rolar com Ataque Mágico">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
-                                <span id="acerto">0</span> <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
+                                <span><span id="acerto">0</span><span class="attribute-dice-icon" data-attribute-source="acerto" title="Rolar com Acerto">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
-                                <span id="esquiva">0</span> <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
+                                <span><span id="esquiva">0</span><span class="attribute-dice-icon" data-attribute-source="esquiva" title="Rolar com Esquiva">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
-                                <span id="rdf">0</span> <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
+                                <span><span id="rdf">0</span><span class="attribute-dice-icon" data-attribute-source="rdf" title="Rolar com RDF">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
-                                <span id="rdm">0</span> <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
+                                <span><span id="rdm">0</span><span class="attribute-dice-icon" data-attribute-source="rdm" title="Rolar com RDM">🎲</span></span>
+                                <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
                             </div>
                         </div>
                     </div>
@@ -1120,13 +1182,22 @@ html
                 <div class="section-content">
                     <div class="locomotion-container">
                         <div class="locomotion-item">
-                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span><span id="velocidade-corrida">25</span> <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
+                            <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span>
+                            <span id="velocidade-corrida">25</span>
+                            <span class="attribute-dice-icon" data-attribute-source="velocidade-corrida" title="Rolar com Velocidade de Corrida">🎲</span>
+                            <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Altura do Pulo (m):</label><span>⬆️</span><span id="altura-pulo">1</span> <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
+                            <label>Altura do Pulo (m):</label><span>⬆️</span>
+                            <span id="altura-pulo">1</span>
+                            <span class="attribute-dice-icon" data-attribute-source="altura-pulo" title="Rolar com Altura do Pulo">🎲</span>
+                             <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
                         </div>
                         <div class="locomotion-item">
-                            <label>Distância do Pulo (m):</label><span>➡️</span><span id="distancia-pulo">3</span> <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
+                            <label>Distância do Pulo (m):</label><span>➡️</span>
+                            <span id="distancia-pulo">3</span>
+                            <span class="attribute-dice-icon" data-attribute-source="distancia-pulo" title="Rolar com Distância do Pulo">🎲</span>
+                            <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
                         </div>
                     </div>
                 </div>
@@ -1455,6 +1526,7 @@ html
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
         let previousTheme = '';
+        let selectedAttributeIcon = null; // NEW: Tracks the selected attribute icon
 
 
         const vantagensData = [
@@ -2722,23 +2794,40 @@ html
             setTimeout(() => {
                 const roll = Math.floor(Math.random() * currentDiceMax) + 1;
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
-
                 diceRoll.classList.remove(classeAnimacao);
                 diceRoll.textContent = roll;
+                
+                // NEW: Bonus Roll Logic
+                if (selectedAttributeIcon) {
+                    const attributeSourceId = selectedAttributeIcon.dataset.attributeSource;
+                    const sourceElement = document.getElementById(attributeSourceId);
+                    let attributeValue = 0;
+                    if (sourceElement) {
+                        attributeValue = parseInt(sourceElement.value || sourceElement.textContent) || 0;
+                    }
+                    const totalSum = attributeValue + roll;
+                    showSpecialRollResult(attributeValue, roll, totalSum);
 
-                let notificationClass = "normal-result";
-                let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
+                    selectedAttributeIcon.classList.remove('selected');
+                    selectedAttributeIcon = null;
 
-                if (roll === 1) {
-                    diceRoll.classList.add("critical-failure");
-                    notificationClass = "critical-failure";
-                    notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
-                } else if (roll === currentDiceMax) {
-                    diceRoll.classList.add("critical-success");
-                    notificationClass = "critical-success";
-                    notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
+                } else {
+                     // ORIGINAL: No bonus selected
+                    let notificationClass = "normal-result";
+                    let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
+
+                    if (roll === 1) {
+                        diceRoll.classList.add("critical-failure");
+                        notificationClass = "critical-failure";
+                        notificationMsg = `${fichaNome} - D${currentDiceMax}: FALHA CRÍTICA!`;
+                    } else if (roll === currentDiceMax) {
+                        diceRoll.classList.add("critical-success");
+                        notificationClass = "critical-success";
+                        notificationMsg = `${fichaNome} - D${currentDiceMax}: SUCESSO CRÍTICO!`;
+                    }
+                    showNotification(notificationMsg, notificationClass, 2000);
                 }
-                showNotification(notificationMsg, notificationClass);
+
 
                 if (fichas[currentFichaId]) {
                     const now = new Date();
@@ -2779,6 +2868,13 @@ html
         });
 
         document.addEventListener('click', function(event) {
+            const target = event.target;
+            // NEW: Event delegation for attribute dice icons
+            if (target.matches('.attribute-dice-icon')) {
+                handleAttributeDiceClick(target);
+                return;
+            }
+
             if (diceOptionsMenu.style.display === 'flex' &&
                 !diceOptionsMenu.contains(event.target) &&
                 event.target !== changeDiceTypeBtn) {
@@ -3071,11 +3167,44 @@ html
             });
         }
 
-
-        function showNotification(message, type) {
-            notification.textContent = message; notification.className = type; notification.style.display = "block";
-            setTimeout(() => { notification.style.display = "none"; notification.className = ""; }, 2000);
+        // Modified to handle duration
+        function showNotification(message, type, duration = 2000) {
+            notification.innerHTML = message; // Use innerHTML to parse potential HTML tags
+            notification.className = type;
+            notification.style.display = "block";
+            setTimeout(() => {
+                notification.style.display = "none";
+                notification.className = "";
+                notification.innerHTML = "";
+            }, duration);
         }
+
+        // NEW: Function for special roll result display
+        function showSpecialRollResult(attributeValue, roll, totalSum) {
+             const message = `Total: ${attributeValue} + ${roll} = <span class="final-sum-result">${totalSum}</span>`;
+             showNotification(message, 'normal-result', 4000);
+        }
+
+
+        // NEW: Function to handle clicking on attribute dice
+        function handleAttributeDiceClick(clickedIcon) {
+            // If another icon is already selected, deselect it
+            if (selectedAttributeIcon && selectedAttributeIcon !== clickedIcon) {
+                selectedAttributeIcon.classList.remove('selected');
+            }
+
+            // Toggle the current icon's selection
+            if (selectedAttributeIcon === clickedIcon) {
+                // Clicked the same icon again, so deselect it
+                clickedIcon.classList.remove('selected');
+                selectedAttributeIcon = null;
+            } else {
+                // Select the new icon
+                clickedIcon.classList.add('selected');
+                selectedAttributeIcon = clickedIcon;
+            }
+        }
+
 
         customizacaoBtn.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) {
@@ -3752,7 +3881,7 @@ html
         }
 
 
-        diceTextureInput.addEventListener('change', (event) => {
+                diceTextureInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
