@@ -93,7 +93,7 @@ html
         }
         @keyframes raios {
             0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
-            50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500, 0 0 25px #FF4500; }
+            50% { text-shadow: 0 0 10px #FFD700, 0 0 15px #FF4500, 0 0 20px #FF4500, 0 0 25px #FF4500; }
             100% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FF4500; }
         }
         #game-master-message { display: none; color: blue; font-size: 1.5rem; text-align: center; font-family: 'MedievalSharp', serif; margin-bottom: 10px; }
@@ -718,7 +718,7 @@ html
         }
 
         /**********************************************
-        *      NEW STYLES START HERE                 *
+        *      NEW STYLES START HERE (ATUALIZAÇÃO)   *
         ***********************************************/
 
         .attribute-dice-icon {
@@ -762,6 +762,76 @@ html
             75%  { color: yellow; text-shadow: 0 0 5px yellow;}
             100% { color: magenta; text-shadow: 0 0 5px magenta;}
         }
+
+        .input-com-botoes {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .input-com-botoes input[type="number"] {
+            flex-grow: 1;
+            margin-bottom: 0; /* Override default margin */
+            text-align: center;
+            -moz-appearance: textfield; /* Remove arrows in Firefox */
+        }
+        .input-com-botoes input[type="number"]::-webkit-outer-spin-button,
+        .input-com-botoes input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none; /* Remove arrows in Chrome/Safari */
+            margin: 0;
+        }
+
+
+        .botao-atributo-stepper {
+            flex-shrink: 0;
+            background-color: #d2b48c;
+            color: #3a2800;
+            border: 1px solid var(--cor-borda-secao, #b8860b);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 1.3rem;
+            line-height: 1;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0;
+            margin:0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .botao-atributo-stepper:hover {
+            background-color: #a0522d;
+            color: #fff;
+        }
+        .botao-atributo-stepper:active {
+            transform: scale(0.9);
+        }
+
+        body.dark-mode .botao-atributo-stepper {
+            background-color: #4a3c2a;
+            color: #f0e6d2;
+            border-color: #6b5230;
+        }
+        body.dark-mode .botao-atributo-stepper:hover {
+            background-color: #777;
+        }
+
+        .atributo {
+             display: flex;
+             align-items: center;
+             gap: 10px;
+        }
+
+        /* Adjust label for better alignment */
+        .atributo > label {
+            flex-shrink: 0;
+            margin-bottom: 0; /* Remove margin-bottom from label inside .atributo */
+        }
+
 
         /**********************************************
         *      NEW THEME STYLES START HERE            *
@@ -891,7 +961,7 @@ html
         .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
         .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
         .theme-elemental-terra #dice-roll {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
             color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
         }
 
@@ -1031,31 +1101,51 @@ html
                         <div class="atributos-coluna">
                             <div class="atributo">
                                 <label for="forca" title="Força: Afeta dano físico corpo a corpo, capacidade de carga e resistência a dano físico (RDF). Bônus em alguns testes de atletismo.">Força:</label>
-                                <input type="number" id="forca" value="0" min="0">
+                                <div class="input-com-botoes">
+                                    <button class="botao-atributo-stepper" data-target="forca" data-step="-1" title="Diminuir Força">▼</button>
+                                    <input type="number" id="forca" value="0" min="0">
+                                    <button class="botao-atributo-stepper" data-target="forca" data-step="1" title="Aumentar Força">▲</button>
+                                </div>
                                 <span class="attribute-dice-icon" data-attribute-source="forca" title="Rolar com Força">🎲</span>
                                 <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
-                                <input type="number" id="destreza" value="0" min="0">
+                                <div class="input-com-botoes">
+                                    <button class="botao-atributo-stepper" data-target="destreza" data-step="-1" title="Diminuir Destreza">▼</button>
+                                    <input type="number" id="destreza" value="0" min="0">
+                                    <button class="botao-atributo-stepper" data-target="destreza" data-step="1" title="Aumentar Destreza">▲</button>
+                                </div>
                                 <span class="attribute-dice-icon" data-attribute-source="destreza" title="Rolar com Destreza">🎲</span>
                                 <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
-                                <input type="number" id="agilidade" value="0" min="0">
+                                <div class="input-com-botoes">
+                                    <button class="botao-atributo-stepper" data-target="agilidade" data-step="-1" title="Diminuir Agilidade">▼</button>
+                                    <input type="number" id="agilidade" value="0" min="0">
+                                    <button class="botao-atributo-stepper" data-target="agilidade" data-step="1" title="Aumentar Agilidade">▲</button>
+                                </div>
                                 <span class="attribute-dice-icon" data-attribute-source="agilidade" title="Rolar com Agilidade">🎲</span>
                                 <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
-                                <input type="number" id="constituicao" value="0" min="0">
+                                <div class="input-com-botoes">
+                                    <button class="botao-atributo-stepper" data-target="constituicao" data-step="-1" title="Diminuir Constituição">▼</button>
+                                    <input type="number" id="constituicao" value="0" min="0">
+                                    <button class="botao-atributo-stepper" data-target="constituicao" data-step="1" title="Aumentar Constituição">▲</button>
+                                </div>
                                 <span class="attribute-dice-icon" data-attribute-source="constituicao" title="Rolar com Constituição">🎲</span>
                                 <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
-                                <input type="number" id="inteligencia" value="0" min="0">
+                                <div class="input-com-botoes">
+                                    <button class="botao-atributo-stepper" data-target="inteligencia" data-step="-1" title="Diminuir Inteligência">▼</button>
+                                    <input type="number" id="inteligencia" value="0" min="0">
+                                    <button class="botao-atributo-stepper" data-target="inteligencia" data-step="1" title="Aumentar Inteligência">▲</button>
+                                </div>
                                 <span class="attribute-dice-icon" data-attribute-source="inteligencia" title="Rolar com Inteligência">🎲</span>
                                 <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
                             </div>
@@ -1205,16 +1295,21 @@ html
             <section id="status">
                 <h2>Status <span class="collapse-icon">▼</span></h2>
                 <div class="section-content">
-                    <div class="flex gap-20">
-                        <div>
+                    <div class="flex flex-wrap gap-x-20 gap-y-5">
+                        <div class="flex-1 min-w-[200px]">
                             <label for="experiencia">Experiência: <span id="xp-lock-icon" class="lock-icon">🔒</span></label>
-                            <input type="number" id="experiencia" value="0" min="0">
+                            <div class="input-com-botoes">
+                               <button class="botao-atributo-stepper" data-target="experiencia" data-step="-1" title="Diminuir Experiência">▼</button>
+                                <input type="number" id="experiencia" value="0" min="0">
+                               <button class="botao-atributo-stepper" data-target="experiencia" data-step="1" title="Aumentar Experiência">▲</button>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-[200px]">
                             <label>Pontos de Habilidade (PD):</label>
                             <span id="pontos-habilidade">25</span> <span class="gm-edit-icon" data-target-id="pontos-habilidade" data-label="Pontos Habilidade">✏️</span>
                             <label>Pontos de Vantagem (PH):</label>
                             <span id="pontos-vantagem">8</span> <span class="gm-edit-icon" data-target-id="pontos-vantagem" data-label="Pontos Vantagem">✏️</span>
                         </div>
-                        <div></div>
                     </div>
                     <div id="nivel-container">
                         <label>Nível:</label>
@@ -2796,7 +2891,7 @@ html
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
                 diceRoll.classList.remove(classeAnimacao);
                 diceRoll.textContent = roll;
-                
+
                 // NEW: Bonus Roll Logic
                 if (selectedAttributeIcon) {
                     const attributeSourceId = selectedAttributeIcon.dataset.attributeSource;
@@ -3683,7 +3778,7 @@ html
             buttonElement.addEventListener('touchcancel', stopAction);
         }
 
-        function showCustomTooltip(targetElement) {
+                function showCustomTooltip(targetElement) {
             const tooltipText = targetElement.getAttribute('title');
             if (!tooltipText || !customTooltipElement) return;
 
@@ -4068,6 +4163,47 @@ html
         /*************************************************
         *                THEME FUNCTIONS END                 *
         **************************************************/
+
+        // (NOVA FUNÇÃO ADICIONADA) Listener para os botões de incremento/decremento
+        fichaContainer.addEventListener('click', (event) => {
+            const target = event.target;
+            if (!target.matches('.botao-atributo-stepper')) {
+                 if (target.closest('.gm-edit-icon')) handleGmEdit(event); // Mover o handler de GM aqui.
+                 return;
+            }
+
+            const targetInputId = target.dataset.target;
+            const step = parseInt(target.dataset.step, 10);
+            const inputElement = document.getElementById(targetInputId);
+
+            if (!inputElement) return;
+
+            // Simula o foco no campo para que as validações sejam acionadas
+            inputElement.focus();
+            const originalValue = parseInt(inputElement.value, 10) || 0;
+
+            // Armazena valor anterior para as validações de ficha bloqueada
+            previousValues.set(inputElement, originalValue);
+
+            // Delega o desbloqueio para a função de senha, que lida com isso.
+            if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
+                abrirModalSenha(inputElement);
+                return; // Impede a alteração até que a ficha seja desbloqueada
+            }
+             if (targetInputId === 'experiencia' && inputElement.readOnly && !isXpUnlocked) {
+                 confirmarDesbloqueioExperiencia();
+                return;
+             }
+
+            // Realiza a alteração
+            const newValue = Math.max(0, originalValue + step);
+            inputElement.value = newValue;
+
+            // Dispara manualmente um evento de "input" para que toda a lógica de cálculo e validação seja executada.
+            inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+
+             aplicarFeedbackBotao(target);
+        });
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container');
