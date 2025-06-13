@@ -4321,5 +4321,25 @@ html
         });
 
     </script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  document.querySelectorAll("input, textarea, select").forEach(el => {
+    el.addEventListener("input", () => {
+      socket.emit("fichaUpdate", {
+        id: el.id,
+        value: el.value
+      });
+    });
+  });
+
+  socket.on("fichaUpdate", data => {
+    const el = document.getElementById(data.id);
+    if (el && el !== document.activeElement) {
+      el.value = data.value;
+    }
+  });
+</script>
 </body>
 </html>
