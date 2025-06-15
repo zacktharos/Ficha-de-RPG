@@ -638,11 +638,83 @@ html
              transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
         body.dark-mode #anotacoes-textarea { background: #333; color: #e0e0e0; }
-        .magias-container { max-height: 300px; overflow-y: auto; border: 2px solid #b8860b; border-radius: 6px; padding: 10px; background: #fff;  transition: background-color 0.3s, border-color 0.3s; }
+
+        /*******************************************************
+        *      STYLES FOR UPGRADED MAGIC SYSTEM START HERE     *
+        ********************************************************/
+
+        .magias-container {
+            max-height: 400px; /* Increased height */
+            overflow-y: auto;
+            border: 2px solid #b8860b;
+            border-radius: 6px;
+            padding: 10px;
+            background: #fff;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
         body.dark-mode .magias-container { background: #333; border-color: #555; }
-        .magias-container input { margin-bottom: 10px; }
-        #adicionar-magia-btn { background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: block; margin-top: 10px; }
+
+        .magia-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #b8860b;
+        }
+         body.dark-mode .magia-item { border-bottom-color: #555; }
+        .magia-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .magia-item .magia-nome {
+             font-weight: bold;
+             margin-bottom: 5px !important;
+             font-size: 1.1rem;
+        }
+        .magia-detalhes {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .magia-detalhes input, .magia-detalhes select {
+            margin-bottom: 0 !important; /* Override default margin */
+            padding: 8px;
+            font-size: 0.9rem;
+        }
+        .magia-detalhes .magia-custo { width: 80px !important; text-align: center;}
+        .magia-detalhes .magia-dano { flex-grow: 1; }
+        .magia-detalhes .magia-tipo { width: 120px !important; }
+        .lancar-magia-btn {
+             font-size: 1.3rem;
+             padding: 4px 8px;
+             line-height: 1;
+             min-width: 40px;
+             flex-shrink: 0;
+             margin-left: 5px !important;
+        }
+        .lancar-magia-btn:hover {
+            box-shadow: 0 0 8px #00e5ff;
+            text-shadow: 0 0 5px #fff;
+        }
+        body.dark-mode .lancar-magia-btn:hover {
+             box-shadow: 0 0 8px #c58c5a;
+        }
+
+        #adicionar-magia-btn {
+            background: #b8860b; color: #fff; padding: 8px 16px; border-radius: 6px;
+            cursor: pointer; display: block; margin-top: 10px;
+        }
         #adicionar-magia-btn:hover { background: #a0522d; }
+        body.dark-mode #adicionar-magia-btn { background: #555; }
+        body.dark-mode #adicionar-magia-btn:hover { background: #777; }
+
+        /*******************************************************
+        *       STYLES FOR UPGRADED MAGIC SYSTEM END HERE      *
+        ********************************************************/
+
+
         .classe-raca-container { background: #f0e6d2; border: 2px solid #b8860b; padding: 10px; border-radius: 6px; margin-top: 10px; transition: background-color 0.3s, border-color 0.3s;}
         body.dark-mode .classe-raca-container { background: #1e1e1e; border-color: #444; }
         .classe-raca-container label { font-family: 'MedievalSharp', serif; color: #a0522d; font-size: 1.2rem; transition: color 0.3s;}
@@ -891,7 +963,7 @@ html
         .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
         .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
         .theme-elemental-terra #dice-roll {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
             color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
         }
 
@@ -1006,6 +1078,8 @@ html
             #customizacao-modal .modal-content {
                  width: 90%;
             }
+            /* Responsive Magic section */
+            .magia-detalhes { flex-wrap: wrap; }
         }
         #raca-opcoes-modal .modal-content button:nth-child(2) { margin-top: 10px; }
 
@@ -1245,16 +1319,7 @@ html
                         <div style="width:50%">
                             <label>Magias e Habilidades:</label>
                             <div id="magias-list" class="magias-container">
-                                <input type="text" placeholder="Magia/Habilidade 1" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 2" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 3" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 4" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 5" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 6" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 7" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 8" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 9" class="magia-nome">
-                                <input type="text" placeholder="Magia/Habilidade 10" class="magia-nome">
+                                <!-- MAGIC ITEMS WILL BE DYNAMICALLY INSERTED HERE BY JAVASCRIPT -->
                             </div>
                             <button id="adicionar-magia-btn">Adicionar Magia</button>
                         </div>
@@ -1780,7 +1845,9 @@ html
                     forca: "0", destreza: "0", agilidade: "0", inteligencia: "0", constituicao: "0", experiencia: "0",
                     armaDireitaNome: "", armaDireitaAtaque: "0", armaDireitaAtaqueMagico: "0",
                     armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                    vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
+                    vantagens: "", 
+                    magiasHabilidades: Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' }), // UPGRADED
+                    desvantagens: "",
                     inventario: Array(10).fill({ item: "", peso: "0" }),
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
@@ -1882,7 +1949,9 @@ html
                 nomeFicha, nomePersonagem: "", descricaoPersonagem: "", forca: "0", destreza: "0", agilidade: "0",
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
-                vantagens: "", magiasHabilidades: Array(10).fill("").join("\n"), desvantagens: "",
+                vantagens: "", 
+                magiasHabilidades: Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' }), // UPGRADED
+                desvantagens: "",
                 inventario: Array(10).fill({ item: "", peso: "0" }),
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
@@ -1997,10 +2066,27 @@ html
             const slots = inventarioSlots.querySelectorAll(".inventory-slot");
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal();
-
-            const magias = ficha.magiasHabilidades ? ficha.magiasHabilidades.split("\n") : Array(10).fill("");
+            
+            // --- START: UPGRADED MAGIC LOADING ---
             magiasList.innerHTML = "";
-            magias.forEach((m, i) => { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.value = m; input.addEventListener('input', salvarDados); magiasList.appendChild(input); });
+            let magiasParaCarregar = ficha.magiasHabilidades;
+
+            // Data migration for old string-based magic system
+            if (typeof magiasParaCarregar === 'string') {
+                magiasParaCarregar = magiasParaCarregar.split('\n').map(nomeMagia => ({
+                    nome: nomeMagia,
+                    custo: '',
+                    dano: '',
+                    tipo: ''
+                }));
+            }
+            // Ensure it's an array, fallback if corrupted data
+            if (!Array.isArray(magiasParaCarregar)) {
+                 magiasParaCarregar = Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' });
+            }
+            magiasParaCarregar.forEach(magiaData => criarSlotMagia(magiaData));
+            // --- END: UPGRADED MAGIC LOADING ---
+
             anotacoesTextarea.value = ficha.anotacoes || "";
             classeNomeInput.value = ficha.classeNome || "";
             classeDescricaoInput.value = ficha.classeDescricao || "";
@@ -2060,7 +2146,17 @@ html
             if (!currentFichaId || !fichas[currentFichaId] || (isFichaLocked && !isFichaUnlocked)) return;
 
             const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
-            const magias = Array.from(magiasList.querySelectorAll(".magia-nome")).map(input => input.value);
+
+            // --- START: UPGRADED MAGIC SAVING ---
+            const magias = Array.from(magiasList.querySelectorAll(".magia-item")).map(item => {
+                return {
+                    nome: item.querySelector('.magia-nome').value,
+                    custo: item.querySelector('.magia-custo').value,
+                    dano: item.querySelector('.magia-dano').value,
+                    tipo: item.querySelector('.magia-tipo').value
+                };
+            });
+            // --- END: UPGRADED MAGIC SAVING ---
 
             const fichaAtual = fichas[currentFichaId];
 
@@ -2081,7 +2177,7 @@ html
             fichaAtual.armaEsquerdaAtaque = armaEsquerdaAtaqueInput.value;
             fichaAtual.armaEsquerdaAtaqueMagico = armaEsquerdaAtaqueMagicoInput.value;
             fichaAtual.vantagens = vantagensSelecionadas.join("\n");
-            fichaAtual.magiasHabilidades = magias.join("\n");
+            fichaAtual.magiasHabilidades = magias; // SAVING THE NEW OBJECT ARRAY
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
 
@@ -2167,9 +2263,6 @@ html
                 const angulo = Math.random() * Math.PI * 2;
                 const forca = Math.random() * 100 + 80;
                 const duracao = Math.random() * 1.0 + 0.8;
-
-                const targetX = xBase + Math.cos(angulo) * forca;
-                const targetYFinal = yBase + Math.sin(angulo) * forca + (Math.random() * 100 + 50);
 
                 p.style.animation = `particle-trail ${duracao}s ease-out forwards`;
                 p.style.transition = `transform ${duracao}s cubic-bezier(0.1, 0.7, 0.3, 1)`;
@@ -2537,7 +2630,10 @@ html
                 nomePersonagemInput.value = ""; descricaoPersonagemInput.value = "";
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
-                magiasList.innerHTML = ""; for (let i = 0; i < 10; i++) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${i + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); }
+                magiasList.innerHTML = ""; 
+                const magiasIniciais = Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' });
+                magiasIniciais.forEach(magia => criarSlotMagia(magia));
+                
                 const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
                 characterImage.style.display = "none"; characterImage.src = ""; vantagensSelecionadas = []; desvantagensSelecionadas = []; racaSelecionada = null;
                 vantagensListDisplay.innerHTML = ""; desvantagensListDisplay.innerHTML = ""; anotacoesTextarea.value = "";
@@ -2683,11 +2779,13 @@ html
         }
 
 
-        document.querySelectorAll('input[type="text"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao), input[type="number"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao):not(#experiencia):not(.recurso-atual-input), textarea').forEach(input => {
-            input.addEventListener("focus", (event) => {
-                 previousValues.set(event.target, event.target.value);
+        document.querySelectorAll('input[type="text"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao), input[type="number"]:not(#forca):not(#destreza):not(#agilidade):not(#inteligencia):not(#constituicao):not(#experiencia):not(.recurso-atual-input), textarea, .magias-container').forEach(el => {
+            el.addEventListener("focusin", (event) => {
+                 if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA' || event.target.tagName === 'SELECT') {
+                    previousValues.set(event.target, event.target.value);
+                 }
             });
-            input.addEventListener("input", (event) => {
+            el.addEventListener("input", (event) => {
                 const inputTarget = event.target;
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     inputTarget.value = previousValues.get(inputTarget) || inputTarget.defaultValue || "";
@@ -2703,6 +2801,7 @@ html
                 salvarDados();
             });
         });
+
         nomePersonagemInput.oninput = salvarDados;
 
         atributosInputs.forEach(input => {
@@ -3147,11 +3246,70 @@ html
             }
         };
 
+        // --- START: UPGRADED MAGIC SYSTEM LOGIC ---
+        function criarSlotMagia(magiaData = { nome: '', custo: '', dano: '', tipo: '' }) {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'magia-item';
+            
+            itemDiv.innerHTML = `
+                <input type="text" placeholder="Nome da Magia" class="magia-nome" value="${magiaData.nome || ''}">
+                <div class="magia-detalhes">
+                    <input type="number" placeholder="Custo" class="magia-custo" title="Custo em Mana" value="${magiaData.custo || ''}" min="0">
+                    <input type="text" placeholder="Dano/Efeito" class="magia-dano" title="Ex: 2d6+Int Fogo" value="${magiaData.dano || ''}">
+                    <select class="magia-tipo" title="Tipo/Escola da Magia">
+                        <option value="">Tipo...</option>
+                        <option value="dano" ${magiaData.tipo === 'dano' ? 'selected' : ''}>Dano</option>
+                        <option value="cura" ${magiaData.tipo === 'cura' ? 'selected' : ''}>Cura</option>
+                        <option value="buff" ${magiaData.tipo === 'buff' ? 'selected' : ''}>Buff</option>
+                        <option value="debuff" ${magiaData.tipo === 'debuff' ? 'selected' : ''}>Debuff</option>
+                        <option value="invocacao" ${magiaData.tipo === 'invocacao' ? 'selected' : ''}>Invocação</option>
+                        <option value="utilidade" ${magiaData.tipo === 'utilidade' ? 'selected' : ''}>Utilidade</option>
+                    </select>
+                    <button class="lancar-magia-btn" title="Lançar Magia">✨</button>
+                </div>
+            `;
+            magiasList.appendChild(itemDiv);
+        }
+
         adicionarMagiaBtn.onclick = () => {
-             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
-            if (magiasList.children.length < 20) { const input = document.createElement("input"); input.type = "text"; input.className = "magia-nome"; input.placeholder = `Magia/Habilidade ${magiasList.children.length + 1}`; input.addEventListener('input', salvarDados); magiasList.appendChild(input); salvarDados(); }
-            else alert("Limite de 20 magias/habilidades!");
+            if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(adicionarMagiaBtn);
+            if (magiasList.children.length < 20) {
+                criarSlotMagia();
+                salvarDados();
+            } else {
+                alert("Limite de 20 magias/habilidades!");
+            }
         };
+
+        magiasList.addEventListener('click', (event) => {
+            if (event.target.classList.contains('lancar-magia-btn')) {
+                 if (isFichaLocked && !isFichaUnlocked) {
+                    abrirModalSenha(event.target);
+                    return;
+                }
+                const itemDiv = event.target.closest('.magia-item');
+                const nomeMagia = itemDiv.querySelector('.magia-nome').value || "Magia";
+                const custoMagiaStr = itemDiv.querySelector('.magia-custo').value;
+                const custoMagia = parseInt(custoMagiaStr);
+
+                if (isNaN(custoMagia) || custoMagia < 0) {
+                    showNotification(`Custo da magia "${nomeMagia}" é inválido.`, "normal-result");
+                    return;
+                }
+
+                let manaAtual = parseInt(magiaAtualInput.value);
+                if (manaAtual >= custoMagia) {
+                    manaAtual -= custoMagia;
+                    magiaAtualInput.value = manaAtual;
+                    showNotification(`"${nomeMagia}" lançada! Custo: ${custoMagia} de mana.`, "save-success");
+                    magiaAtual = manaAtual; // Update global var
+                    salvarDados();
+                } else {
+                    showNotification("Mana insuficiente!", "critical-failure");
+                }
+            }
+        });
+        // --- END: UPGRADED MAGIC SYSTEM LOGIC ---
 
 
         racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
@@ -3763,7 +3921,7 @@ html
             }
         }
 
-        function setupHoldButtonEvents(buttonElement, actionFunction) {
+               function setupHoldButtonEvents(buttonElement, actionFunction) {
             if (!buttonElement) return;
             let isActionActive = false;
 
