@@ -676,6 +676,7 @@ html
         .magia-detalhes {
             display: flex;
             align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
             gap: 10px;
         }
         .magia-detalhes input, .magia-detalhes select {
@@ -683,16 +684,19 @@ html
             padding: 8px;
             font-size: 0.9rem;
         }
-        .magia-detalhes .magia-custo { width: 80px !important; text-align: center;}
-        .magia-detalhes .magia-dano { flex-grow: 1; }
-        .magia-detalhes .magia-tipo { width: 120px !important; }
+        /* --- MODIFIED: Adjusted width and added new class for vigor cost --- */
+        .magia-detalhes .magia-custo, .magia-detalhes .magia-custo-vigor {
+            width: 60px !important; text-align: center;
+        }
+        .magia-detalhes .magia-dano { flex-grow: 1; min-width: 100px;}
+        .magia-detalhes .magia-tipo { width: 120px !important; flex-grow: 1; }
         .lancar-magia-btn {
              font-size: 1.3rem;
              padding: 4px 8px;
              line-height: 1;
              min-width: 40px;
              flex-shrink: 0;
-             margin-left: 5px !important;
+             margin-left: auto !important; /* Push button to the end */
         }
         .lancar-magia-btn:hover {
             box-shadow: 0 0 8px #00e5ff;
@@ -1846,7 +1850,7 @@ html
                     armaDireitaNome: "", armaDireitaAtaque: "0", armaDireitaAtaqueMagico: "0",
                     armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
                     vantagens: "", 
-                    magiasHabilidades: Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' }), // UPGRADED
+                    magiasHabilidades: Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }),
                     desvantagens: "",
                     inventario: Array(10).fill({ item: "", peso: "0" }),
                     velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
@@ -1950,7 +1954,7 @@ html
                 inteligencia: "0", constituicao: "0", experiencia: "0", armaDireitaNome: "", armaDireitaAtaque: "0",
                 armaDireitaAtaqueMagico: "0", armaEsquerdaNome: "", armaEsquerdaAtaque: "0", armaEsquerdaAtaqueMagico: "0",
                 vantagens: "", 
-                magiasHabilidades: Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' }), // UPGRADED
+                magiasHabilidades: Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }),
                 desvantagens: "",
                 inventario: Array(10).fill({ item: "", peso: "0" }),
                 velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
@@ -2067,25 +2071,22 @@ html
             slots.forEach((slot, i) => { slot.querySelector(".inventory-item").value = inventario[i]?.item || ""; slot.querySelector(".inventory-weight").value = inventario[i]?.peso || "0"; });
             calcularPesoTotal();
             
-            // --- START: UPGRADED MAGIC LOADING ---
             magiasList.innerHTML = "";
             let magiasParaCarregar = ficha.magiasHabilidades;
 
-            // Data migration for old string-based magic system
             if (typeof magiasParaCarregar === 'string') {
                 magiasParaCarregar = magiasParaCarregar.split('\n').map(nomeMagia => ({
                     nome: nomeMagia,
                     custo: '',
+                    custoVigor: '', // Compatibility for old data
                     dano: '',
                     tipo: ''
                 }));
             }
-            // Ensure it's an array, fallback if corrupted data
             if (!Array.isArray(magiasParaCarregar)) {
-                 magiasParaCarregar = Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' });
+                 magiasParaCarregar = Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' });
             }
             magiasParaCarregar.forEach(magiaData => criarSlotMagia(magiaData));
-            // --- END: UPGRADED MAGIC LOADING ---
 
             anotacoesTextarea.value = ficha.anotacoes || "";
             classeNomeInput.value = ficha.classeNome || "";
@@ -2147,16 +2148,15 @@ html
 
             const inventario = Array.from(inventarioSlots.querySelectorAll(".inventory-slot")).map(slot => ({ item: slot.querySelector(".inventory-item").value, peso: slot.querySelector(".inventory-weight").value }));
 
-            // --- START: UPGRADED MAGIC SAVING ---
             const magias = Array.from(magiasList.querySelectorAll(".magia-item")).map(item => {
                 return {
                     nome: item.querySelector('.magia-nome').value,
                     custo: item.querySelector('.magia-custo').value,
+                    custoVigor: item.querySelector('.magia-custo-vigor').value, // Save vigor cost
                     dano: item.querySelector('.magia-dano').value,
                     tipo: item.querySelector('.magia-tipo').value
                 };
             });
-            // --- END: UPGRADED MAGIC SAVING ---
 
             const fichaAtual = fichas[currentFichaId];
 
@@ -2177,7 +2177,7 @@ html
             fichaAtual.armaEsquerdaAtaque = armaEsquerdaAtaqueInput.value;
             fichaAtual.armaEsquerdaAtaqueMagico = armaEsquerdaAtaqueMagicoInput.value;
             fichaAtual.vantagens = vantagensSelecionadas.join("\n");
-            fichaAtual.magiasHabilidades = magias; // SAVING THE NEW OBJECT ARRAY
+            fichaAtual.magiasHabilidades = magias; 
             fichaAtual.desvantagens = desvantagensSelecionadas.join("\n");
             fichaAtual.inventario = inventario;
 
@@ -2631,7 +2631,7 @@ html
                 armaDireitaNomeInput.value = ""; armaDireitaAtaqueInput.value = "0"; armaDireitaAtaqueMagicoInput.value = "0";
                 armaEsquerdaNomeInput.value = ""; armaEsquerdaAtaqueInput.value = "0"; armaEsquerdaAtaqueMagicoInput.value = "0";
                 magiasList.innerHTML = ""; 
-                const magiasIniciais = Array(5).fill({ nome: '', custo: '', dano: '', tipo: '' });
+                const magiasIniciais = Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' });
                 magiasIniciais.forEach(magia => criarSlotMagia(magia));
                 
                 const slots = inventarioSlots.querySelectorAll(".inventory-slot"); slots.forEach(slot => { slot.querySelector(".inventory-item").value = ""; slot.querySelector(".inventory-weight").value = "0"; });
@@ -3166,7 +3166,7 @@ html
         };
 
 
-        function atualizarVantagensDesvantagensPanel() {
+                function atualizarVantagensDesvantagensPanel() {
             vantagensList.innerHTML = "<h3>Vantagens</h3>"; desvantagensList.innerHTML = "<h3>Desvantagens</h3>";
             vantagensData.forEach(v => {
                 const div = document.createElement("div"); div.className = "vantagem-item"; div.textContent = `${v.nome} - Custo: ${v.custo} PH - ${v.descricao}`;
@@ -3246,15 +3246,17 @@ html
             }
         };
 
-        // --- START: UPGRADED MAGIC SYSTEM LOGIC ---
-        function criarSlotMagia(magiaData = { nome: '', custo: '', dano: '', tipo: '' }) {
+        // --- START: MODIFIED MAGIC SYSTEM LOGIC ---
+        function criarSlotMagia(magiaData = { nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'magia-item';
             
+            // Note the new "custoVigor" field and updated placeholders/titles
             itemDiv.innerHTML = `
-                <input type="text" placeholder="Nome da Magia" class="magia-nome" value="${magiaData.nome || ''}">
+                <input type="text" placeholder="Nome da Habilidade" class="magia-nome" value="${magiaData.nome || ''}">
                 <div class="magia-detalhes">
-                    <input type="number" placeholder="Custo" class="magia-custo" title="Custo em Mana" value="${magiaData.custo || ''}" min="0">
+                    <input type="number" placeholder="✨ Custo" class="magia-custo" title="Custo em Magia" value="${magiaData.custo || ''}" min="0">
+                    <input type="number" placeholder="⚡ Custo" class="magia-custo-vigor" title="Custo em Vigor" value="${magiaData.custoVigor || ''}" min="0" step="0.1">
                     <input type="text" placeholder="Dano/Efeito" class="magia-dano" title="Ex: 2d6+Int Fogo" value="${magiaData.dano || ''}">
                     <select class="magia-tipo" title="Tipo/Escola da Magia">
                         <option value="">Tipo...</option>
@@ -3265,7 +3267,7 @@ html
                         <option value="invocacao" ${magiaData.tipo === 'invocacao' ? 'selected' : ''}>Invocação</option>
                         <option value="utilidade" ${magiaData.tipo === 'utilidade' ? 'selected' : ''}>Utilidade</option>
                     </select>
-                    <button class="lancar-magia-btn" title="Lançar Magia">✨</button>
+                    <button class="lancar-magia-btn" title="Lançar Habilidade">🚀</button>
                 </div>
             `;
             magiasList.appendChild(itemDiv);
@@ -3288,28 +3290,56 @@ html
                     return;
                 }
                 const itemDiv = event.target.closest('.magia-item');
-                const nomeMagia = itemDiv.querySelector('.magia-nome').value || "Magia";
-                const custoMagiaStr = itemDiv.querySelector('.magia-custo').value;
-                const custoMagia = parseInt(custoMagiaStr);
+                const nomeHabilidade = itemDiv.querySelector('.magia-nome').value || "Habilidade";
+                
+                // Read both Mana and Vigor costs
+                const custoMagia = parseInt(itemDiv.querySelector('.magia-custo').value) || 0;
+                const custoVigor = parseFloat(itemDiv.querySelector('.magia-custo-vigor').value) || 0;
 
-                if (isNaN(custoMagia) || custoMagia < 0) {
-                    showNotification(`Custo da magia "${nomeMagia}" é inválido.`, "normal-result");
+                // Check for invalid negative costs
+                if (custoMagia < 0 || custoVigor < 0) {
+                    showNotification("Custos não podem ser negativos.", "normal-result");
+                    return;
+                }
+                 if (custoMagia === 0 && custoVigor === 0) {
+                    showNotification(`"${nomeHabilidade}" usada sem custo de recursos.`, "save-success");
                     return;
                 }
 
                 let manaAtual = parseInt(magiaAtualInput.value);
-                if (manaAtual >= custoMagia) {
-                    manaAtual -= custoMagia;
-                    magiaAtualInput.value = manaAtual;
-                    showNotification(`"${nomeMagia}" lançada! Custo: ${custoMagia} de mana.`, "save-success");
-                    magiaAtual = manaAtual; // Update global var
-                    salvarDados();
-                } else {
-                    showNotification("Mana insuficiente!", "critical-failure");
+                let vigorAtualVal = parseFloat(vigorAtualInput.value);
+
+                // Check for sufficient resources
+                if (manaAtual < custoMagia) {
+                    showNotification("Magia insuficiente!", "critical-failure");
+                    return;
                 }
+                if (vigorAtualVal < custoVigor) {
+                    showNotification("Vigor insuficiente!", "critical-failure");
+                    return;
+                }
+
+                // Deduct resources
+                manaAtual -= custoMagia;
+                vigorAtualVal -= custoVigor;
+
+                // Update UI and global variables
+                magiaAtualInput.value = manaAtual;
+                vigorAtualInput.value = vigorAtualVal.toFixed(1);
+                magiaAtual = manaAtual;
+                vigorAtual = vigorAtualVal;
+                
+                // Create notification message
+                let custoMsg = [];
+                if (custoMagia > 0) custoMsg.push(`Magia: ${custoMagia}`);
+                if (custoVigor > 0) custoMsg.push(`Vigor: ${custoVigor}`);
+                
+                showNotification(`"${nomeHabilidade}" usada! Custo: ${custoMsg.join(' e ')}.`, "save-success");
+
+                salvarDados();
             }
         });
-        // --- END: UPGRADED MAGIC SYSTEM LOGIC ---
+        // --- END: MODIFIED MAGIC SYSTEM LOGIC ---
 
 
         racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
