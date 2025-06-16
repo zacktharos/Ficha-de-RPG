@@ -555,7 +555,91 @@ html
         #customizacao-modal .custom-dice-texture-controls button {
             flex-shrink: 0;
         }
+        
+        /*************************************************
+        *     NEW STYLES FOR CUSTOMIZATION MODAL START     *
+        *************************************************/
 
+        .custom-modal-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--cor-borda-secao);
+            margin-bottom: 20px;
+        }
+        body.dark-mode .custom-modal-tabs {
+            border-bottom-color: #555;
+        }
+
+        .custom-modal-tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background-color: transparent;
+            font-family: 'MedievalSharp', serif;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: -2px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.3s, border-bottom-color 0.3s;
+        }
+        body.dark-mode .custom-modal-tab-btn {
+            color: #aaa;
+        }
+
+        .custom-modal-tab-btn:hover {
+            color: #000;
+        }
+        body.dark-mode .custom-modal-tab-btn:hover {
+            color: #fff;
+        }
+
+        .custom-modal-tab-btn.active {
+            color: var(--cor-borda-secao);
+            border-bottom-color: var(--cor-borda-secao);
+        }
+        body.dark-mode .custom-modal-tab-btn.active {
+            color: #c58c5a;
+            border-bottom-color: #c58c5a;
+        }
+
+
+        .custom-modal-tab-content {
+            display: none;
+        }
+        .custom-modal-tab-content.active {
+            display: block;
+        }
+
+        .custom-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .fieldset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .reset-section-btn {
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            line-height: 1;
+            background-color: #a52a2a !important;
+            border-radius: 4px;
+            margin-left: auto;
+            border: 1px solid #8b0000;
+        }
+        .reset-section-btn:hover {
+             background-color: #8b0000 !important;
+        }
+        /***********************************************
+        *      NEW STYLES FOR CUSTOMIZATION MODAL END      *
+        *************************************************/
 
         #vantagens-desvantagens-btn, #racas-btn, #classes-btn {
             padding: 10px 20px; background: #f0e6d2; border: 2px solid #b8860b; border-radius: 6px;
@@ -686,7 +770,7 @@ html
         }
         /* --- MODIFIED: Adjusted width and added new class for vigor cost --- */
         .magia-detalhes .magia-custo, .magia-detalhes .magia-custo-vigor {
-            width: 60px !important; text-align: center;
+            width: 80px !important; text-align: center;
         }
         .magia-detalhes .magia-dano { flex-grow: 1; min-width: 100px;}
         .magia-detalhes .magia-tipo { width: 120px !important; flex-grow: 1; }
@@ -967,7 +1051,7 @@ html
         .theme-elemental-terra .botao, .theme-elemental-terra button { background-color: #5d4037; color: #f0e2d2; text-shadow: 1px 1px 2px #000; font-weight: bold; border: 1px solid #3e2e21;}
         .theme-elemental-terra input, .theme-elemental-terra textarea { background-color: #d7ccc8; color: #3e2e21; border-color: #5d4037; font-weight: bold; }
         .theme-elemental-terra #dice-roll {
-            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
+            background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Cdefs%3E%3Cpattern id="p" width="100" height="100" patternUnits="userSpaceOnUse"%3E%3Cpath id="a" data-color="fill" fill="%235a4433" d="M11 0a5 5 0 0 0-5 5v3l-5 5v3l-1 1v5l1 1v2l-1 1v4l1 1v2l-1 1v5l1 1v2l-1 1v4l1 1v3l5 5h3l5-5h2l-1-1h4l1 1h2l-1-1h4l1 1h2l-1-1h4l1 1h2l5-5h3l5 5h3l-5-5v-3l5-5v-3l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l1-1v-5l-1-1v-2l1-1v-4l-1-1v-2l-1-1v-5l-1-1v-3l-5-5h-3l-5 5h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l1 1h-4l-1-1h-2l-5 5h-3z"/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill="url(%23p)" width="100%" height="100%"/%3E%3C/svg%3E');
             color: #f0e2d2; border-color: #3e2e21; border-width: 3px; font-weight: bold; text-shadow: 2px 2px 2px #000;
         }
 
@@ -1081,6 +1165,9 @@ html
             }
             #customizacao-modal .modal-content {
                  width: 90%;
+            }
+            .custom-modal-grid {
+                 grid-template-columns: 1fr;
             }
             /* Responsive Magic section */
             .magia-detalhes { flex-wrap: wrap; }
@@ -1516,150 +1603,167 @@ html
         <div class="modal-content">
             <h3>Painel de Customização</h3>
 
-             <fieldset>
-                <legend>Modelo de Ficha</legend>
-                <div class="input-group">
-                    <label for="theme-selector">Tema da Ficha:</label>
-                    <select id="theme-selector">
-                        <option value="theme-medieval">Medieval (Padrão)</option>
-                        <option value="theme-futurista">Futurista</option>
-                        <option value="theme-elemental">Elemental</option>
-                    </select>
-                </div>
-                <div class="input-group" id="elemental-theme-group" style="display: none;">
-                    <label for="elemental-theme-selector">Elemento:</label>
-                    <select id="elemental-theme-selector">
-                        <option value="fogo">Fogo</option>
-                        <option value="agua">Água</option>
-                        <option value="ar">Ar</option>
-                        <option value="terra">Terra</option>
-                    </select>
-                </div>
-                <button class="confirm-btn" onclick="prepararAplicarModeloFicha()" style="width:100%;">Aplicar Modelo</button>
-            </fieldset>
+            <!-- NEW: Tabs Navigation -->
+            <div class="custom-modal-tabs">
+                <button class="custom-modal-tab-btn active" onclick="showCustomTab('aparencia')">🎨 Aparência</button>
+                <button class="custom-modal-tab-btn" onclick="showCustomTab('fundo')">🖼️ Fundo</button>
+                <button class="custom-modal-tab-btn" onclick="showCustomTab('dado')">🎲 Dado</button>
+                <button class="custom-modal-tab-btn" onclick="showCustomTab('avancado')">⚙️ Avançado</button>
+            </div>
 
-            <fieldset>
-                <legend>Aparência da Página e Ficha</legend>
-                <div class="input-group">
-                    <label for="background-color-input">Cor de Fundo (Página):</label>
-                    <input type="color" id="background-color-input" value="#f0e6d2">
-                </div>
-                <div class="input-group">
-                    <label for="ficha-internal-background-color-input">Cor de Fundo Base (Interior da Ficha e Seções):</label>
-                    <input type="color" id="ficha-internal-background-color-input" value="#f0e6d2">
-                </div>
-                <div class="input-group">
-                    <label for="font-selector">Fonte Principal da Ficha:</label>
-                    <select id="font-selector" title="Fonte Principal" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; padding: 10px; border-radius: 6px; ">
-                        <option value="'Inter', sans-serif">Padrão (Inter)</option>
-                        <option value="'MedievalSharp', cursive">Medieval</option>
-                         <option value="'Orbitron', sans-serif">Futurista (Orbitron)</option>
-                        <option value="'Times New Roman', Times, serif">Times New Roman</option>
-                        <option value="'Arial', Helvetica, sans-serif">Arial</option>
-                        <option value="'Courier New', Courier, monospace">Courier New</option>
-                        <option value="'Georgia', serif">Georgia</option>
-                        <option value="'Verdana', Geneva, sans-serif">Verdana</option>
-                    </select>
-                </div>
-            </fieldset>
-
-            <fieldset>
-                <legend>Transparência da Ficha</legend>
-                <div class="input-group">
-                    <label for="ficha-transparency-slider">Nível de Opacidade (0% = Totalmente Transparente, 100% = Totalmente Opaco): <span id="ficha-transparency-value">100</span>%</label>
-                    <input type="range" id="ficha-transparency-slider" min="0" max="100" value="100">
-                </div>
-                <button class="cancel-btn" onclick="restaurarOpacidadePadraoFicha()" style="width:100%;">Restaurar Opacidade Padrão (100%)</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Sombra (Interna)</legend>
-                <div class="input-group">
-                    <label for="shadow-color-ficha">Cor da Sombra (Ficha/Seções - Interno):</label>
-                    <input type="color" id="shadow-color-ficha" value="#000000">
-                </div>
-                <div class="input-group">
-                    <label for="shadow-intensity-ficha-slider">Intensidade da Sombra (Ficha/Seções - Interno): <span id="shadow-intensity-ficha-value">0</span>%</label>
-                    <input type="range" id="shadow-intensity-ficha-slider" min="0" max="100" value="0">
-                </div>
-                <button class="cancel-btn" onclick="restaurarSombraPadrao()" style="width:100%; margin-top: 10px;">Restaurar Sombra Padrão</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Plano de Fundo da Ficha (Imagem de fundo apenas da Página)</legend>
-                <div class="input-group">
-                    <label for="background-image-input">Selecionar Imagem:</label>
-                    <input type="file" id="background-image-input" accept="image/*">
-                </div>
-                <div class="radio-group input-group">
-                    <label><input type="radio" name="background-size" value="cover" checked> Preencher Tela (Fixo)</label>
-                    <label><input type="radio" name="background-size" value="100% 100%"> Estender (Rolável)</label>
-                    <label><input type="radio" name="background-size" value="auto"> Tamanho Normal (Rolável)</label>
-                </div>
-                <button class="confirm-btn" onclick="aplicarPlanoDeFundo()">Aplicar Imagem de Fundo da Página</button>
-                <button class="cancel-btn" onclick="excluirPlanoDeFundo()">Excluir Imagem de Fundo da Página</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Estilos das Seções da Ficha</legend>
-                <div class="input-group">
-                    <label for="cor-borda-secao-input">Cor da Borda das Seções:</label>
-                    <input type="color" id="cor-borda-secao-input" value="#b8860b">
-                </div>
-                <div class="input-group">
-                    <label for="estilo-borda-secao-select">Estilo da Borda das Seções:</label>
-                    <select id="estilo-borda-secao-select">
-                        <option value="solid">Sólida</option>
-                        <option value="dashed">Tracejada</option>
-                        <option value="dotted">Pontilhada</option>
-                        <option value="double">Dupla</option>
-                        <option value="groove">Groove</option>
-                        <option value="ridge">Ridge</option>
-                    </select>
-                </div>
-                 <div class="input-group">
-                    <label for="largura-borda-secao-input">Largura da Borda (px):</label>
-                    <input type="number" id="largura-borda-secao-input" min="0" max="10" value="2">
-                </div>
-                <button class="confirm-btn" onclick="aplicarEstilosFicha()">Aplicar Estilos de Seção</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Customização do Dado</legend>
-                <div class="input-group">
-                    <label for="dice-color-input">Cor de Fundo do Dado:</label>
-                    <input type="color" id="dice-color-input" value="#f0e6d2">
-                </div>
-                 <div class="input-group">
-                    <label for="dice-number-color-input">Cor do Número no Dado:</label>
-                    <input type="color" id="dice-number-color-input" value="#000000">
-                </div>
-                <div class="input-group custom-dice-texture-controls">
-                    <div style="flex-grow: 1;">
-                        <label for="dice-texture-input">Textura do Dado (Imagem 100x100px):</label>
-                        <input type="file" id="dice-texture-input" accept="image/*">
+            <!-- NEW: Tab Content Panels -->
+            <div id="custom-tab-aparencia" class="custom-modal-tab-content active">
+                <fieldset>
+                    <div class="fieldset-header">
+                        <legend>🎨 Modelo de Ficha</legend>
                     </div>
-                    <button id="remove-dice-texture-btn" class="botao icon-btn" title="Remover Textura do Dado" style="background-color:#cc0000; padding: 10px;">🗑️</button>
-                </div>
-                <div class="input-group">
-                     <label for="dice-animation-selector">Animação do Dado ao Rolar:</label>
-                     <select id="dice-animation-selector" title="Animação do Dado" style="width: 100%; background-color: #f0e6d2; color:black; border:1px solid #b8860b; padding: 10px; border-radius: 6px;">
-                        <option value="padrao">Animação Padrão</option>
-                        <option value="rapido">Giro Rápido</option>
-                        <option value="salto">Salto e Queda</option>
-                    </select>
-                </div>
-            </fieldset>
+                    <div class="input-group">
+                        <label for="theme-selector">Tema da Ficha:</label>
+                        <select id="theme-selector">
+                            <option value="theme-medieval">Medieval (Padrão)</option>
+                            <option value="theme-futurista">Futurista</option>
+                            <option value="theme-elemental">Elemental</option>
+                        </select>
+                    </div>
+                    <div class="input-group" id="elemental-theme-group" style="display: none;">
+                        <label for="elemental-theme-selector">Elemento:</label>
+                        <select id="elemental-theme-selector">
+                            <option value="fogo">Fogo</option>
+                            <option value="agua">Água</option>
+                            <option value="ar">Ar</option>
+                            <option value="terra">Terra</option>
+                        </select>
+                    </div>
+                    <button class="confirm-btn" onclick="prepararAplicarModeloFicha()" style="width:100%;">Aplicar Modelo</button>
+                </fieldset>
 
-            <fieldset>
-                <legend>Reiniciar Aparência</legend>
-                <div class="input-group">
-                   <p style="font-size: 0.9em; margin-bottom: 10px;">Isto irá restaurar todas as configurações de aparência (temas, cores, fontes, fundos, etc.) para o padrão medieval claro, sem afetar seus pontos e dados de personagem.</p>
-                   <button id="reset-estetica-btn" class="botao botao-reset" style="width:100%;">Reiniciar Estética para Padrão</button>
-                </div>
-            </fieldset>
+                <fieldset>
+                     <div class="fieldset-header">
+                        <legend>✒️ Fontes e Cores</legend>
+                         <button class="reset-section-btn" onclick="restaurarFontesCoresPadrao()">Restaurar</button>
+                    </div>
+                    <div class="custom-modal-grid">
+                        <div class="input-group">
+                            <label for="ficha-internal-background-color-input">Fundo da Ficha:</label>
+                            <input type="color" id="ficha-internal-background-color-input" value="#f0e6d2">
+                        </div>
+                        <div class="input-group">
+                           <label for="cor-borda-secao-input">Bordas da Ficha:</label>
+                            <input type="color" id="cor-borda-secao-input" value="#b8860b">
+                        </div>
+                    </div>
+                     <div class="input-group">
+                        <label for="font-selector">Fonte Principal:</label>
+                        <select id="font-selector" title="Fonte Principal">
+                            <option value="'Inter', sans-serif">Padrão (Inter)</option>
+                            <option value="'MedievalSharp', cursive">Medieval</option>
+                            <option value="'Orbitron', sans-serif">Futurista (Orbitron)</option>
+                            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                            <option value="'Arial', Helvetica, sans-serif">Arial</option>
+                            <option value="'Courier New', Courier, monospace">Courier New</option>
+                            <option value="'Georgia', serif">Georgia</option>
+                            <option value="'Verdana', Geneva, sans-serif">Verdana</option>
+                        </select>
+                    </div>
+                </fieldset>
+                
+                 <fieldset>
+                    <div class="fieldset-header">
+                       <legend>✨ Efeitos Visuais</legend>
+                        <button class="reset-section-btn" onclick="restaurarEfeitosPadrao()">Restaurar</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="ficha-transparency-slider">Opacidade da Ficha: <span id="ficha-transparency-value">100</span>%</label>
+                        <input type="range" id="ficha-transparency-slider" min="0" max="100" value="100">
+                    </div>
+                     <hr style="margin: 15px 0; border-color: #ccc;">
+                     <label>Sombra Interna da Ficha</label>
+                    <div class="custom-modal-grid">
+                         <div class="input-group">
+                            <label for="shadow-color-ficha">Cor:</label>
+                            <input type="color" id="shadow-color-ficha" value="#000000">
+                        </div>
+                        <div class="input-group">
+                            <label for="shadow-intensity-ficha-slider">Intensidade: <span id="shadow-intensity-ficha-value">0</span>%</label>
+                            <input type="range" id="shadow-intensity-ficha-slider" min="0" max="100" value="0">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            
+            <div id="custom-tab-fundo" class="custom-modal-tab-content">
+                <fieldset>
+                    <div class="fieldset-header">
+                        <legend>🖼️ Plano de Fundo da Página</legend>
+                        <button class="reset-section-btn" onclick="excluirPlanoDeFundo()">Remover</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="background-color-input">Cor de Fundo da Página:</label>
+                        <input type="color" id="background-color-input" value="#f0e6d2">
+                    </div>
+                    <hr style="margin: 15px 0; border-color: #ccc;">
+                    <div class="input-group">
+                        <label for="background-image-input">Imagem de Fundo:</label>
+                        <input type="file" id="background-image-input" accept="image/*">
+                    </div>
+                    <div class="radio-group input-group">
+                         <label>Ajuste da Imagem:</label><br>
+                        <label><input type="radio" name="background-size" value="cover" checked> Preencher Tela (Fixo)</label>
+                        <label><input type="radio" name="background-size" value="100% 100%"> Estender (Rolável)</label>
+                        <label><input type="radio" name="background-size" value="auto"> Normal (Rolável)</label>
+                    </div>
+                    <button class="confirm-btn" onclick="aplicarPlanoDeFundo()" style="width:100%;">Aplicar Imagem</button>
+                </fieldset>
+            </div>
 
-            <button class="cancel-btn" onclick="fecharModal('customizacao-modal')" style="margin-top: 20px; width: calc(100% - 10px);">Fechar Customização</button>
+            <div id="custom-tab-dado" class="custom-modal-tab-content">
+                <fieldset>
+                    <div class="fieldset-header">
+                        <legend>🎲 Customização do Dado</legend>
+                         <button class="reset-section-btn" onclick="restaurarDadoPadrao()">Restaurar</button>
+                    </div>
+                     <div class="custom-modal-grid">
+                        <div class="input-group">
+                            <label for="dice-color-input">Cor de Fundo:</label>
+                            <input type="color" id="dice-color-input" value="#f0e6d2">
+                        </div>
+                         <div class="input-group">
+                            <label for="dice-number-color-input">Cor do Número:</label>
+                            <input type="color" id="dice-number-color-input" value="#000000">
+                        </div>
+                    </div>
+                    <div class="input-group custom-dice-texture-controls">
+                        <div style="flex-grow: 1;">
+                            <label for="dice-texture-input">Textura (Imagem 100x100px):</label>
+                            <input type="file" id="dice-texture-input" accept="image/*">
+                        </div>
+                        <button id="remove-dice-texture-btn" class="botao icon-btn" title="Remover Textura do Dado" style="background-color:#cc0000; padding: 10px;">🗑️</button>
+                    </div>
+                    <div class="input-group">
+                         <label for="dice-animation-selector">Animação ao Rolar:</label>
+                         <select id="dice-animation-selector" title="Animação do Dado">
+                            <option value="padrao">Animação Padrão</option>
+                            <option value="rapido">Giro Rápido</option>
+                            <option value="salto">Salto e Queda</option>
+                        </select>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="custom-tab-avancado" class="custom-modal-tab-content">
+                 <fieldset>
+                     <div class="fieldset-header">
+                        <legend>⚙️ Reiniciar Toda a Aparência</legend>
+                    </div>
+                    <div class="input-group">
+                       <p style="font-size: 0.9em; margin-bottom: 10px;">Isto irá restaurar **todas** as configurações de aparência (temas, cores, fontes, fundos, etc.) para o padrão medieval claro, sem afetar seus pontos e dados de personagem.</p>
+                       <button id="reset-estetica-btn" class="botao botao-reset" style="width:100%;">Reiniciar Estética para Padrão</button>
+                    </div>
+                </fieldset>
+            </div>
+             <!-- End of Tab Content -->
+
+            <button class="cancel-btn" onclick="fecharModalECancelarCustomizacoes()" style="margin-top: 20px; width: calc(100% - 10px);">Fechar Customização</button>
         </div>
     </div>
 
@@ -1755,14 +1859,12 @@ html
             customizacaoBtn = document.getElementById("customizacao-btn"),
             customizacaoModal = document.getElementById("customizacao-modal"),
             backgroundImageInput = document.getElementById("background-image-input"),
-            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"),
-            estiloBordaSecaoSelect = document.getElementById("estilo-borda-secao-select"),
-            larguraBordaSecaoInput = document.getElementById("largura-borda-secao-input"),
             diceTextureInput = document.getElementById("dice-texture-input"),
             removeDiceTextureBtn = document.getElementById("remove-dice-texture-btn"),
             diceAnimationSelector = document.getElementById("dice-animation-selector"),
             backgroundColorInput = document.getElementById('background-color-input'),
             fichaInternalBackgroundColorInput = document.getElementById('ficha-internal-background-color-input'),
+            corBordaSecaoInput = document.getElementById("cor-borda-secao-input"),
             fontSelector = document.getElementById('font-selector'),
             diceColorInput = document.getElementById('dice-color-input'),
             diceNumberColorInput = document.getElementById('dice-number-color-input'),
@@ -1804,6 +1906,7 @@ html
         let currentDiceMax = 20;
         let fireworksContainerRef;
         let tooltipTimeoutId = null;
+        let customizacaoEstadoAntesDeAbrir = {}; // NEW: For live preview cancellation
 
         function getFichasFromStorage() {
             const fichasJSON = localStorage.getItem(RGP_FICHAS_KEY);
@@ -2025,6 +2128,9 @@ html
             ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
             ficha.theme = ficha.theme || 'theme-medieval';
+            if(!Array.isArray(ficha.magiasHabilidades)) {
+                 ficha.magiasHabilidades = Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' });
+            }
 
             limparClassesDeTema();
             aplicarClassesDeTema(ficha.theme);
@@ -2195,21 +2301,24 @@ html
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
             fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
 
-            fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
-            fichaAtual.backgroundSize = document.body.style.backgroundSize;
-            fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment;
+            fichaAtual.backgroundImage = customizacaoEstadoAntesDeAbrir.backgroundImage;
+            fichaAtual.backgroundSize = customizacaoEstadoAntesDeAbrir.backgroundSize;
+            fichaAtual.backgroundAttachment = customizacaoEstadoAntesDeAbrir.backgroundAttachment;
+            fichaAtual.backgroundColor = customizacaoEstadoAntesDeAbrir.backgroundColor;
+            fichaAtual.fichaInternalBackgroundColor = customizacaoEstadoAntesDeAbrir.fichaInternalBackgroundColor;
+            fichaAtual.fichaTransparencyLevel = customizacaoEstadoAntesDeAbrir.fichaTransparencyLevel;
+            fichaAtual.darkMode = customizacaoEstadoAntesDeAbrir.darkMode;
+            fichaAtual.fontFamily = customizacaoEstadoAntesDeAbrir.fontFamily;
+            fichaAtual.theme = customizacaoEstadoAntesDeAbrir.theme;
+            fichaAtual.diceColor = customizacaoEstadoAntesDeAbrir.diceColor;
+            fichaAtual.diceNumberColor = customizacaoEstadoAntesDeAbrir.diceNumberColor;
+            fichaAtual.animacaoDado = customizacaoEstadoAntesDeAbrir.animacaoDado;
+            fichaAtual.corBordaSecao = customizacaoEstadoAntesDeAbrir.corBordaSecao;
+            fichaAtual.estiloBordaSecao = customizacaoEstadoAntesDeAbrir.estiloBordaSecao;
+            fichaAtual.larguraBordaSecao = customizacaoEstadoAntesDeAbrir.larguraBordaSecao;
+            fichaAtual.shadowColorFicha = customizacaoEstadoAntesDeAbrir.shadowColorFicha;
+            fichaAtual.shadowIntensityFicha = customizacaoEstadoAntesDeAbrir.shadowIntensityFicha;
 
-            if (backgroundColorInput) fichaAtual.backgroundColor = backgroundColorInput.value;
-            if (fichaInternalBackgroundColorInput) fichaAtual.fichaInternalBackgroundColor = fichaInternalBackgroundColorInput.value;
-            if (fichaTransparencySlider) fichaAtual.fichaTransparencyLevel = parseInt(fichaTransparencySlider.value);
-
-            fichaAtual.darkMode = document.body.classList.contains("dark-mode");
-            fichaAtual.fontFamily = fontSelector.value;
-            fichaAtual.theme = getCurrentThemeFromClasses();
-
-            fichaAtual.diceColor = diceColorInput.value;
-            fichaAtual.diceNumberColor = diceNumberColorInput.value;
-            fichaAtual.animacaoDado = diceAnimationSelector.value;
 
             vidaAtual = parseInt(vidaAtualInput.value);
             magiaAtual = parseInt(magiaAtualInput.value);
@@ -2218,14 +2327,7 @@ html
             fichaAtual.vidaAtual = vidaAtual;
             fichaAtual.magiaAtual = magiaAtual;
             fichaAtual.vigorAtual = vigorAtual;
-
-            fichaAtual.corBordaSecao = corBordaSecaoInput.value;
-            fichaAtual.estiloBordaSecao = estiloBordaSecaoSelect.value;
-            fichaAtual.larguraBordaSecao = larguraBordaSecaoInput.value + 'px';
-
-            fichaAtual.shadowColorFicha = shadowColorFichaInput.value;
-            fichaAtual.shadowIntensityFicha = parseInt(shadowIntensityFichaSlider.value);
-
+            
             saveFichasToStorage(fichas);
         }
 
@@ -2798,11 +2900,18 @@ html
                     calcularPesoTotal();
                     calcularAtributos();
                 }
-                salvarDados();
+                 // Do not save on every input when customization modal is open
+                if (customizacaoModal.style.display !== 'flex') {
+                    salvarDados();
+                }
             });
         });
 
-        nomePersonagemInput.oninput = salvarDados;
+        nomePersonagemInput.oninput = () => {
+            if (customizacaoModal.style.display !== 'flex') {
+                salvarDados();
+            }
+        };
 
         atributosInputs.forEach(input => {
             input.addEventListener("focus", (event) => {
@@ -3013,7 +3122,7 @@ html
                 diceRoll.textContent = roll;
                 
                 // NEW: Bonus Roll Logic
-                if (selectedAttributeIcon) {
+                                if (selectedAttributeIcon) {
                     const attributeSourceId = selectedAttributeIcon.dataset.attributeSource;
                     const sourceElement = document.getElementById(attributeSourceId);
                     let attributeValue = 0;
@@ -3412,9 +3521,13 @@ html
         fecharClassesBtn.onclick = () => { classesPanel.style.display = "none"; };
 
         luaBtn.onclick = () => {
+            if(customizacaoModal.style.display === 'flex') {
+                customizacaoEstadoAntesDeAbrir.darkMode = true;
+            } else {
+                 if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = true;
+                 salvarDados();
+            }
             document.body.classList.add("dark-mode");
-            if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = true;
-            salvarDados();
             aplicarEstilosDeFundoVisuais();
             aplicarEstilosDeSombra();
             aplicarEstilosFichaInicial(fichas[currentFichaId] || {});
@@ -3424,9 +3537,13 @@ html
             }
         };
         solBtn.onclick = () => {
+             if(customizacaoModal.style.display === 'flex') {
+                customizacaoEstadoAntesDeAbrir.darkMode = false;
+            } else {
+                if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = false;
+                salvarDados();
+            }
             document.body.classList.remove("dark-mode");
-            if(fichas[currentFichaId]) fichas[currentFichaId].darkMode = false;
-            salvarDados();
             aplicarEstilosDeFundoVisuais();
             aplicarEstilosDeSombra();
             aplicarEstilosFichaInicial(fichas[currentFichaId] || {});
@@ -3519,26 +3636,69 @@ html
             abrirModalCustomizacao();
         };
 
+        function showCustomTab(tabName) {
+            document.querySelectorAll('.custom-modal-tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelectorAll('.custom-modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(`custom-tab-${tabName}`).classList.add('active');
+            document.querySelector(`.custom-modal-tab-btn[onclick="showCustomTab('${tabName}')"]`).classList.add('active');
+        }
+
+        function fecharModalECancelarCustomizacoes() {
+             fecharModal('customizacao-modal');
+             
+             // Restore all visual states to how they were before the modal was opened
+             Object.assign(fichas[currentFichaId], customizacaoEstadoAntesDeAbrir);
+             
+             // Re-apply all the original visual settings
+             limparClassesDeTema();
+             aplicarClassesDeTema(fichas[currentFichaId].theme);
+             if (fichas[currentFichaId].darkMode) document.body.classList.add('dark-mode'); else document.body.classList.remove('dark-mode');
+             aplicarPlanoDeFundoInicial(fichas[currentFichaId]);
+             aplicarEstilosFichaInicial(fichas[currentFichaId]);
+             aplicarFonteInicial(fichas[currentFichaId]);
+             aplicarCoresDadoInicial(fichas[currentFichaId]);
+             aplicarCustomizacoesDadoInicial(fichas[currentFichaId]);
+             aplicarEstilosDeFundoVisuais();
+             aplicarEstilosDeSombra();
+        }
+
         function abrirModalCustomizacao() {
             const ficha = fichas[currentFichaId] || {};
+            // Save a snapshot of the current state before opening
+             customizacaoEstadoAntesDeAbrir = {
+                backgroundImage: ficha.backgroundImage,
+                backgroundSize: ficha.backgroundSize,
+                backgroundAttachment: ficha.backgroundAttachment,
+                backgroundColor: ficha.backgroundColor,
+                fichaInternalBackgroundColor: ficha.fichaInternalBackgroundColor,
+                fichaTransparencyLevel: ficha.fichaTransparencyLevel,
+                darkMode: ficha.darkMode,
+                fontFamily: ficha.fontFamily,
+                theme: ficha.theme,
+                diceColor: ficha.diceColor,
+                diceNumberColor: ficha.diceNumberColor,
+                texturaDado: ficha.texturaDado,
+                animacaoDado: ficha.animacaoDado,
+                corBordaSecao: ficha.corBordaSecao,
+                estiloBordaSecao: ficha.estiloBordaSecao,
+                larguraBordaSecao: ficha.larguraBordaSecao,
+                shadowColorFicha: ficha.shadowColorFicha,
+                shadowIntensityFicha: ficha.shadowIntensityFicha,
+            };
+            
+            // Populate the modal with current (or default) values
             const isDarkModeActive = document.body.classList.contains('dark-mode');
             const defaultLightPage = '#f0e6d2';
             const defaultDarkPage = '#121212';
-            const defaultLightInternal = '#f0e6d2';
-
-            const currentTheme = ficha.theme || 'theme-medieval';
-            if (currentTheme.startsWith('theme-elemental')) {
-                themeSelector.value = 'theme-elemental';
-                elementalThemeGroup.style.display = 'block';
-                elementalThemeSelector.value = currentTheme.split('-').pop();
-            } else {
-                themeSelector.value = currentTheme;
-                elementalThemeGroup.style.display = 'none';
-            }
-
+            
+            themeSelector.value = ficha.theme || 'theme-medieval';
+            if (themeSelector.value === 'theme-elemental') elementalThemeGroup.style.display = 'block'; else elementalThemeGroup.style.display = 'none';
+            elementalThemeSelector.value = ficha.theme.split('-').pop();
 
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal); // Default to matriz dark or page dark if dark mode, else light
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? '#1e1e1e' : '#f0e6d2');
+            corBordaSecaoInput.value = ficha.corBordaSecao || (isDarkModeActive ? '#555' : '#b8860b');
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
 
             const bgSize = ficha?.backgroundSize || 'cover';
@@ -3546,11 +3706,7 @@ html
                 radio.checked = (radio.value === bgSize);
             });
             backgroundImageInput.value = "";
-
-            corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
-            estiloBordaSecaoSelect.value = ficha.estiloBordaSecao || 'solid';
-            larguraBordaSecaoInput.value = parseInt(ficha.larguraBordaSecao) || 2;
-
+            
             diceColorInput.value = ficha.diceColor || (isDarkModeActive ? '#1e1e1e' : '#f0e6d2');
             diceNumberColorInput.value = ficha.diceNumberColor || (isDarkModeActive ? '#e0e0e0' : '#000000');
             diceAnimationSelector.value = ficha.animacaoDado || 'padrao';
@@ -3563,10 +3719,10 @@ html
             shadowColorFichaInput.value = ficha.shadowColorFicha || '#000000';
             shadowIntensityFichaSlider.value = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             shadowIntensityFichaValueSpan.textContent = shadowIntensityFichaSlider.value;
-
+            
+            showCustomTab('aparencia'); // Start on the first tab
             customizacaoModal.style.display = "flex";
         }
-
         function aplicarPlanoDeFundo() {
             const file = backgroundImageInput.files[0];
             const selectedSizeOption = document.querySelector('#customizacao-modal input[name="background-size"]:checked');
@@ -3578,42 +3734,36 @@ html
                 reader.onload = e => {
                     const imageUrl = e.target.result;
                     document.body.style.backgroundImage = `url('${imageUrl}')`;
-                    document.body.style.backgroundSize = selectedSize;
-                    document.body.style.backgroundAttachment = attachment;
-                    if (fichas[currentFichaId]) {
-                         fichas[currentFichaId].backgroundImage = imageUrl;
-                         fichas[currentFichaId].backgroundSize = selectedSize;
-                         fichas[currentFichaId].backgroundAttachment = attachment;
-                    }
-                    salvarDados();
-                    showNotification("Imagem de fundo da página aplicada!", "save-success");
+                     if (fichas[currentFichaId]) customizacaoEstadoAntesDeAbrir.backgroundImage = imageUrl;
+                    aplicarPlanoDeFundo(null); // Call again to apply size/attachment
                 };
                 reader.readAsDataURL(file);
-            } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
-                document.body.style.backgroundSize = selectedSize;
-                document.body.style.backgroundAttachment = attachment;
-                if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].backgroundSize = selectedSize;
-                    fichas[currentFichaId].backgroundAttachment = attachment;
-                }
-                salvarDados();
-                showNotification("Configurações do plano de fundo da página atualizadas!", "save-success");
-            } else {
-                alert("Nenhuma imagem selecionada para aplicar como plano de fundo da página.");
+                return; // Stop here and let the file load first
             }
+             if (fichas[currentFichaId]) {
+                 customizacaoEstadoAntesDeAbrir.backgroundSize = selectedSize;
+                 customizacaoEstadoAntesDeAbrir.backgroundAttachment = attachment;
+            }
+
+            document.body.style.backgroundSize = selectedSize;
+            document.body.style.backgroundAttachment = attachment;
+            salvarDados();
+            showNotification("Configurações do plano de fundo da página aplicadas!", "save-success");
         }
 
         function excluirPlanoDeFundo() {
-            if (confirm("Remover imagem de fundo da página?")) {
+            if (confirm("Remover cor e imagem de fundo da página?")) {
+                 if(fichas[currentFichaId]) {
+                     customizacaoEstadoAntesDeAbrir.backgroundImage = null;
+                     customizacaoEstadoAntesDeAbrir.backgroundColor = document.body.classList.contains('dark-mode') ? '#121212' : '#f0e6d2';
+                 }
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll';
-                if (fichas[currentFichaId]) {
-                     fichas[currentFichaId].backgroundImage = null;
-                     fichas[currentFichaId].backgroundSize = 'cover';
-                     fichas[currentFichaId].backgroundAttachment = 'scroll';
-                }
+                backgroundColorInput.value = customizacaoEstadoAntesDeAbrir.backgroundColor;
+                document.body.style.backgroundColor = customizacaoEstadoAntesDeAbrir.backgroundColor;
+
                 salvarDados();
-                showNotification("Imagem de fundo da página removida!", "save-success");
+                showNotification("Fundo da página restaurado!", "save-success");
             }
         }
 
@@ -3630,30 +3780,24 @@ html
                 document.body.style.backgroundImage = 'none';
                 document.body.style.backgroundAttachment = 'scroll';
             }
+             document.body.style.backgroundColor = ficha.backgroundColor || (ficha.darkMode ? '#121212' : '#f0e6d2');
         }
 
-        function aplicarEstilosDeFundoVisuais() {
-            const ficha = fichas[currentFichaId] || {};
+        function aplicarEstilosDeFundoVisuais(livePreviewState) {
+            const ficha = livePreviewState || fichas[currentFichaId] || {};
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
             const defaultLightPageBg = '#f0e6d2';
             const defaultDarkPageBg = '#121212';
             document.body.style.backgroundColor = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
-            if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
-
 
             let currentTransparencyPercent = (ficha && ficha.fichaTransparencyLevel !== undefined) ? parseInt(ficha.fichaTransparencyLevel) : 100;
             let alpha = currentTransparencyPercent / 100.0;
-
+            
             const fichaContainerDefaultDark = '#121212';
             const fichaContainerDefaultLight = '#f0e6d2';
-            const sectionDefaultDark = '#1e1e1e';
-            const sectionDefaultLight = '#f0e6d2';
-
 
             let baseFichaContainerColorHex = isDarkModeActive ? fichaContainerDefaultDark : (ficha.fichaInternalBackgroundColor || fichaContainerDefaultLight);
-            let baseSectionColorHex = isDarkModeActive ? sectionDefaultDark : (ficha.fichaInternalBackgroundColor || sectionDefaultLight);
-
 
             const rgbFichaContainer = hexToRgb(baseFichaContainerColorHex);
             if (rgbFichaContainer) {
@@ -3662,110 +3806,130 @@ html
                 fichaContainer.style.backgroundColor = baseFichaContainerColorHex;
             }
             if(isDarkModeActive) fichaContainer.style.color = '#e0e0e0'; else fichaContainer.style.color = '#000';
-
-
-            document.querySelectorAll('#ficha-container section, #ficha-container .atributos-coluna-destaque, #ficha-container .medieval-box, #ficha-container .atributo-container').forEach(el => {
-                 let baseColorForElement;
-                 if (isDarkModeActive) {
-                    if (el.matches('.atributos-coluna-destaque')) baseColorForElement = '#333';
-                    else if (el.matches('.medieval-box')) baseColorForElement = '#1e1e1e';
-                    else if (el.matches('.atributo-container')) baseColorForElement = 'rgba(50, 50, 50, 0.8)'; // Default dark for this one
-                    else baseColorForElement = sectionDefaultDark; // Default dark for sections
-                 } else {
-                    if (el.matches('.atributos-coluna-destaque')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#fff';
-                    else if (el.matches('.medieval-box')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#f0e6d2';
-                    else if (el.matches('.atributo-container')) baseColorForElement = ficha.fichaInternalBackgroundColor || 'rgba(255, 255, 255, 0.8)';
-                    else baseColorForElement = ficha.fichaInternalBackgroundColor || sectionDefaultLight;
-                 }
-
-                const rgbEl = hexToRgb(baseColorForElement);
-                if (rgbEl) {
-                    el.style.backgroundColor = `rgba(${rgbEl.r}, ${rgbEl.g}, ${rgbEl.b}, ${alpha})`;
-                } else {
-                     // Handle cases where baseColorForElement might already have alpha (like 'rgba(50,50,50,0.8)')
-                    if (baseColorForElement.startsWith('rgba')) {
-                        const parts = baseColorForElement.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-                        if (parts) {
-                            el.style.backgroundColor = `rgba(${parts[1]}, ${parts[2]}, ${parts[3]}, ${alpha})`;
-                        } else {
-                            el.style.backgroundColor = baseColorForElement; // Fallback
-                        }
-                    } else {
-                        el.style.backgroundColor = baseColorForElement; // Fallback for non-hex, non-rgba
-                    }
-                }
-            });
-
-            if (fichaInternalBackgroundColorInput) {
-                 fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? sectionDefaultDark : sectionDefaultLight);
-            }
         }
 
+        function aplicarEstilosDeSombra() {
+             const ficha = (customizacaoModal.style.display === 'flex') ? customizacaoEstadoAntesDeAbrir : (fichas[currentFichaId] || {});
+            const isDarkModeActive = document.body.classList.contains('dark-mode');
+             let fichaInternalShadowString = 'transparent 0 0 0 0 inset';
 
+            if (!isDarkModeActive) {
+                const intensityFicha = ficha.shadowIntensityFicha || 0;
+                const colorFicha = ficha.shadowColorFicha || '#000000';
+                 if (intensityFicha > 0) {
+                    const internalBlurPx = intensityFicha * 0.5;
+                    const internalSpreadPx = intensityFicha * 0.2;
+                    fichaInternalShadowString = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
+                }
+            }
+            document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalShadowString);
+        }
+
+        // --- UPDATED LIVE PREVIEW EVENT LISTENERS ---
         backgroundColorInput.addEventListener('input', (event) => {
-            if(fichas[currentFichaId]) fichas[currentFichaId].backgroundColor = event.target.value;
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
+            customizacaoEstadoAntesDeAbrir.backgroundColor = event.target.value;
+            aplicarEstilosDeFundoVisuais(customizacaoEstadoAntesDeAbrir);
         });
-
         fichaInternalBackgroundColorInput.addEventListener('input', (event) => {
-            if(fichas[currentFichaId]) fichas[currentFichaId].fichaInternalBackgroundColor = event.target.value;
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
+            customizacaoEstadoAntesDeAbrir.fichaInternalBackgroundColor = event.target.value;
+             aplicarEstilosDeFundoVisuais(customizacaoEstadoAntesDeAbrir);
+        });
+         corBordaSecaoInput.addEventListener('input', (event) => {
+            customizacaoEstadoAntesDeAbrir.corBordaSecao = event.target.value;
+            aplicarEstilosFichaInicial(customizacaoEstadoAntesDeAbrir);
+        });
+        fontSelector.addEventListener('change', (event) => {
+             const selectedFont = event.target.value;
+            customizacaoEstadoAntesDeAbrir.fontFamily = selectedFont;
+            document.body.style.fontFamily = selectedFont;
+            if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
         });
 
         if (fichaTransparencySlider) {
             fichaTransparencySlider.addEventListener('input', (event) => {
                 const level = event.target.value;
                 if (fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = level;
-                if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].fichaTransparencyLevel = parseInt(level);
-                    aplicarEstilosDeFundoVisuais();
-                    salvarDados();
-                }
+                 customizacaoEstadoAntesDeAbrir.fichaTransparencyLevel = parseInt(level);
+                aplicarEstilosDeFundoVisuais(customizacaoEstadoAntesDeAbrir);
             });
         }
+         shadowColorFichaInput.addEventListener('input', (event) => {
+            customizacaoEstadoAntesDeAbrir.shadowColorFicha = event.target.value;
+            aplicarEstilosDeSombra();
+        });
+        shadowIntensityFichaSlider.addEventListener('input', (event) => {
+            const intensity = parseInt(event.target.value);
+            shadowIntensityFichaValueSpan.textContent = intensity;
+            customizacaoEstadoAntesDeAbrir.shadowIntensityFicha = intensity;
+            aplicarEstilosDeSombra();
+        });
+        diceColorInput.addEventListener('input', (event) => {
+            customizacaoEstadoAntesDeAbrir.diceColor = event.target.value;
+            aplicarCoresDadoInicial(customizacaoEstadoAntesDeAbrir);
+        });
+        diceNumberColorInput.addEventListener('input', (event) => {
+            customizacaoEstadoAntesDeAbrir.diceNumberColor = event.target.value;
+            aplicarCoresDadoInicial(customizacaoEstadoAntesDeAbrir);
+        });
 
-        function restaurarOpacidadePadraoFicha() {
-            if (fichas[currentFichaId]) {
-                fichas[currentFichaId].fichaTransparencyLevel = 100;
-            }
-            if (fichaTransparencySlider) fichaTransparencySlider.value = 100;
-            if (fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = "100";
+         // --- NEW Reset functions for modal sections ---
+        function restaurarFontesCoresPadrao() {
+             const isDark = document.body.classList.contains('dark-mode');
+             customizacaoEstadoAntesDeAbrir.fichaInternalBackgroundColor = isDark ? '#1e1e1e' : '#f0e6d2';
+             customizacaoEstadoAntesDeAbrir.corBordaSecao = isDark ? '#555' : '#b8860b';
+             customizacaoEstadoAntesDeAbrir.fontFamily = "'Inter', sans-serif";
+             // Update controls and apply live preview
+             fichaInternalBackgroundColorInput.value = customizacaoEstadoAntesDeAbrir.fichaInternalBackgroundColor;
+             corBordaSecaoInput.value = customizacaoEstadoAntesDeAbrir.corBordaSecao;
+             fontSelector.value = customizacaoEstadoAntesDeAbrir.fontFamily;
+             aplicarEstilosDeFundoVisuais(customizacaoEstadoAntesDeAbrir);
+             aplicarEstilosFichaInicial(customizacaoEstadoAntesDeAbrir);
+             aplicarFonteInicial(customizacaoEstadoAntesDeAbrir);
+             showNotification("Fontes e Cores restauradas.", "save-success");
+        }
 
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
-            showNotification("Opacidade da ficha restaurada para o padrão!", "save-success");
+        function restaurarEfeitosPadrao() {
+             customizacaoEstadoAntesDeAbrir.fichaTransparencyLevel = 100;
+             customizacaoEstadoAntesDeAbrir.shadowColorFicha = '#000000';
+             customizacaoEstadoAntesDeAbrir.shadowIntensityFicha = 0;
+             // Update controls and apply live preview
+             fichaTransparencySlider.value = 100;
+             fichaTransparencyValueSpan.textContent = '100';
+             shadowColorFichaInput.value = '#000000';
+             shadowIntensityFichaSlider.value = 0;
+             shadowIntensityFichaValueSpan.textContent = '0';
+             aplicarEstilosDeFundoVisuais(customizacaoEstadoAntesDeAbrir);
+             aplicarEstilosDeSombra();
+              showNotification("Efeitos visuais restaurados.", "save-success");
+        }
+        
+        function restaurarDadoPadrao() {
+            const isDark = document.body.classList.contains('dark-mode');
+            customizacaoEstadoAntesDeAbrir.diceColor = isDark ? '#1e1e1e' : '#f0e6d2';
+            customizacaoEstadoAntesDeAbrir.diceNumberColor = isDark ? '#e0e0e0' : '#000000';
+            customizacaoEstadoAntesDeAbrir.texturaDado = null;
+            customizacaoEstadoAntesDeAbrir.animacaoDado = 'padrao';
+             // Update controls and apply live preview
+            diceColorInput.value = customizacaoEstadoAntesDeAbrir.diceColor;
+            diceNumberColorInput.value = customizacaoEstadoAntesDeAbrir.diceNumberColor;
+            diceTextureInput.value = "";
+            diceAnimationSelector.value = 'padrao';
+            aplicarCoresDadoInicial(customizacaoEstadoAntesDeAbrir);
+            aplicarTexturaDado(null);
+            showNotification("Aparência do dado restaurada.", "save-success");
         }
 
 
-        fontSelector.addEventListener('change', (event) => {
-            const selectedFont = event.target.value;
-            document.body.style.fontFamily = selectedFont;
-            if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
-            if (fichas[currentFichaId]) fichas[currentFichaId].fontFamily = selectedFont;
-            salvarDados();
-        });
+        // --- ORIGINAL FUNCTIONS ADJUSTED FOR LIVE PREVIEW OR NEW CONTEXTS ---
 
+        fontSelector.onchange = null; // Remove old direct event binding
         function aplicarFonteInicial(ficha) {
             const defaultFont = "'Inter', sans-serif";
             const bodyFont = ficha?.fontFamily || defaultFont;
             document.body.style.fontFamily = bodyFont;
             if (fichaContainer) fichaContainer.style.fontFamily = bodyFont;
-            fontSelector.value = bodyFont;
+            if(fontSelector) fontSelector.value = bodyFont;
         }
-
-        diceColorInput.addEventListener('input', (event) => {
-            diceRoll.style.setProperty('--dice-bg-color', event.target.value);
-            if(fichas[currentFichaId]) fichas[currentFichaId].diceColor = event.target.value;
-            salvarDados();
-        });
-
-        diceNumberColorInput.addEventListener('input', (event) => {
-            diceRoll.style.setProperty('--dice-number-color', event.target.value);
-            if(fichas[currentFichaId]) fichas[currentFichaId].diceNumberColor = event.target.value;
-            salvarDados();
-        });
 
         function aplicarCoresDadoInicial(ficha) {
             const isDarkMode = document.body.classList.contains('dark-mode');
@@ -3782,509 +3946,6 @@ html
             if(diceNumberColorInput) diceNumberColorInput.value = diceNumCol;
         }
 
-        function aplicarEstilosDeSombra() {
-            const ficha = fichas[currentFichaId];
-            if (!ficha) return;
-            const isDarkModeActive = document.body.classList.contains('dark-mode');
-
-            let fichaInternalShadowString = 'transparent 0 0 0 0 inset';
-            let sectionInternalShadowString = 'none';
-
-            if (!isDarkModeActive) {
-                const intensityFicha = ficha.shadowIntensityFicha || 0;
-                const colorFicha = ficha.shadowColorFicha || '#000000';
-
-                if (intensityFicha > 0) {
-                    const internalBlurPx = intensityFicha * 0.5;
-                    const internalSpreadPx = intensityFicha * 0.2;
-                    const commonInsetShadow = `inset 0 0 ${internalBlurPx}px ${internalSpreadPx}px ${colorFicha}`;
-                    fichaInternalShadowString = commonInsetShadow;
-                    sectionInternalShadowString = commonInsetShadow;
-                }
-            }
-
-            document.documentElement.style.setProperty('--ficha-internal-glow', fichaInternalShadowString);
-
-            document.querySelectorAll('#ficha-container section').forEach(sec => {
-                if (isDarkModeActive) {
-                    sec.style.boxShadow = 'none';
-                } else {
-                    sec.style.boxShadow = sectionInternalShadowString;
-                }
-            });
-
-            if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined) {
-                if (isDarkModeActive) {
-                    fichaContainer.classList.remove("aura-azul");
-                } else {
-                    fichaContainer.classList.add("aura-azul");
-                }
-            } else {
-                fichaContainer.classList.remove("aura-azul");
-            }
-        }
-
-
-        function restaurarSombraPadrao() {
-            if (fichas[currentFichaId]) {
-                fichas[currentFichaId].shadowColorFicha = '#000000';
-                fichas[currentFichaId].shadowIntensityFicha = 0;
-            }
-            shadowColorFichaInput.value = '#000000';
-            shadowIntensityFichaSlider.value = 0;
-            shadowIntensityFichaValueSpan.textContent = '0';
-
-            aplicarEstilosDeSombra();
-            salvarDados();
-            showNotification("Sombra restaurada para o padrão!", "save-success");
-        }
-
-        shadowColorFichaInput.addEventListener('input', (event) => {
-            if (fichas[currentFichaId]) fichas[currentFichaId].shadowColorFicha = event.target.value;
-            aplicarEstilosDeSombra();
-            salvarDados();
-        });
-        shadowIntensityFichaSlider.addEventListener('input', (event) => {
-            const intensity = parseInt(event.target.value);
-            shadowIntensityFichaValueSpan.textContent = intensity;
-            if (fichas[currentFichaId]) fichas[currentFichaId].shadowIntensityFicha = intensity;
-            aplicarEstilosDeSombra();
-            salvarDados();
-        });
-
-        diceHistoryTrigger.addEventListener('click', () => {
-            if (diceHistoryPanel.style.display === 'flex') {
-                diceHistoryPanel.style.display = 'none';
-                return;
-            }
-            if (anotacoesTextarea.style.display === 'block') {
-                anotacoesTextarea.style.display = 'none';
-            }
-            abrirPainelHistoricoDados();
-        });
-
-
-        function abrirPainelHistoricoDados() {
-            diceHistoryPanel.style.display = 'flex';
-            if (!fichas[currentFichaId] || !fichas[currentFichaId].diceRolls || fichas[currentFichaId].diceRolls.length === 0) {
-                diceHistoryList.innerHTML = '<div class="dice-history-item">Nenhuma rolagem registrada.</div>';
-                return;
-            }
-
-            const rolls = fichas[currentFichaId].diceRolls;
-            diceHistoryList.innerHTML = rolls.map(roll => `
-                <div class="dice-history-item">
-                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
-                    <span class="timestamp">${roll.timestamp}</span>
-                </div>
-            `).join('');
-        }
-
-        fecharHistoricoBtn.addEventListener('click', () => {
-            diceHistoryPanel.style.display = 'none';
-        });
-
-        limparHistoricoBtn.addEventListener('click', () => {
-            senhaGmTitulo.textContent = "Permissão do GM para Limpar Histórico";
-            document.getElementById("senha-gm-modal").style.display = "flex";
-            document.getElementById("senha-gm-input").value = "";
-            document.getElementById("senha-gm-input").focus();
-            document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                                        if (fichas[currentFichaId]) {
-                        fichas[currentFichaId].diceRolls = [];
-                        salvarDados();
-                        abrirPainelHistoricoDados();
-                        showNotification("Histórico de rolagens limpo!", "save-success");
-                    }
-                    fecharModal("senha-gm-modal");
-                } else {
-                    alert("Senha do GM incorreta!");
-                    fecharModal("senha-gm-modal");
-                }
-            };
-        });
-
-        function aplicarFeedbackBotao(botao) {
-            if (!botao) return;
-            botao.classList.add('button-clicked');
-            setTimeout(() => {
-                botao.classList.remove('button-clicked');
-            }, 150);
-        }
-
-        function aplicarEstadoColapsoSecoes(collapsedSections) {
-            document.querySelectorAll('#ficha-content section').forEach(section => {
-                const sectionId = section.id;
-                const content = section.querySelector('.section-content');
-                const icon = section.querySelector('.collapse-icon');
-                if (content && icon) {
-                    if (collapsedSections && collapsedSections[sectionId]) {
-                        content.classList.add('collapsed');
-                        icon.textContent = '►';
-                        icon.classList.add('collapsed');
-                    } else {
-                        content.classList.remove('collapsed');
-                        icon.textContent = '▼';
-                        icon.classList.remove('collapsed');
-                    }
-                }
-            });
-        }
-
-        function toggleCollapseSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (!section) return;
-            const content = section.querySelector('.section-content');
-            const icon = section.querySelector('.collapse-icon');
-
-            if (content && icon) {
-                const isCollapsed = content.classList.toggle('collapsed');
-                icon.classList.toggle('collapsed', isCollapsed);
-                icon.textContent = isCollapsed ? '►' : '▼';
-
-                if (!fichas[currentFichaId].collapsedSections) {
-                    fichas[currentFichaId].collapsedSections = {};
-                }
-                fichas[currentFichaId].collapsedSections[sectionId] = isCollapsed;
-                salvarDados();
-            }
-        }
-
-               function setupHoldButtonEvents(buttonElement, actionFunction) {
-            if (!buttonElement) return;
-            let isActionActive = false;
-
-            const startAction = (event) => {
-                 if (event.type === 'touchstart' && event.cancelable) {
-                     event.preventDefault();
-                }
-
-                if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                    abrirModalSenha(buttonElement);
-                    return;
-                }
-                if (isActionActive) return;
-                isActionActive = true;
-
-                actionFunction();
-                if (currentActionIntervalId) clearInterval(currentActionIntervalId);
-                currentActionIntervalId = setInterval(actionFunction, REPEAT_DELAY_MS);
-            };
-
-            const stopAction = () => {
-                if (!isActionActive) return;
-                clearInterval(currentActionIntervalId);
-                currentActionIntervalId = null;
-                isActionActive = false;
-            };
-
-            buttonElement.addEventListener('mousedown', startAction);
-            buttonElement.addEventListener('mouseup', stopAction);
-            buttonElement.addEventListener('mouseleave', stopAction);
-            buttonElement.addEventListener('touchstart', startAction, { passive: false });
-            buttonElement.addEventListener('touchend', stopAction);
-            buttonElement.addEventListener('touchcancel', stopAction);
-        }
-
-        // --- NEW --- Funções para alterar atributos primários e XP com botões
-        function changeAttribute(inputId, delta) {
-            const input = document.getElementById(inputId);
-            if (!input) return;
-
-            // Bloqueio de Ficha
-            if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                abrirModalSenha(input.parentElement.querySelector('.attr-btn'));
-                return;
-            }
-
-            let currentValue = parseInt(input.value) || 0;
-            let newValue = currentValue + delta;
-
-            const ficha = fichas[currentFichaId];
-            if (!ficha) return;
-
-            // Checagem de valor mínimo (valor travado)
-            const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[input.id] !== undefined)
-                                ? ficha.lockedAtributos[input.id] : 0;
-            if (newValue < lockedValue) {
-                if(delta < 0) showNotification("O valor não pode ser menor que o mínimo salvo.", "normal-result", 1500);
-                return;
-            }
-
-            // Checagem de Pontos de Habilidade (PD) disponíveis
-            const pdRestantes = parseInt(pontosHabilidadeSpan.textContent) || 0;
-            if (delta > 0 && pdRestantes <= 0) {
-                 showNotification("Sem Pontos de Habilidade para gastar.", "normal-result", 1500);
-                 return;
-            }
-
-            input.value = newValue;
-            // Dispara o evento de 'input' para rodar todas as validações e recálculos
-            input.dispatchEvent(new Event('input', { bubbles:true }));
-        }
-
-        function changeXp(delta) {
-             // Checagem de bloqueio do campo XP
-            if (!isXpUnlocked) {
-                 confirmarDesbloqueioExperienciaComBotao();
-                 return;
-            }
-             // Checagem de bloqueio da ficha
-            if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
-                abrirModalSenha(experienciaInput);
-                return;
-            }
-            
-            let currentValue = parseInt(experienciaInput.value) || 0;
-            let newValue = Math.max(0, currentValue + delta); // XP não pode ser negativo
-            experienciaInput.value = newValue;
-            experienciaInput.dispatchEvent(new Event('input', { bubbles:true }));
-        }
-        // --- END NEW ---
-
-        function showCustomTooltip(targetElement) {
-            const tooltipText = targetElement.getAttribute('title');
-            if (!tooltipText || !customTooltipElement) return;
-
-            customTooltipElement.innerHTML = tooltipText;
-            const rect = targetElement.getBoundingClientRect();
-
-            let top = rect.bottom + window.scrollY + 5;
-            let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
-
-            if (left < 0) left = 5;
-            if (left + customTooltipElement.offsetWidth > window.innerWidth) {
-                left = window.innerWidth - customTooltipElement.offsetWidth - 5;
-            }
-            if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
-                top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5;
-            }
-
-            customTooltipElement.style.top = `${top}px`;
-            customTooltipElement.style.left = `${left}px`;
-            customTooltipElement.classList.add('visible');
-        }
-
-        function hideCustomTooltip() {
-            if (customTooltipElement) {
-                customTooltipElement.classList.remove('visible');
-            }
-        }
-
-        function setupAttributeTooltips() {
-            const attributeLabels = [
-                document.querySelector('label[for="forca"]'),
-                document.querySelector('label[for="destreza"]'),
-                document.querySelector('label[for="agilidade"]'),
-                document.querySelector('label[for="constituicao"]'),
-                document.querySelector('label[for="inteligencia"]')
-            ];
-
-            attributeLabels.forEach(label => {
-                if (label) {
-                    label.addEventListener('mouseenter', (event) => {
-                        clearTimeout(tooltipTimeoutId);
-                        tooltipTimeoutId = setTimeout(() => {
-                            showCustomTooltip(event.target);
-                        }, 3000);
-                    });
-
-                    label.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutId);
-                        hideCustomTooltip();
-                    });
-                }
-            });
-        }
-
-        gmModeBtn.addEventListener('click', () => {
-            if (isGmModeActive) {
-                isGmModeActive = false;
-                document.body.classList.remove('gm-mode-active');
-                gmModeBtn.classList.remove('gm-active');
-                gmModeBtn.textContent = "Modo Mestre GM 👑";
-                showNotification("Modo Mestre desativado.", "normal-result");
-                 // Re-evaluate attribute inputs against locked values if GM mode is turned off
-                atributosInputs.forEach(inputTarget => {
-                    const ficha = fichas[currentFichaId];
-                    if (!ficha) return;
-                    let currentValue = parseInt(inputTarget.value) || 0;
-                    const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[inputTarget.id] !== undefined)
-                                        ? ficha.lockedAtributos[inputTarget.id]
-                                        : 0;
-                    if (currentValue < lockedValue) { // No !isGmModeActive here, because we are *exiting* GM mode
-                        inputTarget.value = lockedValue; // Revert to locked if below
-                    }
-                });
-                calcularAtributos(); // Recalculate based on potentially reverted values
-                salvarDados();
-            } else {
-                senhaGmTitulo.textContent = "Ativar Modo Mestre";
-                document.getElementById("senha-gm-modal").style.display = "flex";
-                document.getElementById("senha-gm-input").value = "";
-                document.getElementById("senha-gm-input").focus();
-                document.getElementById("confirmar-senha-gm-btn").onclick = () => {
-                    if (document.getElementById("senha-gm-input").value === senhaMatriz) {
-                        isGmModeActive = true;
-                        document.body.classList.add('gm-mode-active');
-                        gmModeBtn.classList.add('gm-active');
-                        gmModeBtn.textContent = "Modo Mestre Ativo 👑";
-                        fecharModal("senha-gm-modal");
-                        showNotification("Modo Mestre ativado!", "critical-success");
-                    } else {
-                        alert("Senha do Mestre incorreta!");
-                        fecharModal("senha-gm-modal");
-                    }
-                };
-            }
-        });
-
-        function handleGmEdit(event) {
-            if (!isGmModeActive) return;
-            const targetIcon = event.target;
-            if (!targetIcon.classList.contains('gm-edit-icon')) return;
-
-            const targetId = targetIcon.dataset.targetId;
-            const fieldLabel = targetIcon.dataset.label || targetId;
-            const targetElement = document.getElementById(targetId);
-
-            if (!targetElement) return;
-
-            const isPrimaryAttributeInput = atributosInputs.some(input => input.id === targetId);
-            let currentValueToEdit;
-
-            if (isPrimaryAttributeInput) {
-                currentValueToEdit = targetElement.value;
-            } else {
-                currentValueToEdit = targetElement.textContent;
-            }
-
-            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValueToEdit);
-
-            if (newValueString !== null) {
-                let newValue = newValueString;
-                const numericFields = ['vida-total', 'magia-total', 'vigor-total', 'ataque', 'ataque-magico', 'acerto', 'esquiva', 'rdf', 'rdm', 'velocidade-corrida', 'altura-pulo', 'distancia-pulo', 'pontos-habilidade', 'pontos-vantagem', 'nivel', 'capacidade-carga', 'forca', 'destreza', 'agilidade', 'constituicao', 'inteligencia'];
-
-                if (numericFields.includes(targetId)) {
-                    const parsedNum = parseFloat(newValueString);
-                    if (!isNaN(parsedNum)) {
-                        newValue = parsedNum;
-                    } else {
-                         alert("Valor inválido para este campo numérico.");
-                         return;
-                    }
-                }
-
-                const ficha = fichas[currentFichaId];
-                if (!ficha.gmOverrides) {
-                    ficha.gmOverrides = {};
-                }
-
-                if (isPrimaryAttributeInput) {
-                    targetElement.value = newValue;
-
-                } else {
-                    ficha.gmOverrides[targetId] = newValue;
-                }
-
-                salvarDados();
-                atualizarNivel();
-
-                showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
-            }
-        }
-        fichaContainer.addEventListener('click', handleGmEdit);
-
-        function aplicarEstilosFicha() {
-            const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultDarkBorder = '#555';
-            const defaultLightBorder = '#b8860b';
-
-            const novaCorBordaCustom = corBordaSecaoInput.value;
-            const novoEstiloBorda = estiloBordaSecaoSelect.value;
-            const novaLarguraBorda = larguraBordaSecaoInput.value + 'px';
-
-            const corBordaFinal = isDarkModeActive ? defaultDarkBorder : novaCorBordaCustom;
-
-            document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
-            document.documentElement.style.setProperty('--estilo-borda-secao', novoEstiloBorda);
-            document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
-
-            if (fichas[currentFichaId]) {
-                fichas[currentFichaId].corBordaSecao = novaCorBordaCustom;
-                fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
-                fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
-            }
-            salvarDados();
-            showNotification("Estilos de seção aplicados!", "save-success");
-        }
-
-        function aplicarEstilosFichaInicial(ficha) {
-            const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultDarkBorder = '#555';
-            const defaultLightBorder = '#b8860b';
-
-            const corBordaCustom = ficha.corBordaSecao || defaultLightBorder;
-            const estiloBorda = ficha.estiloBordaSecao || 'solid';
-            const larguraBorda = ficha.larguraBordaSecao || '2px';
-
-            const corBordaFinal = isDarkModeActive ? defaultDarkBorder : corBordaCustom;
-
-            document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
-            document.documentElement.style.setProperty('--estilo-borda-secao', estiloBorda);
-            document.documentElement.style.setProperty('--largura-borda-secao', larguraBorda);
-
-            if (corBordaSecaoInput) corBordaSecaoInput.value = corBordaCustom;
-            if (estiloBordaSecaoSelect) estiloBordaSecaoSelect.value = estiloBorda;
-            if (larguraBordaSecaoInput) larguraBordaSecaoInput.value = parseInt(larguraBorda) || 2;
-        }
-
-
-        diceTextureInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    aplicarTexturaDado(e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        removeDiceTextureBtn.addEventListener('click', () => {
-            if (confirm("Remover textura do dado?")) {
-                aplicarTexturaDado(null);
-            }
-        });
-
-        function aplicarTexturaDado(imageDataUrl) {
-            const ficha = fichas[currentFichaId];
-            if (imageDataUrl) {
-                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`;
-                if (ficha) ficha.texturaDado = imageDataUrl;
-            } else {
-                diceRoll.style.backgroundImage = 'none';
-                if (ficha) ficha.texturaDado = null;
-                 diceTextureInput.value = "";
-            }
-            if (ficha) salvarDados();
-            showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
-        }
-
-        diceAnimationSelector.addEventListener('change', () => {
-            aplicarAnimacaoDado(diceAnimationSelector.value);
-        });
-
-        function aplicarAnimacaoDado(animacao) {
-            const ficha = fichas[currentFichaId];
-            if (ficha) {
-                ficha.animacaoDado = animacao;
-                salvarDados();
-            }
-             showNotification("Animação do dado alterada!", "save-success");
-        }
-
        function aplicarCustomizacoesDadoInicial(ficha) {
             if (ficha.texturaDado) {
                 diceRoll.style.backgroundImage = `url('${ficha.texturaDado}')`;
@@ -4295,8 +3956,48 @@ html
                  diceAnimationSelector.value = ficha.animacaoDado;
             }
         }
+        
+         function aplicarEstilosFichaInicial(ficha) {
+            const isDarkModeActive = document.body.classList.contains('dark-mode');
+            const defaultDarkBorder = '#555';
+            const defaultLightBorder = '#b8860b';
 
+            const corBordaCustom = ficha.corBordaSecao || defaultLightBorder;
 
+            const corBordaFinal = isDarkModeActive ? defaultDarkBorder : corBordaCustom;
+
+            document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
+        }
+
+        // Event listener setups that depend on customizacaoEstadoAntesDeAbrir for live preview
+        diceTextureInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                     customizacaoEstadoAntesDeAbrir.texturaDado = e.target.result;
+                     aplicarTexturaDado(e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+        removeDiceTextureBtn.addEventListener('click', () => {
+             customizacaoEstadoAntesDeAbrir.texturaDado = null;
+             aplicarTexturaDado(null);
+        });
+         diceAnimationSelector.addEventListener('change', () => {
+            customizacaoEstadoAntesDeAbrir.animacaoDado = diceAnimationSelector.value;
+        });
+
+       function aplicarTexturaDado(imageDataUrl) {
+            if (imageDataUrl) {
+                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`;
+            } else {
+                diceRoll.style.backgroundImage = 'none';
+                diceTextureInput.value = "";
+            }
+        }
+        
         /***************************************************
         *               THEME FUNCTIONS START                *
         ****************************************************/
@@ -4313,28 +4014,13 @@ html
             if (novoTema === 'theme-elemental') {
                 novoTema += '-' + elementalThemeSelector.value;
             }
-            previousTheme = getCurrentThemeFromClasses();
+            customizacaoEstadoAntesDeAbrir.theme = novoTema;
             limparClassesDeTema();
             aplicarClassesDeTema(novoTema);
-            confirmarTemaModal.style.display = 'flex';
-        }
-
-        confirmarTemaSimBtn.addEventListener('click', () => {
-            const novoTema = getCurrentThemeFromClasses();
-            if(fichas[currentFichaId]) {
-                fichas[currentFichaId].theme = novoTema;
-            }
             salvarDados();
-            fecharModal('confirmar-tema-modal');
-            showNotification("Tema aplicado com sucesso!", "save-success");
-        });
-
-        confirmarTemaNaoBtn.addEventListener('click', () => {
-            limparClassesDeTema();
-            aplicarClassesDeTema(previousTheme);
-            fecharModal('confirmar-tema-modal');
-        });
-
+            showNotification("Tema aplicado!", "save-success");
+        }
+        
         function aplicarClassesDeTema(themeString) {
              const themeClasses = themeString.split(' ');
              themeClasses.forEach(cls => {
@@ -4359,69 +4045,32 @@ html
 
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
-
-            // 1. Reset data object properties to default
-            ficha.theme = 'theme-medieval';
-            ficha.backgroundColor = null;
-            ficha.fichaInternalBackgroundColor = null;
-            ficha.backgroundImage = null;
-            ficha.backgroundSize = 'cover';
-            ficha.backgroundAttachment = 'scroll';
-            ficha.fontFamily = "'Inter', sans-serif";
-            ficha.fichaTransparencyLevel = 100;
-            ficha.corBordaSecao = '#b8860b';
-            ficha.estiloBordaSecao = 'solid';
-            ficha.larguraBordaSecao = '2px';
-            ficha.shadowColorFicha = '#000000';
-            ficha.shadowIntensityFicha = 0;
-            ficha.diceColor = null;
-            ficha.diceNumberColor = null;
-            ficha.texturaDado = null;
-            ficha.animacaoDado = 'padrao';
-            ficha.darkMode = false;
-
-            // 2. Remove any theme classes and apply default
-            limparClassesDeTema();
-            aplicarClassesDeTema('theme-medieval');
-            document.body.classList.remove('dark-mode');
-
-
-            // 3. Re-apply all visual settings from the now-reset data object
-            aplicarPlanoDeFundoInicial(ficha);
-            aplicarEstilosDeFundoVisuais();
-            aplicarEstilosDeSombra();
-            aplicarEstilosFichaInicial(ficha);
-            aplicarFonteInicial(ficha);
-            aplicarCoresDadoInicial(ficha);
-            aplicarCustomizacoesDadoInicial(ficha);
-
-            // 4. Update the controls in the customization modal if it's open
-             if (customizacaoModal.style.display === "flex") {
-                themeSelector.value = 'theme-medieval';
-                elementalThemeGroup.style.display = 'none';
-                backgroundColorInput.value = '#f0e6d2';
-                fichaInternalBackgroundColorInput.value = '#f0e6d2';
-                fontSelector.value = "'Inter', sans-serif";
-                backgroundImageInput.value = "";
-                corBordaSecaoInput.value = '#b8860b';
-                estiloBordaSecaoSelect.value = 'solid';
-                larguraBordaSecaoInput.value = 2;
-                diceColorInput.value = '#f0e6d2';
-                diceNumberColorInput.value = '#000000';
-                diceTextureInput.value = "";
-                diceAnimationSelector.value = 'padrao';
-                fichaTransparencySlider.value = 100;
-                fichaTransparencyValueSpan.textContent = '100';
-                shadowColorFichaInput.value = '#000000';
-                shadowIntensityFichaSlider.value = 0;
-                shadowIntensityFichaValueSpan.textContent = '0';
-             }
-
-
-            // 5. Save changes and notify user
-            salvarDados();
+            
+            Object.assign(ficha, {
+                theme: 'theme-medieval',
+                backgroundColor: null,
+                fichaInternalBackgroundColor: null,
+                backgroundImage: null,
+                backgroundSize: 'cover',
+                backgroundAttachment: 'scroll',
+                fontFamily: "'Inter', sans-serif",
+                fichaTransparencyLevel: 100,
+                corBordaSecao: '#b8860b',
+                estiloBordaSecao: 'solid',
+                larguraBordaSecao: '2px',
+                shadowColorFicha: '#000000',
+                shadowIntensityFicha: 0,
+                diceColor: null,
+                diceNumberColor: null,
+                texturaDado: null,
+                animacaoDado: 'padrao',
+                darkMode: false,
+            });
+            
+            salvarDados(); // Save the reset state
+            carregarFicha(currentFichaId); // Reload everything based on the saved state
             showNotification("Estética da ficha reiniciada para o padrão!", "save-success");
-            fecharModal('customizacao-modal'); // Close the modal for a clean exit
+            fecharModal('customizacao-modal');
         }
 
 
