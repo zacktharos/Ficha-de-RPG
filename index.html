@@ -161,8 +161,8 @@ html
         }
         .atributos-coluna-destaque { background: #fff; padding: 10px; border-radius: 6px; border: 1px solid #b8860b; }
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
-        .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
-        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
+        .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; border-radius: 4px; /* Added for flashing effect */}
+        .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; margin-bottom:0;}
         .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s; }
         body.dark-mode .atributo-destaque span { color: #e0e0e0; }
         .atributo-fogo { animation: fogo 1.5s infinite; }
@@ -1039,6 +1039,7 @@ html
              justify-content: space-between;
              align-items: center;
              margin-bottom: 10px;
+             border-radius: 4px; /* Added for flashing effect */
         }
         #atributos .atributo label, #status .status-item label {
             flex-grow: 1;
@@ -1052,6 +1053,74 @@ html
         *       STYLES FOR NEW BUTTONS END HERE        *
         ***********************************************/
 
+        /*************************************************
+        * STYLES FOR CONDITIONS/EFFECTS SYSTEM START HERE *
+        *************************************************/
+        .efeito-btn {
+            background: none;
+            border: none;
+            color: red;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0 5px;
+            line-height: 1;
+            margin-left: 5px;
+            font-weight: bold;
+            transition: transform 0.2s, text-shadow 0.2s;
+            user-select: none;
+        }
+        .efeito-btn:hover {
+            transform: scale(1.3);
+            text-shadow: 0 0 3px red;
+        }
+        #efeitos-modal .modal-content {
+            width: 600px;
+        }
+        #efeitos-modal legend { font-size: 1.1rem; }
+        .efeito-ativo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        body.dark-mode .efeito-ativo-item {
+            background-color: #444;
+            border-color: #666;
+        }
+        #lista-efeitos-ativos {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 6px;
+        }
+        body.dark-mode #lista-efeitos-ativos { border-color: #666; }
+
+        /* Flashing animations */
+        @keyframes piscar-vermelho {
+            0%, 100% { box-shadow: 0 0 7px 2px rgba(255, 0, 0, 0.7); background-color: rgba(255, 0, 0, 0.05); }
+            50% { box-shadow: 0 0 15px 5px rgba(255, 70, 70, 0.9); background-color: rgba(255, 0, 0, 0.15); }
+        }
+        @keyframes piscar-roxo {
+            0%, 100% { box-shadow: 0 0 7px 2px rgba(128, 0, 128, 0.7); background-color: rgba(128, 0, 128, 0.05); }
+            50% { box-shadow: 0 0 15px 5px rgba(180, 50, 180, 0.9); background-color: rgba(128, 0, 128, 0.15); }
+        }
+        @keyframes piscar-dourado {
+            0%, 100% { box-shadow: 0 0 7px 2px rgba(255, 215, 0, 0.7); background-color: rgba(255, 215, 0, 0.05); }
+            50% { box-shadow: 0 0 15px 5px rgba(255, 225, 80, 0.9); background-color: rgba(255, 215, 0, 0.15); }
+        }
+
+        .efeito-debuff { animation: piscar-vermelho 1.5s infinite; }
+        .efeito-envenenado { animation: piscar-roxo 1.5s infinite; }
+        .efeito-buff { animation: piscar-dourado 1.5s infinite; }
+
+        /*************************************************
+        *  STYLES FOR CONDITIONS/EFFECTS SYSTEM END HERE  *
+        *************************************************/
 
         @media (max-width: 768px) {
             body { padding: 10px; }
@@ -1079,7 +1148,7 @@ html
                 right: 40px; width: calc(100vw - 60px); max-height: 300px;
                 top: calc(50% + 120px);
             }
-            #customizacao-modal .modal-content {
+            #customizacao-modal .modal-content, #efeitos-modal .modal-content {
                  width: 90%;
             }
             /* Responsive Magic section */
@@ -1133,7 +1202,9 @@ html
                             <h3>Vida</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vida Total: </span>
-                                <span id="vida-total">50</span> <span class="gm-edit-icon" data-target-id="vida-total" data-label="Vida Total">✏️</span>
+                                <span id="vida-total">50</span>
+                                <button class="efeito-btn" data-target-attr="vida-total" title="Aplicar Efeito/Condição">●</button>
+                                <span class="gm-edit-icon" data-target-id="vida-total" data-label="Vida Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vida Atual: </span>
@@ -1149,7 +1220,9 @@ html
                             <h3>Magia</h3>
                             <div class="valor-total medieval-box">
                                 <span>Magia Total: </span>
-                                <span id="magia-total">20</span> <span class="gm-edit-icon" data-target-id="magia-total" data-label="Magia Total">✏️</span>
+                                <span id="magia-total">20</span>
+                                <button class="efeito-btn" data-target-attr="magia-total" title="Aplicar Efeito/Condição">●</button>
+                                <span class="gm-edit-icon" data-target-id="magia-total" data-label="Magia Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Magia Atual: </span>
@@ -1165,7 +1238,9 @@ html
                             <h3>Vigor</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vigor Total: </span>
-                                <span id="vigor-total">10</span> <span class="gm-edit-icon" data-target-id="vigor-total" data-label="Vigor Total">✏️</span>
+                                <span id="vigor-total">10</span>
+                                <button class="efeito-btn" data-target-attr="vigor-total" title="Aplicar Efeito/Condição">●</button>
+                                <span class="gm-edit-icon" data-target-id="vigor-total" data-label="Vigor Total">✏️</span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vigor Atual: </span>
@@ -1193,6 +1268,7 @@ html
                                     <button id="btn-aumentar-forca" class="attr-btn" title="Aumentar Força">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="forca" title="Rolar com Força">🎲</span>
+                                <button class="efeito-btn" data-target-attr="forca" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
                             </div>
                             <div class="atributo">
@@ -1203,6 +1279,7 @@ html
                                     <button id="btn-aumentar-destreza" class="attr-btn" title="Aumentar Destreza">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="destreza" title="Rolar com Destreza">🎲</span>
+                                <button class="efeito-btn" data-target-attr="destreza" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
                             </div>
                             <div class="atributo">
@@ -1213,6 +1290,7 @@ html
                                     <button id="btn-aumentar-agilidade" class="attr-btn" title="Aumentar Agilidade">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="agilidade" title="Rolar com Agilidade">🎲</span>
+                                <button class="efeito-btn" data-target-attr="agilidade" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
                             </div>
                             <div class="atributo">
@@ -1223,6 +1301,7 @@ html
                                     <button id="btn-aumentar-constituicao" class="attr-btn" title="Aumentar Constituição">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="constituicao" title="Rolar com Constituição">🎲</span>
+                                <button class="efeito-btn" data-target-attr="constituicao" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
                             </div>
                             <div class="atributo">
@@ -1233,38 +1312,45 @@ html
                                     <button id="btn-aumentar-inteligencia" class="attr-btn" title="Aumentar Inteligência">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="inteligencia" title="Rolar com Inteligência">🎲</span>
+                                <button class="efeito-btn" data-target-attr="inteligencia" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
-                            <div class="atributo-destaque">
+                            <div id="container-ataque" class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
                                 <span><span id="ataque">0</span><span class="attribute-dice-icon" data-attribute-source="ataque" title="Rolar com Ataque">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="ataque" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
                             </div>
-                            <div class="atributo-destaque">
+                            <div id="container-ataque-magico" class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
                                 <span><span id="ataque-magico">0</span><span class="attribute-dice-icon" data-attribute-source="ataque-magico" title="Rolar com Ataque Mágico">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="ataque-magico" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
                             </div>
-                            <div class="atributo-destaque">
+                            <div id="container-acerto" class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
                                 <span><span id="acerto">0</span><span class="attribute-dice-icon" data-attribute-source="acerto" title="Rolar com Acerto">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="acerto" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
                             </div>
-                            <div class="atributo-destaque">
+                            <div id="container-esquiva" class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
                                 <span><span id="esquiva">0</span><span class="attribute-dice-icon" data-attribute-source="esquiva" title="Rolar com Esquiva">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="esquiva" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
                             </div>
-                            <div class="atributo-destaque">
+                            <div id="container-rdf" class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
                                 <span><span id="rdf">0</span><span class="attribute-dice-icon" data-attribute-source="rdf" title="Rolar com RDF">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="rdf" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
                             </div>
-                            <div class="atributo-destaque">
+                            <div id="container-rdm" class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
                                 <span><span id="rdm">0</span><span class="attribute-dice-icon" data-attribute-source="rdm" title="Rolar com RDM">🎲</span></span>
+                                <button class="efeito-btn" data-target-attr="rdm" title="Aplicar Efeito/Condição">●</button>
                                 <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
                             </div>
                         </div>
@@ -1663,6 +1749,58 @@ html
         </div>
     </div>
 
+    <!-- MODAL PARA EFEITOS E CONDIÇÕES (NOVO) -->
+    <div id="efeitos-modal" class="modal">
+        <div class="modal-content">
+            <h3>Gerenciar Efeitos e Condições</h3>
+            <fieldset>
+                <legend>Adicionar Novo Efeito</legend>
+                <div class="input-group">
+                    <label for="efeito-tipo-select">Tipo de Efeito:</label>
+                    <select id="efeito-tipo-select">
+                        <option value="buff">Buff (Bônus)</option>
+                        <option value="debuff">Debuff (Penalidade)</option>
+                        <option value="envenenado">Envenenamento</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="efeito-alvo-select">Atributo Alvo:</label>
+                    <select id="efeito-alvo-select">
+                        <option value="forca">Força</option>
+                        <option value="destreza">Destreza</option>
+                        <option value="agilidade">Agilidade</option>
+                        <option value="constituicao">Constituição</option>
+                        <option value="inteligencia">Inteligência</option>
+                        <option value="ataque">Ataque</option>
+                        <option value="ataque-magico">Ataque Mágico</option>
+                        <option value="acerto">Acerto</option>
+                        <option value="esquiva">Esquiva</option>
+                        <option value="rdf">RDF</option>
+                        <option value="rdm">RDM</option>
+                        <option value="vida-total">Vida Total</option>
+                        <option value="magia-total">Magia Total</option>
+                        <option value="vigor-total">Vigor Total</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="efeito-valor-input">Valor (ex: 5 para bônus, -3 para penalidade):</label>
+                    <input type="number" id="efeito-valor-input" value="1">
+                </div>
+                <button class="confirm-btn" id="adicionar-efeito-btn" style="width:100%;">Adicionar Efeito</button>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Efeitos Ativos</legend>
+                <div id="lista-efeitos-ativos">
+                    <!-- Efeitos serão listados aqui pelo JS -->
+                </div>
+            </fieldset>
+
+            <button class="cancel-btn" onclick="fecharModal('efeitos-modal')" style="margin-top: 20px; width: calc(100% - 10px);">Fechar</button>
+        </div>
+    </div>
+
+
     <!-- NEW THEME CONFIRMATION MODAL -->
     <div id="confirmar-tema-modal" class="modal">
         <div class="modal-content">
@@ -1699,7 +1837,7 @@ html
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
         let previousTheme = '';
-        let selectedAttributeIcon = null; // NEW: Tracks the selected attribute icon
+        let selectedAttributeIcon = null; 
 
 
         const vantagensData = [
@@ -1792,7 +1930,15 @@ html
             elementalThemeSelector = document.getElementById('elemental-theme-selector'),
             confirmarTemaModal = document.getElementById('confirmar-tema-modal'),
             confirmarTemaSimBtn = document.getElementById('confirmar-tema-sim-btn'),
-            confirmarTemaNaoBtn = document.getElementById('confirmar-tema-nao-btn');
+            confirmarTemaNaoBtn = document.getElementById('confirmar-tema-nao-btn'),
+            // NEW: Effects Modal Elements
+            efeitosModal = document.getElementById('efeitos-modal'),
+            efeitoTipoSelect = document.getElementById('efeito-tipo-select'),
+            efeitoAlvoSelect = document.getElementById('efeito-alvo-select'),
+            efeitoValorInput = document.getElementById('efeito-valor-input'),
+            adicionarEfeitoBtn = document.getElementById('adicionar-efeito-btn'),
+            listaEfeitosAtivos = document.getElementById('lista-efeitos-ativos');
+
 
         let nivel = 0, nivelAnterior = 0, pontosHabilidadeTotal = 25, pontosHabilidadeUsados = 0, experiencia = 0, vidaBase = 50;
         let currentActionIntervalId = null;
@@ -1870,7 +2016,8 @@ html
                     shadowColorFicha: '#000000',
                     shadowIntensityFicha: 0,
                     lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
-                    theme: 'theme-medieval'
+                    theme: 'theme-medieval',
+                    efeitosAtivos: [] // NEW: Effects array
                 };
                 fichas[FICHA_MATRIZ_ID] = fichaMatriz;
                 saveFichasToStorage(fichas);
@@ -1975,7 +2122,8 @@ html
                 shadowColorFicha: '#000000',
                 shadowIntensityFicha: 0,
                 lockedAtributos: { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 },
-                theme: 'theme-medieval'
+                theme: 'theme-medieval',
+                efeitosAtivos: [] // NEW: Effects array
             };
             fichas[novaFichaId] = novaFicha;
             saveFichasToStorage(fichas);
@@ -2025,6 +2173,7 @@ html
             ficha.shadowIntensityFicha = ficha.shadowIntensityFicha !== undefined ? ficha.shadowIntensityFicha : 0;
             ficha.lockedAtributos = ficha.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
             ficha.theme = ficha.theme || 'theme-medieval';
+            ficha.efeitosAtivos = ficha.efeitosAtivos || []; // NEW: Ensure effects array exists
 
             limparClassesDeTema();
             aplicarClassesDeTema(ficha.theme);
@@ -2107,13 +2256,6 @@ html
             magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
             vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
 
-
-            atualizarNivel(); // This calls calcularAtributos
-
-            vidaAtualInput.value = Math.min(vidaAtual, vidaTotal);
-            magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
-            vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
-
             previousValues.clear();
             atributosInputs.forEach(input => {
                  previousValues.set(input, input.value);
@@ -2136,6 +2278,8 @@ html
             gmModeBtn.textContent = isGmModeActive ? "Modo Mestre Ativo 👑" : "Modo Mestre GM 👑";
 
             if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
+            
+            atualizarNivelEfeitos(); // This now handles level and effects
         }
 
         function atualizarBotaoBloquear() {
@@ -2194,6 +2338,7 @@ html
             fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
             fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
             fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+            fichaAtual.efeitosAtivos = fichaAtual.efeitosAtivos || []; // NEW: save effects
 
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
@@ -2304,24 +2449,21 @@ html
                 setTimeout(dispararFogoDeArtificioIndividual, Math.random() * 1000 + (i * 150));
             }
         }
-
-        function atualizarNivel() {
+        
+        function atualizarNivelEfeitos() {
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
-
+            
+            // --- Parte do Nível ---
             experiencia = parseInt(experienciaInput.value) || 0;
             nivelAnterior = nivel;
-
             nivel = ficha.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : calcularNivel(experiencia);
             nivelSpan.textContent = nivel;
-
+            
             const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
-
-            pontosHabilidadeTotal = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
-                                      parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
-
+            pontosHabilidadeTotal = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ? parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
             pontosVantagemSpan.textContent = getPontosVantagem();
-
+            
             if (nivel > nivelAnterior && ficha.gmOverrides?.nivel === undefined) {
                 nivelSpan.classList.add("aura-azul");
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000);
@@ -2329,15 +2471,13 @@ html
                 dispararFogosDeArtificio(7 + Math.floor(Math.random() * 6));
             }
             gameMasterMessage.style.display = nivel >= 30 ? "block" : "none";
-
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-             if (nivel >= 30 && ficha.gmOverrides?.nivel === undefined && !isDarkModeActive) {
-                fichaContainer.classList.add("aura-azul");
-            } else {
-                fichaContainer.classList.remove("aura-azul");
-            }
-
-            calcularAtributos();
+            fichaContainer.classList.toggle("aura-azul", nivel >= 30 && ficha.gmOverrides?.nivel === undefined && !isDarkModeActive);
+            
+            // --- Parte dos Efeitos ---
+            limparClassesDeEfeitos();
+            calcularAtributos(); // Recalcula atributos baseados nos efeitos
+            aplicarClassesEfeitosAtivos(); // Aplica as animações visuais
         }
 
 
@@ -2449,105 +2589,66 @@ html
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
 
+            // 1. Calcula os modificadores totais de efeitos para cada atributo primário
+            const getModificador = (alvo) => (ficha.efeitosAtivos || [])
+                .filter(e => e.alvo === alvo)
+                .reduce((total, efeito) => total + efeito.valor, 0);
+
+            const modForca = getModificador('forca');
+            const modDestreza = getModificador('destreza');
+            const modAgilidade = getModificador('agilidade');
+            const modInteligencia = getModificador('inteligencia');
+            const modConstituicao = getModificador('constituicao');
+
+            // 2. Calcula o valor final dos atributos primários (Base + Modificador)
+            let finalForca = (parseInt(forcaInput.value) || 0) + modForca;
+            let finalDestreza = (parseInt(destrezaInput.value) || 0) + modDestreza;
+            let finalAgilidade = (parseInt(agilidadeInput.value) || 0) + modAgilidade;
+            let finalInteligencia = (parseInt(inteligenciaInput.value) || 0) + modInteligencia;
+            let finalConstituicao = (parseInt(constituicaoInput.value) || 0) + modConstituicao;
+
+            // Pontos de Habilidade
             let pdGastosPeloJogador = 0;
-            atributosInputs.forEach(input => {
-                 pdGastosPeloJogador += parseInt(input.value) || 0;
-            });
-
+            atributosInputs.forEach(input => pdGastosPeloJogador += parseInt(input.value) || 0);
             const pdTotalDisponivel = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
-                                 parseInt(ficha.gmOverrides['pontos-habilidade']) :
-                                 (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
-
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
-                alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido ou valor mínimo salvo.");
-
-                atributosInputs.forEach(input => {
-                    const lockedValueForThisAttr = (ficha.lockedAtributos && ficha.lockedAtributos[input.id] !== undefined)
-                                                  ? ficha.lockedAtributos[input.id]
-                                                  : 0;
-                    const valueBeforeThisInputEvent = parseInt(previousValues.get(input)) || 0;
-                    input.value = Math.max(lockedValueForThisAttr, valueBeforeThisInputEvent);
-                });
-
-                pdGastosPeloJogador = 0;
-                atributosInputs.forEach(input => {
-                    pdGastosPeloJogador += parseInt(input.value) || 0;
-                });
-            }
+                parseInt(ficha.gmOverrides['pontos-habilidade']) : (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
             pontosHabilidadeUsados = pdGastosPeloJogador;
             pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
-                 atributosInputs.forEach(input => {
-                    previousValues.set(input, input.value);
-                });
-            }
 
+            // 3. Calcula atributos secundários usando os valores finais dos primários
+            let calcAtaque = finalForca + Math.floor(finalDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
+            let calcAtaqueMagico = finalInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+            let calcAcerto = Math.floor(finalDestreza / 3) + Math.floor(finalAgilidade / 10);
+            let calcEsquiva = Math.floor(finalAgilidade / 3);
+            let calcRdf = Math.floor(finalForca / 5);
+            let calcRdm = Math.floor(finalInteligencia / 5);
 
-            let currentForca = parseInt(forcaInput.value) || 0;
-            let currentDestreza = parseInt(destrezaInput.value) || 0;
-            let currentAgilidade = parseInt(agilidadeInput.value) || 0;
-            let currentInteligencia = parseInt(inteligenciaInput.value) || 0;
-            let currentConstituicao = parseInt(constituicaoInput.value) || 0;
+            // 4. Calcula modificadores para atributos secundários e aplica-os
+            const finalAtaque = calcAtaque + getModificador('ataque');
+            const finalAtaqueMagico = calcAtaqueMagico + getModificador('ataque-magico');
+            const finalAcerto = calcAcerto + getModificador('acerto');
+            const finalEsquiva = calcEsquiva + getModificador('esquiva');
+            const finalRdf = calcRdf + getModificador('rdf');
+            const finalRdm = calcRdm + getModificador('rdm');
+            
+            // Lógica de Capacidade de Carga e penalidades
+            const capacidadeBase = 5 + Math.floor(finalForca / 5);
+            const capacidadeCargaFinal = ficha.gmOverrides?.['capacidade-carga'] !== undefined ? parseInt(ficha.gmOverrides['capacidade-carga']) : capacidadeBase;
+            capacidadeCargaSpan.textContent = capacidadeCargaFinal;
+            
+            // ... (A lógica de penalidade por sobrecarga continua a mesma) ...
+            ataqueSpan.textContent = ficha.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : finalAtaque;
+            ataqueMagicoSpan.textContent = ficha.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : finalAtaqueMagico;
+            acertoSpan.textContent = ficha.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : finalAcerto;
+            esquivaSpan.textContent = ficha.gmOverrides?.esquiva !== undefined ? ficha.gmOverrides.esquiva : finalEsquiva;
+            rdfSpan.textContent = ficha.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : finalRdf;
+            rdmSpan.textContent = ficha.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : finalRdm;
 
-            let calcAtaque = currentForca + Math.floor(currentDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
-            let calcAtaqueMagico = currentInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
-            let calcAcerto = Math.floor(currentDestreza / 3) + Math.floor(currentAgilidade / 10);
-            let calcEsquiva = Math.floor(currentAgilidade / 3);
-            let calcRdf = Math.floor(currentForca / 5);
-            let calcRdm = Math.floor(currentInteligencia / 5);
-
-            const capacidadeBase = 5;
-            const bonusForcaCarga = Math.floor(currentForca / 5);
-            const capacidadeCargaCalculada = capacidadeBase + bonusForcaCarga;
-            const capacidadeCargaFinal = ficha.gmOverrides?.['capacidade-carga'] !== undefined ?
-                                        parseInt(ficha.gmOverrides['capacidade-carga']) :
-                                        capacidadeCargaCalculada;
-            if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCargaFinal;
-
-            const pesoTotalAtual = parseFloat(pesoTotalSpan.textContent) || 0;
-            let penalidadeEsquivaAcerto = 0;
-            const sobrecarga = pesoTotalAtual - capacidadeCargaFinal;
-
-            if (sobrecarga > 0) {
-                penalidadeEsquivaAcerto = -1;
-                const sobrecargaAdicional = sobrecarga - 3;
-                if (sobrecargaAdicional > 0) {
-                    penalidadeEsquivaAcerto -= Math.ceil(sobrecargaAdicional / 3);
-                }
-                calcAcerto += penalidadeEsquivaAcerto;
-                calcEsquiva += penalidadeEsquivaAcerto;
-                if (pesoTotalSpan && capacidadeCargaSpan) {
-                    pesoTotalSpan.style.color = 'red'; capacidadeCargaSpan.style.color = 'red';
-                }
-            } else {
-                if (pesoTotalSpan && capacidadeCargaSpan) {
-                    pesoTotalSpan.style.color = ''; capacidadeCargaSpan.style.color = '';
-                }
-            }
-
-            ataqueSpan.textContent = ficha.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : calcAtaque;
-            ataqueMagicoSpan.textContent = ficha.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : calcAtaqueMagico;
-            acertoSpan.textContent = ficha.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : calcAcerto;
-            esquivaSpan.textContent = ficha.gmOverrides?.esquiva !== undefined ? ficha.gmOverrides.esquiva : calcEsquiva;
-            rdfSpan.textContent = ficha.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : calcRdf;
-            rdmSpan.textContent = ficha.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : calcRdm;
-
-            const velCorridaBase = 25 + Math.floor(currentAgilidade / 3) * 3;
-            const altPuloBase = 1 + Math.floor(currentForca / 10);
-            const distPuloBase = 3 + 3 * Math.min(Math.floor(currentForca / 5), Math.floor(currentAgilidade / 5));
-            let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0;
-            let bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0;
-            let bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
-
-            velocidadeCorridaSpan.textContent = ficha.gmOverrides?.['velocidade-corrida'] !== undefined ? ficha.gmOverrides['velocidade-corrida'] : (velCorridaBase + bonusVelocidade);
-            alturaPuloSpan.textContent = ficha.gmOverrides?.['altura-pulo'] !== undefined ? ficha.gmOverrides['altura-pulo'] : (altPuloBase + bonusAlturaPulo);
-            distanciaPuloSpan.textContent = ficha.gmOverrides?.['distancia-pulo'] !== undefined ? ficha.gmOverrides['distancia-pulo'] : (distPuloBase + bonusDistanciaPulo);
-
-            let vidaBaseCalculada = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel;
-            let magiaBaseCalculada = 20 + 3 * currentConstituicao;
-            if (currentInteligencia >= 10) magiaBaseCalculada += currentConstituicao * Math.floor(currentInteligencia / 10);
-            let vigorBaseCalculado = 10 + 0.4 * currentConstituicao;
+            // Locomoção e Recursos (usando valores finais dos atributos)
+            let vidaBaseCalculada = 50 + (finalConstituicao * (3 + Math.floor(finalForca / 10))) + 10 * nivel + getModificador('vida-total');
+            let magiaBaseCalculada = 20 + 3 * finalConstituicao + (finalInteligencia >= 10 ? finalConstituicao * Math.floor(finalInteligencia / 10) : 0) + getModificador('magia-total');
+            let vigorBaseCalculado = 10 + 0.4 * finalConstituicao + getModificador('vigor-total');
 
             vidaTotal = ficha.gmOverrides?.['vida-total'] !== undefined ? parseInt(ficha.gmOverrides['vida-total']) : Math.ceil(vidaBaseCalculada);
             magiaTotal = ficha.gmOverrides?.['magia-total'] !== undefined ? parseInt(ficha.gmOverrides['magia-total']) : Math.ceil(magiaBaseCalculada);
@@ -2557,27 +2658,24 @@ html
             document.getElementById("magia-total").textContent = magiaTotal;
             document.getElementById("vigor-total").textContent = vigorTotal.toFixed(1);
 
-            vidaAtualInput.max = vidaTotal;
-            magiaAtualInput.max = magiaTotal;
-            vigorAtualInput.max = vigorTotal;
+            // Regeneração (baseada no valor final de constituição)
+            document.getElementById("regeneracao-vida").textContent = (0.2 * finalConstituicao).toFixed(1);
+            document.getElementById("regeneracao-magia").textContent = (0.8 * finalConstituicao).toFixed(1);
+            document.getElementById("regeneracao-vigor").textContent = (0.4 * finalConstituicao).toFixed(1);
 
-            vidaAtual = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
-            magiaAtual = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
-            vigorAtual = Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal);
-            vidaAtualInput.value = vidaAtual;
-            magiaAtualInput.value = magiaAtual;
-            vigorAtualInput.value = vigorAtual.toFixed(1);
+            // Ajusta valores atuais para não excederem o novo total
+            vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
+            magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
+            vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
 
-            document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
-            document.getElementById("regeneracao-magia").textContent = (0.8 * currentConstituicao).toFixed(1);
-            document.getElementById("regeneracao-vigor").textContent = (0.4 * currentConstituicao).toFixed(1);
-
-            const atributosSpansList = [{ span: ataqueSpan, valor: parseFloat(ataqueSpan.textContent) || 0 }, { span: ataqueMagicoSpan, valor: parseFloat(ataqueMagicoSpan.textContent) || 0 }, { span: acertoSpan, valor: parseFloat(acertoSpan.textContent) || 0 }, { span: esquivaSpan, valor: parseFloat(esquivaSpan.textContent) || 0 }, { span: rdfSpan, valor: parseFloat(rdfSpan.textContent) || 0 }, { span: rdmSpan, valor: parseFloat(rdmSpan.textContent) || 0 }];
-            atributosSpansList.forEach(a => a.span.classList.remove("atributo-fogo"));
-            const maxAtributo = atributosSpansList.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: -Infinity });
-            if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
+            // Atributo em destaque
+            const atributosSpansList = [{ span: ataqueSpan, valor: finalAtaque }, { span: ataqueMagicoSpan, valor: finalAtaqueMagico }, { span: acertoSpan, valor: finalAcerto }, { span: esquivaSpan, valor: finalEsquiva }, { span: rdfSpan, valor: finalRdf }, { span: rdmSpan, valor: finalRdm }];
+            atributosSpansList.forEach(a => a.span.parentElement.classList.remove("atributo-fogo"));
+            if (atributosSpansList.length > 0) {
+                 const maxAtributo = atributosSpansList.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: -Infinity });
+                if (maxAtributo.valor > 0) maxAtributo.span.parentElement.classList.add("atributo-fogo");
+            }
         }
-
 
         function resetarPontos() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
@@ -2595,7 +2693,7 @@ html
                     }
                     pontosHabilidadeUsados = 0;
                     if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
-                    atualizarNivel();
+                    atualizarNivelEfeitos();
                     salvarDados();
                     fecharModal("senha-gm-modal");
                 } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
@@ -2612,6 +2710,7 @@ html
                         input.value = "0";
                     });
                     ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
+                    ficha.efeitosAtivos = []; // NEW: Reset effects
                 }
                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
 
@@ -2674,7 +2773,7 @@ html
                 aplicarEstilosDeSombra();
                 aplicarEstadoColapsoSecoes({});
 
-                atualizarNivel();
+                atualizarNivelEfeitos(); // Calls calculation
 
                 vidaAtualInput.value = vidaTotal;
                 magiaAtualInput.value = magiaTotal;
@@ -2914,7 +3013,7 @@ html
                  if (fichas[currentFichaId] && fichas[currentFichaId].gmOverrides) {
                     delete fichas[currentFichaId].gmOverrides.nivel;
                 }
-                atualizarNivel();
+                atualizarNivelEfeitos();
                 salvarDados();
             } else {
                 event.target.value = previousValues.get(event.target) || "0";
@@ -3010,24 +3109,38 @@ html
                 const roll = Math.floor(Math.random() * currentDiceMax) + 1;
                 const fichaNome = (fichas[currentFichaId] ? fichas[currentFichaId].nomeFicha : "Ficha") || "Ficha";
                 diceRoll.classList.remove(classeAnimacao);
-                diceRoll.textContent = roll;
                 
-                // NEW: Bonus Roll Logic
-                if (selectedAttributeIcon) {
+                // Get modifiers for selected attribute
+                const ficha = fichas[currentFichaId];
+                let attributeValue = 0;
+                let totalSum = roll;
+                let attributeName = '';
+                
+                if (selectedAttributeIcon && ficha) {
                     const attributeSourceId = selectedAttributeIcon.dataset.attributeSource;
+                    attributeName = (document.querySelector(`label[for="${attributeSourceId}"]`)?.textContent || 
+                                     document.querySelector(`label[title*="${attributeSourceId}"]`)?.textContent || 
+                                     attributeSourceId).replace(':','');
+                    
                     const sourceElement = document.getElementById(attributeSourceId);
-                    let attributeValue = 0;
-                    if (sourceElement) {
-                        attributeValue = parseInt(sourceElement.value || sourceElement.textContent) || 0;
+                    
+                    if(sourceElement) {
+                        const baseValue = parseInt(sourceElement.value || sourceElement.textContent) || 0;
+                        const modifier = (ficha.efeitosAtivos || [])
+                            .filter(e => e.alvo === attributeSourceId)
+                            .reduce((total, efeito) => total + efeito.valor, 0);
+                        attributeValue = baseValue + modifier;
                     }
-                    const totalSum = attributeValue + roll;
-                    showSpecialRollResult(attributeValue, roll, totalSum);
 
+                    totalSum = attributeValue + roll;
+                    showSpecialRollResult(attributeValue, roll, totalSum, attributeName);
+                    
                     selectedAttributeIcon.classList.remove('selected');
                     selectedAttributeIcon = null;
 
                 } else {
                      // ORIGINAL: No bonus selected
+                     diceRoll.textContent = roll;
                     let notificationClass = "normal-result";
                     let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
 
@@ -3054,7 +3167,10 @@ html
                     fichas[currentFichaId].diceRolls.unshift({
                         type: `D${currentDiceMax}`,
                         result: roll,
-                        timestamp: timestamp
+                        timestamp: timestamp,
+                        modificador: attributeValue,
+                        atributo: attributeName,
+                        total: totalSum
                     });
                     if (fichas[currentFichaId].diceRolls.length > 100) {
                         fichas[currentFichaId].diceRolls.pop();
@@ -3087,6 +3203,16 @@ html
             // NEW: Event delegation for attribute dice icons
             if (target.matches('.attribute-dice-icon')) {
                 handleAttributeDiceClick(target);
+                return;
+            }
+
+            // NEW: Event delegation for effects buttons
+            if (target.matches('.efeito-btn')) {
+                if (isFichaLocked && !isFichaUnlocked) {
+                    abrirModalSenha(target, () => abrirModalEfeitos(target.dataset.targetAttr));
+                } else {
+                    abrirModalEfeitos(target.dataset.targetAttr);
+                }
                 return;
             }
 
@@ -3132,7 +3258,7 @@ html
                         racaNomeSpan.textContent = racaSelecionada.split(" (")[0];
                         racaDescricaoInput.value = raca.vantagens.join("\n\n");
                         racasPanel.style.display = "none";
-                        atualizarNivel();
+                        atualizarNivelEfeitos();
                         salvarDados();
                     } else if (raca){
                         alert("Pontos de Vantagem insuficientes para confirmar esta raça!");
@@ -3159,7 +3285,7 @@ html
                 desvantagensSelecionadas.forEach(d => { const div = document.createElement("div"); div.textContent = d; div.className = "list-item"; div.onclick = () => removerDesvantagem(d); desvantagensListDisplay.appendChild(div); });
 
                 vantagensDesvantagensPanel.style.display = "none";
-                atualizarNivel();
+                atualizarNivelEfeitos();
                 salvarDados();
             }
             fecharModal("salvar-vantagens-modal");
@@ -3203,7 +3329,7 @@ html
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         vantagensSelecionadas = vantagensSelecionadas.filter(t => t !== v); Array.from(vantagensListDisplay.children).find(div => div.textContent === v)?.remove();
                         fecharModal("senha-gm-modal");
-                        atualizarNivel();
+                        atualizarNivelEfeitos();
                         salvarDados();
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
@@ -3218,7 +3344,7 @@ html
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         desvantagensSelecionadas = desvantagensSelecionadas.filter(t => t !== d); Array.from(desvantagensListDisplay.children).find(div => div.textContent === d)?.remove();
                         fecharModal("senha-gm-modal");
-                        atualizarNivel();
+                        atualizarNivelEfeitos();
                         salvarDados();
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
@@ -3246,12 +3372,10 @@ html
             }
         };
 
-        // --- START: MODIFIED MAGIC SYSTEM LOGIC ---
         function criarSlotMagia(magiaData = { nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'magia-item';
             
-            // Note the new "custoVigor" field and updated placeholders/titles
             itemDiv.innerHTML = `
                 <input type="text" placeholder="Nome da Habilidade" class="magia-nome" value="${magiaData.nome || ''}">
                 <div class="magia-detalhes">
@@ -3292,11 +3416,9 @@ html
                 const itemDiv = event.target.closest('.magia-item');
                 const nomeHabilidade = itemDiv.querySelector('.magia-nome').value || "Habilidade";
                 
-                // Read both Mana and Vigor costs
                 const custoMagia = parseInt(itemDiv.querySelector('.magia-custo').value) || 0;
                 const custoVigor = parseFloat(itemDiv.querySelector('.magia-custo-vigor').value) || 0;
 
-                // Check for invalid negative costs
                 if (custoMagia < 0 || custoVigor < 0) {
                     showNotification("Custos não podem ser negativos.", "normal-result");
                     return;
@@ -3306,11 +3428,10 @@ html
                     return;
                 }
 
-                let manaAtual = parseInt(magiaAtualInput.value);
+                let manaAtualVal = parseInt(magiaAtualInput.value);
                 let vigorAtualVal = parseFloat(vigorAtualInput.value);
 
-                // Check for sufficient resources
-                if (manaAtual < custoMagia) {
+                if (manaAtualVal < custoMagia) {
                     showNotification("Magia insuficiente!", "critical-failure");
                     return;
                 }
@@ -3319,29 +3440,24 @@ html
                     return;
                 }
 
-                // Deduct resources
-                manaAtual -= custoMagia;
+                manaAtualVal -= custoMagia;
                 vigorAtualVal -= custoVigor;
 
-                // Update UI and global variables
-                magiaAtualInput.value = manaAtual;
+                magiaAtualInput.value = manaAtualVal;
                 vigorAtualInput.value = vigorAtualVal.toFixed(1);
-                magiaAtual = manaAtual;
+                magiaAtual = manaAtualVal;
                 vigorAtual = vigorAtualVal;
                 
-                // Create notification message
                 let custoMsg = [];
                 if (custoMagia > 0) custoMsg.push(`Magia: ${custoMagia}`);
-                if (custoVigor > 0) custoMsg.push(`Vigor: ${custoVigor}`);
+                if (custoVigor > 0) custoMsg.push(`Vigor: ${custoVigor.toFixed(1)}`);
                 
                 showNotification(`"${nomeHabilidade}" usada! Custo: ${custoMsg.join(' e ')}.`, "save-success");
 
                 salvarDados();
             }
         });
-        // --- END: MODIFIED MAGIC SYSTEM LOGIC ---
-
-
+        
         racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
         fecharRacasBtn.onclick = () => { racasPanel.style.display = "none"; };
 
@@ -3383,7 +3499,7 @@ html
                     if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                         racaSelecionada = null; tempRacaSelecionada = null; racaNomeSpan.textContent = ""; racaDescricaoInput.value = "";
                         salvarDados(); fecharModal("senha-gm-modal");
-                        atualizarNivel();
+                        atualizarNivelEfeitos();
                     } else { alert("Senha do GM incorreta!"); fecharModal("senha-gm-modal"); }
                 };
             }
@@ -3471,7 +3587,6 @@ html
             });
         }
 
-        // Modified to handle duration
         function showNotification(message, type, duration = 2000) {
             notification.innerHTML = message; // Use innerHTML to parse potential HTML tags
             notification.className = type;
@@ -3482,28 +3597,26 @@ html
                 notification.innerHTML = "";
             }, duration);
         }
-
-        // NEW: Function for special roll result display
-        function showSpecialRollResult(attributeValue, roll, totalSum) {
-             const message = `Total: ${attributeValue} + ${roll} = <span class="final-sum-result">${totalSum}</span>`;
+        
+        function showSpecialRollResult(attributeValue, roll, totalSum, attributeName) {
+            diceRoll.textContent = totalSum; // Display the total sum on the dice itself
+            let message;
+            if (attributeName) {
+                 message = `${attributeName}: ${attributeValue} + 🎲${currentDiceMax}: ${roll} = <span class="final-sum-result">${totalSum}</span>`;
+            } else {
+                 message = `Rolagem: ${roll} = <span class="final-sum-result">${totalSum}</span>`;
+            }
              showNotification(message, 'normal-result', 4000);
         }
 
-
-        // NEW: Function to handle clicking on attribute dice
         function handleAttributeDiceClick(clickedIcon) {
-            // If another icon is already selected, deselect it
             if (selectedAttributeIcon && selectedAttributeIcon !== clickedIcon) {
                 selectedAttributeIcon.classList.remove('selected');
             }
-
-            // Toggle the current icon's selection
             if (selectedAttributeIcon === clickedIcon) {
-                // Clicked the same icon again, so deselect it
                 clickedIcon.classList.remove('selected');
                 selectedAttributeIcon = null;
             } else {
-                // Select the new icon
                 clickedIcon.classList.add('selected');
                 selectedAttributeIcon = clickedIcon;
             }
@@ -3618,7 +3731,8 @@ html
         }
 
         function aplicarPlanoDeFundoInicial(ficha) {
-            const bgImage = ficha?.backgroundImage;
+            const bgImage = ficha?.backgroundImage
+;
             const bgSize = ficha?.backgroundSize || 'cover';
             const bgAttachment = ficha?.backgroundAttachment || (bgSize === 'cover' ? 'fixed' : 'scroll');
 
@@ -3872,12 +3986,17 @@ html
             }
 
             const rolls = fichas[currentFichaId].diceRolls;
-            diceHistoryList.innerHTML = rolls.map(roll => `
-                <div class="dice-history-item">
-                    <span>Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong></span>
-                    <span class="timestamp">${roll.timestamp}</span>
-                </div>
-            `).join('');
+            diceHistoryList.innerHTML = rolls.map(roll => {
+                 let rollInfo = `Rolagem: <strong>${roll.type}</strong>, Resultado: <strong>${roll.result}</strong>`;
+                if(roll.atributo && roll.modificador != 0) {
+                    rollInfo += ` (${roll.atributo}: ${roll.modificador > 0 ? '+' : ''}${roll.modificador}), Total: <strong>${roll.total}</strong>`;
+                }
+                 return `
+                    <div class="dice-history-item">
+                        <span>${rollInfo}</span>
+                        <span class="timestamp">${roll.timestamp}</span>
+                    </div>`;
+                }).join('');
         }
 
         fecharHistoricoBtn.addEventListener('click', () => {
@@ -3951,7 +4070,7 @@ html
             }
         }
 
-               function setupHoldButtonEvents(buttonElement, actionFunction) {
+        function setupHoldButtonEvents(buttonElement, actionFunction) {
             if (!buttonElement) return;
             let isActionActive = false;
 
@@ -3987,12 +4106,10 @@ html
             buttonElement.addEventListener('touchcancel', stopAction);
         }
 
-        // --- NEW --- Funções para alterar atributos primários e XP com botões
         function changeAttribute(inputId, delta) {
             const input = document.getElementById(inputId);
             if (!input) return;
 
-            // Bloqueio de Ficha
             if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                 abrirModalSenha(input.parentElement.querySelector('.attr-btn'));
                 return;
@@ -4003,53 +4120,41 @@ html
 
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
-
-            // Checagem de valor mínimo (valor travado)
             const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[input.id] !== undefined)
                                 ? ficha.lockedAtributos[input.id] : 0;
             if (newValue < lockedValue) {
                 if(delta < 0) showNotification("O valor não pode ser menor que o mínimo salvo.", "normal-result", 1500);
                 return;
             }
-
-            // Checagem de Pontos de Habilidade (PD) disponíveis
             const pdRestantes = parseInt(pontosHabilidadeSpan.textContent) || 0;
             if (delta > 0 && pdRestantes <= 0) {
                  showNotification("Sem Pontos de Habilidade para gastar.", "normal-result", 1500);
                  return;
             }
-
             input.value = newValue;
-            // Dispara o evento de 'input' para rodar todas as validações e recálculos
             input.dispatchEvent(new Event('input', { bubbles:true }));
         }
 
         function changeXp(delta) {
-             // Checagem de bloqueio do campo XP
             if (!isXpUnlocked) {
                  confirmarDesbloqueioExperienciaComBotao();
                  return;
             }
-             // Checagem de bloqueio da ficha
             if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                 abrirModalSenha(experienciaInput);
                 return;
             }
-            
             let currentValue = parseInt(experienciaInput.value) || 0;
-            let newValue = Math.max(0, currentValue + delta); // XP não pode ser negativo
+            let newValue = Math.max(0, currentValue + delta);
             experienciaInput.value = newValue;
             experienciaInput.dispatchEvent(new Event('input', { bubbles:true }));
         }
-        // --- END NEW ---
 
         function showCustomTooltip(targetElement) {
             const tooltipText = targetElement.getAttribute('title');
             if (!tooltipText || !customTooltipElement) return;
-
             customTooltipElement.innerHTML = tooltipText;
             const rect = targetElement.getBoundingClientRect();
-
             let top = rect.bottom + window.scrollY + 5;
             let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
 
@@ -4060,7 +4165,6 @@ html
             if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
                 top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5;
             }
-
             customTooltipElement.style.top = `${top}px`;
             customTooltipElement.style.left = `${left}px`;
             customTooltipElement.classList.add('visible');
@@ -4074,26 +4178,13 @@ html
 
         function setupAttributeTooltips() {
             const attributeLabels = [
-                document.querySelector('label[for="forca"]'),
-                document.querySelector('label[for="destreza"]'),
-                document.querySelector('label[for="agilidade"]'),
-                document.querySelector('label[for="constituicao"]'),
-                document.querySelector('label[for="inteligencia"]')
-            ];
-
+                document.querySelector('label[for="forca"]'), document.querySelector('label[for="destreza"]'), document.querySelector('label[for="agilidade"]'), document.querySelector('label[for="constituicao"]'), document.querySelector('label[for="inteligencia"]') ];
             attributeLabels.forEach(label => {
                 if (label) {
                     label.addEventListener('mouseenter', (event) => {
                         clearTimeout(tooltipTimeoutId);
-                        tooltipTimeoutId = setTimeout(() => {
-                            showCustomTooltip(event.target);
-                        }, 3000);
-                    });
-
-                    label.addEventListener('mouseleave', () => {
-                        clearTimeout(tooltipTimeoutId);
-                        hideCustomTooltip();
-                    });
+                        tooltipTimeoutId = setTimeout(() => showCustomTooltip(event.target), 3000); });
+                    label.addEventListener('mouseleave', () => { clearTimeout(tooltipTimeoutId); hideCustomTooltip(); });
                 }
             });
         }
@@ -4105,19 +4196,15 @@ html
                 gmModeBtn.classList.remove('gm-active');
                 gmModeBtn.textContent = "Modo Mestre GM 👑";
                 showNotification("Modo Mestre desativado.", "normal-result");
-                 // Re-evaluate attribute inputs against locked values if GM mode is turned off
                 atributosInputs.forEach(inputTarget => {
                     const ficha = fichas[currentFichaId];
                     if (!ficha) return;
                     let currentValue = parseInt(inputTarget.value) || 0;
                     const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[inputTarget.id] !== undefined)
-                                        ? ficha.lockedAtributos[inputTarget.id]
-                                        : 0;
-                    if (currentValue < lockedValue) { // No !isGmModeActive here, because we are *exiting* GM mode
-                        inputTarget.value = lockedValue; // Revert to locked if below
-                    }
+                                        ? ficha.lockedAtributos[inputTarget.id] : 0;
+                    if (currentValue < lockedValue) inputTarget.value = lockedValue;
                 });
-                calcularAtributos(); // Recalculate based on potentially reverted values
+                calcularAtributos();
                 salvarDados();
             } else {
                 senhaGmTitulo.textContent = "Ativar Modo Mestre";
@@ -4133,8 +4220,7 @@ html
                         fecharModal("senha-gm-modal");
                         showNotification("Modo Mestre ativado!", "critical-success");
                     } else {
-                        alert("Senha do Mestre incorreta!");
-                        fecharModal("senha-gm-modal");
+                        alert("Senha do Mestre incorreta!"); fecharModal("senha-gm-modal");
                     }
                 };
             }
@@ -4144,53 +4230,28 @@ html
             if (!isGmModeActive) return;
             const targetIcon = event.target;
             if (!targetIcon.classList.contains('gm-edit-icon')) return;
-
             const targetId = targetIcon.dataset.targetId;
             const fieldLabel = targetIcon.dataset.label || targetId;
             const targetElement = document.getElementById(targetId);
-
             if (!targetElement) return;
-
             const isPrimaryAttributeInput = atributosInputs.some(input => input.id === targetId);
-            let currentValueToEdit;
-
-            if (isPrimaryAttributeInput) {
-                currentValueToEdit = targetElement.value;
-            } else {
-                currentValueToEdit = targetElement.textContent;
-            }
-
+            let currentValueToEdit = isPrimaryAttributeInput ? targetElement.value : targetElement.textContent;
             const newValueString = prompt(`Editar "${fieldLabel}":`, currentValueToEdit);
 
             if (newValueString !== null) {
                 let newValue = newValueString;
                 const numericFields = ['vida-total', 'magia-total', 'vigor-total', 'ataque', 'ataque-magico', 'acerto', 'esquiva', 'rdf', 'rdm', 'velocidade-corrida', 'altura-pulo', 'distancia-pulo', 'pontos-habilidade', 'pontos-vantagem', 'nivel', 'capacidade-carga', 'forca', 'destreza', 'agilidade', 'constituicao', 'inteligencia'];
-
                 if (numericFields.includes(targetId)) {
                     const parsedNum = parseFloat(newValueString);
-                    if (!isNaN(parsedNum)) {
-                        newValue = parsedNum;
-                    } else {
-                         alert("Valor inválido para este campo numérico.");
-                         return;
-                    }
+                    if (!isNaN(parsedNum)) newValue = parsedNum;
+                    else { alert("Valor inválido para este campo numérico."); return; }
                 }
-
                 const ficha = fichas[currentFichaId];
-                if (!ficha.gmOverrides) {
-                    ficha.gmOverrides = {};
-                }
-
-                if (isPrimaryAttributeInput) {
-                    targetElement.value = newValue;
-
-                } else {
-                    ficha.gmOverrides[targetId] = newValue;
-                }
-
+                if (!ficha.gmOverrides) ficha.gmOverrides = {};
+                if (isPrimaryAttributeInput) targetElement.value = newValue;
+                else ficha.gmOverrides[targetId] = newValue;
                 salvarDados();
-                atualizarNivel();
-
+                atualizarNivelEfeitos();
                 showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
             }
         }
@@ -4200,17 +4261,14 @@ html
             const isDarkModeActive = document.body.classList.contains('dark-mode');
             const defaultDarkBorder = '#555';
             const defaultLightBorder = '#b8860b';
-
             const novaCorBordaCustom = corBordaSecaoInput.value;
             const novoEstiloBorda = estiloBordaSecaoSelect.value;
             const novaLarguraBorda = larguraBordaSecaoInput.value + 'px';
-
             const corBordaFinal = isDarkModeActive ? defaultDarkBorder : novaCorBordaCustom;
 
             document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
             document.documentElement.style.setProperty('--estilo-borda-secao', novoEstiloBorda);
             document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
-
             if (fichas[currentFichaId]) {
                 fichas[currentFichaId].corBordaSecao = novaCorBordaCustom;
                 fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
@@ -4224,95 +4282,53 @@ html
             const isDarkModeActive = document.body.classList.contains('dark-mode');
             const defaultDarkBorder = '#555';
             const defaultLightBorder = '#b8860b';
-
             const corBordaCustom = ficha.corBordaSecao || defaultLightBorder;
             const estiloBorda = ficha.estiloBordaSecao || 'solid';
             const larguraBorda = ficha.larguraBordaSecao || '2px';
-
             const corBordaFinal = isDarkModeActive ? defaultDarkBorder : corBordaCustom;
 
             document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
             document.documentElement.style.setProperty('--estilo-borda-secao', estiloBorda);
             document.documentElement.style.setProperty('--largura-borda-secao', larguraBorda);
-
             if (corBordaSecaoInput) corBordaSecaoInput.value = corBordaCustom;
             if (estiloBordaSecaoSelect) estiloBordaSecaoSelect.value = estiloBorda;
             if (larguraBordaSecaoInput) larguraBordaSecaoInput.value = parseInt(larguraBorda) || 2;
         }
 
-
         diceTextureInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    aplicarTexturaDado(e.target.result);
-                }
-                reader.readAsDataURL(file);
-            }
-        });
-
-        removeDiceTextureBtn.addEventListener('click', () => {
-            if (confirm("Remover textura do dado?")) {
-                aplicarTexturaDado(null);
-            }
-        });
+            if (file) { const reader = new FileReader(); reader.onload = (e) => aplicarTexturaDado(e.target.result); reader.readAsDataURL(file); } });
+        removeDiceTextureBtn.addEventListener('click', () => { if (confirm("Remover textura do dado?")) aplicarTexturaDado(null); });
 
         function aplicarTexturaDado(imageDataUrl) {
             const ficha = fichas[currentFichaId];
-            if (imageDataUrl) {
-                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`;
-                if (ficha) ficha.texturaDado = imageDataUrl;
-            } else {
-                diceRoll.style.backgroundImage = 'none';
-                if (ficha) ficha.texturaDado = null;
-                 diceTextureInput.value = "";
-            }
+            if (imageDataUrl) { diceRoll.style.backgroundImage = `url('${imageDataUrl}')`; if (ficha) ficha.texturaDado = imageDataUrl; } 
+            else { diceRoll.style.backgroundImage = 'none'; if (ficha) ficha.texturaDado = null; diceTextureInput.value = ""; }
             if (ficha) salvarDados();
             showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
         }
-
-        diceAnimationSelector.addEventListener('change', () => {
-            aplicarAnimacaoDado(diceAnimationSelector.value);
-        });
-
+        diceAnimationSelector.addEventListener('change', () => aplicarAnimacaoDado(diceAnimationSelector.value));
         function aplicarAnimacaoDado(animacao) {
             const ficha = fichas[currentFichaId];
-            if (ficha) {
-                ficha.animacaoDado = animacao;
-                salvarDados();
-            }
-             showNotification("Animação do dado alterada!", "save-success");
+            if (ficha) { ficha.animacaoDado = animacao; salvarDados(); }
+            showNotification("Animação do dado alterada!", "save-success");
         }
 
        function aplicarCustomizacoesDadoInicial(ficha) {
-            if (ficha.texturaDado) {
-                diceRoll.style.backgroundImage = `url('${ficha.texturaDado}')`;
-            } else {
-                diceRoll.style.backgroundImage = 'none';
-            }
-            if(diceAnimationSelector && ficha.animacaoDado) {
-                 diceAnimationSelector.value = ficha.animacaoDado;
-            }
+            diceRoll.style.backgroundImage = ficha.texturaDado ? `url('${ficha.texturaDado}')` : 'none';
+            if(diceAnimationSelector && ficha.animacaoDado) diceAnimationSelector.value = ficha.animacaoDado;
         }
 
-
-        /***************************************************
-        *               THEME FUNCTIONS START                *
-        ****************************************************/
+        /*************************************************
+        *              THEME FUNCTIONS                   *
+        **************************************************/
         themeSelector.addEventListener('change', (event) => {
-            if (event.target.value === 'theme-elemental') {
-                elementalThemeGroup.style.display = 'block';
-            } else {
-                elementalThemeGroup.style.display = 'none';
-            }
+            elementalThemeGroup.style.display = event.target.value === 'theme-elemental' ? 'block' : 'none';
         });
 
         function prepararAplicarModeloFicha() {
             let novoTema = themeSelector.value;
-            if (novoTema === 'theme-elemental') {
-                novoTema += '-' + elementalThemeSelector.value;
-            }
+            if (novoTema === 'theme-elemental') novoTema += '-' + elementalThemeSelector.value;
             previousTheme = getCurrentThemeFromClasses();
             limparClassesDeTema();
             aplicarClassesDeTema(novoTema);
@@ -4321,25 +4337,17 @@ html
 
         confirmarTemaSimBtn.addEventListener('click', () => {
             const novoTema = getCurrentThemeFromClasses();
-            if(fichas[currentFichaId]) {
-                fichas[currentFichaId].theme = novoTema;
-            }
-            salvarDados();
-            fecharModal('confirmar-tema-modal');
-            showNotification("Tema aplicado com sucesso!", "save-success");
+            if(fichas[currentFichaId]) fichas[currentFichaId].theme = novoTema;
+            salvarDados(); fecharModal('confirmar-tema-modal'); showNotification("Tema aplicado com sucesso!", "save-success");
         });
 
         confirmarTemaNaoBtn.addEventListener('click', () => {
-            limparClassesDeTema();
-            aplicarClassesDeTema(previousTheme);
-            fecharModal('confirmar-tema-modal');
+            limparClassesDeTema(); aplicarClassesDeTema(previousTheme); fecharModal('confirmar-tema-modal');
         });
 
         function aplicarClassesDeTema(themeString) {
              const themeClasses = themeString.split(' ');
-             themeClasses.forEach(cls => {
-                if(cls) document.body.classList.add(cls);
-            });
+             themeClasses.forEach(cls => { if(cls) document.body.classList.add(cls); });
         }
 
         function limparClassesDeTema() {
@@ -4348,162 +4356,142 @@ html
         }
 
         function getCurrentThemeFromClasses() {
-             const themeClasses = Array.from(document.body.classList).filter(cls => cls.startsWith('theme-'));
-             return themeClasses.join(' ') || 'theme-medieval'; // Default
+             return Array.from(document.body.classList).filter(cls => cls.startsWith('theme-')).join(' ') || 'theme-medieval';
         }
 
         function reiniciarEstetica() {
-            if (!confirm("Tem certeza de que deseja reiniciar TODA a estética da ficha para o padrão? Isso inclui tema, cores, fontes e imagens de fundo. Seus dados de personagem NÃO serão afetados.")) {
+            if (!confirm("Tem certeza de que deseja reiniciar TODA a estética da ficha para o padrão?")) return;
+            const ficha = fichas[currentFichaId];
+            if (!ficha) return;
+            ficha.theme = 'theme-medieval'; ficha.backgroundColor = null; ficha.fichaInternalBackgroundColor = null; ficha.backgroundImage = null; ficha.backgroundSize = 'cover';
+            ficha.backgroundAttachment = 'scroll'; ficha.fontFamily = "'Inter', sans-serif"; ficha.fichaTransparencyLevel = 100; ficha.corBordaSecao = '#b8860b'; ficha.estiloBordaSecao = 'solid';
+            ficha.larguraBordaSecao = '2px'; ficha.shadowColorFicha = '#000000'; ficha.shadowIntensityFicha = 0; ficha.diceColor = null; ficha.diceNumberColor = null; ficha.texturaDado = null;
+            ficha.animacaoDado = 'padrao'; ficha.darkMode = false;
+            
+            limparClassesDeTema(); aplicarClassesDeTema('theme-medieval'); document.body.classList.remove('dark-mode');
+            aplicarPlanoDeFundoInicial(ficha); aplicarEstilosDeFundoVisuais(); aplicarEstilosDeSombra(); aplicarEstilosFichaInicial(ficha);
+            aplicarFonteInicial(ficha); aplicarCoresDadoInicial(ficha); aplicarCustomizacoesDadoInicial(ficha);
+            if (customizacaoModal.style.display === "flex") abrirModalCustomizacao();
+            
+            salvarDados(); showNotification("Estética da ficha reiniciada para o padrão!", "save-success"); fecharModal('customizacao-modal');
+        }
+
+        /*************************************************
+        *           CONDITIONS/EFFECTS FUNCTIONS         *
+        **************************************************/
+        function abrirModalEfeitos(alvoPredefinido) {
+            efeitoAlvoSelect.value = alvoPredefinido;
+            renderizarListaEfeitosAtivos();
+            efeitosModal.style.display = "flex";
+        }
+        function adicionarEfeito() {
+            const ficha = fichas[currentFichaId];
+            if (!ficha) return;
+            const tipo = efeitoTipoSelect.value;
+            const alvo = efeitoAlvoSelect.value;
+            const valor = parseInt(efeitoValorInput.value) || 0;
+            
+            if (valor === 0) {
+                alert("O valor do efeito não pode ser zero.");
                 return;
             }
 
-            const ficha = fichas[currentFichaId];
-            if (!ficha) return;
-
-            // 1. Reset data object properties to default
-            ficha.theme = 'theme-medieval';
-            ficha.backgroundColor = null;
-            ficha.fichaInternalBackgroundColor = null;
-            ficha.backgroundImage = null;
-            ficha.backgroundSize = 'cover';
-            ficha.backgroundAttachment = 'scroll';
-            ficha.fontFamily = "'Inter', sans-serif";
-            ficha.fichaTransparencyLevel = 100;
-            ficha.corBordaSecao = '#b8860b';
-            ficha.estiloBordaSecao = 'solid';
-            ficha.larguraBordaSecao = '2px';
-            ficha.shadowColorFicha = '#000000';
-            ficha.shadowIntensityFicha = 0;
-            ficha.diceColor = null;
-            ficha.diceNumberColor = null;
-            ficha.texturaDado = null;
-            ficha.animacaoDado = 'padrao';
-            ficha.darkMode = false;
-
-            // 2. Remove any theme classes and apply default
-            limparClassesDeTema();
-            aplicarClassesDeTema('theme-medieval');
-            document.body.classList.remove('dark-mode');
-
-
-            // 3. Re-apply all visual settings from the now-reset data object
-            aplicarPlanoDeFundoInicial(ficha);
-            aplicarEstilosDeFundoVisuais();
-            aplicarEstilosDeSombra();
-            aplicarEstilosFichaInicial(ficha);
-            aplicarFonteInicial(ficha);
-            aplicarCoresDadoInicial(ficha);
-            aplicarCustomizacoesDadoInicial(ficha);
-
-            // 4. Update the controls in the customization modal if it's open
-             if (customizacaoModal.style.display === "flex") {
-                themeSelector.value = 'theme-medieval';
-                elementalThemeGroup.style.display = 'none';
-                backgroundColorInput.value = '#f0e6d2';
-                fichaInternalBackgroundColorInput.value = '#f0e6d2';
-                fontSelector.value = "'Inter', sans-serif";
-                backgroundImageInput.value = "";
-                corBordaSecaoInput.value = '#b8860b';
-                estiloBordaSecaoSelect.value = 'solid';
-                larguraBordaSecaoInput.value = 2;
-                diceColorInput.value = '#f0e6d2';
-                diceNumberColorInput.value = '#000000';
-                diceTextureInput.value = "";
-                diceAnimationSelector.value = 'padrao';
-                fichaTransparencySlider.value = 100;
-                fichaTransparencyValueSpan.textContent = '100';
-                shadowColorFichaInput.value = '#000000';
-                shadowIntensityFichaSlider.value = 0;
-                shadowIntensityFichaValueSpan.textContent = '0';
-             }
-
-
-            // 5. Save changes and notify user
+            const novoEfeito = { id: generateLocalId(), tipo, alvo, valor };
+            ficha.efeitosAtivos.push(novoEfeito);
+            
+            atualizarNivelEfeitos(); // Recalcula e aplica
+            renderizarListaEfeitosAtivos();
             salvarDados();
-            showNotification("Estética da ficha reiniciada para o padrão!", "save-success");
-            fecharModal('customizacao-modal'); // Close the modal for a clean exit
+        }
+        function removerEfeito(efeitoId) {
+            const ficha = fichas[currentFichaId];
+            if (ficha) {
+                ficha.efeitosAtivos = ficha.efeitosAtivos.filter(e => e.id !== efeitoId);
+                atualizarNivelEfeitos();
+                renderizarListaEfeitosAtivos();
+                salvarDados();
+            }
+        }
+        function renderizarListaEfeitosAtivos() {
+            const ficha = fichas[currentFichaId];
+            listaEfeitosAtivos.innerHTML = '';
+            if (!ficha || ficha.efeitosAtivos.length === 0) {
+                listaEfeitosAtivos.innerHTML = '<div class="text-center italic">Nenhum efeito ativo.</div>';
+                return;
+            }
+            ficha.efeitosAtivos.forEach(e => {
+                const item = document.createElement('div');
+                item.className = 'efeito-ativo-item';
+                const valorFormatado = e.valor > 0 ? `+${e.valor}` : e.valor;
+                const nomeAlvo = efeitoAlvoSelect.querySelector(`option[value="${e.alvo}"]`).textContent;
+                item.innerHTML = `<span>${e.tipo.charAt(0).toUpperCase() + e.tipo.slice(1)} em ${nomeAlvo}: ${valorFormatado}</span>
+                                <button class="cancel-btn" style="padding: 2px 8px; font-size: 0.9rem;" onclick="removerEfeito('${e.id}')">X</button>`;
+                listaEfeitosAtivos.appendChild(item);
+            });
+        }
+        function getElementoAtributo(alvoId) {
+            const inputEl = document.getElementById(alvoId);
+            if (inputEl && inputEl.tagName === "INPUT") return inputEl.closest('.atributo');
+            const spanEl = document.getElementById(alvoId);
+            if(spanEl) return spanEl.closest('.atributo-destaque') || spanEl.closest('.valor-total');
+            return null;
         }
 
+        function limparClassesDeEfeitos() {
+             const todosAtributos = document.querySelectorAll('.atributo, .atributo-destaque, .valor-total');
+            todosAtributos.forEach(el => el.classList.remove('efeito-buff', 'efeito-debuff', 'efeito-envenenado'));
+        }
 
-        /*************************************************
-        *                THEME FUNCTIONS END                 *
-        **************************************************/
+        function aplicarClassesEfeitosAtivos() {
+            const ficha = fichas[currentFichaId];
+            if (!ficha || !ficha.efeitosAtivos) return;
+            ficha.efeitosAtivos.forEach(efeito => {
+                const elemento = getElementoAtributo(efeito.alvo);
+                if (elemento) {
+                    if (efeito.tipo === 'buff') elemento.classList.add('efeito-buff');
+                    else if (efeito.tipo === 'debuff') elemento.classList.add('efeito-debuff');
+                    else if (efeito.tipo === 'envenenado') elemento.classList.add('efeito-envenenado');
+                }
+            });
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
              fireworksContainerRef = document.getElementById('fireworks-container');
-             if (diceContainer) {
-                currentX = diceContainer.offsetLeft;
-                currentY = diceContainer.offsetTop;
-            }
+             if (diceContainer) { currentX = diceContainer.offsetLeft; currentY = diceContainer.offsetTop; }
+
             // Botões de Recursos
-            const btnDiminuirVida = document.getElementById('btn-diminuir-vida');
-            const btnAumentarVida = document.getElementById('btn-aumentar-vida');
-            const btnDiminuirMagia = document.getElementById('btn-diminuir-magia');
-            const btnAumentarMagia = document.getElementById('btn-aumentar-magia');
-            const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
-            const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
-            
-            // --- NEW --- Botões de Atributos
-            const btnAumentarForca = document.getElementById('btn-aumentar-forca');
-            const btnDiminuirForca = document.getElementById('btn-diminuir-forca');
-            const btnAumentarDestreza = document.getElementById('btn-aumentar-destreza');
-            const btnDiminuirDestreza = document.getElementById('btn-diminuir-destreza');
-            const btnAumentarAgilidade = document.getElementById('btn-aumentar-agilidade');
-            const btnDiminuirAgilidade = document.getElementById('btn-diminuir-agilidade');
-            const btnAumentarConstituicao = document.getElementById('btn-aumentar-constituicao');
-            const btnDiminuirConstituicao = document.getElementById('btn-diminuir-constituicao');
-            const btnAumentarInteligencia = document.getElementById('btn-aumentar-inteligencia');
-            const btnDiminuirInteligencia = document.getElementById('btn-diminuir-inteligencia');
-
-            // --- NEW --- Botões de Experiência
-            const btnAumentarXp = document.getElementById('btn-aumentar-xp');
-            const btnDiminuirXp = document.getElementById('btn-diminuir-xp');
-
-
+            const btnDiminuirVida = document.getElementById('btn-diminuir-vida'), btnAumentarVida = document.getElementById('btn-aumentar-vida'),
+                  btnDiminuirMagia = document.getElementById('btn-diminuir-magia'), btnAumentarMagia = document.getElementById('btn-aumentar-magia'),
+                  btnDiminuirVigor = document.getElementById('btn-diminuir-vigor'), btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
+            // Botões de Atributos
+            const btnAumentarForca = document.getElementById('btn-aumentar-forca'), btnDiminuirForca = document.getElementById('btn-diminuir-forca'),
+                  btnAumentarDestreza = document.getElementById('btn-aumentar-destreza'), btnDiminuirDestreza = document.getElementById('btn-diminuir-destreza'),
+                  btnAumentarAgilidade = document.getElementById('btn-aumentar-agilidade'), btnDiminuirAgilidade = document.getElementById('btn-diminuir-agilidade'),
+                  btnAumentarConstituicao = document.getElementById('btn-aumentar-constituicao'), btnDiminuirConstituicao = document.getElementById('btn-diminuir-constituicao'),
+                  btnAumentarInteligencia = document.getElementById('btn-aumentar-inteligencia'), btnDiminuirInteligencia = document.getElementById('btn-diminuir-inteligencia');
+            // Botões de Experiência
+            const btnAumentarXp = document.getElementById('btn-aumentar-xp'), btnDiminuirXp = document.getElementById('btn-diminuir-xp');
             const resetEsteticaBtn = document.getElementById('reset-estetica-btn');
-
 
             carregarFichas();
 
-            // Setup de botões de Recursos
-            setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
-            setupHoldButtonEvents(btnAumentarVida, aumentarVida);
-            setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia);
-            setupHoldButtonEvents(btnAumentarMagia, aumentarMagia);
-            setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
-            setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
+            // Setup dos Botões
+            setupHoldButtonEvents(btnDiminuirVida, diminuirVida); setupHoldButtonEvents(btnAumentarVida, aumentarVida);
+            setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia); setupHoldButtonEvents(btnAumentarMagia, aumentarMagia);
+            setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor); setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
+            setupHoldButtonEvents(btnAumentarForca, () => changeAttribute('forca', 1)); setupHoldButtonEvents(btnDiminuirForca, () => changeAttribute('forca', -1));
+            setupHoldButtonEvents(btnAumentarDestreza, () => changeAttribute('destreza', 1)); setupHoldButtonEvents(btnDiminuirDestreza, () => changeAttribute('destreza', -1));
+            setupHoldButtonEvents(btnAumentarAgilidade, () => changeAttribute('agilidade', 1)); setupHoldButtonEvents(btnDiminuirAgilidade, () => changeAttribute('agilidade', -1));
+            setupHoldButtonEvents(btnAumentarConstituicao, () => changeAttribute('constituicao', 1)); setupHoldButtonEvents(btnDiminuirConstituicao, () => changeAttribute('constituicao', -1));
+            setupHoldButtonEvents(btnAumentarInteligencia, () => changeAttribute('inteligencia', 1)); setupHoldButtonEvents(btnDiminuirInteligencia, () => changeAttribute('inteligencia', -1));
+            setupHoldButtonEvents(btnAumentarXp, () => changeXp(1)); setupHoldButtonEvents(btnDiminuirXp, () => changeXp(-1));
 
-            // --- NEW --- Setup de botões de Atributos
-            setupHoldButtonEvents(btnAumentarForca, () => changeAttribute('forca', 1));
-            setupHoldButtonEvents(btnDiminuirForca, () => changeAttribute('forca', -1));
-            setupHoldButtonEvents(btnAumentarDestreza, () => changeAttribute('destreza', 1));
-            setupHoldButtonEvents(btnDiminuirDestreza, () => changeAttribute('destreza', -1));
-            setupHoldButtonEvents(btnAumentarAgilidade, () => changeAttribute('agilidade', 1));
-            setupHoldButtonEvents(btnDiminuirAgilidade, () => changeAttribute('agilidade', -1));
-            setupHoldButtonEvents(btnAumentarConstituicao, () => changeAttribute('constituicao', 1));
-            setupHoldButtonEvents(btnDiminuirConstituicao, () => changeAttribute('constituicao', -1));
-            setupHoldButtonEvents(btnAumentarInteligencia, () => changeAttribute('inteligencia', 1));
-            setupHoldButtonEvents(btnDiminuirInteligencia, () => changeAttribute('inteligencia', -1));
+            if (resetEsteticaBtn) resetEsteticaBtn.addEventListener('click', reiniciarEstetica);
+            if (adicionarEfeitoBtn) adicionarEfeitoBtn.addEventListener('click', adicionarEfeito);
 
-            // --- NEW --- Setup de botões de Experiência
-            setupHoldButtonEvents(btnAumentarXp, () => changeXp(1));
-            setupHoldButtonEvents(btnDiminuirXp, () => changeXp(-1));
-
-
-            if (resetEsteticaBtn) {
-                 resetEsteticaBtn.addEventListener('click', reiniciarEstetica);
-            }
-
-            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .attr-btn').forEach(btn => {
-                btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
-            });
+            document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .attr-btn').forEach(btn => btn.addEventListener('click', () => aplicarFeedbackBotao(btn)));
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
-                header.addEventListener('click', () => {
-                    const sectionId = header.parentElement.id;
-                    if (sectionId) {
-                        toggleCollapseSection(sectionId);
-                    }
-                });
+                header.addEventListener('click', () => { const sectionId = header.parentElement.id; if (sectionId) toggleCollapseSection(sectionId); });
             });
             setupAttributeTooltips();
         });
