@@ -126,7 +126,7 @@ html
         body.dark-mode label { color: #e0e0e0; }
         input[type="text"], input[type="number"], textarea, select {
             padding: 10px; border: 2px solid #b8860b; border-radius: 6px; width: calc(100% - 24px);
-            margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease, background-color 0.3s, color 0.3s;
+            margin-bottom: 15px; font-size: 1rem; transition: border-color 0.3s ease, background-color 0.3s, color 0.3s, box-shadow 0.3s;
             background: #fff; color: #000;
         }
         .recurso-atual-input {
@@ -163,7 +163,7 @@ html
         body.dark-mode .atributos-coluna-destaque { background: #333; border-color: #555; }
         .atributo-destaque { padding: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
         .atributo-destaque label { font-size: 1.1rem; font-weight: 700; color: #a0522d; }
-        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s; }
+        .atributo-destaque span { font-size: 1.2rem; font-family: 'MedievalSharp', serif; color: #000; transition: color 0.3s, text-shadow 0.3s; }
         body.dark-mode .atributo-destaque span { color: #e0e0e0; }
         .atributo-fogo { animation: fogo 1.5s infinite; }
         @keyframes fogo {
@@ -231,7 +231,7 @@ html
             width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;
             font-size: 3.125rem; box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); margin: 0 auto;
             font-family: 'MedievalSharp', serif;
-             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+             transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s, text-shadow 0.3s;
         }
         body.dark-mode #nivel { background: #1e1e1e; border-color: #444; }
         #nivel.aura-azul { animation: pulsar-aura 5s 1; }
@@ -684,7 +684,6 @@ html
             padding: 8px;
             font-size: 0.9rem;
         }
-        /* --- MODIFIED: Adjusted width and added new class for vigor cost --- */
         .magia-detalhes .magia-custo, .magia-detalhes .magia-custo-vigor {
             width: 60px !important; text-align: center;
         }
@@ -735,22 +734,43 @@ html
 
         .lock-icon { margin-left: 5px; cursor: help; }
 
-        .gm-edit-icon {
+        .gm-control-icons {
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .gm-edit-icon, .gm-clear-icon {
             font-size: 0.8rem;
             margin-left: 5px;
             cursor: pointer;
             display: none;
             color: #007bff;
         }
-        body.gm-mode-active .gm-edit-icon {
-            display: inline;
-        }
-        body.dark-mode .gm-edit-icon {
-            color: #61dafb;
-        }
-        .gm-edit-icon:hover {
+
+        .gm-clear-icon { color: #dc3545; }
+        body.dark-mode .gm-edit-icon { color: #61dafb; }
+        body.dark-mode .gm-clear-icon { color: #ff8a80; }
+        
+        body.gm-mode-active .gm-edit-icon { display: inline-block; }
+        /* A regra para exibir o .gm-clear-icon será adicionada/removida via JS */
+        
+        .gm-edit-icon:hover, .gm-clear-icon:hover {
             text-shadow: 0 0 3px currentColor;
         }
+
+        .gm-overridden {
+            text-shadow: 0 0 5px #61dafb, 0 0 8px #007bff;
+            transition: text-shadow 0.3s;
+        }
+        body.dark-mode .gm-overridden {
+            text-shadow: 0 0 5px #c58c5a, 0 0 8px #ffebcd;
+        }
+
+        input.gm-overridden {
+            box-shadow: 0 0 8px #61dafb, inset 0 0 5px rgba(97, 218, 251, 0.3);
+        }
+
         #custom-tooltip {
             position: absolute;
             visibility: hidden;
@@ -801,7 +821,7 @@ html
             cursor: pointer;
             margin-left: 8px;
             display: inline-block;
-            transition: transform 0.2s;
+            transition: transform 0.2s, text-shadow 0.2s;
             font-size: 1rem;
             user-select: none;
         }
@@ -979,7 +999,6 @@ html
         *      STYLES FOR NEW BUTTONS START HERE       *
         ***********************************************/
 
-        /* Um contêiner para o input e seus botões de +/- */
         .input-com-botoes-wrapper {
             display: flex;
             align-items: center;
@@ -987,7 +1006,6 @@ html
             margin-left: auto; /* Alinha o grupo de input à direita */
         }
 
-        /* Reduz o tamanho dos inputs de atributo para caber os botões */
         .input-com-botoes-wrapper input[type="number"] {
             width: 70px !important;
             text-align: center;
@@ -996,14 +1014,12 @@ html
             -moz-appearance: textfield; /* Remove os seletores padrão do Firefox */
         }
 
-        /* Remove os seletores padrão do Chrome/Safari/Edge */
         .input-com-botoes-wrapper input[type="number"]::-webkit-outer-spin-button,
         .input-com-botoes-wrapper input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
 
-        /* Estilo dos novos botões de atributo e experiência */
         .attr-btn {
             background: #b8860b;
             color: #fff;
@@ -1033,7 +1049,6 @@ html
              background: #777;
         }
         
-        /* Ajusta o layout da linha do atributo primário para que os botões fiquem alinhados */
         #atributos .atributo, #status .status-item {
              display: flex;
              justify-content: space-between;
@@ -1133,7 +1148,11 @@ html
                             <h3>Vida</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vida Total: </span>
-                                <span id="vida-total">50</span> <span class="gm-edit-icon" data-target-id="vida-total" data-label="Vida Total">✏️</span>
+                                <span id="vida-total">50</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="vida-total" data-label="Vida Total">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="vida-total" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vida Atual: </span>
@@ -1149,7 +1168,11 @@ html
                             <h3>Magia</h3>
                             <div class="valor-total medieval-box">
                                 <span>Magia Total: </span>
-                                <span id="magia-total">20</span> <span class="gm-edit-icon" data-target-id="magia-total" data-label="Magia Total">✏️</span>
+                                <span id="magia-total">20</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="magia-total" data-label="Magia Total">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="magia-total" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Magia Atual: </span>
@@ -1165,7 +1188,11 @@ html
                             <h3>Vigor</h3>
                             <div class="valor-total medieval-box">
                                 <span>Vigor Total: </span>
-                                <span id="vigor-total">10</span> <span class="gm-edit-icon" data-target-id="vigor-total" data-label="Vigor Total">✏️</span>
+                                <span id="vigor-total">10</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="vigor-total" data-label="Vigor Total">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="vigor-total" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="valor-atual medieval-box">
                                 <span>Vigor Atual: </span>
@@ -1193,7 +1220,10 @@ html
                                     <button id="btn-aumentar-forca" class="attr-btn" title="Aumentar Força">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="forca" title="Rolar com Força">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="forca" data-label="Força">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="forca" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo">
                                 <label for="destreza" title="Destreza: Afeta precisão de ataques (Acerto), chance de desviar de ataques (Esquiva com Agilidade) e dano com armas de destreza (ex: arcos, adagas).">Destreza:</label>
@@ -1203,7 +1233,10 @@ html
                                     <button id="btn-aumentar-destreza" class="attr-btn" title="Aumentar Destreza">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="destreza" title="Rolar com Destreza">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="destreza" data-label="Destreza">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="destreza" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo">
                                 <label for="agilidade" title="Agilidade: Afeta chance de desviar de ataques (Esquiva), iniciativa em combate e testes de acrobacia, furtividade.">Agilidade:</label>
@@ -1213,7 +1246,10 @@ html
                                     <button id="btn-aumentar-agilidade" class="attr-btn" title="Aumentar Agilidade">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="agilidade" title="Rolar com Agilidade">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="agilidade" data-label="Agilidade">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="agilidade" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo">
                                 <label for="constituicao" title="Constituição: Define seus Pontos de Vida (PV) base, Pontos de Magia (PM) base, Pontos de Vigor (PVg) base e regeneração desses recursos.">Constituição:</label>
@@ -1223,7 +1259,10 @@ html
                                     <button id="btn-aumentar-constituicao" class="attr-btn" title="Aumentar Constituição">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="constituicao" title="Rolar com Constituição">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="constituicao" data-label="Constituição">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="constituicao" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo">
                                 <label for="inteligencia" title="Inteligência: Afeta dano mágico, resistência a dano mágico (RDM), quantidade de perícias conhecidas e testes de conhecimento.">Inteligência:</label>
@@ -1233,39 +1272,60 @@ html
                                     <button id="btn-aumentar-inteligencia" class="attr-btn" title="Aumentar Inteligência">▲</button>
                                 </div>
                                 <span class="attribute-dice-icon" data-attribute-source="inteligencia" title="Rolar com Inteligência">🎲</span>
-                                <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="inteligencia" data-label="Inteligência">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="inteligencia" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                         </div>
                         <div class="atributos-coluna-destaque">
                             <div class="atributo-destaque">
                                 <label title="Força + (Destreza / 5) + Bônus de Armas. Dano físico.">Ataque:</label>
                                 <span><span id="ataque">0</span><span class="attribute-dice-icon" data-attribute-source="ataque" title="Rolar com Ataque">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="ataque" data-label="Ataque">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="ataque" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="Inteligência + Bônus de Armas Mágicas. Dano mágico.">Ataque Mágico:</label>
                                 <span><span id="ataque-magico">0</span><span class="attribute-dice-icon" data-attribute-source="ataque-magico" title="Rolar com Ataque Mágico">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="ataque-magico" data-label="Ataque Mágico">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="ataque-magico" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Destreza / 3) + (Agilidade / 10). Chance de acertar ataques.">Acerto:</label>
                                 <span><span id="acerto">0</span><span class="attribute-dice-icon" data-attribute-source="acerto" title="Rolar com Acerto">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="acerto" data-label="Acerto">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="acerto" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Agilidade / 3). Chance de evitar ataques.">Esquiva:</label>
                                 <span><span id="esquiva">0</span><span class="attribute-dice-icon" data-attribute-source="esquiva" title="Rolar com Esquiva">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="esquiva" data-label="Esquiva">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="esquiva" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Força / 5). Redução de dano físico.">RDF:</label>
                                 <span><span id="rdf">0</span><span class="attribute-dice-icon" data-attribute-source="rdf" title="Rolar com RDF">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="rdf" data-label="RDF">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="rdf" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                             <div class="atributo-destaque">
                                 <label title="(Inteligência / 5). Redução de dano mágico.">RDM:</label>
                                 <span><span id="rdm">0</span><span class="attribute-dice-icon" data-attribute-source="rdm" title="Rolar com RDM">🎲</span></span>
-                                <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="rdm" data-label="RDM">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="rdm" title="Remover Modificação do Mestre">❌</span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -1306,7 +1366,12 @@ html
                 <div class="section-content">
                     <div class="flex gap-20">
                         <div style="width:50%">
-                            <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg <span class="gm-edit-icon" data-target-id="capacidade-carga" data-label="Capacidade Carga">✏️</span>):</label>
+                            <label>Inventário (Peso Total: <span id="peso-total">0</span> kg / <span id="capacidade-carga">5</span> kg
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="capacidade-carga" data-label="Capacidade Carga">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="capacidade-carga" title="Remover Modificação do Mestre">❌</span>
+                                </span>
+                            ):</label>
                             <div id="inventario-slots">
                                 <div class="inventory-slot"><input type="text" placeholder="Item 1" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight" title="Peso em kg"></div>
                                 <div class="inventory-slot"><input type="text" placeholder="Item 2" class="inventory-item"><input type="number" min="0" value="0" class="inventory-weight"></div>
@@ -1352,19 +1417,28 @@ html
                             <label>Velocidade de Corrida (km/h):</label><span>🏃‍♂️</span>
                             <span id="velocidade-corrida">25</span>
                             <span class="attribute-dice-icon" data-attribute-source="velocidade-corrida" title="Rolar com Velocidade de Corrida">🎲</span>
-                            <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
+                            <span class="gm-control-icons">
+                                <span class="gm-edit-icon" data-target-id="velocidade-corrida" data-label="Velocidade Corrida">✏️</span>
+                                <span class="gm-clear-icon" data-target-id="velocidade-corrida" title="Remover Modificação do Mestre">❌</span>
+                            </span>
                         </div>
                         <div class="locomotion-item">
                             <label>Altura do Pulo (m):</label><span>⬆️</span>
                             <span id="altura-pulo">1</span>
                             <span class="attribute-dice-icon" data-attribute-source="altura-pulo" title="Rolar com Altura do Pulo">🎲</span>
-                             <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
+                            <span class="gm-control-icons">
+                                 <span class="gm-edit-icon" data-target-id="altura-pulo" data-label="Altura Pulo">✏️</span>
+                                 <span class="gm-clear-icon" data-target-id="altura-pulo" title="Remover Modificação do Mestre">❌</span>
+                            </span>
                         </div>
                         <div class="locomotion-item">
                             <label>Distância do Pulo (m):</label><span>➡️</span>
                             <span id="distancia-pulo">3</span>
                             <span class="attribute-dice-icon" data-attribute-source="distancia-pulo" title="Rolar com Distância do Pulo">🎲</span>
-                            <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
+                            <span class="gm-control-icons">
+                                <span class="gm-edit-icon" data-target-id="distancia-pulo" data-label="Distância Pulo">✏️</span>
+                                <span class="gm-clear-icon" data-target-id="distancia-pulo" title="Remover Modificação do Mestre">❌</span>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1383,15 +1457,30 @@ html
                                 </div>
                             </div>
                             <label>Pontos de Habilidade (PD):</label>
-                            <span id="pontos-habilidade">25</span> <span class="gm-edit-icon" data-target-id="pontos-habilidade" data-label="Pontos Habilidade">✏️</span>
+                            <span><span id="pontos-habilidade">25</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="pontos-habilidade" data-label="Pontos Habilidade">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="pontos-habilidade" title="Remover Modificação do Mestre">❌</span>
+                                </span>
+                            </span>
                             <label>Pontos de Vantagem (PH):</label>
-                            <span id="pontos-vantagem">8</span> <span class="gm-edit-icon" data-target-id="pontos-vantagem" data-label="Pontos Vantagem">✏️</span>
+                            <span><span id="pontos-vantagem">8</span>
+                                <span class="gm-control-icons">
+                                    <span class="gm-edit-icon" data-target-id="pontos-vantagem" data-label="Pontos Vantagem">✏️</span>
+                                    <span class="gm-clear-icon" data-target-id="pontos-vantagem" title="Remover Modificação do Mestre">❌</span>
+                                </span>
+                            </span>
                         </div>
                         <div></div>
                     </div>
                     <div id="nivel-container">
                         <label>Nível:</label>
-                        <span id="nivel">0</span> <span class="gm-edit-icon" data-target-id="nivel" data-label="Nível">✏️</span>
+                        <span><span id="nivel">0</span>
+                            <span class="gm-control-icons">
+                                <span class="gm-edit-icon" data-target-id="nivel" data-label="Nível">✏️</span>
+                                <span class="gm-clear-icon" data-target-id="nivel" title="Remover Modificação do Mestre">❌</span>
+                            </span>
+                        </span>
                     </div>
                 </div>
             </section>
@@ -1474,7 +1563,6 @@ html
             <button class="confirm-btn" id="confirmar-salvar-btn">OK</button> <button class="cancel-btn" onclick="fecharModal('salvar-vantagens-modal')">Cancelar</button>
         </div>
     </div>
-     <!-- New Modal for Confirming Attribute Save -->
     <div id="confirmar-salvar-atributos-modal" class="modal">
         <div class="modal-content">
             <h3 id="confirmar-salvar-atributos-texto">Ao clicar em salvar, as alterações não poderão ser desfeitas.</h3>
@@ -1663,7 +1751,6 @@ html
         </div>
     </div>
 
-    <!-- NEW THEME CONFIRMATION MODAL -->
     <div id="confirmar-tema-modal" class="modal">
         <div class="modal-content">
             <h3>Quer manter a alteração?</h3>
@@ -1699,7 +1786,7 @@ html
             vigorTotal, vigorAtual, previousValues = new Map();
         let isGmModeActive = false;
         let previousTheme = '';
-        let selectedAttributeIcon = null; // NEW: Tracks the selected attribute icon
+        let selectedAttributeIcon = null;
 
 
         const vantagensData = [
@@ -1786,7 +1873,6 @@ html
             vigorAtualInput = document.getElementById('vigor-atual-input'),
             confirmarSalvarAtributosModal = document.getElementById("confirmar-salvar-atributos-modal"),
             confirmarSalvarAtributosOkBtn = document.getElementById("confirmar-salvar-atributos-ok-btn"),
-            // Theme UI Elements
             themeSelector = document.getElementById('theme-selector'),
             elementalThemeGroup = document.getElementById('elemental-theme-group'),
             elementalThemeSelector = document.getElementById('elemental-theme-selector'),
@@ -1853,7 +1939,6 @@ html
                     magiasHabilidades: Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }),
                     desvantagens: "",
                     inventario: Array(10).fill({ item: "", peso: "0" }),
-                    velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                     isLocked: true, password: senhaMatriz, imagem: null, anotacoes: "",
                     classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                     backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll',
@@ -1957,7 +2042,6 @@ html
                 magiasHabilidades: Array(5).fill({ nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }),
                 desvantagens: "",
                 inventario: Array(10).fill({ item: "", peso: "0" }),
-                velocidadeCorrida: "25", alturaPulo: "1", distanciaPulo: "3",
                 isLocked: false, password: null, imagem: null, anotacoes: "",
                 classeNome: "", classeDescricao: "", racaNome: "", racaDescricao: "", racaSelecionada: "",
                 backgroundImage: null, backgroundSize: 'cover', backgroundAttachment: 'scroll',
@@ -2002,7 +2086,7 @@ html
                 return;
             }
 
-            // Ensure new properties have defaults
+            // Garante que as novas propriedades tenham valores padrão
             ficha.gmOverrides = ficha.gmOverrides || {};
             ficha.diceRolls = ficha.diceRolls || [];
             ficha.collapsedSections = ficha.collapsedSections || {};
@@ -2103,13 +2187,13 @@ html
             isXpUnlocked = false;
             if (xpUnlockTimerId) clearTimeout(xpUnlockTimerId);
 
-            vidaAtual = ficha.vidaAtual !== undefined ? parseInt(ficha.vidaAtual) : 50;
-            magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : 20;
-            vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : 10;
-
-
-            atualizarNivel(); // This calls calcularAtributos
-
+            // Chamada de atualização principal que recalcula tudo
+            atualizarNivel(false); // `false` para não mostrar notificação de "subiu de nível" ao carregar a ficha
+            
+            // Define valores atuais após os totais terem sido calculados
+            vidaAtual = ficha.vidaAtual !== undefined ? parseInt(ficha.vidaAtual) : vidaTotal;
+            magiaAtual = ficha.magiaAtual !== undefined ? parseInt(ficha.magiaAtual) : magiaTotal;
+            vigorAtual = ficha.vigorAtual !== undefined ? parseFloat(ficha.vigorAtual) : vigorTotal;
             vidaAtualInput.value = Math.min(vidaAtual, vidaTotal);
             magiaAtualInput.value = Math.min(magiaAtual, magiaTotal);
             vigorAtualInput.value = (Math.min(vigorAtual, vigorTotal)).toFixed(1);
@@ -2190,11 +2274,10 @@ html
             fichaAtual.racaNome = racaNomeSpan.textContent;
             fichaAtual.racaDescricao = racaDescricaoInput.value;
             fichaAtual.racaSelecionada = racaSelecionada;
-            fichaAtual.diceRolls = fichaAtual.diceRolls || [];
-            fichaAtual.collapsedSections = fichaAtual.collapsedSections || {};
-            fichaAtual.gmOverrides = fichaAtual.gmOverrides || {};
-            fichaAtual.lockedAtributos = fichaAtual.lockedAtributos || { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
-
+            
+            // Essas propriedades são inicializadas na função carregarFicha, garantindo que existam.
+            // fichaAtual.diceRolls, fichaAtual.collapsedSections, fichaAtual.gmOverrides, fichaAtual.lockedAtributos
+            
             fichaAtual.backgroundImage = document.body.style.backgroundImage === 'none' || document.body.style.backgroundImage === '' ? null : document.body.style.backgroundImage.slice(5, -2).replace(/"/g, "").replace(/'/g, "");
             fichaAtual.backgroundSize = document.body.style.backgroundSize;
             fichaAtual.backgroundAttachment = document.body.style.backgroundAttachment;
@@ -2263,13 +2346,15 @@ html
                 const angulo = Math.random() * Math.PI * 2;
                 const forca = Math.random() * 100 + 80;
                 const duracao = Math.random() * 1.0 + 0.8;
+                 const targetX = xBase + Math.cos(angulo) * forca;
+                const targetY = yBase + Math.sin(angulo) * forca;
 
                 p.style.animation = `particle-trail ${duracao}s ease-out forwards`;
                 p.style.transition = `transform ${duracao}s cubic-bezier(0.1, 0.7, 0.3, 1)`;
 
                 void p.offsetWidth;
 
-                p.style.transform = `translate(${targetX - xBase}px, ${targetYFinal - yBase}px) scale(0.5)`;
+                p.style.transform = `translate(${targetX - xBase}px, ${targetY - yBase}px) scale(0.5)`;
 
                 setTimeout(() => {
                     if (p && p.parentNode) p.remove();
@@ -2305,24 +2390,28 @@ html
             }
         }
 
-        function atualizarNivel() {
+        function atualizarNivel(notificar = true) {
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
 
             experiencia = parseInt(experienciaInput.value) || 0;
             nivelAnterior = nivel;
 
-            nivel = ficha.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : calcularNivel(experiencia);
+            // Nível é definido pelo override do Mestre ou pelo cálculo normal
+            const nivelCalculado = calcularNivel(experiencia);
+            nivel = ficha.gmOverrides?.nivel !== undefined ? parseInt(ficha.gmOverrides.nivel) : nivelCalculado;
             nivelSpan.textContent = nivel;
-
+            
             const nivelInfo = nivelData.find(data => data.nivel === nivel) || nivelData[0];
-
+            
+            // Pontos de Habilidade
             pontosHabilidadeTotal = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
-                                      parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
+                parseInt(ficha.gmOverrides['pontos-habilidade']) : nivelInfo.pd;
 
+            // Pontos de Vantagem
             pontosVantagemSpan.textContent = getPontosVantagem();
 
-            if (nivel > nivelAnterior && ficha.gmOverrides?.nivel === undefined) {
+            if (notificar && nivel > nivelAnterior && ficha.gmOverrides?.nivel === undefined) {
                 nivelSpan.classList.add("aura-azul");
                 setTimeout(() => nivelSpan.classList.remove("aura-azul"), 5000);
                 showNotification(`Parabéns! Você alcançou o Nível ${nivel}!`, "critical-success");
@@ -2336,22 +2425,18 @@ html
             } else {
                 fichaContainer.classList.remove("aura-azul");
             }
-
-            calcularAtributos();
+            
+            // Chamada crucial que recalcula tudo, incluindo overrides
+            calcularAtributos(); 
         }
-
 
         function getPontosVantagem() {
             const ficha = fichas[currentFichaId];
             if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
-            let phBase;
-
-            if (ficha.gmOverrides?.['pontos-vantagem'] !== undefined) {
-                phBase = parseInt(ficha.gmOverrides['pontos-vantagem']);
-            } else {
-                phBase = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
-            }
+            let phBase = ficha.gmOverrides?.['pontos-vantagem'] !== undefined 
+                ? parseInt(ficha.gmOverrides['pontos-vantagem'])
+                : (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
             vantagensSelecionadas.forEach(vNome => {
                 const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) phBase -= vantagem.custo;
@@ -2370,13 +2455,9 @@ html
             const ficha = fichas[currentFichaId];
             if (!ficha) return (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
-            let ph;
-
-            if (ficha.gmOverrides?.['pontos-vantagem'] !== undefined) {
-                ph = parseInt(ficha.gmOverrides['pontos-vantagem']);
-            } else {
-                ph = (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
-            }
+            let ph = ficha.gmOverrides?.['pontos-vantagem'] !== undefined 
+                ? parseInt(ficha.gmOverrides['pontos-vantagem'])
+                : (nivelData.find(data => data.nivel === nivel) || nivelData[0]).ph;
 
             tempVantagensSelecionadas.forEach(vNome => {
                 const vantagem = vantagensData.find(d => d.nome === vNome); if (vantagem) ph -= vantagem.custo;
@@ -2445,87 +2526,73 @@ html
             }
         }
 
+        // --- COREÇÃO PRINCIPAL AQUI ---
         function calcularAtributos() {
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
 
+            // 1. Calcula os pontos gastos pelo jogador a partir dos inputs
             let pdGastosPeloJogador = 0;
             atributosInputs.forEach(input => {
-                 pdGastosPeloJogador += parseInt(input.value) || 0;
+                pdGastosPeloJogador += parseInt(input.value) || 0;
             });
 
+            // 2. Valida se o jogador tem pontos suficientes (não afeta o GM)
             const pdTotalDisponivel = ficha.gmOverrides?.['pontos-habilidade'] !== undefined ?
-                                 parseInt(ficha.gmOverrides['pontos-habilidade']) :
-                                 (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
+                parseInt(ficha.gmOverrides['pontos-habilidade']) :
+                (nivelData.find(data => data.nivel === nivel) || nivelData[0]).pd;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
-                alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos para o estado anterior válido ou valor mínimo salvo.");
-
-                atributosInputs.forEach(input => {
-                    const lockedValueForThisAttr = (ficha.lockedAtributos && ficha.lockedAtributos[input.id] !== undefined)
-                                                  ? ficha.lockedAtributos[input.id]
-                                                  : 0;
-                    const valueBeforeThisInputEvent = parseInt(previousValues.get(input)) || 0;
-                    input.value = Math.max(lockedValueForThisAttr, valueBeforeThisInputEvent);
-                });
-
-                pdGastosPeloJogador = 0;
-                atributosInputs.forEach(input => {
-                    pdGastosPeloJogador += parseInt(input.value) || 0;
-                });
+            if (pdGastosPeloJogador > pdTotalDisponivel) {
+                 if (isGmModeActive) { // O Mestre pode ultrapassar, mas o jogador não
+                    // Silenciosamente aceita, pois o Mestre está no controle
+                 } else {
+                    alert("Pontos de habilidade insuficientes! Os valores dos atributos serão revertidos.");
+                    atributosInputs.forEach(input => {
+                        input.value = previousValues.get(input) || 0;
+                    });
+                    pdGastosPeloJogador = 0;
+                    atributosInputs.forEach(input => pdGastosPeloJogador += parseInt(input.value) || 0);
+                 }
             }
             pontosHabilidadeUsados = pdGastosPeloJogador;
             pontosHabilidadeSpan.textContent = pdTotalDisponivel - pontosHabilidadeUsados;
 
-            if (pdGastosPeloJogador > pdTotalDisponivel && ficha.gmOverrides?.['pontos-habilidade'] === undefined) {
-                 atributosInputs.forEach(input => {
-                    previousValues.set(input, input.value);
-                });
-            }
 
+            // 3. Define os valores 'efetivos' para cálculo, considerando os overrides do GM
+            let effectiveForca = ficha.gmOverrides?.forca !== undefined ? ficha.gmOverrides.forca : (parseInt(forcaInput.value) || 0);
+            let effectiveDestreza = ficha.gmOverrides?.destreza !== undefined ? ficha.gmOverrides.destreza : (parseInt(destrezaInput.value) || 0);
+            let effectiveAgilidade = ficha.gmOverrides?.agilidade !== undefined ? ficha.gmOverrides.agilidade : (parseInt(agilidadeInput.value) || 0);
+            let effectiveInteligencia = ficha.gmOverrides?.inteligencia !== undefined ? ficha.gmOverrides.inteligencia : (parseInt(inteligenciaInput.value) || 0);
+            let effectiveConstituicao = ficha.gmOverrides?.constituicao !== undefined ? ficha.gmOverrides.constituicao : (parseInt(constituicaoInput.value) || 0);
 
-            let currentForca = parseInt(forcaInput.value) || 0;
-            let currentDestreza = parseInt(destrezaInput.value) || 0;
-            let currentAgilidade = parseInt(agilidadeInput.value) || 0;
-            let currentInteligencia = parseInt(inteligenciaInput.value) || 0;
-            let currentConstituicao = parseInt(constituicaoInput.value) || 0;
-
-            let calcAtaque = currentForca + Math.floor(currentDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
-            let calcAtaqueMagico = currentInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
-            let calcAcerto = Math.floor(currentDestreza / 3) + Math.floor(currentAgilidade / 10);
-            let calcEsquiva = Math.floor(currentAgilidade / 3);
-            let calcRdf = Math.floor(currentForca / 5);
-            let calcRdm = Math.floor(currentInteligencia / 5);
+            // 4. Faz TODOS os cálculos subsequentes usando os valores 'efetivos'
+            let calcAtaque = effectiveForca + Math.floor(effectiveDestreza / 5) + (parseInt(armaDireitaAtaqueInput.value) || 0) + (parseInt(armaEsquerdaAtaqueInput.value) || 0);
+            let calcAtaqueMagico = effectiveInteligencia + (parseInt(armaDireitaAtaqueMagicoInput.value) || 0) + (parseInt(armaEsquerdaAtaqueMagicoInput.value) || 0);
+            let calcAcerto = Math.floor(effectiveDestreza / 3) + Math.floor(effectiveAgilidade / 10);
+            let calcEsquiva = Math.floor(effectiveAgilidade / 3);
+            let calcRdf = Math.floor(effectiveForca / 5);
+            let calcRdm = Math.floor(effectiveInteligencia / 5);
 
             const capacidadeBase = 5;
-            const bonusForcaCarga = Math.floor(currentForca / 5);
+            const bonusForcaCarga = Math.floor(effectiveForca / 5);
             const capacidadeCargaCalculada = capacidadeBase + bonusForcaCarga;
-            const capacidadeCargaFinal = ficha.gmOverrides?.['capacidade-carga'] !== undefined ?
-                                        parseInt(ficha.gmOverrides['capacidade-carga']) :
-                                        capacidadeCargaCalculada;
+            const capacidadeCargaFinal = ficha.gmOverrides?.['capacidade-carga'] !== undefined ? parseInt(ficha.gmOverrides['capacidade-carga']) : capacidadeCargaCalculada;
             if (capacidadeCargaSpan) capacidadeCargaSpan.textContent = capacidadeCargaFinal;
 
+            // Recalcula penalidade de carga
             const pesoTotalAtual = parseFloat(pesoTotalSpan.textContent) || 0;
             let penalidadeEsquivaAcerto = 0;
             const sobrecarga = pesoTotalAtual - capacidadeCargaFinal;
-
             if (sobrecarga > 0) {
-                penalidadeEsquivaAcerto = -1;
-                const sobrecargaAdicional = sobrecarga - 3;
-                if (sobrecargaAdicional > 0) {
-                    penalidadeEsquivaAcerto -= Math.ceil(sobrecargaAdicional / 3);
-                }
+                penalidadeEsquivaAcerto = -1 - Math.max(0, Math.ceil((sobrecarga - 3) / 3));
                 calcAcerto += penalidadeEsquivaAcerto;
                 calcEsquiva += penalidadeEsquivaAcerto;
-                if (pesoTotalSpan && capacidadeCargaSpan) {
-                    pesoTotalSpan.style.color = 'red'; capacidadeCargaSpan.style.color = 'red';
-                }
+                if (pesoTotalSpan) pesoTotalSpan.style.color = 'red';
             } else {
-                if (pesoTotalSpan && capacidadeCargaSpan) {
-                    pesoTotalSpan.style.color = ''; capacidadeCargaSpan.style.color = '';
-                }
+                if (pesoTotalSpan) pesoTotalSpan.style.color = '';
             }
-
+            
+            // Exibe os valores finais, novamente, checando por overrides
             ataqueSpan.textContent = ficha.gmOverrides?.ataque !== undefined ? ficha.gmOverrides.ataque : calcAtaque;
             ataqueMagicoSpan.textContent = ficha.gmOverrides?.['ataque-magico'] !== undefined ? ficha.gmOverrides['ataque-magico'] : calcAtaqueMagico;
             acertoSpan.textContent = ficha.gmOverrides?.acerto !== undefined ? ficha.gmOverrides.acerto : calcAcerto;
@@ -2533,9 +2600,9 @@ html
             rdfSpan.textContent = ficha.gmOverrides?.rdf !== undefined ? ficha.gmOverrides.rdf : calcRdf;
             rdmSpan.textContent = ficha.gmOverrides?.rdm !== undefined ? ficha.gmOverrides.rdm : calcRdm;
 
-            const velCorridaBase = 25 + Math.floor(currentAgilidade / 3) * 3;
-            const altPuloBase = 1 + Math.floor(currentForca / 10);
-            const distPuloBase = 3 + 3 * Math.min(Math.floor(currentForca / 5), Math.floor(currentAgilidade / 5));
+            const velCorridaBase = 25 + Math.floor(effectiveAgilidade / 3) * 3;
+            const altPuloBase = 1 + Math.floor(effectiveForca / 10);
+            const distPuloBase = 3 + 3 * Math.min(Math.floor(effectiveForca / 5), Math.floor(effectiveAgilidade / 5));
             let bonusVelocidade = vantagensSelecionadas.includes("Combo Físico (4)") ? 25 : 0;
             let bonusAlturaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 2 : 0;
             let bonusDistanciaPulo = vantagensSelecionadas.includes("Combo Físico (4)") ? 6 : 0;
@@ -2543,11 +2610,11 @@ html
             velocidadeCorridaSpan.textContent = ficha.gmOverrides?.['velocidade-corrida'] !== undefined ? ficha.gmOverrides['velocidade-corrida'] : (velCorridaBase + bonusVelocidade);
             alturaPuloSpan.textContent = ficha.gmOverrides?.['altura-pulo'] !== undefined ? ficha.gmOverrides['altura-pulo'] : (altPuloBase + bonusAlturaPulo);
             distanciaPuloSpan.textContent = ficha.gmOverrides?.['distancia-pulo'] !== undefined ? ficha.gmOverrides['distancia-pulo'] : (distPuloBase + bonusDistanciaPulo);
-
-            let vidaBaseCalculada = 50 + (currentConstituicao * (3 + Math.floor(currentForca / 10))) + 10 * nivel;
-            let magiaBaseCalculada = 20 + 3 * currentConstituicao;
-            if (currentInteligencia >= 10) magiaBaseCalculada += currentConstituicao * Math.floor(currentInteligencia / 10);
-            let vigorBaseCalculado = 10 + 0.4 * currentConstituicao;
+            
+            // Cálculo de Recursos (Vida, Magia, Vigor)
+            let vidaBaseCalculada = 50 + (effectiveConstituicao * (3 + Math.floor(effectiveForca / 10))) + 10 * nivel;
+            let magiaBaseCalculada = 20 + 3 * effectiveConstituicao + (effectiveInteligencia >= 10 ? effectiveConstituicao * Math.floor(effectiveInteligencia / 10) : 0);
+            let vigorBaseCalculado = 10 + 0.4 * effectiveConstituicao;
 
             vidaTotal = ficha.gmOverrides?.['vida-total'] !== undefined ? parseInt(ficha.gmOverrides['vida-total']) : Math.ceil(vidaBaseCalculada);
             magiaTotal = ficha.gmOverrides?.['magia-total'] !== undefined ? parseInt(ficha.gmOverrides['magia-total']) : Math.ceil(magiaBaseCalculada);
@@ -2561,23 +2628,18 @@ html
             magiaAtualInput.max = magiaTotal;
             vigorAtualInput.max = vigorTotal;
 
-            vidaAtual = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
-            magiaAtual = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
-            vigorAtual = Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal);
-            vidaAtualInput.value = vidaAtual;
-            magiaAtualInput.value = magiaAtual;
-            vigorAtualInput.value = vigorAtual.toFixed(1);
+            // Mantém os valores atuais dentro dos novos máximos
+            vidaAtualInput.value = Math.min(parseInt(vidaAtualInput.value) || 0, vidaTotal);
+            magiaAtualInput.value = Math.min(parseInt(magiaAtualInput.value) || 0, magiaTotal);
+            vigorAtualInput.value = (Math.min(parseFloat(vigorAtualInput.value) || 0, vigorTotal)).toFixed(1);
 
-            document.getElementById("regeneracao-vida").textContent = (0.2 * currentConstituicao).toFixed(1);
-            document.getElementById("regeneracao-magia").textContent = (0.8 * currentConstituicao).toFixed(1);
-            document.getElementById("regeneracao-vigor").textContent = (0.4 * currentConstituicao).toFixed(1);
-
-            const atributosSpansList = [{ span: ataqueSpan, valor: parseFloat(ataqueSpan.textContent) || 0 }, { span: ataqueMagicoSpan, valor: parseFloat(ataqueMagicoSpan.textContent) || 0 }, { span: acertoSpan, valor: parseFloat(acertoSpan.textContent) || 0 }, { span: esquivaSpan, valor: parseFloat(esquivaSpan.textContent) || 0 }, { span: rdfSpan, valor: parseFloat(rdfSpan.textContent) || 0 }, { span: rdmSpan, valor: parseFloat(rdmSpan.textContent) || 0 }];
-            atributosSpansList.forEach(a => a.span.classList.remove("atributo-fogo"));
-            const maxAtributo = atributosSpansList.reduce((prev, curr) => prev.valor > curr.valor ? prev : curr, { valor: -Infinity });
-            if (maxAtributo.valor > 0) maxAtributo.span.classList.add("atributo-fogo");
+            document.getElementById("regeneracao-vida").textContent = (0.2 * effectiveConstituicao).toFixed(1);
+            document.getElementById("regeneracao-magia").textContent = (0.8 * effectiveConstituicao).toFixed(1);
+            document.getElementById("regeneracao-vigor").textContent = (0.4 * effectiveConstituicao).toFixed(1);
+            
+            // 5. Aplica feedback visual para overrides do Mestre
+            atualizarFeedbackVisualGM();
         }
-
 
         function resetarPontos() {
             if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(resetPontosButton);
@@ -2588,9 +2650,7 @@ html
                 if (document.getElementById("senha-gm-input").value === senhaMatriz) {
                     const ficha = fichas[currentFichaId];
                     if (ficha) {
-                        atributosInputs.forEach(input => {
-                            input.value = 0;
-                        });
+                        atributosInputs.forEach(input => { input.value = 0; });
                         ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
                     }
                     pontosHabilidadeUsados = 0;
@@ -2607,10 +2667,8 @@ html
             if (confirm("Tem certeza que deseja recomeçar a ficha? Todas as alterações serão perdidas.")) {
                 const ficha = fichas[currentFichaId];
                 if (ficha) {
-                    ficha.gmOverrides = {};
-                    atributosInputs.forEach(input => {
-                        input.value = "0";
-                    });
+                    ficha.gmOverrides = {}; // Limpa todas as modificações do mestre
+                    atributosInputs.forEach(input => { input.value = "0"; });
                     ficha.lockedAtributos = { forca: 0, destreza: 0, agilidade: 0, constituicao: 0, inteligencia: 0 };
                 }
                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
@@ -2811,8 +2869,8 @@ html
             input.addEventListener("input", (event) => {
                 const inputTarget = event.target;
                 const ficha = fichas[currentFichaId];
-
                 if (!ficha) return;
+
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     inputTarget.value = previousValues.get(inputTarget) || ((ficha.lockedAtributos && ficha.lockedAtributos[inputTarget.id]) || "0");
                     abrirModalSenha(inputTarget);
@@ -2821,10 +2879,9 @@ html
 
                 let currentValue = parseInt(inputTarget.value) || 0;
                 const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[inputTarget.id] !== undefined)
-                                    ? ficha.lockedAtributos[inputTarget.id]
-                                    : 0;
-
-                if (currentValue < lockedValue && !isGmModeActive) { // MODIFIED: Added !isGmModeActive
+                                    ? ficha.lockedAtributos[inputTarget.id] : 0;
+                
+                if (currentValue < lockedValue && !isGmModeActive) {
                     alert(`O valor de ${inputTarget.labels[0].textContent.replace(":", "")} não pode ser menor que o valor salvo: ${lockedValue}.`);
                     inputTarget.value = lockedValue;
                 }
@@ -2834,9 +2891,7 @@ html
                     let hasChangesToSave = false;
                     for (const attrInp of atributosInputs) {
                         const currentVal = parseInt(attrInp.value) || 0;
-                        const lockedVal = (ficha.lockedAtributos && ficha.lockedAtributos[attrInp.id] !== undefined)
-                                          ? ficha.lockedAtributos[attrInp.id]
-                                          : 0;
+                        const lockedVal = (ficha.lockedAtributos && ficha.lockedAtributos[attrInp.id] !== undefined) ? ficha.lockedAtributos[attrInp.id] : 0;
                         if (currentVal > lockedVal) {
                             hasChangesToSave = true;
                             break;
@@ -2858,35 +2913,21 @@ html
                     abrirModalSenha(event.target);
                     return;
                 }
-
                 let value;
                 let minVal = 0;
                 let maxVal;
-
                 if (event.target === vidaAtualInput) {
-                    value = parseInt(event.target.value);
-                    maxVal = vidaTotal;
-                    if (value > maxVal) value = maxVal;
-                    if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = vidaAtual;
-                    vidaAtual = value;
-                    event.target.value = vidaAtual;
+                    value = parseInt(event.target.value); maxVal = vidaTotal;
+                    if (value > maxVal) value = maxVal; if (value < minVal) value = minVal; if (isNaN(value)) value = vidaAtual;
+                    vidaAtual = value; event.target.value = vidaAtual;
                 } else if (event.target === magiaAtualInput) {
-                    value = parseInt(event.target.value);
-                    maxVal = magiaTotal;
-                    if (value > maxVal) value = maxVal;
-                    if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = magiaAtual;
-                    magiaAtual = value;
-                    event.target.value = magiaAtual;
+                    value = parseInt(event.target.value); maxVal = magiaTotal;
+                    if (value > maxVal) value = maxVal; if (value < minVal) value = minVal; if (isNaN(value)) value = magiaAtual;
+                    magiaAtual = value; event.target.value = magiaAtual;
                 } else if (event.target === vigorAtualInput) {
-                    value = parseFloat(event.target.value);
-                    maxVal = vigorTotal;
-                    if (value > maxVal) value = maxVal;
-                    if (value < minVal) value = minVal;
-                    if (isNaN(value)) value = vigorAtual;
-                    vigorAtual = parseFloat(value.toFixed(1));
-                    event.target.value = vigorAtual.toFixed(1);
+                    value = parseFloat(event.target.value); maxVal = vigorTotal;
+                    if (value > maxVal) value = maxVal; if (value < minVal) value = minVal; if (isNaN(value)) value = vigorAtual;
+                    vigorAtual = parseFloat(value.toFixed(1)); event.target.value = vigorAtual.toFixed(1);
                 }
                 salvarDados();
             });
@@ -2948,14 +2989,13 @@ html
             }
         }
 
-        // NEW function to handle unlocking when buttons are pressed
         function confirmarDesbloqueioExperienciaComBotao() {
             if (experienciaInput.readOnly && !isXpUnlocked) {
                  senhaGmTitulo.textContent = "Desbloquear Campo de Experiência";
                 document.getElementById("senha-gm-modal").style.display = "flex";
                 document.getElementById("senha-gm-input").value = "";
                 document.getElementById("senha-gm-input").focus();
-                document.getElementById("confirmar-senha-gm-btn").onclick = () => confirmarDesbloqueioExperiencia(true); // Pass true to bypass focus
+                document.getElementById("confirmar-senha-gm-btn").onclick = () => confirmarDesbloqueioExperiencia(true); // Passa true para não focar
             }
         }
 
@@ -3012,13 +3052,13 @@ html
                 diceRoll.classList.remove(classeAnimacao);
                 diceRoll.textContent = roll;
                 
-                // NEW: Bonus Roll Logic
                 if (selectedAttributeIcon) {
                     const attributeSourceId = selectedAttributeIcon.dataset.attributeSource;
                     const sourceElement = document.getElementById(attributeSourceId);
                     let attributeValue = 0;
                     if (sourceElement) {
-                        attributeValue = parseInt(sourceElement.value || sourceElement.textContent) || 0;
+                         // Para inputs, use .value; para spans, use .textContent
+                        attributeValue = parseInt(sourceElement.tagName === 'INPUT' ? sourceElement.value : sourceElement.textContent) || 0;
                     }
                     const totalSum = attributeValue + roll;
                     showSpecialRollResult(attributeValue, roll, totalSum);
@@ -3027,7 +3067,6 @@ html
                     selectedAttributeIcon = null;
 
                 } else {
-                     // ORIGINAL: No bonus selected
                     let notificationClass = "normal-result";
                     let notificationMsg = `${fichaNome} rolou D${currentDiceMax}: ${roll}`;
 
@@ -3084,25 +3123,18 @@ html
 
         document.addEventListener('click', function(event) {
             const target = event.target;
-            // NEW: Event delegation for attribute dice icons
             if (target.matches('.attribute-dice-icon')) {
                 handleAttributeDiceClick(target);
                 return;
             }
 
-            if (diceOptionsMenu.style.display === 'flex' &&
-                !diceOptionsMenu.contains(event.target) &&
-                event.target !== changeDiceTypeBtn) {
+            if (diceOptionsMenu.style.display === 'flex' && !diceOptionsMenu.contains(event.target) && event.target !== changeDiceTypeBtn) {
                 diceOptionsMenu.style.display = 'none';
             }
-            if (anotacoesTextarea.style.display === 'block' &&
-                !anotacoesTextarea.contains(event.target) &&
-                event.target !== anotacoesBtn) {
+            if (anotacoesTextarea.style.display === 'block' && !anotacoesTextarea.contains(event.target) && event.target !== anotacoesBtn) {
                 anotacoesTextarea.style.display = 'none';
             }
-            if (diceHistoryPanel.style.display === 'flex' &&
-                !diceHistoryPanel.contains(event.target) &&
-                event.target !== diceHistoryTrigger) {
+            if (diceHistoryPanel.style.display === 'flex' && !diceHistoryPanel.contains(event.target) && event.target !== diceHistoryTrigger) {
                 diceHistoryPanel.style.display = 'none';
             }
         });
@@ -3246,12 +3278,10 @@ html
             }
         };
 
-        // --- START: MODIFIED MAGIC SYSTEM LOGIC ---
         function criarSlotMagia(magiaData = { nome: '', custo: '', custoVigor: '', dano: '', tipo: '' }) {
             const itemDiv = document.createElement('div');
             itemDiv.className = 'magia-item';
             
-            // Note the new "custoVigor" field and updated placeholders/titles
             itemDiv.innerHTML = `
                 <input type="text" placeholder="Nome da Habilidade" class="magia-nome" value="${magiaData.nome || ''}">
                 <div class="magia-detalhes">
@@ -3292,55 +3322,35 @@ html
                 const itemDiv = event.target.closest('.magia-item');
                 const nomeHabilidade = itemDiv.querySelector('.magia-nome').value || "Habilidade";
                 
-                // Read both Mana and Vigor costs
                 const custoMagia = parseInt(itemDiv.querySelector('.magia-custo').value) || 0;
                 const custoVigor = parseFloat(itemDiv.querySelector('.magia-custo-vigor').value) || 0;
 
-                // Check for invalid negative costs
                 if (custoMagia < 0 || custoVigor < 0) {
-                    showNotification("Custos não podem ser negativos.", "normal-result");
-                    return;
+                    showNotification("Custos não podem ser negativos.", "normal-result"); return;
                 }
                  if (custoMagia === 0 && custoVigor === 0) {
-                    showNotification(`"${nomeHabilidade}" usada sem custo de recursos.`, "save-success");
-                    return;
+                    showNotification(`"${nomeHabilidade}" usada sem custo de recursos.`, "save-success"); return;
                 }
 
-                let manaAtual = parseInt(magiaAtualInput.value);
+                let manaAtualVal = parseInt(magiaAtualInput.value);
                 let vigorAtualVal = parseFloat(vigorAtualInput.value);
 
-                // Check for sufficient resources
-                if (manaAtual < custoMagia) {
-                    showNotification("Magia insuficiente!", "critical-failure");
-                    return;
-                }
-                if (vigorAtualVal < custoVigor) {
-                    showNotification("Vigor insuficiente!", "critical-failure");
-                    return;
-                }
+                if (manaAtualVal < custoMagia) { showNotification("Magia insuficiente!", "critical-failure"); return; }
+                if (vigorAtualVal < custoVigor) { showNotification("Vigor insuficiente!", "critical-failure"); return; }
 
-                // Deduct resources
-                manaAtual -= custoMagia;
-                vigorAtualVal -= custoVigor;
+                manaAtualVal -= custoMagia; vigorAtualVal -= custoVigor;
 
-                // Update UI and global variables
-                magiaAtualInput.value = manaAtual;
-                vigorAtualInput.value = vigorAtualVal.toFixed(1);
-                magiaAtual = manaAtual;
-                vigorAtual = vigorAtualVal;
+                magiaAtualInput.value = manaAtualVal; vigorAtualInput.value = vigorAtualVal.toFixed(1);
+                magiaAtual = manaAtualVal; vigorAtual = vigorAtualVal;
                 
-                // Create notification message
                 let custoMsg = [];
                 if (custoMagia > 0) custoMsg.push(`Magia: ${custoMagia}`);
                 if (custoVigor > 0) custoMsg.push(`Vigor: ${custoVigor}`);
-                
                 showNotification(`"${nomeHabilidade}" usada! Custo: ${custoMsg.join(' e ')}.`, "save-success");
 
                 salvarDados();
             }
         });
-        // --- END: MODIFIED MAGIC SYSTEM LOGIC ---
-
 
         racasBtn.onclick = () => { if (isFichaLocked && !isFichaUnlocked) return abrirModalSenha(racasBtn); tempRacaSelecionada = racaSelecionada; atualizarRacasPanel(); racasPanel.style.display = "block"; document.getElementById("salvar-racas-btn").style.display = "none"; };
         fecharRacasBtn.onclick = () => { racasPanel.style.display = "none"; };
@@ -3440,9 +3450,6 @@ html
 
         if (salvarAtributosBtnEl) {
             salvarAtributosBtnEl.addEventListener('click', () => {
-                const ficha = fichas[currentFichaId];
-                if (!ficha) return;
-
                 if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                     abrirModalSenha(salvarAtributosBtnEl, () => {
                         if(confirmarSalvarAtributosModal) confirmarSalvarAtributosModal.style.display = "flex";
@@ -3457,23 +3464,19 @@ html
             confirmarSalvarAtributosOkBtn.addEventListener('click', () => {
                 const ficha = fichas[currentFichaId];
                 if (!ficha) return;
-
                 ficha.lockedAtributos = ficha.lockedAtributos || {};
                 atributosInputs.forEach(input => {
                     ficha.lockedAtributos[input.id] = parseInt(input.value) || 0;
                 });
-
                 salvarDados();
                 if (salvarAtributosBtnEl) salvarAtributosBtnEl.style.display = "none";
-
                 fecharModal('confirmar-salvar-atributos-modal');
-                showNotification("Atributos Mínimos Salvos! Os valores atuais são os novos mínimos.", "save-success");
+                showNotification("Atributos Mínimos Salvos!", "save-success");
             });
         }
 
-        // Modified to handle duration
         function showNotification(message, type, duration = 2000) {
-            notification.innerHTML = message; // Use innerHTML to parse potential HTML tags
+            notification.innerHTML = message;
             notification.className = type;
             notification.style.display = "block";
             setTimeout(() => {
@@ -3483,32 +3486,23 @@ html
             }, duration);
         }
 
-        // NEW: Function for special roll result display
         function showSpecialRollResult(attributeValue, roll, totalSum) {
              const message = `Total: ${attributeValue} + ${roll} = <span class="final-sum-result">${totalSum}</span>`;
              showNotification(message, 'normal-result', 4000);
         }
 
-
-        // NEW: Function to handle clicking on attribute dice
         function handleAttributeDiceClick(clickedIcon) {
-            // If another icon is already selected, deselect it
             if (selectedAttributeIcon && selectedAttributeIcon !== clickedIcon) {
                 selectedAttributeIcon.classList.remove('selected');
             }
-
-            // Toggle the current icon's selection
             if (selectedAttributeIcon === clickedIcon) {
-                // Clicked the same icon again, so deselect it
                 clickedIcon.classList.remove('selected');
                 selectedAttributeIcon = null;
             } else {
-                // Select the new icon
                 clickedIcon.classList.add('selected');
                 selectedAttributeIcon = clickedIcon;
             }
         }
-
 
         customizacaoBtn.onclick = () => {
             if (isFichaLocked && !isFichaUnlocked) {
@@ -3522,9 +3516,7 @@ html
         function abrirModalCustomizacao() {
             const ficha = fichas[currentFichaId] || {};
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultLightPage = '#f0e6d2';
-            const defaultDarkPage = '#121212';
-            const defaultLightInternal = '#f0e6d2';
+            const defaultLightPage = '#f0e6d2'; const defaultDarkPage = '#121212'; const defaultLightInternal = '#f0e6d2';
 
             const currentTheme = ficha.theme || 'theme-medieval';
             if (currentTheme.startsWith('theme-elemental')) {
@@ -3536,15 +3528,12 @@ html
                 elementalThemeGroup.style.display = 'none';
             }
 
-
             backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPage : defaultLightPage);
-            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal); // Default to matriz dark or page dark if dark mode, else light
+            fichaInternalBackgroundColorInput.value = ficha.fichaInternalBackgroundColor || (isDarkModeActive ? (fichas[FICHA_MATRIZ_ID]?.fichaInternalBackgroundColor || defaultDarkPage ) : defaultLightInternal);
             fontSelector.value = ficha.fontFamily || "'Inter', sans-serif";
 
             const bgSize = ficha?.backgroundSize || 'cover';
-            document.querySelectorAll('#customizacao-modal input[name="background-size"]').forEach(radio => {
-                radio.checked = (radio.value === bgSize);
-            });
+            document.querySelectorAll('#customizacao-modal input[name="background-size"]').forEach(radio => { radio.checked = (radio.value === bgSize); });
             backgroundImageInput.value = "";
 
             corBordaSecaoInput.value = ficha.corBordaSecao || '#b8860b';
@@ -3569,8 +3558,7 @@ html
 
         function aplicarPlanoDeFundo() {
             const file = backgroundImageInput.files[0];
-            const selectedSizeOption = document.querySelector('#customizacao-modal input[name="background-size"]:checked');
-            const selectedSize = selectedSizeOption.value;
+            const selectedSize = document.querySelector('#customizacao-modal input[name="background-size"]:checked').value;
             let attachment = (selectedSize === 'cover') ? 'fixed' : 'scroll';
 
             if (file) {
@@ -3585,50 +3573,37 @@ html
                          fichas[currentFichaId].backgroundSize = selectedSize;
                          fichas[currentFichaId].backgroundAttachment = attachment;
                     }
-                    salvarDados();
-                    showNotification("Imagem de fundo da página aplicada!", "save-success");
+                    salvarDados(); showNotification("Imagem de fundo aplicada!", "save-success");
                 };
                 reader.readAsDataURL(file);
             } else if (document.body.style.backgroundImage && document.body.style.backgroundImage !== 'none') {
-                document.body.style.backgroundSize = selectedSize;
-                document.body.style.backgroundAttachment = attachment;
+                document.body.style.backgroundSize = selectedSize; document.body.style.backgroundAttachment = attachment;
                 if (fichas[currentFichaId]) {
-                    fichas[currentFichaId].backgroundSize = selectedSize;
-                    fichas[currentFichaId].backgroundAttachment = attachment;
+                    fichas[currentFichaId].backgroundSize = selectedSize; fichas[currentFichaId].backgroundAttachment = attachment;
                 }
-                salvarDados();
-                showNotification("Configurações do plano de fundo da página atualizadas!", "save-success");
+                salvarDados(); showNotification("Configurações do fundo atualizadas!", "save-success");
             } else {
-                alert("Nenhuma imagem selecionada para aplicar como plano de fundo da página.");
+                alert("Nenhuma imagem selecionada.");
             }
         }
 
         function excluirPlanoDeFundo() {
-            if (confirm("Remover imagem de fundo da página?")) {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundAttachment = 'scroll';
+            if (confirm("Remover imagem de fundo?")) {
+                document.body.style.backgroundImage = 'none'; document.body.style.backgroundAttachment = 'scroll';
                 if (fichas[currentFichaId]) {
-                     fichas[currentFichaId].backgroundImage = null;
-                     fichas[currentFichaId].backgroundSize = 'cover';
-                     fichas[currentFichaId].backgroundAttachment = 'scroll';
+                     fichas[currentFichaId].backgroundImage = null; fichas[currentFichaId].backgroundSize = 'cover'; fichas[currentFichaId].backgroundAttachment = 'scroll';
                 }
-                salvarDados();
-                showNotification("Imagem de fundo da página removida!", "save-success");
+                salvarDados(); showNotification("Imagem de fundo removida!", "save-success");
             }
         }
 
         function aplicarPlanoDeFundoInicial(ficha) {
-            const bgImage = ficha?.backgroundImage;
-            const bgSize = ficha?.backgroundSize || 'cover';
+            const bgImage = ficha?.backgroundImage; const bgSize = ficha?.backgroundSize || 'cover';
             const bgAttachment = ficha?.backgroundAttachment || (bgSize === 'cover' ? 'fixed' : 'scroll');
-
             if (bgImage) {
-                document.body.style.backgroundImage = `url('${bgImage}')`;
-                document.body.style.backgroundSize = bgSize;
-                document.body.style.backgroundAttachment = bgAttachment;
+                document.body.style.backgroundImage = `url('${bgImage}')`; document.body.style.backgroundSize = bgSize; document.body.style.backgroundAttachment = bgAttachment;
             } else {
-                document.body.style.backgroundImage = 'none';
-                document.body.style.backgroundAttachment = 'scroll';
+                document.body.style.backgroundImage = 'none'; document.body.style.backgroundAttachment = 'scroll';
             }
         }
 
@@ -3636,41 +3611,32 @@ html
             const ficha = fichas[currentFichaId] || {};
             const isDarkModeActive = document.body.classList.contains('dark-mode');
 
-            const defaultLightPageBg = '#f0e6d2';
-            const defaultDarkPageBg = '#121212';
+            const defaultLightPageBg = '#f0e6d2'; const defaultDarkPageBg = '#121212';
             document.body.style.backgroundColor = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
             if (backgroundColorInput) backgroundColorInput.value = ficha.backgroundColor || (isDarkModeActive ? defaultDarkPageBg : defaultLightPageBg);
-
 
             let currentTransparencyPercent = (ficha && ficha.fichaTransparencyLevel !== undefined) ? parseInt(ficha.fichaTransparencyLevel) : 100;
             let alpha = currentTransparencyPercent / 100.0;
 
-            const fichaContainerDefaultDark = '#121212';
-            const fichaContainerDefaultLight = '#f0e6d2';
-            const sectionDefaultDark = '#1e1e1e';
-            const sectionDefaultLight = '#f0e6d2';
-
+            const fichaContainerDefaultDark = '#121212'; const fichaContainerDefaultLight = '#f0e6d2';
+            const sectionDefaultDark = '#1e1e1e'; const sectionDefaultLight = '#f0e6d2';
 
             let baseFichaContainerColorHex = isDarkModeActive ? fichaContainerDefaultDark : (ficha.fichaInternalBackgroundColor || fichaContainerDefaultLight);
-            let baseSectionColorHex = isDarkModeActive ? sectionDefaultDark : (ficha.fichaInternalBackgroundColor || sectionDefaultLight);
-
-
-            const rgbFichaContainer = hexToRgb(baseFichaContainerColorHex);
+            let rgbFichaContainer = hexToRgb(baseFichaContainerColorHex);
             if (rgbFichaContainer) {
                 fichaContainer.style.backgroundColor = `rgba(${rgbFichaContainer.r}, ${rgbFichaContainer.g}, ${rgbFichaContainer.b}, ${alpha})`;
             } else {
                 fichaContainer.style.backgroundColor = baseFichaContainerColorHex;
             }
-            if(isDarkModeActive) fichaContainer.style.color = '#e0e0e0'; else fichaContainer.style.color = '#000';
-
+            fichaContainer.style.color = isDarkModeActive ? '#e0e0e0' : '#000';
 
             document.querySelectorAll('#ficha-container section, #ficha-container .atributos-coluna-destaque, #ficha-container .medieval-box, #ficha-container .atributo-container').forEach(el => {
                  let baseColorForElement;
                  if (isDarkModeActive) {
                     if (el.matches('.atributos-coluna-destaque')) baseColorForElement = '#333';
                     else if (el.matches('.medieval-box')) baseColorForElement = '#1e1e1e';
-                    else if (el.matches('.atributo-container')) baseColorForElement = 'rgba(50, 50, 50, 0.8)'; // Default dark for this one
-                    else baseColorForElement = sectionDefaultDark; // Default dark for sections
+                    else if (el.matches('.atributo-container')) baseColorForElement = 'rgba(50, 50, 50, 0.8)';
+                    else baseColorForElement = sectionDefaultDark;
                  } else {
                     if (el.matches('.atributos-coluna-destaque')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#fff';
                     else if (el.matches('.medieval-box')) baseColorForElement = ficha.fichaInternalBackgroundColor || '#f0e6d2';
@@ -3681,18 +3647,12 @@ html
                 const rgbEl = hexToRgb(baseColorForElement);
                 if (rgbEl) {
                     el.style.backgroundColor = `rgba(${rgbEl.r}, ${rgbEl.g}, ${rgbEl.b}, ${alpha})`;
+                } else if (baseColorForElement.startsWith('rgba')) {
+                    const parts = baseColorForElement.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+                    if (parts) el.style.backgroundColor = `rgba(${parts[1]}, ${parts[2]}, ${parts[3]}, ${alpha})`;
+                    else el.style.backgroundColor = baseColorForElement;
                 } else {
-                     // Handle cases where baseColorForElement might already have alpha (like 'rgba(50,50,50,0.8)')
-                    if (baseColorForElement.startsWith('rgba')) {
-                        const parts = baseColorForElement.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
-                        if (parts) {
-                            el.style.backgroundColor = `rgba(${parts[1]}, ${parts[2]}, ${parts[3]}, ${alpha})`;
-                        } else {
-                            el.style.backgroundColor = baseColorForElement; // Fallback
-                        }
-                    } else {
-                        el.style.backgroundColor = baseColorForElement; // Fallback for non-hex, non-rgba
-                    }
+                    el.style.backgroundColor = baseColorForElement;
                 }
             });
 
@@ -3704,14 +3664,12 @@ html
 
         backgroundColorInput.addEventListener('input', (event) => {
             if(fichas[currentFichaId]) fichas[currentFichaId].backgroundColor = event.target.value;
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
+            aplicarEstilosDeFundoVisuais(); salvarDados();
         });
 
         fichaInternalBackgroundColorInput.addEventListener('input', (event) => {
             if(fichas[currentFichaId]) fichas[currentFichaId].fichaInternalBackgroundColor = event.target.value;
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
+            aplicarEstilosDeFundoVisuais(); salvarDados();
         });
 
         if (fichaTransparencySlider) {
@@ -3720,39 +3678,28 @@ html
                 if (fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = level;
                 if (fichas[currentFichaId]) {
                     fichas[currentFichaId].fichaTransparencyLevel = parseInt(level);
-                    aplicarEstilosDeFundoVisuais();
-                    salvarDados();
+                    aplicarEstilosDeFundoVisuais(); salvarDados();
                 }
             });
         }
 
         function restaurarOpacidadePadraoFicha() {
-            if (fichas[currentFichaId]) {
-                fichas[currentFichaId].fichaTransparencyLevel = 100;
-            }
+            if (fichas[currentFichaId]) { fichas[currentFichaId].fichaTransparencyLevel = 100; }
             if (fichaTransparencySlider) fichaTransparencySlider.value = 100;
             if (fichaTransparencyValueSpan) fichaTransparencyValueSpan.textContent = "100";
-
-            aplicarEstilosDeFundoVisuais();
-            salvarDados();
-            showNotification("Opacidade da ficha restaurada para o padrão!", "save-success");
+            aplicarEstilosDeFundoVisuais(); salvarDados(); showNotification("Opacidade restaurada!", "save-success");
         }
 
 
         fontSelector.addEventListener('change', (event) => {
             const selectedFont = event.target.value;
-            document.body.style.fontFamily = selectedFont;
-            if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
-            if (fichas[currentFichaId]) fichas[currentFichaId].fontFamily = selectedFont;
-            salvarDados();
+            document.body.style.fontFamily = selectedFont; if (fichaContainer) fichaContainer.style.fontFamily = selectedFont;
+            if (fichas[currentFichaId]) fichas[currentFichaId].fontFamily = selectedFont; salvarDados();
         });
 
         function aplicarFonteInicial(ficha) {
-            const defaultFont = "'Inter', sans-serif";
-            const bodyFont = ficha?.fontFamily || defaultFont;
-            document.body.style.fontFamily = bodyFont;
-            if (fichaContainer) fichaContainer.style.fontFamily = bodyFont;
-            fontSelector.value = bodyFont;
+            const bodyFont = ficha?.fontFamily || "'Inter', sans-serif";
+            document.body.style.fontFamily = bodyFont; if (fichaContainer) fichaContainer.style.fontFamily = bodyFont; fontSelector.value = bodyFont;
         }
 
         diceColorInput.addEventListener('input', (event) => {
@@ -3987,12 +3934,9 @@ html
             buttonElement.addEventListener('touchcancel', stopAction);
         }
 
-        // --- NEW --- Funções para alterar atributos primários e XP com botões
         function changeAttribute(inputId, delta) {
             const input = document.getElementById(inputId);
             if (!input) return;
-
-            // Bloqueio de Ficha
             if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                 abrirModalSenha(input.parentElement.querySelector('.attr-btn'));
                 return;
@@ -4000,11 +3944,9 @@ html
 
             let currentValue = parseInt(input.value) || 0;
             let newValue = currentValue + delta;
-
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
 
-            // Checagem de valor mínimo (valor travado)
             const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[input.id] !== undefined)
                                 ? ficha.lockedAtributos[input.id] : 0;
             if (newValue < lockedValue) {
@@ -4012,25 +3954,21 @@ html
                 return;
             }
 
-            // Checagem de Pontos de Habilidade (PD) disponíveis
             const pdRestantes = parseInt(pontosHabilidadeSpan.textContent) || 0;
-            if (delta > 0 && pdRestantes <= 0) {
+            if (delta > 0 && pdRestantes <= 0 && !isGmModeActive) { // Mestre pode ignorar o limite de PD
                  showNotification("Sem Pontos de Habilidade para gastar.", "normal-result", 1500);
                  return;
             }
 
             input.value = newValue;
-            // Dispara o evento de 'input' para rodar todas as validações e recálculos
             input.dispatchEvent(new Event('input', { bubbles:true }));
         }
 
         function changeXp(delta) {
-             // Checagem de bloqueio do campo XP
             if (!isXpUnlocked) {
                  confirmarDesbloqueioExperienciaComBotao();
                  return;
             }
-             // Checagem de bloqueio da ficha
             if (isFichaLocked && !isFichaUnlocked && currentFichaId !== FICHA_MATRIZ_ID) {
                 abrirModalSenha(experienciaInput);
                 return;
@@ -4041,7 +3979,6 @@ html
             experienciaInput.value = newValue;
             experienciaInput.dispatchEvent(new Event('input', { bubbles:true }));
         }
-        // --- END NEW ---
 
         function showCustomTooltip(targetElement) {
             const tooltipText = targetElement.getAttribute('title');
@@ -4049,22 +3986,25 @@ html
 
             customTooltipElement.innerHTML = tooltipText;
             const rect = targetElement.getBoundingClientRect();
+            customTooltipElement.style.visibility = 'hidden';
+            setTimeout(() => {
+                 let top = rect.bottom + window.scrollY + 5;
+                 let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
 
-            let top = rect.bottom + window.scrollY + 5;
-            let left = rect.left + window.scrollX + (rect.width / 2) - (customTooltipElement.offsetWidth / 2);
-
-            if (left < 0) left = 5;
-            if (left + customTooltipElement.offsetWidth > window.innerWidth) {
-                left = window.innerWidth - customTooltipElement.offsetWidth - 5;
-            }
-            if (top + customTooltipElement.offsetHeight > window.innerHeight + window.scrollY) {
-                top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5;
-            }
-
-            customTooltipElement.style.top = `${top}px`;
-            customTooltipElement.style.left = `${left}px`;
-            customTooltipElement.classList.add('visible');
+                 if (left < 5) left = 5;
+                 if (left + customTooltipElement.offsetWidth > window.innerWidth) {
+                     left = window.innerWidth - customTooltipElement.offsetWidth - 5;
+                 }
+                 if (top + customTooltipElement.offsetHeight > (window.innerHeight + window.scrollY)) {
+                     top = rect.top + window.scrollY - customTooltipElement.offsetHeight - 5;
+                 }
+                
+                customTooltipElement.style.top = `${top}px`;
+                customTooltipElement.style.left = `${left}px`;
+                customTooltipElement.classList.add('visible');
+            }, 0);
         }
+
 
         function hideCustomTooltip() {
             if (customTooltipElement) {
@@ -4073,23 +4013,15 @@ html
         }
 
         function setupAttributeTooltips() {
-            const attributeLabels = [
-                document.querySelector('label[for="forca"]'),
-                document.querySelector('label[for="destreza"]'),
-                document.querySelector('label[for="agilidade"]'),
-                document.querySelector('label[for="constituicao"]'),
-                document.querySelector('label[for="inteligencia"]')
-            ];
-
+            const attributeLabels = document.querySelectorAll('#atributos label');
             attributeLabels.forEach(label => {
                 if (label) {
                     label.addEventListener('mouseenter', (event) => {
                         clearTimeout(tooltipTimeoutId);
                         tooltipTimeoutId = setTimeout(() => {
                             showCustomTooltip(event.target);
-                        }, 3000);
+                        }, 2000); // 2 segundos para exibir
                     });
-
                     label.addEventListener('mouseleave', () => {
                         clearTimeout(tooltipTimeoutId);
                         hideCustomTooltip();
@@ -4105,19 +4037,17 @@ html
                 gmModeBtn.classList.remove('gm-active');
                 gmModeBtn.textContent = "Modo Mestre GM 👑";
                 showNotification("Modo Mestre desativado.", "normal-result");
-                 // Re-evaluate attribute inputs against locked values if GM mode is turned off
                 atributosInputs.forEach(inputTarget => {
                     const ficha = fichas[currentFichaId];
                     if (!ficha) return;
                     let currentValue = parseInt(inputTarget.value) || 0;
                     const lockedValue = (ficha.lockedAtributos && ficha.lockedAtributos[inputTarget.id] !== undefined)
-                                        ? ficha.lockedAtributos[inputTarget.id]
-                                        : 0;
-                    if (currentValue < lockedValue) { // No !isGmModeActive here, because we are *exiting* GM mode
-                        inputTarget.value = lockedValue; // Revert to locked if below
+                                        ? ficha.lockedAtributos[inputTarget.id] : 0;
+                    if (currentValue < lockedValue) {
+                        inputTarget.value = lockedValue;
                     }
                 });
-                calcularAtributos(); // Recalculate based on potentially reverted values
+                calcularAtributos();
                 salvarDados();
             } else {
                 senhaGmTitulo.textContent = "Ativar Modo Mestre";
@@ -4132,81 +4062,88 @@ html
                         gmModeBtn.textContent = "Modo Mestre Ativo 👑";
                         fecharModal("senha-gm-modal");
                         showNotification("Modo Mestre ativado!", "critical-success");
+                        atualizarFeedbackVisualGM();
                     } else {
-                        alert("Senha do Mestre incorreta!");
-                        fecharModal("senha-gm-modal");
+                        alert("Senha do Mestre incorreta!"); fecharModal("senha-gm-modal");
                     }
                 };
             }
         });
 
+        // --- FUNÇÃO DO MODO MESTRE CORRIGIDA E MELHORADA ---
         function handleGmEdit(event) {
             if (!isGmModeActive) return;
             const targetIcon = event.target;
-            if (!targetIcon.classList.contains('gm-edit-icon')) return;
-
             const targetId = targetIcon.dataset.targetId;
-            const fieldLabel = targetIcon.dataset.label || targetId;
-            const targetElement = document.getElementById(targetId);
+            const ficha = fichas[currentFichaId];
+            if (!targetId || !ficha) return;
 
-            if (!targetElement) return;
-
-            const isPrimaryAttributeInput = atributosInputs.some(input => input.id === targetId);
-            let currentValueToEdit;
-
-            if (isPrimaryAttributeInput) {
-                currentValueToEdit = targetElement.value;
-            } else {
-                currentValueToEdit = targetElement.textContent;
-            }
-
-            const newValueString = prompt(`Editar "${fieldLabel}":`, currentValueToEdit);
-
-            if (newValueString !== null) {
-                let newValue = newValueString;
-                const numericFields = ['vida-total', 'magia-total', 'vigor-total', 'ataque', 'ataque-magico', 'acerto', 'esquiva', 'rdf', 'rdm', 'velocidade-corrida', 'altura-pulo', 'distancia-pulo', 'pontos-habilidade', 'pontos-vantagem', 'nivel', 'capacidade-carga', 'forca', 'destreza', 'agilidade', 'constituicao', 'inteligencia'];
-
-                if (numericFields.includes(targetId)) {
-                    const parsedNum = parseFloat(newValueString);
-                    if (!isNaN(parsedNum)) {
-                        newValue = parsedNum;
-                    } else {
-                         alert("Valor inválido para este campo numérico.");
-                         return;
-                    }
-                }
-
-                const ficha = fichas[currentFichaId];
-                if (!ficha.gmOverrides) {
-                    ficha.gmOverrides = {};
-                }
-
-                if (isPrimaryAttributeInput) {
-                    targetElement.value = newValue;
-
-                } else {
-                    ficha.gmOverrides[targetId] = newValue;
-                }
-
+            // Lógica para limpar override
+            if (targetIcon.classList.contains('gm-clear-icon')) {
+                delete ficha.gmOverrides[targetId];
                 salvarDados();
                 atualizarNivel();
+                showNotification(`Modificação do Mestre para "${targetIcon.dataset.label || targetId}" foi removida.`, "save-success");
+                return; // Encerra a função aqui
+            }
+            
+            // Lógica para editar
+            if (targetIcon.classList.contains('gm-edit-icon')) {
+                const fieldLabel = targetIcon.dataset.label || targetId;
+                const targetElement = document.getElementById(targetId);
+                if (!targetElement) return;
 
-                showNotification(`"${fieldLabel}" atualizado para ${newValueString} pelo Mestre.`, "save-success");
+                // Define o valor atual a ser exibido no prompt
+                let currentValueToEdit = (ficha.gmOverrides && ficha.gmOverrides[targetId] !== undefined)
+                    ? ficha.gmOverrides[targetId]
+                    : (targetElement.tagName === 'INPUT' ? targetElement.value : targetElement.textContent);
+                
+                const newValueString = prompt(`Modo Mestre: Editar "${fieldLabel}"`, currentValueToEdit);
+
+                if (newValueString !== null) {
+                    ficha.gmOverrides[targetId] = newValueString.trim();
+                    salvarDados();
+                    atualizarNivel(); // Recalcula tudo com o novo override
+                    showNotification(`"${fieldLabel}" modificado para ${newValueString} pelo Mestre.`, "save-success");
+                }
             }
         }
+        
+        // --- NOVA FUNÇÃO AUXILIAR PARA O FEEDBACK DO MODO MESTRE ---
+        function atualizarFeedbackVisualGM() {
+            const ficha = fichas[currentFichaId];
+            if (!ficha || !ficha.gmOverrides) return;
+
+            // Itera sobre todos os ícones de controle do mestre
+            document.querySelectorAll('.gm-control-icons').forEach(container => {
+                const editIcon = container.querySelector('.gm-edit-icon');
+                const clearIcon = container.querySelector('.gm-clear-icon');
+                if (!editIcon) return;
+
+                const targetId = editIcon.dataset.targetId;
+                const targetElement = document.getElementById(targetId);
+                if (!targetElement) return;
+                
+                // Verifica se há um override para o campo
+                if (ficha.gmOverrides[targetId] !== undefined) {
+                    targetElement.classList.add('gm-overridden');
+                    if (clearIcon) clearIcon.style.display = 'inline-block'; // Mostra o ícone de limpar
+                } else {
+                    targetElement.classList.remove('gm-overridden');
+                    if (clearIcon) clearIcon.style.display = 'none'; // Esconde o ícone de limpar
+                }
+            });
+        }
+
         fichaContainer.addEventListener('click', handleGmEdit);
 
         function aplicarEstilosFicha() {
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultDarkBorder = '#555';
-            const defaultLightBorder = '#b8860b';
-
+            const defaultDarkBorder = '#555'; const defaultLightBorder = '#b8860b';
             const novaCorBordaCustom = corBordaSecaoInput.value;
             const novoEstiloBorda = estiloBordaSecaoSelect.value;
             const novaLarguraBorda = larguraBordaSecaoInput.value + 'px';
-
             const corBordaFinal = isDarkModeActive ? defaultDarkBorder : novaCorBordaCustom;
-
             document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
             document.documentElement.style.setProperty('--estilo-borda-secao', novoEstiloBorda);
             document.documentElement.style.setProperty('--largura-borda-secao', novaLarguraBorda);
@@ -4216,21 +4153,16 @@ html
                 fichas[currentFichaId].estiloBordaSecao = novoEstiloBorda;
                 fichas[currentFichaId].larguraBordaSecao = novaLarguraBorda;
             }
-            salvarDados();
-            showNotification("Estilos de seção aplicados!", "save-success");
+            salvarDados(); showNotification("Estilos de seção aplicados!", "save-success");
         }
 
         function aplicarEstilosFichaInicial(ficha) {
             const isDarkModeActive = document.body.classList.contains('dark-mode');
-            const defaultDarkBorder = '#555';
-            const defaultLightBorder = '#b8860b';
-
+            const defaultDarkBorder = '#555'; const defaultLightBorder = '#b8860b';
             const corBordaCustom = ficha.corBordaSecao || defaultLightBorder;
             const estiloBorda = ficha.estiloBordaSecao || 'solid';
             const larguraBorda = ficha.larguraBordaSecao || '2px';
-
             const corBordaFinal = isDarkModeActive ? defaultDarkBorder : corBordaCustom;
-
             document.documentElement.style.setProperty('--cor-borda-secao', corBordaFinal);
             document.documentElement.style.setProperty('--estilo-borda-secao', estiloBorda);
             document.documentElement.style.setProperty('--largura-borda-secao', larguraBorda);
@@ -4240,36 +4172,27 @@ html
             if (larguraBordaSecaoInput) larguraBordaSecaoInput.value = parseInt(larguraBorda) || 2;
         }
 
-
         diceTextureInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    aplicarTexturaDado(e.target.result);
-                }
+                reader.onload = (e) => { aplicarTexturaDado(e.target.result); }
                 reader.readAsDataURL(file);
             }
         });
 
         removeDiceTextureBtn.addEventListener('click', () => {
-            if (confirm("Remover textura do dado?")) {
-                aplicarTexturaDado(null);
-            }
+            if (confirm("Remover textura do dado?")) { aplicarTexturaDado(null); }
         });
 
         function aplicarTexturaDado(imageDataUrl) {
             const ficha = fichas[currentFichaId];
             if (imageDataUrl) {
-                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`;
-                if (ficha) ficha.texturaDado = imageDataUrl;
+                diceRoll.style.backgroundImage = `url('${imageDataUrl}')`; if (ficha) ficha.texturaDado = imageDataUrl;
             } else {
-                diceRoll.style.backgroundImage = 'none';
-                if (ficha) ficha.texturaDado = null;
-                 diceTextureInput.value = "";
+                diceRoll.style.backgroundImage = 'none'; if (ficha) ficha.texturaDado = null; diceTextureInput.value = "";
             }
-            if (ficha) salvarDados();
-            showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
+            if (ficha) salvarDados(); showNotification(imageDataUrl ? "Textura do dado aplicada!" : "Textura do dado removida!", "save-success");
         }
 
         diceAnimationSelector.addEventListener('change', () => {
@@ -4278,10 +4201,7 @@ html
 
         function aplicarAnimacaoDado(animacao) {
             const ficha = fichas[currentFichaId];
-            if (ficha) {
-                ficha.animacaoDado = animacao;
-                salvarDados();
-            }
+            if (ficha) { ficha.animacaoDado = animacao; salvarDados(); }
              showNotification("Animação do dado alterada!", "save-success");
         }
 
@@ -4295,7 +4215,6 @@ html
                  diceAnimationSelector.value = ficha.animacaoDado;
             }
         }
-
 
         /***************************************************
         *               THEME FUNCTIONS START                *
@@ -4349,79 +4268,38 @@ html
 
         function getCurrentThemeFromClasses() {
              const themeClasses = Array.from(document.body.classList).filter(cls => cls.startsWith('theme-'));
-             return themeClasses.join(' ') || 'theme-medieval'; // Default
+             return themeClasses.join(' ') || 'theme-medieval';
         }
 
         function reiniciarEstetica() {
-            if (!confirm("Tem certeza de que deseja reiniciar TODA a estética da ficha para o padrão? Isso inclui tema, cores, fontes e imagens de fundo. Seus dados de personagem NÃO serão afetados.")) {
+            if (!confirm("Tem certeza de que deseja reiniciar TODA a estética da ficha para o padrão? Seus dados de personagem NÃO serão afetados.")) {
                 return;
             }
-
             const ficha = fichas[currentFichaId];
             if (!ficha) return;
 
-            // 1. Reset data object properties to default
-            ficha.theme = 'theme-medieval';
-            ficha.backgroundColor = null;
-            ficha.fichaInternalBackgroundColor = null;
-            ficha.backgroundImage = null;
-            ficha.backgroundSize = 'cover';
-            ficha.backgroundAttachment = 'scroll';
-            ficha.fontFamily = "'Inter', sans-serif";
-            ficha.fichaTransparencyLevel = 100;
-            ficha.corBordaSecao = '#b8860b';
-            ficha.estiloBordaSecao = 'solid';
-            ficha.larguraBordaSecao = '2px';
-            ficha.shadowColorFicha = '#000000';
-            ficha.shadowIntensityFicha = 0;
-            ficha.diceColor = null;
-            ficha.diceNumberColor = null;
-            ficha.texturaDado = null;
-            ficha.animacaoDado = 'padrao';
-            ficha.darkMode = false;
+            ficha.theme = 'theme-medieval'; ficha.backgroundColor = null; ficha.fichaInternalBackgroundColor = null; ficha.backgroundImage = null; ficha.backgroundSize = 'cover';
+            ficha.backgroundAttachment = 'scroll'; ficha.fontFamily = "'Inter', sans-serif"; ficha.fichaTransparencyLevel = 100; ficha.corBordaSecao = '#b8860b';
+            ficha.estiloBordaSecao = 'solid'; ficha.larguraBordaSecao = '2px'; ficha.shadowColorFicha = '#000000'; ficha.shadowIntensityFicha = 0; ficha.diceColor = null;
+            ficha.diceNumberColor = null; ficha.texturaDado = null; ficha.animacaoDado = 'padrao'; ficha.darkMode = false;
 
-            // 2. Remove any theme classes and apply default
             limparClassesDeTema();
             aplicarClassesDeTema('theme-medieval');
             document.body.classList.remove('dark-mode');
 
+            aplicarPlanoDeFundoInicial(ficha); aplicarEstilosDeFundoVisuais(); aplicarEstilosDeSombra(); aplicarEstilosFichaInicial(ficha);
+            aplicarFonteInicial(ficha); aplicarCoresDadoInicial(ficha); aplicarCustomizacoesDadoInicial(ficha);
 
-            // 3. Re-apply all visual settings from the now-reset data object
-            aplicarPlanoDeFundoInicial(ficha);
-            aplicarEstilosDeFundoVisuais();
-            aplicarEstilosDeSombra();
-            aplicarEstilosFichaInicial(ficha);
-            aplicarFonteInicial(ficha);
-            aplicarCoresDadoInicial(ficha);
-            aplicarCustomizacoesDadoInicial(ficha);
+            if (customizacaoModal.style.display === "flex") {
+                themeSelector.value = 'theme-medieval'; elementalThemeGroup.style.display = 'none'; backgroundColorInput.value = '#f0e6d2'; fichaInternalBackgroundColorInput.value = '#f0e6d2';
+                fontSelector.value = "'Inter', sans-serif"; backgroundImageInput.value = ""; corBordaSecaoInput.value = '#b8860b'; estiloBordaSecaoSelect.value = 'solid'; larguraBordaSecaoInput.value = 2;
+                diceColorInput.value = '#f0e6d2'; diceNumberColorInput.value = '#000000'; diceTextureInput.value = ""; diceAnimationSelector.value = 'padrao'; fichaTransparencySlider.value = 100;
+                fichaTransparencyValueSpan.textContent = '100'; shadowColorFichaInput.value = '#000000'; shadowIntensityFichaSlider.value = 0; shadowIntensityFichaValueSpan.textContent = '0';
+            }
 
-            // 4. Update the controls in the customization modal if it's open
-             if (customizacaoModal.style.display === "flex") {
-                themeSelector.value = 'theme-medieval';
-                elementalThemeGroup.style.display = 'none';
-                backgroundColorInput.value = '#f0e6d2';
-                fichaInternalBackgroundColorInput.value = '#f0e6d2';
-                fontSelector.value = "'Inter', sans-serif";
-                backgroundImageInput.value = "";
-                corBordaSecaoInput.value = '#b8860b';
-                estiloBordaSecaoSelect.value = 'solid';
-                larguraBordaSecaoInput.value = 2;
-                diceColorInput.value = '#f0e6d2';
-                diceNumberColorInput.value = '#000000';
-                diceTextureInput.value = "";
-                diceAnimationSelector.value = 'padrao';
-                fichaTransparencySlider.value = 100;
-                fichaTransparencyValueSpan.textContent = '100';
-                shadowColorFichaInput.value = '#000000';
-                shadowIntensityFichaSlider.value = 0;
-                shadowIntensityFichaValueSpan.textContent = '0';
-             }
-
-
-            // 5. Save changes and notify user
             salvarDados();
-            showNotification("Estética da ficha reiniciada para o padrão!", "save-success");
-            fecharModal('customizacao-modal'); // Close the modal for a clean exit
+            showNotification("Estética reiniciada para o padrão!", "save-success");
+            fecharModal('customizacao-modal');
         }
 
 
@@ -4443,56 +4321,30 @@ html
             const btnDiminuirVigor = document.getElementById('btn-diminuir-vigor');
             const btnAumentarVigor = document.getElementById('btn-aumentar-vigor');
             
-            // --- NEW --- Botões de Atributos
-            const btnAumentarForca = document.getElementById('btn-aumentar-forca');
-            const btnDiminuirForca = document.getElementById('btn-diminuir-forca');
-            const btnAumentarDestreza = document.getElementById('btn-aumentar-destreza');
-            const btnDiminuirDestreza = document.getElementById('btn-diminuir-destreza');
-            const btnAumentarAgilidade = document.getElementById('btn-aumentar-agilidade');
-            const btnDiminuirAgilidade = document.getElementById('btn-diminuir-agilidade');
-            const btnAumentarConstituicao = document.getElementById('btn-aumentar-constituicao');
-            const btnDiminuirConstituicao = document.getElementById('btn-diminuir-constituicao');
-            const btnAumentarInteligencia = document.getElementById('btn-aumentar-inteligencia');
-            const btnDiminuirInteligencia = document.getElementById('btn-diminuir-inteligencia');
+            const btnAumentarForca = document.getElementById('btn-aumentar-forca'); const btnDiminuirForca = document.getElementById('btn-diminuir-forca');
+            const btnAumentarDestreza = document.getElementById('btn-aumentar-destreza'); const btnDiminuirDestreza = document.getElementById('btn-diminuir-destreza');
+            const btnAumentarAgilidade = document.getElementById('btn-aumentar-agilidade'); const btnDiminuirAgilidade = document.getElementById('btn-diminuir-agilidade');
+            const btnAumentarConstituicao = document.getElementById('btn-aumentar-constituicao'); const btnDiminuirConstituicao = document.getElementById('btn-diminuir-constituicao');
+            const btnAumentarInteligencia = document.getElementById('btn-aumentar-inteligencia'); const btnDiminuirInteligencia = document.getElementById('btn-diminuir-inteligencia');
 
-            // --- NEW --- Botões de Experiência
-            const btnAumentarXp = document.getElementById('btn-aumentar-xp');
-            const btnDiminuirXp = document.getElementById('btn-diminuir-xp');
-
-
+            const btnAumentarXp = document.getElementById('btn-aumentar-xp'); const btnDiminuirXp = document.getElementById('btn-diminuir-xp');
             const resetEsteticaBtn = document.getElementById('reset-estetica-btn');
-
 
             carregarFichas();
 
-            // Setup de botões de Recursos
-            setupHoldButtonEvents(btnDiminuirVida, diminuirVida);
-            setupHoldButtonEvents(btnAumentarVida, aumentarVida);
-            setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia);
-            setupHoldButtonEvents(btnAumentarMagia, aumentarMagia);
-            setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor);
-            setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
+            setupHoldButtonEvents(btnDiminuirVida, diminuirVida); setupHoldButtonEvents(btnAumentarVida, aumentarVida); setupHoldButtonEvents(btnDiminuirMagia, diminuirMagia);
+            setupHoldButtonEvents(btnAumentarMagia, aumentarMagia); setupHoldButtonEvents(btnDiminuirVigor, diminuirVigor); setupHoldButtonEvents(btnAumentarVigor, aumentarVigor);
 
-            // --- NEW --- Setup de botões de Atributos
-            setupHoldButtonEvents(btnAumentarForca, () => changeAttribute('forca', 1));
-            setupHoldButtonEvents(btnDiminuirForca, () => changeAttribute('forca', -1));
-            setupHoldButtonEvents(btnAumentarDestreza, () => changeAttribute('destreza', 1));
-            setupHoldButtonEvents(btnDiminuirDestreza, () => changeAttribute('destreza', -1));
-            setupHoldButtonEvents(btnAumentarAgilidade, () => changeAttribute('agilidade', 1));
-            setupHoldButtonEvents(btnDiminuirAgilidade, () => changeAttribute('agilidade', -1));
-            setupHoldButtonEvents(btnAumentarConstituicao, () => changeAttribute('constituicao', 1));
-            setupHoldButtonEvents(btnDiminuirConstituicao, () => changeAttribute('constituicao', -1));
-            setupHoldButtonEvents(btnAumentarInteligencia, () => changeAttribute('inteligencia', 1));
-            setupHoldButtonEvents(btnDiminuirInteligencia, () => changeAttribute('inteligencia', -1));
+            setupHoldButtonEvents(btnAumentarForca, () => changeAttribute('forca', 1)); setupHoldButtonEvents(btnDiminuirForca, () => changeAttribute('forca', -1));
+            setupHoldButtonEvents(btnAumentarDestreza, () => changeAttribute('destreza', 1)); setupHoldButtonEvents(btnDiminuirDestreza, () => changeAttribute('destreza', -1));
+            setupHoldButtonEvents(btnAumentarAgilidade, () => changeAttribute('agilidade', 1)); setupHoldButtonEvents(btnDiminuirAgilidade, () => changeAttribute('agilidade', -1));
+            setupHoldButtonEvents(btnAumentarConstituicao, () => changeAttribute('constituicao', 1)); setupHoldButtonEvents(btnDiminuirConstituicao, () => changeAttribute('constituicao', -1));
+            setupHoldButtonEvents(btnAumentarInteligencia, () => changeAttribute('inteligencia', 1)); setupHoldButtonEvents(btnDiminuirInteligencia, () => changeAttribute('inteligencia', -1));
 
-            // --- NEW --- Setup de botões de Experiência
-            setupHoldButtonEvents(btnAumentarXp, () => changeXp(1));
-            setupHoldButtonEvents(btnDiminuirXp, () => changeXp(-1));
+            setupHoldButtonEvents(btnAumentarXp, () => changeXp(1)); setupHoldButtonEvents(btnDiminuirXp, () => changeXp(-1));
 
 
-            if (resetEsteticaBtn) {
-                 resetEsteticaBtn.addEventListener('click', reiniciarEstetica);
-            }
+            if (resetEsteticaBtn) { resetEsteticaBtn.addEventListener('click', reiniciarEstetica); }
 
             document.querySelectorAll('.botao, .ficha-tab, #add-ficha-btn, .dice-option-btn, #change-dice-type-btn, #adicionar-magia-btn, .attr-btn').forEach(btn => {
                 btn.addEventListener('click', () => aplicarFeedbackBotao(btn));
@@ -4500,9 +4352,7 @@ html
             document.querySelectorAll('#ficha-content section h2').forEach(header => {
                 header.addEventListener('click', () => {
                     const sectionId = header.parentElement.id;
-                    if (sectionId) {
-                        toggleCollapseSection(sectionId);
-                    }
+                    if (sectionId) { toggleCollapseSection(sectionId); }
                 });
             });
             setupAttributeTooltips();
